@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest Dashboard</title>
+    <link rel="icon" type="image/png" href="bb_favicon.png">
+    <link rel="stylesheet" href="bb_styles.css"> 
+
+    <style>
+        /* --- Base Layout --- */
+        body {
+            display: block; 
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+            overflow: hidden; /* Prevent body scroll */
+        }
+
+        .dashboard-container {
+            display: flex;
+            flex-direction: column;
+            width: 100vw;
+            height: 100vh;
+            background-color: transparent;
+            position: relative; 
+        }
+
+        /* --- Header --- */
+        #main-header {
+            background-color: var(--dark-green);
+            min-height: 70px;
+            color: var(--white);
+            padding: 10px 30px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-logo-container {
+			width: 45px;
+			height: 45px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-shrink: 0;
+		}
+		
+        .header-logo-container img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .header-title {
+            font-family: 'Times New Roman', serif; 
+            font-size: 1.8em; 
+            color: white; 
+            font-weight: bold;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .header-nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 5px 0;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            font-weight: 600;
+        }
+        
+        .header-nav-link:hover, .header-nav-link.active {
+            color: var(--white);
+            border-bottom: 2px solid var(--primary-green);
+        }
+
+        .account-pfp-placeholder {
+            width: 40px;
+            height: 40px;
+            background-color: var(--text-light);
+            border-radius: 50%;
+            border: 2px solid var(--primary-green);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .account-pfp-placeholder:hover {
+            transform: scale(1.1);
+        }
+		
+		.reports-dropdown-container {
+			position: relative;
+			display: inline-block;
+		}
+
+		.dropdown-button {
+			background-color: transparent;
+			color: var(--text-light);
+			border: none;
+			cursor: pointer;
+			padding: 8px 12px;
+			font-size: 1em;
+			font-weight: 600;
+			transition: color 0.3s;
+			display: flex;
+			align-items: center;
+			gap: 5px;
+		}
+
+		.dropdown-button:hover {
+			color: var(--white);
+		}
+
+		.dropdown-content {
+			display: none;
+			position: absolute;
+			background-color: var(--dark-green);
+			min-width: 160px;
+			box-shadow: 0px 8px 20px rgba(0,0,0,0.5);
+			z-index: 1001;
+			right: 0; 
+			top: 100%;
+			border-radius: 4px;
+			border-top: 3px solid var(--primary-green);
+			overflow: hidden;
+		}
+
+		.dropdown-content a {
+			color: var(--text-light);
+			padding: 12px 20px;
+			text-decoration: none;
+			display: block;
+			font-size: 0.95em;
+			transition: background 0.2s, color 0.2s;
+		}
+
+		.dropdown-content a:hover {
+			background-color: var(--primary-green);
+			color: var(--white);
+		}
+
+		.reports-dropdown-container:hover .dropdown-content {
+			display: block;
+		}
+
+        /* --- Main Content Card --- */
+        #app-content {
+            display: flex;
+            flex-grow: 1; 
+            overflow: hidden;
+            padding: 20px; 
+			transform-style: preserve-3d; 
+            perspective: 1200px;
+        }
+		
+        .main-app-card {
+            display: flex; 
+            flex-grow: 1;
+            border-radius: 12px; 
+            overflow: hidden; 
+            transform-style: preserve-3d;
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+            will-change: transform;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        #main-sidebar {
+            width: 300px;
+            background-color: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 30px 20px;
+            flex-shrink: 0; 
+            color: var(--dark-green);
+            border-right: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        #main-dashboard {
+            flex-grow: 1; 
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            padding: 30px;
+            overflow-y: auto; 
+            color: var(--dark-green); 
+        }
+		
+		.dashboard-overview {
+			display: flex;
+			flex-direction: column;
+			gap: 20px;
+			margin-top: 10px;
+		}
+		
+		.stat-card {
+			background: white;
+			padding: 25px;
+			border-radius: 15px;
+			box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+			border: 1px solid rgba(0,0,0,0.05);
+			transition: transform 0.3s ease;
+		}
+
+		.stat-card:hover {
+			transform: translateY(-5px);
+		}
+
+		.stat-label {
+			font-size: 0.9em;
+			font-weight: 700;
+			color: #555555;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+			margin-bottom: 10px;
+			opacity: 0.5;
+		}
+		
+		.stat-card.wallet-card .stat-label {
+			color: white;
+			opacity: 0.6;
+		}
+
+		.stat-value {
+			font-size: 2.2em;
+			font-weight: 600;
+			color: var(--dark-green);
+		}
+
+		/* Wallet Card Special Styling */
+		.wallet-card {
+			background-color: var(--dark-green);
+			color: white;
+		}
+
+		.wallet-card .stat-label { color: var(--primary-green); }
+		.wallet-card .stat-value { color: white; font-size: 3em; }
+		.wallet-card .stat-meta {
+			margin-top: 15px;
+			font-size: 0.85em;
+			opacity: 0.7;
+		}
+
+		/* Grid for the sub-stats */
+		.stat-grid {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 20px;
+		}
+
+		.income-card .stat-value { color: #2ecc71; }   /* Green for Income */
+		.expense-card .stat-value { color: #e74c3c; }  /* Red for Expense */
+		.transfer-card .stat-value { color: #3498db; } /* Blue for Transfer */
+
+		/* --- Subtle Range Dropdown --- */
+		.dashboard-filter-container {
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			margin-bottom: 15px;
+			gap: 10px; /* Space between the two filters */
+		}
+
+		.range-dropdown {
+			position: relative;
+			display: inline-block;
+		}
+
+		.range-dropbtn {
+			background: rgba(255, 255, 255, 0.5); /* Slightly more opaque for better visibility */
+			color: var(--dark-green);
+			font-size: 0.8rem;
+			font-weight: 600;
+			letter-spacing: 1.2px;
+			border: 1px solid rgba(0,0,0,0.1);
+			padding: 6px 14px;
+			border-radius: 20px;
+			cursor: pointer;
+			text-transform: uppercase;
+			transition: all 0.2s ease;
+		}
+
+		.range-dropbtn:hover {
+			background: white;
+			border-color: var(--primary-green);
+			box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+		}
+
+		.range-dropdown-content {
+			display: none;
+			position: absolute;
+			background-color: white;
+			min-width: 140px;
+			box-shadow: 0px 8px 20px rgba(0,0,0,0.15);
+			z-index: 10;
+			border-radius: 10px;
+			margin-top: 5px;
+			overflow: hidden;
+			border: 2px solid rgba(0,0,0,0.05);
+		}
+
+		.range-dropdown-content a {
+			color: var(--dark-green);
+			padding: 10px 15px;
+			text-decoration: none;
+			display: block;
+			font-size: 0.75em;
+			font-weight: 700;
+			transition: background 0.2s;
+		}
+
+		.range-dropdown-content a:hover {
+			background-color: var(--new-light-blob);
+			color: var(--primary-green);
+		}
+
+		.range-dropdown:hover .range-dropdown-content {
+			display: block;
+		}
+		
+		/* This creates an invisible box between the button and the dropdown list */
+		.range-dropdown::after {
+			content: "";
+			position: absolute;
+			top: 100%; /* Starts at the bottom of the button */
+			left: 0;
+			width: 100%;
+			height: 15px; /* Adjust this height to match your gap size */
+			display: none;
+		}
+
+		/* Show the bridge only when hovering */
+		.range-dropdown:hover::after {
+			display: block;
+		}
+
+		/* Ensure the content is pushed down slightly to leave your visual gap */
+		.range-dropdown-content {
+			margin-top: 5px; /* Your desired visual gap */
+		}
+
+		.arrow-icon {
+			margin-left: 5px;
+			font-size: 0.9em;
+		}
+
+        /* --- Sidebar Navigation Styling --- */
+        .sidebar-label {
+            font-size: 0.75em;
+            letter-spacing: 2px;
+            color: var(--dark-green);
+            opacity: 0.6;
+            margin-bottom: 20px;
+            padding-left: 10px;
+        }
+
+        .sidebar-section { margin-bottom: 40px; }
+
+        .sidebar-nav { display: flex; flex-direction: column; gap: 10px; }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            text-decoration: none;
+            color: var(--dark-green);
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+            transform: translateX(5px);
+        }
+
+        .nav-item.active {
+            background-color: var(--dark-green);
+            color: var(--white);
+        }
+
+        .nav-icon { font-size: 1.2em; }
+
+        .btn-quick-add {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary-green);
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .btn-quick-add:hover {
+            background-color: var(--dark-green);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .bottom-section { margin-top: auto; margin-bottom: 0; }
+
+		/* --- Account Drawer --- */
+		.account-drawer {
+			position: fixed;
+			top: 0;
+			right: -380px;
+			width: 350px;
+			height: 100%;
+			background-color: var(--dark-green);
+			color: var(--white);
+			box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
+			transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+			z-index: 1000;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.account-drawer.open { right: 0; }
+
+		.drawer-header {
+			padding: 25px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+		}
+
+		.drawer-content {
+			flex-grow: 1;
+			padding: 40px 25px;
+			text-align: center;
+		}
+
+		.large-pfp {
+			width: 100px;
+			height: 100px;
+			background-color: var(--text-light);
+			border-radius: 50%;
+			margin: 0 auto 20px;
+			border: 4px solid var(--primary-green);
+		}
+
+		.drawer-footer {
+			padding: 10px 6px 4px 6px;
+			border-top: 1px solid rgba(255, 255, 255, 0.1);
+		}
+
+        .drawer-overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100vw;
+			height: 100vh;
+			background: rgba(0, 0, 0, 0.4);
+			display: none;
+			z-index: 999;
+			backdrop-filter: blur(3px);
+		}
+		.drawer-overlay.active { display: block; }
+		
+		.close-drawer {
+			background: none; border: none;
+			color: var(--white); font-size: 3em;
+			cursor: pointer; opacity: 0.6;
+		}
+
+		/* --- Modals & Forms --- */
+		.modal-overlay {
+			position: fixed;
+			top: 0; left: 0;
+			width: 100%; height: 100%;
+			background: rgba(0, 0, 0, 0.75);
+			backdrop-filter: blur(10px);
+			display: none;
+			justify-content: center;
+			align-items: center;
+			z-index: 2000;
+			perspective: 1000px;
+		}
+
+		.modal-overlay.active { display: flex; }
+
+		.modal-card {
+			background-color: var(--dark-green);
+			width: 90%;
+			max-width: 450px;
+			min-height: 500px; 
+			padding: 50px 40px;
+			border-radius: 15px;
+			position: relative;
+			box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			transform-style: preserve-3d;
+			transition: transform 0.1s ease-out;
+			will-change: transform;
+		}
+		
+		.modal-form-container .header {
+			margin-bottom: 40px;
+			text-align: center;
+		}
+		
+		.modal-form-container .input-group {
+			position: relative;
+			margin-bottom: 35px; 
+			width: 100%;
+		}
+
+		.modal-form-container .btn-primary {
+			margin-top: 20px;
+			height: 50px;
+		}
+
+		.password-input-wrapper {
+			position: relative;
+			width: 100%;
+			display: block;
+		}
+
+		.modal-close {
+			position: absolute;
+			top: 10px;
+			right: 15px;
+			background: none; 
+			border: none;
+			color: var(--white); 
+			font-size: 3em;
+			cursor: pointer; 
+			opacity: 0.6;
+			z-index: 10;
+			transform: translateZ(10px);
+			transition: opacity 0.2s, transform 0.2s;
+		}
+		
+		.modal-close:hover {
+			opacity: 1;
+			transform: translateZ(15px) scale(1.1);
+		}
+
+		.modal-form-container { transform: translateZ(40px); }
+
+        .login-link { margin-top: 20px; text-align: center; }
+        .login-link a { color: var(--primary-green); text-decoration: none; font-weight: bold; }
+
+        .modal-card .btn-primary { width: 100%; margin-top: 10px; }
+
+		/* --- Transactions Page Styles --- */
+		.transaction-list {
+			background: white;
+			border-radius: 15px;
+			padding: 10px;
+			box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+		}
+
+		.transaction-row {
+			display: grid;
+			grid-template-columns: 0.5fr 2fr 1.5fr 1fr 1.5fr 1.5fr;
+			padding: 15px 20px;
+			align-items: center;
+			border-bottom: 1px solid rgba(0,0,0,0.05);
+			cursor: pointer;
+			transition: background 0.2s;
+		}
+
+		.transaction-row:hover { background: rgba(0,0,0,0.02); }
+
+		.header-row {
+			font-size: 0.75em;
+			font-weight: 800;
+			color: #999;
+			letter-spacing: 1px;
+			cursor: default;
+			border-bottom: 2px solid rgba(0,0,0,0.05);
+		}
+
+		.rec-title { font-weight: 700; color: var(--dark-green); }
+		.rec-stats { font-weight: 800; }
+		.rec-stats.income { color: #2ecc71; }
+		.rec-stats.expense { color: #e74c3c; }
+
+		/* Badges */
+		.badge {
+			padding: 4px 10px;
+			border-radius: 12px;
+			font-size: 0.7em;
+			font-weight: 800;
+			text-transform: uppercase;
+		}
+		.badge-expense { background: #fee2e2; color: #ef4444; }
+		.badge-income { background: #dcfce7; color: #22c55e; }
+
+		/* Action Icons */
+		.rec-actions {
+			display: flex;
+			gap: 12px;
+			justify-content: flex-end;
+			align-items: center;
+		}
+
+		.icon-btn {
+			background: none;
+			border: none;
+			cursor: pointer;
+			font-size: 1.1em;
+			opacity: 0.4;
+			transition: opacity 0.2s;
+		}
+
+		.edit-btn:hover { opacity: 1; color: var(--primary-green); }
+		.delete-btn:hover { opacity: 1; color: #ff7675; }
+
+		/* Expansion Logic */
+		.transaction-details {
+			max-height: 0;
+			overflow: hidden;
+			padding: 0 20px;
+			background: #fafafa;
+			transition: all 0.3s ease;
+			font-size: 0.9em;
+			color: #666;
+		}
+
+		.transaction-item.expanded .transaction-details {
+			max-height: 100px;
+			padding: 15px 20px;
+			border-bottom: 1px solid rgba(0,0,0,0.05);
+		}
+
+		.transaction-item.expanded .expand-arrow {
+			transform: rotate(180deg);
+		}
+
+		.expand-arrow {
+			font-size: 0.7em;
+			color: #ccc;
+			transition: transform 0.3s;
+		}
+
+		.main-view {
+			width: 100%;
+			height: 100%;
+			animation: fadeIn 0.3s ease;
+		}
+
+		@keyframes fadeIn {
+			from { opacity: 0; transform: translateY(10px); }
+			to { opacity: 1; transform: translateY(0); }
+		}
+		
+		#main-content-area {
+			flex-grow: 1;
+			overflow-y: auto;
+			background-color: rgba(255, 255, 255, 0.85);
+			backdrop-filter: blur(15px);
+			display: flex;
+			flex-direction: column;
+		}
+
+    </style>
+</head>
+<body>
+    
+    <div class="animated-background">
+        <div class="blob"></div><div class="blob"></div><div class="blob"></div><div class="blob"></div><div class="blob"></div> 
+    </div>
+
+    <div class="dashboard-container">
+        <header id="main-header">
+            <div class="header-left">
+                <div class="header-logo-container"><img src="bb_logo_db.png" alt="App Logo"></div>
+                <div class="header-title">Bacaro Budget Manager</div>
+            </div>
+
+            <nav class="header-right">
+                <a href="#" class="header-nav-link">Goals</a>
+                
+                <div class="reports-dropdown-container">
+                    <button class="dropdown-button">Reports ▾</button>
+                    <div class="dropdown-content">
+						<a href="#">Daily</a>
+                        <a href="#">Weekly</a>
+                        <a href="#">Monthly</a>
+                        <a href="#">Annually</a>
+                    </div>
+                </div>
+
+                <div class="account-pfp-placeholder" onclick="toggleAccountSidebar()"></div>
+            </nav>
+        </header>
+
+        <div id="app-content">
+            <div class="main-app-card"> 
+                <aside id="main-sidebar">
+                    <div class="sidebar-section">
+                        <nav class="sidebar-nav">
+                            <a href="#" class="nav-item active" onclick="showView('dashboard', this)">Dashboard</a>
+                            <a href="#" class="nav-item" onclick="showView('transactions', this)">Transactions</a>
+                            <a href="#" class="nav-item">Wallets</a>
+                            <a href="#" class="nav-item">Kwarta AI</a>
+                        </nav>
+                    </div>
+
+                    <div class="sidebar-section quick-add-section">
+                        <button class="btn-quick-add" onclick="alert('Transaction Form Coming Soon!')">
+                            NEW TRANSACTION
+                        </button>
+                    </div>
+
+                    <div class="sidebar-section bottom-section">
+                        <a href="#" class="nav-item"><span class="nav-icon">⛯</span>Settings</a>
+                    </div>
+                </aside>
+			
+		<div id="main-content-area" style="flex-grow: 1; position: relative; overflow-y: auto; background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(15px);">
+			<div id="view-dashboard" class="main-view">
+                <main id="main-dashboard">
+					<div class="dashboard-overview">
+						<div class="dashboard-filter-container">
+							<div class="range-dropdown">
+								<button class="range-dropbtn">ALL TIME <span class="arrow-icon">▾</span></button>
+								<div class="range-dropdown-content">
+									<a href="#" onclick="updateRange('TODAY')">TODAY</a>
+									<a href="#" onclick="updateRange('THIS WEEK')">THIS WEEK</a>
+									<a href="#" onclick="updateRange('THIS MONTH')">THIS MONTH</a>
+									<a href="#" onclick="updateRange('THIS YEAR')">THIS YEAR</a>
+									<a href="#" onclick="updateRange('ALL TIME')">ALL TIME</a>
+								</div>
+							</div>
+							
+							<div class="range-dropdown" style="margin-left: 10px;">
+								<button class="range-dropbtn">ALL WALLETS <span class="arrow-icon">▾</span></button>
+								<div class="range-dropdown-content">
+									<a href="#">ALL WALLETS</a>
+									</div>
+							</div>
+						</div>
+						
+						</div>
+					
+						<div class="stat-card wallet-card">
+							<div class="stat-label">Your Balance</div>
+							<div class="stat-value">₱ 0.00</div>
+							<div class="stat-meta">Active Wallet</div>
+						</div>
+
+						<div class="stat-grid">
+							<div class="stat-card income-card">
+								<div class="stat-label">Income</div>
+								<div class="stat-value">₱ 0.00</div>
+							</div>
+							<div class="stat-card expense-card">
+								<div class="stat-label">Expense</div>
+								<div class="stat-value">₱ 0.00</div>
+							</div>
+							<div class="stat-card transfer-card">
+								<div class="stat-label">Transfer</div>
+								<div class="stat-value">₱ 0.00</div>
+							</div>
+						</div>
+					</div>
+				</main>
+			</div>
+		
+			<div id="view-transactions" class="main-view" style="display: none;">			
+				<main id="main-transactions">
+				<section id="transactions-view">
+					<div class="view-header">
+						<div class="view-actions">
+							</div>
+					</div>
+
+					<div class="transaction-list">
+						<div class="transaction-row header-row">
+							<span>#</span>
+							<span>TITLE</span>
+							<span>AMOUNT</span>
+							<span>TYPE</span>
+							<span>DATE</span>
+							<span></span> </div>
+
+						<div class="transaction-item">
+							<div class="transaction-row" onclick="this.parentElement.classList.toggle('expanded')">
+								<span class="rec-number">1</span>
+								<span class="rec-title">Starbucks Coffee</span>
+								<span class="rec-stats expense">- ₱ 180.00</span>
+								<span class="rec-type"><span class="badge badge-expense">Expense</span></span>
+								<span class="rec-date">Oct 24, 2023</span>
+								<span class="rec-actions">
+									<button class="icon-btn edit-btn">✎</button>
+									<button class="icon-btn delete-btn">🗑</button>
+									<span class="expand-arrow">▼</span>
+								</span>
+							</div>
+							<div class="transaction-details">
+								<p><strong>Note:</strong> Afternoon break with the team. Used GCash wallet.</p>
+							</div>
+						</div>
+
+						<div class="transaction-item">
+							<div class="transaction-row" onclick="this.parentElement.classList.toggle('expanded')">
+								<span class="rec-number">2</span>
+								<span class="rec-title">Freelance Project</span>
+								<span class="rec-stats income">+ ₱ 15,000.00</span>
+								<span class="rec-type"><span class="badge badge-income">Income</span></span>
+								<span class="rec-date">Oct 22, 2023</span>
+								<span class="rec-actions">
+									<button class="icon-btn edit-btn">✎</button>
+									<button class="icon-btn delete-btn">🗑</button>
+									<span class="expand-arrow">▼</span>
+								</span>
+							</div>
+							<div class="transaction-details">
+								<p><strong>Note:</strong> Website redesign for local client. Deposited to BDO.</p>
+							</div>
+						</div>
+					</div>
+				</section>
+				</main>
+            </div>
+		</div>
+			
+		</div>
+    </div>
+	
+	<div id="account-sidebar" class="account-drawer">
+		<div class="drawer-header">
+			<h3>Account Details</h3>
+			<button class="close-drawer" onclick="toggleAccountSidebar()">&times;</button>
+		</div>
+		
+		<div class="drawer-content">
+			<div class="profile-section">
+				<div class="large-pfp" style="background-color: var(--primary-green); display: flex; align-items: center; justify-content: center; font-size: 2em; color: white; font-weight: bold;">
+					JD
+				</div>
+				<h3 style="margin-top: 15px; color: var(--white);">Juan Dela Cruz</h3>
+				<p class="user-status" style="opacity: 0.7;">Verified Member</p>
+			</div>
+
+			<div class="account-info" style="margin-top: 20px; text-align: left; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px;">
+				<div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9em;">
+					<span style="opacity: 0.6;">Email:</span>
+					<span>juan.dc@email.com</span>
+				</div>
+				<div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9em;">
+					<span style="opacity: 0.6;">Connected Wallets:</span>
+					<span style="color: var(--primary-green);">0</span>
+				</div>
+				<div style="display: flex; justify-content: space-between; font-size: 0.9em;">
+					<span style="opacity: 0.6;">Member Since:</span>
+					<span>Dec 2025</span>
+				</div>
+			</div>
+
+			<div class="drawer-nav" style="margin-top: 30px; display: flex; flex-direction: column; gap: 15px; text-align: left;">
+				<a href="#" style="color: white; text-decoration: none; font-size: 0.9em; font-weight: 600;">Edit Profile</a>
+				<a href="#" style="color: white; text-decoration: none; font-size: 0.9em; font-weight: 600;">Security & Privacy</a>
+			</div>
+		</div>
+
+		<div class="drawer-footer">
+			<button class="btn btn-primary" style="background-color: #ff7675" onclick="location.href='bb_dashboard.html'">
+				LOG OUT
+			</button>
+		</div>
+	</div>
+	<div id="drawer-overlay" class="drawer-overlay" onclick="toggleAccountSidebar()"></div>
+	
+	<div id="login-modal" class="modal-overlay">
+        <div class="modal-card">
+			<button class="modal-close" onclick="closeAllModals()">&times;</button>
+            <div class="modal-form-container">
+                <h2 class="header login-header">Welcome Back!</h2>
+                <form class="login-form">
+                    <div class="input-group">
+                        <input type="email" class="floating-input" placeholder=" " required>
+                        <label class="floating-label">Email Address or Phone No.</label>
+                    </div>
+                    <div class="input-group">
+                        <div class="password-input-wrapper">
+                            <input type="password" class="floating-input" placeholder=" " required>
+                            <label class="floating-label">Password</label>
+                            <span class="password-toggle">⛉</span>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">LOG IN</button>
+                    <div class="login-link"><a href="javascript:void(0)" onclick="openForgotModal()">Forgot Password</a></div>
+                    <div class="login-link"><a href="javascript:void(0)" onclick="openSignupModal()">Create New Account</a></div>
+                </form>
+            </div>
+        </div>
+	</div>
+	
+	<div id="signup-modal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeAllModals()">&times;</button>
+            <div class="modal-form-container">
+                <h2 class="header signup-header">SIGN UP</h2>
+                <form class="signup-form">
+                    <div class="input-group"><input type="text" class="floating-input" placeholder=" "><label class="floating-label">Full Name (Optional)</label></div>
+                    <div class="input-group"><input type="email" class="floating-input" placeholder=" " required><label class="floating-label">Email Address</label></div>
+                    <div class="input-group">
+                        <div class="password-input-wrapper">
+                            <input type="password" class="floating-input" placeholder=" " required>
+                            <label class="floating-label">Password</label>
+                            <span class="password-toggle">⛉</span>
+                        </div>
+                    </div>
+					<div class="input-group">
+                        <div class="password-input-wrapper">
+                            <input type="password" class="floating-input" placeholder=" " required>
+                            <label class="floating-label">Confirm Password</label>
+                            <span class="password-toggle">⛉</span>
+                        </div>
+                    </div>
+					<div class="input-group"><input type="tel" class="floating-input" placeholder=" "><label class="floating-label">Phone Number (Optional)</label></div>
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                    <div class="login-link"><a href="javascript:void(0)" onclick="openLoginModal()">Use a Registered Account</a></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="forgot-modal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeAllModals()">&times;</button>
+            <div class="modal-form-container">
+                <h2 class="header">🥀✌</h2>
+                <p style="text-align: center; color: var(--text-light); margin-bottom: 20px;">Enter your EMAIL or PHONE to receive a reset link.</p>
+                <form>
+                    <div class="input-group"><input type="email" class="floating-input" placeholder=" " required></div>
+                    <button type="submit" class="btn btn-primary">Send Reset Link</button>
+                    <div class="login-link"><a href="javascript:void(0)" onclick="openLoginModal()">Back to Log In</a></div>
+                </form>
+            </div>
+        </div>
+    </div>
+	
+	<script>
+        // --- Dashboard Tilt Logic ---
+        const mainAppCard = document.querySelector('.main-app-card');
+        const trackingArea = document.getElementById('app-content');
+        
+        trackingArea.addEventListener('mousemove', (e) => {
+            const rect = trackingArea.getBoundingClientRect();
+            const x = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+            const y = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+
+            mainAppCard.style.transform = `rotateX(${-y * 1.5}deg) rotateY(${x * 1.5}deg) translateZ(10px)`;
+            mainAppCard.style.boxShadow = `${-x * 10}px ${y * 10}px 30px rgba(0,0,0,0.3)`;
+        });
+
+        trackingArea.addEventListener('mouseleave', () => {
+            mainAppCard.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0)';
+            mainAppCard.style.boxShadow = '0 10px 30px rgba(0,0,0,0.2)';
+        });
+        
+		function toggleAccountSidebar(forceState) {
+			const sidebar = document.getElementById('account-sidebar');
+			const overlay = document.getElementById('drawer-overlay');
+			if (forceState === false) {
+				sidebar.classList.remove('open');
+				overlay.classList.remove('active');
+			} else {
+				sidebar.classList.toggle('open');
+				overlay.classList.toggle('active');
+			}
+		}
+		
+		function closeAllModals() {
+			document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+		}
+		
+		function openLoginModal() { closeAllModals(); toggleAccountSidebar(false); document.getElementById('login-modal').classList.add('active'); }
+		function openSignupModal() { closeAllModals(); document.getElementById('signup-modal').classList.add('active'); }
+		function openForgotModal() { closeAllModals(); document.getElementById('forgot-modal').classList.add('active'); }
+
+		window.onclick = function(event) {
+			if (event.target.classList.contains('modal-overlay')) closeAllModals();
+			if (event.target.id === 'drawer-overlay') toggleAccountSidebar(false);
+		}
+		
+		document.querySelectorAll('.modal-overlay').forEach(overlay => {
+			const card = overlay.querySelector('.modal-card');
+			overlay.addEventListener('mousemove', (e) => {
+				if (!overlay.classList.contains('active')) return;
+				const rect = card.getBoundingClientRect();
+				const angleX = (rect.top + rect.height / 2 - e.clientY) / 140;
+				const angleY = (e.clientX - (rect.left + rect.width / 2)) / 140;
+				card.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg)`;
+			});
+			overlay.addEventListener('mouseleave', () => {
+				card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+			});
+		});
+
+		document.addEventListener('click', (e) => {
+			if (e.target.classList.contains('password-toggle')) {
+				const input = e.target.closest('.password-input-wrapper').querySelector('input');
+				input.type = input.type === 'password' ? 'text' : 'password';
+				e.target.style.color = input.type === 'text' ? 'white' : 'var(--primary-green)';
+			}
+		});
+		
+		function showView(viewId, element) {
+			// 1. Hide all views
+			const views = document.querySelectorAll('.main-view');
+			views.forEach(view => view.style.display = 'none');
+
+			// 2. Show the requested view
+			const targetView = document.getElementById('view-' + viewId);
+			if (targetView) {
+				targetView.style.display = 'block';
+			}
+
+			// 3. Update the Active class in the sidebar
+			const navItems = document.querySelectorAll('.nav-item');
+			navItems.forEach(item => item.classList.remove('active'));
+			element.classList.add('active');
+		}
+		
+    </script>
+</body>
+</html>

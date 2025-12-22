@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest Dashboard</title>
+    <link rel="icon" type="image/png" href="bb_favicon.png">
+    <link rel="stylesheet" href="bb_styles.css"> 
+
+    <style>
+/* =====================================================
+   BASE DOCUMENT & ROOT LAYOUT
+   Controls viewport sizing and scroll behavior
+   ===================================================== */
+body {
+    display: block;
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+    overflow: hidden; /* Prevent body scroll */
+}
+
+/* Root application wrapper */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    background-color: transparent;
+    position: relative;
+}
+
+
+/* =====================================================
+   HEADER / TOP NAVIGATION BAR
+   ===================================================== */
+#main-header {
+    background-color: var(--dark-green);
+    min-height: 70px;
+    color: var(--white);
+    padding: 10px 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+}
+
+/* Header left cluster: logo + title */
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Logo container to maintain consistent sizing */
+.header-logo-container {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.header-logo-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* App title text */
+.header-title {
+    font-family: 'Times New Roman', serif;
+    font-size: 1.8em;
+    color: white;
+    font-weight: bold;
+}
+
+/* Header right cluster: navigation + account */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+/* Top navigation links */
+.header-nav-link {
+    color: var(--text-light);
+    text-decoration: none;
+    padding: 5px 0;
+    transition: all 0.3s ease;
+    font-size: 1em;
+    font-weight: 600;
+}
+
+.header-nav-link:hover,
+.header-nav-link.active {
+    color: var(--white);
+    border-bottom: 2px solid var(--primary-green);
+}
+
+/* Small profile avatar placeholder */
+.account-pfp-placeholder {
+    width: 40px;
+    height: 40px;
+    background-color: var(--text-light);
+    border-radius: 50%;
+    border: 2px solid var(--primary-green);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.account-pfp-placeholder:hover {
+    transform: scale(1.1);
+}
+
+
+/* =====================================================
+   REPORTS DROPDOWN (HEADER)
+   ===================================================== */
+.reports-dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-button {
+    background-color: transparent;
+    color: var(--text-light);
+    border: none;
+    cursor: pointer;
+    padding: 8px 12px;
+    font-size: 1em;
+    font-weight: 600;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.dropdown-button:hover {
+    color: var(--white);
+}
+
+/* Dropdown menu panel */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--dark-green);
+    min-width: 160px;
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.5);
+    z-index: 1001;
+    right: 0;
+    top: 100%;
+    border-radius: 4px;
+    border-top: 3px solid var(--primary-green);
+    overflow: hidden;
+}
+
+/* Dropdown links */
+.dropdown-content a {
+    color: var(--text-light);
+    padding: 12px 20px;
+    text-decoration: none;
+    display: block;
+    font-size: 0.95em;
+    transition: background 0.2s, color 0.2s;
+}
+
+.dropdown-content a:hover {
+    background-color: var(--primary-green);
+    color: var(--white);
+}
+
+/* Hover trigger */
+.reports-dropdown-container:hover .dropdown-content {
+    display: block;
+}
+
+
+/* =====================================================
+   MAIN APP CONTENT WRAPPER (3D CARD EFFECT)
+   ===================================================== */
+#app-content {
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+    padding: 20px;
+    transform-style: preserve-3d;
+    perspective: 1200px;
+}
+
+/* Main glass card container */
+.main-app-card {
+    display: flex;
+    flex-grow: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    will-change: transform;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+
+/* =====================================================
+   SIDEBAR PANEL
+   ===================================================== */
+#main-sidebar {
+    width: 300px;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    padding: 30px 20px;
+    flex-shrink: 0;
+    color: var(--dark-green);
+    border-right: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* =====================================================
+   MAIN DASHBOARD CONTENT AREA
+   ===================================================== */
+#main-dashboard {
+    flex-grow: 1;
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(15px);
+    padding: 30px;
+    overflow-y: auto;
+    color: var(--dark-green);
+}
+
+
+/* =====================================================
+   DASHBOARD OVERVIEW & STAT CARDS
+   ===================================================== */
+.dashboard-overview {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+/* Base stat card */
+.stat-card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Stat text */
+.stat-label {
+    font-size: 0.9em;
+    font-weight: 700;
+    color: #555555;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    opacity: 0.5;
+}
+
+/* Override label styling for wallet */
+.stat-card.wallet-card .stat-label {
+    color: white;
+    opacity: 0.6;
+}
+
+.stat-value {
+    font-size: 2.2em;
+    font-weight: 600;
+    color: var(--dark-green);
+}
+
+
+/* =====================================================
+   WALLET CARD (PRIMARY METRIC)
+   ===================================================== */
+.wallet-card {
+    background-color: var(--dark-green);
+    color: white;
+}
+
+.wallet-card .stat-label { color: var(--primary-green); }
+.wallet-card .stat-value { color: white; font-size: 3em; }
+
+.wallet-card .stat-meta {
+    margin-top: 15px;
+    font-size: 0.85em;
+    opacity: 0.7;
+}
+
+
+/* =====================================================
+   SUB-STAT GRID (INCOME / EXPENSE / TRANSFER)
+   ===================================================== */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.income-card .stat-value   { color: #2ecc71; }
+.expense-card .stat-value  { color: #e74c3c; }
+.transfer-card .stat-value { color: #3498db; }
+
+
+    </style>
+</head>
+<body>
+    
+    <div class="animated-background">
+        <div class="blob"></div><div class="blob"></div><div class="blob"></div><div class="blob"></div><div class="blob"></div> 
+    </div>
+
+    <div class="dashboard-container">
+        <header id="main-header">
+            <div class="header-left">
+                <div class="header-logo-container"><img src="bb_logo_db.png" alt="App Logo"></div>
+                <div class="header-title">Bacaro Budget Manager</div>
+            </div>
+
+            <nav class="header-right">
+                <a href="#" class="header-nav-link">Goals</a>
+                
+                <div class="reports-dropdown-container">
+                    <button class="dropdown-button">Reports ▾</button>
+                    <div class="dropdown-content">
+						<a href="#">Daily</a>
+                        <a href="#">Weekly</a>
+                        <a href="#">Monthly</a>
+                        <a href="#">Annually</a>
+                    </div>
+                </div>
+
+                <div class="account-pfp-placeholder" onclick="toggleAccountSidebar()"></div>
+            </nav>
+        </header>
+
+        <div id="app-content">
+            <div class="main-app-card"> 
+                <aside id="main-sidebar">
+                    <div class="sidebar-section">
+                        <nav class="sidebar-nav">
+                            <a href="#" class="nav-item active" onclick="showView('dashboard', this)">Dashboard</a>
+                            <a href="#" class="nav-item" onclick="showView('transactions', this)">Transactions</a>
+                            <a href="#" class="nav-item">Wallets</a>
+                            <a href="#" class="nav-item">Kwarta AI</a>
+                        </nav>
+                    </div>
+
+                    <div class="sidebar-section quick-add-section">
+                        <button class="btn-quick-add" onclick="alert('Transaction Form Coming Soon!')">
+                            NEW TRANSACTION
+                        </button>
+                    </div>
+
+                    <div class="sidebar-section bottom-section">
+                        <a href="#" class="nav-item"><span class="nav-icon">⛯</span>Settings</a>
+                    </div>
+                </aside>
+			
+		<div id="main-content-area" style="flex-grow: 1; position: relative; overflow-y: auto; background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(15px);">
+			<div id="view-dashboard" class="main-view">
+                <main id="main-dashboard">
+					<div class="dashboard-overview">
+						<div class="dashboard-filter-container">
+							<div class="range-dropdown">
+								<button class="range-dropbtn">ALL TIME <span class="arrow-icon">▾</span></button>
+								<div class="range-dropdown-content">
+									<a href="#" onclick="updateRange('TODAY')">TODAY</a>
+									<a href="#" onclick="updateRange('THIS WEEK')">THIS WEEK</a>
+									<a href="#" onclick="updateRange('THIS MONTH')">THIS MONTH</a>
+									<a href="#" onclick="updateRange('THIS YEAR')">THIS YEAR</a>
+									<a href="#" onclick="updateRange('ALL TIME')">ALL TIME</a>
+								</div>
+							</div>
+							
+							<div class="range-dropdown" style="margin-left: 10px;">
+								<button class="range-dropbtn">ALL WALLETS <span class="arrow-icon">▾</span></button>
+								<div class="range-dropdown-content">
+									<a href="#">ALL WALLETS</a>
+									</div>
+							</div>
+						</div>
+						
+						</div>
+					
+						<div class="stat-card wallet-card">
+							<div class="stat-label">Your Balance</div>
+							<div class="stat-value">₱ 0.00</div>
+							<div class="stat-meta">Active Wallet</div>
+						</div>
+
+						<div class="stat-grid">
+							<div class="stat-card income-card">
+								<div class="stat-label">Income</div>
+								<div class="stat-value">₱ 0.00</div>
+							</div>
+							<div class="stat-card expense-card">
+								<div class="stat-label">Expense</div>
+								<div class="stat-value">₱ 0.00</div>
+							</div>
+							<div class="stat-card transfer-card">
+								<div class="stat-label">Transfer</div>
+								<div class="stat-value">₱ 0.00</div>
+							</div>
+						</div>
+					</div>
+				</main>
+			</div>
+		
+			<div id="view-transactions" class="main-view" style="display: none;">			
+				<main id="main-transactions">
+				<section id="transactions-view">
+					<div class="view-header">
+						<div class="view-actions">
+							</div>
+					</div>
+
+					<div class="transaction-list">
+						<div class="transaction-row header-row">
+							<span>#</span>
+							<span>TITLE</span>
+							<span>AMOUNT</span>
+							<span>TYPE</span>
+							<span>DATE</span>
+							<span></span> </div>
+
+						<div class="transaction-item">
+							<div class="transaction-row" onclick="this.parentElement.classList.toggle('expanded')">
+								<span class="rec-number">1</span>
+								<span class="rec-title">Starbucks Coffee</span>
+								<span class="rec-stats expense">- ₱ 180.00</span>
+								<span class="rec-type"><span class="badge badge-expense">Expense</span></span>
+								<span class="rec-date">Oct 24, 2023</span>
+								<span class="rec-actions">
+									<button class="icon-btn edit-btn">✎</button>
+									<button class="icon-btn delete-btn">🗑</button>
+									<span class="expand-arrow">▼</span>
+								</span>
+							</div>
+							<div class="transaction-details">
+								<p><strong>Note:</strong> Afternoon break with the team. Used GCash wallet.</p>
+							</div>
+						</div>
+
+						<div class="transaction-item">
+							<div class="transaction-row" onclick="this.parentElement.classList.toggle('expanded')">
+								<span class="rec-number">2</span>
+								<span class="rec-title">Freelance Project</span>
+								<span class="rec-stats income">+ ₱ 15,000.00</span>
+								<span class="rec-type"><span class="badge badge-income">Income</span></span>
+								<span class="rec-date">Oct 22, 2023</span>
+								<span class="rec-actions">
+									<button class="icon-btn edit-btn">✎</button>
+									<button class="icon-btn delete-btn">🗑</button>
+									<span class="expand-arrow">▼</span>
+								</span>
+							</div>
+							<div class="transaction-details">
+								<p><strong>Note:</strong> Website redesign for local client. Deposited to BDO.</p>
+							</div>
+						</div>
+					</div>
+				</section>
+				</main>
+            </div>
+		</div>
+			
+		</div>
+    </div>
+	
+				
+					
+	
+	<div id="account-sidebar" class="account-drawer">
+        <div class="drawer-header">
+            <h3>Account Details</h3>
+            <button class="close-drawer" onclick="toggleAccountSidebar()">&times;</button>
+        </div>
+        <div class="drawer-content">
+            <div class="profile-section">
+                <div class="large-pfp"></div>
+                <p class="user-status">Guest User</p>
+            </div>
+            <div class="account-info">
+                <p>Please log in to sync your budget data across devices and access AI insights.</p>
+            </div>
+        </div>
+		<div class="drawer-footer">
+			<button class="btn btn-primary" onclick="openLoginModal()">LOG IN</button>
+		</div>
+	</div>
+	<div id="drawer-overlay" class="drawer-overlay" onclick="toggleAccountSidebar()"></div>
+	
+	<div id="login-modal" class="modal-overlay">
+        <div class="modal-card">
+			<button class="modal-close" onclick="closeAllModals()">&times;</button>
+            <div class="modal-form-container">
+                <h2 class="header login-header">Welcome Back!</h2>
+                <form class="login-form">
+                    <div class="input-group">
+                        <input type="email" class="floating-input" placeholder=" " required>
+                        <label class="floating-label">Email Address or Phone No.</label>
+                    </div>
+                    <div class="input-group">
+                        <div class="password-input-wrapper">
+                            <input type="password" class="floating-input" placeholder=" " required>
+                            <label class="floating-label">Password</label>
+                            <span class="password-toggle">⛉</span>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">LOG IN</button>
+                    <div class="login-link"><a href="javascript:void(0)" onclick="openForgotModal()">Forgot Password</a></div>
+                    <div class="login-link"><a href="javascript:void(0)" onclick="openSignupModal()">Create New Account</a></div>
+                </form>
+            </div>
+        </div>
+	</div>
+	
+	<div id="signup-modal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeAllModals()">&times;</button>
+            <div class="modal-form-container">
+                <h2 class="header signup-header">SIGN UP</h2>
+                <form class="signup-form">
+                    <div class="input-group"><input type="text" class="floating-input" placeholder=" "><label class="floating-label">Full Name (Optional)</label></div>
+                    <div class="input-group"><input type="email" class="floating-input" placeholder=" " required><label class="floating-label">Email Address</label></div>
+                    <div class="input-group">
+                        <div class="password-input-wrapper">
+                            <input type="password" class="floating-input" placeholder=" " required>
+                            <label class="floating-label">Password</label>
+                            <span class="password-toggle">⛉</span>
+                        </div>
+                    </div>
+					<div class="input-group">
+                        <div class="password-input-wrapper">
+                            <input type="password" class="floating-input" placeholder=" " required>
+                            <label class="floating-label">Confirm Password</label>
+                            <span class="password-toggle">⛉</span>
+                        </div>
+                    </div>
+					<div class="input-group"><input type="tel" class="floating-input" placeholder=" "><label class="floating-label">Phone Number (Optional)</label></div>
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                    <div class="login-link"><a href="javascript:void(0)" onclick="openLoginModal()">Use a Registered Account</a></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="forgot-modal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeAllModals()">&times;</button>
+            <div class="modal-form-container">
+                <h2 class="header">🥀✌</h2>
+                <p style="text-align: center; color: var(--text-light); margin-bottom: 20px;">Enter your EMAIL or PHONE to receive a reset link.</p>
+                <form>
+                    <div class="input-group"><input type="email" class="floating-input" placeholder=" " required></div>
+                    <button type="submit" class="btn btn-primary">Send Reset Link</button>
+                    <div class="login-link"><a href="javascript:void(0)" onclick="openLoginModal()">Back to Log In</a></div>
+                </form>
+            </div>
+        </div>
+    </div>
+	
+	<script>
+        // --- Dashboard Tilt Logic ---
+        const mainAppCard = document.querySelector('.main-app-card');
+        const trackingArea = document.getElementById('app-content');
+        
+        trackingArea.addEventListener('mousemove', (e) => {
+            const rect = trackingArea.getBoundingClientRect();
+            const x = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+            const y = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+
+            mainAppCard.style.transform = `rotateX(${-y * 1.5}deg) rotateY(${x * 1.5}deg) translateZ(10px)`;
+            mainAppCard.style.boxShadow = `${-x * 10}px ${y * 10}px 30px rgba(0,0,0,0.3)`;
+        });
+
+        trackingArea.addEventListener('mouseleave', () => {
+            mainAppCard.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0)';
+            mainAppCard.style.boxShadow = '0 10px 30px rgba(0,0,0,0.2)';
+        });
+        
+		function toggleAccountSidebar(forceState) {
+			const sidebar = document.getElementById('account-sidebar');
+			const overlay = document.getElementById('drawer-overlay');
+			if (forceState === false) {
+				sidebar.classList.remove('open');
+				overlay.classList.remove('active');
+			} else {
+				sidebar.classList.toggle('open');
+				overlay.classList.toggle('active');
+			}
+		}
+		
+		function closeAllModals() {
+			document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+		}
+		
+		function openLoginModal() { closeAllModals(); toggleAccountSidebar(false); document.getElementById('login-modal').classList.add('active'); }
+		function openSignupModal() { closeAllModals(); document.getElementById('signup-modal').classList.add('active'); }
+		function openForgotModal() { closeAllModals(); document.getElementById('forgot-modal').classList.add('active'); }
+
+		window.onclick = function(event) {
+			if (event.target.classList.contains('modal-overlay')) closeAllModals();
+			if (event.target.id === 'drawer-overlay') toggleAccountSidebar(false);
+		}
+		
+		document.querySelectorAll('.modal-overlay').forEach(overlay => {
+			const card = overlay.querySelector('.modal-card');
+			overlay.addEventListener('mousemove', (e) => {
+				if (!overlay.classList.contains('active')) return;
+				const rect = card.getBoundingClientRect();
+				const angleX = (rect.top + rect.height / 2 - e.clientY) / 140;
+				const angleY = (e.clientX - (rect.left + rect.width / 2)) / 140;
+				card.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg)`;
+			});
+			overlay.addEventListener('mouseleave', () => {
+				card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+			});
+		});
+
+		document.addEventListener('click', (e) => {
+			if (e.target.classList.contains('password-toggle')) {
+				const input = e.target.closest('.password-input-wrapper').querySelector('input');
+				input.type = input.type === 'password' ? 'text' : 'password';
+				e.target.style.color = input.type === 'text' ? 'white' : 'var(--primary-green)';
+			}
+		});
+		
+		function showView(viewId, element) {
+			// 1. Hide all views
+			const views = document.querySelectorAll('.main-view');
+			views.forEach(view => view.style.display = 'none');
+
+			// 2. Show the requested view
+			const targetView = document.getElementById('view-' + viewId);
+			if (targetView) {
+				targetView.style.display = 'block';
+			}
+
+			// 3. Update the Active class in the sidebar
+			const navItems = document.querySelectorAll('.nav-item');
+			navItems.forEach(item => item.classList.remove('active'));
+			element.classList.add('active');
+		}
+		
+    </script>
+</body>
+</html>

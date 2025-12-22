@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest Dashboard | Bacaro Budget Manager</title>
+    <link rel="icon" type="image/png" href="images/bb_favicon.png">
+    <link rel="stylesheet" href="BBMAI_STYLES.css"> 
+	<link rel="stylesheet" href="bb_styles.css"> 
+</head>
+<body>
+    
+    <div class="animated-background">
+        <div class="blob"></div><div class="blob"></div><div class="blob"></div><div class="blob"></div><div class="blob"></div> 
+    </div>
+
+    <div class="dashboard-container">
+        <header id="main-header">
+            <div class="header-left">
+                <div class="header-logo-container"><img src="images/bb_logo_db.png" alt="App Logo"></div>
+                <div class="header-title">Bacaro Budget Manager</div>
+            </div>
+
+            <nav class="header-right">
+                <a href="#" class="header-nav-link">Goals</a>
+                
+                <div class="reports-dropdown-container">
+                    <button class="dropdown-button">Reports ▾</button>
+                    <div class="dropdown-content">
+						<a href="#">Daily</a>
+                        <a href="#">Weekly</a>
+                        <a href="#">Monthly</a>
+                        <a href="#">Annually</a>
+                    </div>
+                </div>
+
+                <div class="account-pfp-placeholder" onclick="toggleAccountSidebar()"></div>
+            </nav>
+        </header>
+
+        <div id="app-content">
+            <div class="main-app-card"> 
+                <aside id="main-sidebar">
+                    <div class="sidebar-section">
+                        <nav class="sidebar-nav">
+                            <a href="#" class="nav-item active" onclick="showView('dashboard', this)">Dashboard</a>
+                            <a href="#" class="nav-item" onclick="showView('transactions', this)">Transactions</a>
+                            <a href="#" class="nav-item">Wallets</a>
+                            <a href="#" class="nav-item">Kwarta AI</a>
+                        </nav>
+                    </div>
+
+                    <div class="sidebar-section quick-add-section">
+                        <button class="btn-quick-add" onclick="alert('wala pa boi')">
+                            NEW TRANSACTION
+                        </button>
+                    </div>
+
+                    <div class="sidebar-section bottom-section">
+                        <a href="#" class="nav-item"><span class="nav-icon">⛯</span>Settings</a>
+                    </div>
+                </aside>
+			
+		<div id="main-content-area" style="flex-grow: 1; position: relative; overflow-y: auto; background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(15px);">
+			<div id="view-dashboard" class="main-view">
+                <main id="main-dashboard">
+					<div class="dashboard-overview">
+						<div class="dashboard-filter-container">
+							<div class="range-dropdown">
+								<button class="range-dropbtn">ALL TIME <span class="arrow-icon">▾</span></button>
+								<div class="range-dropdown-content">
+									<a href="#" onclick="updateRange('TODAY')">TODAY</a>
+									<a href="#" onclick="updateRange('THIS WEEK')">THIS WEEK</a>
+									<a href="#" onclick="updateRange('THIS MONTH')">THIS MONTH</a>
+									<a href="#" onclick="updateRange('THIS YEAR')">THIS YEAR</a>
+									<a href="#" onclick="updateRange('ALL TIME')">ALL TIME</a>
+								</div>
+							</div>
+							
+							<div class="range-dropdown" style="margin-left: 10px;">
+								<button class="range-dropbtn">ALL WALLETS <span class="arrow-icon">▾</span></button>
+								<div class="range-dropdown-content">
+									<a href="#">ALL WALLETS</a>
+									</div>
+							</div>
+						</div>
+						
+						</div>
+					
+						<div class="stat-card wallet-card">
+							<div class="stat-label">Your Balance</div>
+							<div class="stat-value">₱ 0.00</div>
+							<div class="stat-meta">Active Wallet</div>
+						</div>
+
+						<div class="stat-grid">
+							<div class="stat-card income-card">
+								<div class="stat-label">Income</div>
+								<div class="stat-value">₱ 0.00</div>
+							</div>
+							<div class="stat-card expense-card">
+								<div class="stat-label">Expense</div>
+								<div class="stat-value">₱ 0.00</div>
+							</div>
+							<div class="stat-card transfer-card">
+								<div class="stat-label">Transfer</div>
+								<div class="stat-value">₱ 0.00</div>
+							</div>
+						</div>
+					</div>
+				</main>
+			</div>
+		
+			<div id="view-transactions" class="main-view" style="display: none;">			
+				<main id="main-transactions">
+				<section id="transactions-view">
+					<div class="view-header">
+						<div class="view-actions">
+							</div>
+					</div>
+
+					<div class="transaction-list">
+						<div class="transaction-row header-row">
+							<span>#</span>
+							<span>TITLE</span>
+							<span>AMOUNT</span>
+							<span>TYPE</span>
+							<span>DATE</span>
+							<span></span> </div>
+
+						<div class="transaction-item">
+							<div class="transaction-row" onclick="this.parentElement.classList.toggle('expanded')">
+								<span class="rec-number">1</span>
+								<span class="rec-title">Starbucks Coffee</span>
+								<span class="rec-stats expense">- ₱ 180.00</span>
+								<span class="rec-type"><span class="badge badge-expense">Expense</span></span>
+								<span class="rec-date">Oct 24, 2023</span>
+								<span class="rec-actions">
+									<button class="icon-btn edit-btn">✎</button>
+									<button class="icon-btn delete-btn">🗑</button>
+									<span class="expand-arrow">▼</span>
+								</span>
+							</div>
+							<div class="transaction-details">
+								<p><strong>Note:</strong> Afternoon break with the team. Used GCash wallet.</p>
+							</div>
+						</div>
+
+						<div class="transaction-item">
+							<div class="transaction-row" onclick="this.parentElement.classList.toggle('expanded')">
+								<span class="rec-number">2</span>
+								<span class="rec-title">Freelance Project</span>
+								<span class="rec-stats income">+ ₱ 15,000.00</span>
+								<span class="rec-type"><span class="badge badge-income">Income</span></span>
+								<span class="rec-date">Oct 22, 2023</span>
+								<span class="rec-actions">
+									<button class="icon-btn edit-btn">✎</button>
+									<button class="icon-btn delete-btn">🗑</button>
+									<span class="expand-arrow">▼</span>
+								</span>
+							</div>
+							<div class="transaction-details">
+								<p><strong>Note:</strong> Website redesign for local client. Deposited to BDO.</p>
+							</div>
+						</div>
+					</div>
+				</section>
+				</main>
+            </div>
+		</div>
+			
+		</div>
+    </div>		
+	
+	<div id="account-sidebar" class="account-drawer">
+        <div class="drawer-header">
+            <h3>Account Details</h3>
+            <button class="close-drawer" onclick="toggleAccountSidebar()">&times;</button>
+        </div>
+        <div class="drawer-content">
+            <div class="profile-section">
+                <div class="large-pfp"></div>
+                <p class="user-status">Guest User</p>
+            </div>
+            <div class="account-info">
+                <p>Please log in to sync your budget data across devices and access AI insights.</p>
+            </div>
+        </div>
+		<div class="drawer-footer">
+			<button class="btn btn-primary" onclick="openLoginModal()">LOG IN</button>
+		</div>
+	</div>
+	<div id="drawer-overlay" class="drawer-overlay" onclick="toggleAccountSidebar()"></div>
+	
+	<div id="login-modal" class="modal-overlay">
+        <div class="modal-card">
+			<button class="modal-close" onclick="closeAllModals()">&times;</button>
+            <div class="modal-form-container">
+                <h2 class="header login-header">Welcome Back!</h2>
+                <form class="login-form">
+                    <div class="input-group">
+                        <input type="email" class="floating-input" placeholder=" " required>
+                        <label class="floating-label">Email Address or Phone No.</label>
+                    </div>
+                    <div class="input-group">
+                        <div class="password-input-wrapper">
+                            <input type="password" class="floating-input" placeholder=" " required>
+                            <label class="floating-label">Password</label>
+                            <span class="password-toggle">⛉</span>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">LOG IN</button>
+                    <div class="login-link"><a href="javascript:void(0)" onclick="openForgotModal()">Forgot Password</a></div>
+                    <div class="login-link"><a href="javascript:void(0)" onclick="openSignupModal()">Create New Account</a></div>
+                </form>
+            </div>
+        </div>
+	</div>
+	
+	<div id="signup-modal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeAllModals()">&times;</button>
+            <div class="modal-form-container">
+                <h2 class="header signup-header">SIGN UP</h2>
+                <form class="signup-form">
+                    <div class="input-group"><input type="text" class="floating-input" placeholder=" " required><label class="floating-label">Username</label></div>
+                    <div class="input-group"><input type="email" class="floating-input" placeholder=" " required><label class="floating-label">Email Address</label></div>
+                    <div class="input-group">
+                        <div class="password-input-wrapper">
+                            <input type="password" class="floating-input" placeholder=" " required>
+                            <label class="floating-label">Password</label>
+                            <span class="password-toggle">⛉</span>
+                        </div>
+                    </div>
+					<div class="input-group">
+                        <div class="password-input-wrapper">
+                            <input type="password" class="floating-input" placeholder=" " required>
+                            <label class="floating-label">Confirm Password</label>
+                            <span class="password-toggle">⛉</span>
+                        </div>
+                    </div>
+					<div class="input-group"><input type="tel" class="floating-input" placeholder=" "><label class="floating-label">Phone Number (Optional)</label></div>
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                    <div class="login-link"><a href="javascript:void(0)" onclick="openLoginModal()">Use a Registered Account</a></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="forgot-modal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeAllModals()">&times;</button>
+            <div class="modal-form-container">
+                <h2 class="header">🥀✌</h2>
+                <p style="text-align: center; color: var(--text-light); margin-bottom: 20px;">Enter your EMAIL or PHONE to receive a reset link.</p>
+                <form>
+                    <div class="input-group"><input type="email" class="floating-input" placeholder=" " required></div>
+                    <button type="submit" class="btn btn-primary">Send Reset Link</button>
+                    <div class="login-link"><a href="javascript:void(0)" onclick="openLoginModal()">Back to Log In</a></div>
+                </form>
+            </div>
+        </div>
+    </div>
+	
+	<script src="BBMAI_SCRIPT.js"></script>
+</body>
+</html>

@@ -1,18 +1,8 @@
         // --- Dashboard Tilt Logic ---
         const mainAppCard = document.querySelector('.main-app-card');
         const trackingArea = document.getElementById('app-content');
-        
-        trackingArea.addEventListener('mousemove', (e) => {
-            const rect = trackingArea.getBoundingClientRect();
-            const x = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
-            const y = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
-
-            mainAppCard.style.transform = `rotateX(${-y * 1.5}deg) rotateY(${x * 1.5}deg) translateZ(10px)`;
-            mainAppCard.style.boxShadow = `${-x * 10}px ${y * 10}px 30px rgba(0,0,0,0.3)`;
-        });
 
         trackingArea.addEventListener('mouseleave', () => {
-            mainAppCard.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0)';
             mainAppCard.style.boxShadow = '0 10px 30px rgba(0,0,0,0.2)';
         });
         

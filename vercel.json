@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/BBMAI_GUEST.html" }
+  ]
+}

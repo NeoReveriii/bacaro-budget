@@ -85,8 +85,8 @@ export default async function handler(req, res) {
 
       const hashedPassword = hashPassword(password);
       const inserted = await sql`
-        INSERT INTO accounts (username, email, password, pnumber, createdat)
-        VALUES (${username}, ${email}, ${hashedPassword}, ${pnumber || null}, NOW())
+        INSERT INTO accounts (username, email, password, pnumber)
+        VALUES (${username}, ${email}, ${hashedPassword}, ${pnumber || null})
         RETURNING acc_id, username, email, pnumber, createdat
       `;
 

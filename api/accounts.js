@@ -19,7 +19,7 @@ export default async function handler(req, res) {
       }
 
       const account = await sql`
-        SELECT id, username, email, pnumber, created_at
+        SELECT acc_id, username, email, pnumber, created_at
         FROM accounts
         WHERE email = ${email}
       `;
@@ -87,7 +87,7 @@ export default async function handler(req, res) {
       const inserted = await sql`
         INSERT INTO accounts (username, email, password, pnumber)
         VALUES (${username}, ${email}, ${hashedPassword}, ${pnumber || null})
-        RETURNING id, username, email, pnumber, created_at
+        RETURNING acc_id, username, email, pnumber, created_at
       `;
 
       res.status(201).json({
@@ -98,7 +98,7 @@ export default async function handler(req, res) {
 
     } else if (method === 'GET') {
       const accounts = await sql`
-        SELECT id, username, email, pnumber, created_at
+        SELECT acc_id, username, email, pnumber, created_at
         FROM accounts
       `;
 
@@ -116,8 +116,8 @@ export default async function handler(req, res) {
         SET username = COALESCE(${username}, username),
             email = COALESCE(${email}, email),
             pnumber = COALESCE(${pnumber}, pnumber)
-        WHERE id = ${id}
-        RETURNING id, username, email, pnumber, created_at
+        WHERE acc_id = ${id}
+        RETURNING acc_id, username, email, pnumber, created_at
       `;
 
       if (updated.length === 0) {
@@ -138,8 +138,8 @@ export default async function handler(req, res) {
       }
 
       const deleted = await sql`
-        DELETE FROM accounts WHERE id = ${id}
-        RETURNING id
+        DELETE FROM accounts WHERE acc_id = ${id}
+        RETURNING acc_id
       `;
 
       if (deleted.length === 0) {

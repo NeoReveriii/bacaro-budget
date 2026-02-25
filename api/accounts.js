@@ -68,7 +68,7 @@ export default async function handler(req, res) {
       }
 
       const emailExists = await sql`
-        SELECT id FROM accounts WHERE email = ${email}
+        SELECT acc_id FROM accounts WHERE email = ${email}
       `;
 
       if (emailExists.length > 0) {
@@ -76,7 +76,7 @@ export default async function handler(req, res) {
       }
 
       const usernameExists = await sql`
-        SELECT id FROM accounts WHERE username = ${username}
+        SELECT acc_id FROM accounts WHERE username = ${username}
       `;
 
       if (usernameExists.length > 0) {

@@ -266,3 +266,29 @@ body {
     50% { transform: translate(450px, -150px); } 
     100% { transform: translate(0, 0); } 
 }
+
+/* Message Notifications */
+.message {
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    text-align: center;
+    display: none;
+}
+
+.message:not(:empty) {
+    display: block;
+}
+
+.message.success {
+    background-color: rgba(89, 133, 57, 0.2);
+    color: #a8d86e;
+    border: 1px solid rgba(89, 133, 57, 0.5);
+}
+
+.message.error {
+    background-color: rgba(255, 77, 77, 0.2);
+    color: #ff6b6b;
+    border: 1px solid rgba(255, 77, 77, 0.5);
+}

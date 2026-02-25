@@ -186,7 +186,7 @@
                 <p class="user-status">Guest User</p>
             </div>
             <div class="account-info">
-                <p>Please log in to sync your budget data across devices and access AI insights.</p>
+                <p>Please log in to access your budget data and AI insights.</p>
             </div>
         </div>
 		<div class="drawer-footer">
@@ -200,18 +200,19 @@
 			<button class="modal-close" onclick="closeAllModals()">&times;</button>
             <div class="modal-form-container">
                 <h2 class="header login-header">Welcome Back!</h2>
-                <form class="login-form">
+                <form class="login-form" id="login-form">
                     <div class="input-group">
-                        <input type="email" class="floating-input" placeholder=" " required>
+                        <input type="email" class="floating-input" id="login-email" placeholder=" " required>
                         <label class="floating-label">Email Address or Phone No.</label>
                     </div>
                     <div class="input-group">
                         <div class="password-input-wrapper">
-                            <input type="password" class="floating-input" placeholder=" " required>
+                            <input type="password" class="floating-input" id="login-password" placeholder=" " required>
                             <label class="floating-label">Password</label>
-                            <span class="password-toggle">⛉</span>
+                            <span class="password-toggle" onclick="togglePasswordVisibility(this)">⛉</span>
                         </div>
                     </div>
+                    <div id="login-message" class="message"></div>
                     <button type="submit" class="btn btn-primary">LOG IN</button>
                     <div class="login-link"><a href="javascript:void(0)" onclick="openForgotModal()">Forgot Password</a></div>
                     <div class="login-link"><a href="javascript:void(0)" onclick="openSignupModal()">Create New Account</a></div>
@@ -225,24 +226,25 @@
             <button class="modal-close" onclick="closeAllModals()">&times;</button>
             <div class="modal-form-container">
                 <h2 class="header signup-header">SIGN UP</h2>
-                <form class="signup-form">
-                    <div class="input-group"><input type="text" class="floating-input" placeholder=" " required><label class="floating-label">Username</label></div>
-                    <div class="input-group"><input type="email" class="floating-input" placeholder=" " required><label class="floating-label">Email Address</label></div>
+                <form class="signup-form" id="signup-form">
+                    <div class="input-group"><input type="text" class="floating-input" id="signup-username" placeholder=" " required><label class="floating-label">Username</label></div>
+                    <div class="input-group"><input type="email" class="floating-input" id="signup-email" placeholder=" " required><label class="floating-label">Email Address</label></div>
                     <div class="input-group">
                         <div class="password-input-wrapper">
-                            <input type="password" class="floating-input" placeholder=" " required>
+                            <input type="password" class="floating-input" id="signup-password" placeholder=" " required>
                             <label class="floating-label">Password</label>
-                            <span class="password-toggle">⛉</span>
+                            <span class="password-toggle" onclick="togglePasswordVisibility(this)">⛉</span>
                         </div>
                     </div>
 					<div class="input-group">
                         <div class="password-input-wrapper">
-                            <input type="password" class="floating-input" placeholder=" " required>
+                            <input type="password" class="floating-input" id="signup-confirm" placeholder=" " required>
                             <label class="floating-label">Confirm Password</label>
-                            <span class="password-toggle">⛉</span>
+                            <span class="password-toggle" onclick="togglePasswordVisibility(this)">⛉</span>
                         </div>
                     </div>
-					<div class="input-group"><input type="tel" class="floating-input" placeholder=" "><label class="floating-label">Phone Number (Optional)</label></div>
+					<div class="input-group"><input type="tel" class="floating-input" id="signup-pnumber" placeholder=" "><label class="floating-label">Phone Number (Optional)</label></div>
+                    <div id="signup-message" class="message"></div>
                     <button type="submit" class="btn btn-primary">Create Account</button>
                     <div class="login-link"><a href="javascript:void(0)" onclick="openLoginModal()">Use a Registered Account</a></div>
                 </form>

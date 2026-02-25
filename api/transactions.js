@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     if (method === 'GET') {
       // Get all transactions
       const rows = await sql`
-        SELECT id, title, amount, type, date, wallet
+        SELECT *
         FROM transactions
         ORDER BY date DESC
         LIMIT 50

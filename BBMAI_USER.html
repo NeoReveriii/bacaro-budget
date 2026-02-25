@@ -305,24 +305,24 @@
 		
 		<div class="drawer-content">
 			<div class="profile-section">
-				<div class="large-pfp" style="background-color: var(--primary-green); display: flex; align-items: center; justify-content: center; font-size: 2em; color: white; font-weight: bold;">
-					JD
+				<div class="large-pfp" style="background-color: var(--primary-green); display: flex; align-items: center; justify-content: center; font-size: 2em; color: white; font-weight: bold;" id="profile-initials">
+					--
 				</div>
-				<h3 style="margin-top: 15px; color: var(--white);">Juan Dela Cruz</h3>
+				<h3 style="margin-top: 15px; color: var(--white);" id="profile-username">Loading...</h3>
 			</div>
 
 			<div class="account-info" style="margin-top: 20px; text-align: left; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px;">
 				<div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9em;">
 					<span style="opacity: 0.6;">Email:</span>
-					<span>juan.dc@email.com</span>
+					<span id="profile-email">--</span>
 				</div>
 				<div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9em;">
-					<span style="opacity: 0.6;">Connected Wallets:</span>
-					<span style="color: var(--primary-green);">0</span>
+					<span style="opacity: 0.6;">Phone:</span>
+					<span id="profile-phone">--</span>
 				</div>
 				<div style="display: flex; justify-content: space-between; font-size: 0.9em;">
 					<span style="opacity: 0.6;">Member Since:</span>
-					<span>Dec 2025</span>
+					<span id="profile-createdAt">--</span>
 				</div>
 			</div>
 
@@ -333,7 +333,7 @@
 		</div>
 
 		<div class="drawer-footer">
-			<button class="btn btn-primary" style="background-color: #ff7675" onclick="location.href='BBMAI_GUEST.html'">
+			<button class="btn btn-primary" style="background-color: #ff7675" onclick="handleLogout()">
 				LOG OUT
 			</button>
 		</div>

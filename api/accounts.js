@@ -2,9 +2,21 @@ import { neon } from '@neondatabase/serverless';
 import crypto from 'crypto';
 
 const sql = neon(process.env.DATABASE_URL);
+const AUTH_SECRET = process.env.AUTH_SECRET;
 
 function hashPassword(password) {
   return crypto.createHash('sha256').update(password).digest('hex');
+}
+
+function createToken(payload) {
+  if (!AUTH_SECRET) {
+    // Fallback (dev only): unsigned token
+    return Buffer.from(JSON.stringify(payload)).toString('base64');
+  }
+
+  const body = Buffer.from(JSON.stringify(payload)).toString('base64');
+  const sig = crypto.createHmac('sha256', AUTH_SECRET).update(body).digest('hex');
+  return `${body}.${sig}`;
 }
 
 export default async function handler(req, res) {
@@ -37,14 +49,12 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: 'Invalid email or password' });
       }
 
-      const token = Buffer.from(
-        JSON.stringify({
-          id: account[0].id,
-          email: account[0].email,
-          username: account[0].username,
-          timestamp: Date.now()
-        })
-      ).toString('base64');
+      const token = createToken({
+        acc_id: account[0].acc_id,
+        email: account[0].email,
+        username: account[0].username,
+        timestamp: Date.now()
+      });
 
       res.status(200).json({
         success: true,

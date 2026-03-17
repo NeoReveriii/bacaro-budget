@@ -292,3 +292,23 @@ body {
     color: #ff6b6b;
     border: 1px solid rgba(255, 77, 77, 0.5);
 }
+
+/* Transaction modal tweaks */
+.transaction-modal-card {
+    min-height: 420px;
+}
+
+/* Make select work with floating labels */
+select.floating-input {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 28px;
+}
+
+.input-group select.floating-input:focus ~ .floating-label,
+.input-group select.floating-input:valid ~ .floating-label {
+    top: -20px;
+    font-size: 0.8em;
+    color: var(--primary-green);
+}

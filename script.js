@@ -149,9 +149,12 @@
 			document.getElementById('profile-username').textContent = userData.username;
 			document.getElementById('profile-email').textContent = userData.email;
 			document.getElementById('profile-phone').textContent = userData.pnumber || 'Not provided';
-			const createdDate = new Date(userData.created_at);
+			const createdDate = new Date(userData.created_at || userData.createdat);
 			const formattedDate = createdDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-			document.getElementById('profile-createdAt').textContent = formattedDate;
+			const createdEl =
+				document.getElementById('profile-createdat') ||
+				document.getElementById('profile-createdAt');
+			if (createdEl) createdEl.textContent = formattedDate;
 		}
 
 		function handleLogout() {
@@ -159,8 +162,118 @@
 			window.location.href = 'BBMAI_GUEST.html';
 		}
 
+		function handleNewTransactionClick() {
+			if (!isAuthenticated()) {
+				openLoginModal();
+				return;
+			}
+
+			openTransactionModal();
+		}
+
+		function openTransactionModal() {
+			closeAllModals();
+			const modal = document.getElementById('transaction-modal');
+			if (modal) modal.classList.add('active');
+		}
+
+		function closeTransactionModal() {
+			const modal = document.getElementById('transaction-modal');
+			if (modal) modal.classList.remove('active');
+		}
+
+		function escapeHtml(value) {
+			return String(value)
+				.replaceAll('&', '&amp;')
+				.replaceAll('<', '&lt;')
+				.replaceAll('>', '&gt;')
+				.replaceAll('"', '&quot;')
+				.replaceAll("'", '&#039;');
+		}
+
+		function formatCurrency(amount) {
+			const n = Number(amount);
+			if (!Number.isFinite(n)) return '₱ 0.00';
+			return `₱ ${n.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+		}
+
+		function formatDate(value) {
+			const d = value ? new Date(value) : null;
+			if (!d || Number.isNaN(d.getTime())) return '';
+			return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+		}
+
+		async function loadTransactions() {
+			if (!isAuthenticated()) return;
+			const listEl = document.getElementById('transaction-list-items');
+			if (!listEl) return;
+
+			try {
+				const res = await fetch('/api/transactions', {
+					headers: {
+						Authorization: `Bearer ${getToken()}`
+					}
+				});
+				const data = await res.json();
+				if (!res.ok) throw new Error(data?.error || 'Failed to load transactions');
+
+				renderTransactions(Array.isArray(data) ? data : data?.data || []);
+			} catch (e) {
+				console.error('Load transactions error:', e);
+				listEl.innerHTML = `<div class="empty-history"><p>${escapeHtml(e.message)}</p></div>`;
+			}
+		}
+
+		function renderTransactions(rows) {
+			const listEl = document.getElementById('transaction-list-items');
+			if (!listEl) return;
+
+			if (!rows || rows.length === 0) {
+				listEl.innerHTML = `<div class="empty-history"><p>No transactions found.</p></div>`;
+				return;
+			}
+
+			listEl.innerHTML = rows
+				.map((row, idx) => renderTransactionItem(row, idx + 1))
+				.join('');
+		}
+
+		function renderTransactionItem(row, recNumber) {
+			const title = escapeHtml(row.description ?? row.title ?? '');
+			const type = String(row.type ?? '').toLowerCase();
+			const isIncome = type === 'income';
+			const isExpense = type === 'expense';
+			const amountValue = Number(row.amount ?? 0);
+			const amountClass = isIncome ? 'income' : isExpense ? 'expense' : '';
+			const badgeClass = isIncome ? 'badge-income' : isExpense ? 'badge-expense' : '';
+			const wallet = escapeHtml(row.wallet_type ?? row.wallet ?? '');
+			const date = formatDate(row.dateoftrans ?? row.date);
+
+			return `
+				<div class="transaction-item">
+					<div class="transaction-row" onclick="this.parentElement.classList.toggle('expanded')">
+						<span class="rec-number">${recNumber}</span>
+						<span class="rec-title">${title}</span>
+						<span class="rec-stats ${amountClass}">${formatCurrency(amountValue)}</span>
+						<span class="rec-type"><span class="badge ${badgeClass}">${escapeHtml(row.type ?? '')}</span></span>
+						<span class="rec-date">${escapeHtml(date)}</span>
+						<span class="rec-wallet">${wallet}</span>
+						<span class="rec-actions">
+							<button class="icon-btn edit-btn" type="button">✎</button>
+							<button class="icon-btn delete-btn" type="button">🗑</button>
+							<span class="expand-arrow">▼</span>
+						</span>
+					</div>
+					<div class="transaction-details">
+						<p><strong>Wallet:</strong> ${wallet || '—'}</p>
+					</div>
+				</div>
+			`;
+		}
+
 		document.addEventListener('DOMContentLoaded', function() {
 			checkAuthenticationForUserPage();
+			loadTransactions();
 
 			const loginForm = document.getElementById('login-form');
 			if (loginForm) {
@@ -282,6 +395,74 @@
 						messageDiv.innerHTML = 'Connection error: ' + error.message;
 						messageDiv.className = 'message error';
 						console.error('Signup error:', error);
+					}
+				});
+			}
+
+			const transactionForm = document.getElementById('transaction-form');
+			if (transactionForm) {
+				transactionForm.addEventListener('submit', async function (e) {
+					e.preventDefault();
+
+					const description = document.getElementById('trans-description')?.value?.trim() || '';
+					const type = document.getElementById('trans-type')?.value?.trim() || '';
+					const walletType = document.getElementById('trans-wallet-type')?.value?.trim() || '';
+					const amountStr = document.getElementById('trans-amount')?.value?.trim() || '';
+					const messageDiv = document.getElementById('transaction-message');
+					if (messageDiv) {
+						messageDiv.innerHTML = '';
+						messageDiv.className = 'message';
+					}
+
+					const errors = [];
+					if (!description) errors.push('Description is required');
+					if (!type) errors.push('Type is required');
+					if (!walletType) errors.push('Wallet Type is required');
+					const amount = Number(amountStr);
+					if (!amountStr) errors.push('Amount is required');
+					else if (!Number.isFinite(amount)) errors.push('Amount must be a number');
+
+					if (errors.length > 0) {
+						if (messageDiv) {
+							messageDiv.innerHTML = escapeHtml(errors[0]);
+							messageDiv.className = 'message error';
+						}
+						return;
+					}
+
+					if (!isAuthenticated()) {
+						closeTransactionModal();
+						openLoginModal();
+						return;
+					}
+
+					try {
+						const res = await fetch('/api/transactions', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+								Authorization: `Bearer ${getToken()}`
+							},
+							body: JSON.stringify({
+								description,
+								type,
+								wallet_type: walletType,
+								amount
+							})
+						});
+
+						const data = await res.json();
+						if (!res.ok) throw new Error(data?.error || 'Failed to create transaction');
+
+						transactionForm.reset();
+						closeTransactionModal();
+						await loadTransactions();
+					} catch (err) {
+						if (messageDiv) {
+							messageDiv.innerHTML = escapeHtml(err.message);
+							messageDiv.className = 'message error';
+						}
+						console.error('Create transaction error:', err);
 					}
 				});
 			}

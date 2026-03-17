@@ -43,7 +43,7 @@
                 <aside id="main-sidebar">
 				
 				<div class="sidebar-section quick-add-section">
-                        <button class="btn-quick-add" onclick="alert('wala pa boi')">
+                        <button class="btn-quick-add" onclick="handleNewTransactionClick()">
                             NEW TRANSACTION
                         </button>
                     </div>
@@ -129,44 +129,7 @@
 							<span>DATE</span>
 							<span>WALLET</span>
 							<span></span> </div>
-
-						<div class="transaction-item">
-							<div class="transaction-row" onclick="this.parentElement.classList.toggle('expanded')">
-								<span class="rec-number">1</span>
-								<span class="rec-title">Starbucks Coffee</span>
-								<span class="rec-stats expense">₱ 180.00</span>
-								<span class="rec-type"><span class="badge badge-expense">Expense</span></span>
-								<span class="rec-date">Oct 24, 2023</span>
-								<span class="rec-wallet">GCash</span> <span class="rec-actions">
-								<span class="rec-actions">
-									<button class="icon-btn edit-btn">✎</button>
-									<button class="icon-btn delete-btn">🗑</button>
-									<span class="expand-arrow">▼</span>
-								</span>
-							</div>
-							<div class="transaction-details">
-								<p><strong>Note:</strong> Afternoon break with the team. Used GCash wallet.</p>
-							</div>
-						</div>
-
-						<div class="transaction-item">
-							<div class="transaction-row" onclick="this.parentElement.classList.toggle('expanded')">
-								<span class="rec-number">2</span>
-								<span class="rec-title">Freelance Project</span>
-								<span class="rec-stats income">₱ 15,000.00</span>
-								<span class="rec-type"><span class="badge badge-income">Income</span></span>
-								<span class="rec-date">Oct 22, 2023</span>
-								<span class="rec-wallet">BDO</span> <span class="rec-actions">
-								<span class="rec-actions">
-									<button class="icon-btn edit-btn">✎</button>
-									<button class="icon-btn delete-btn">🗑</button>
-									<span class="expand-arrow">▼</span>
-								</span>
-							</div>
-							<div class="transaction-details">
-								<p><strong>Note:</strong> Website redesign for local client. Deposited to BDO.</p>
-							</div>
-						</div>
+						<div id="transaction-list-items"></div>
 					</div>
 				</section>
 				</main>
@@ -434,6 +397,44 @@
 					<button type="submit" class="btn-auth">Authorize</button>
 				</div>
 			</form>
+		</div>
+	</div>
+
+	<div id="transaction-modal" class="modal-overlay">
+		<div class="modal-card transaction-modal-card">
+			<button class="modal-close" onclick="closeTransactionModal()">&times;</button>
+			<div class="modal-form-container">
+				<h2 class="header login-header">New Transaction</h2>
+				<form class="login-form" id="transaction-form">
+					<div class="input-group">
+						<input type="text" class="floating-input" id="trans-description" placeholder=" " required>
+						<label class="floating-label">Description</label>
+					</div>
+
+					<div class="input-group">
+						<select class="floating-input" id="trans-type" required>
+							<option value="" selected disabled hidden></option>
+							<option value="Income">Income</option>
+							<option value="Expense">Expense</option>
+							<option value="Transfer">Transfer</option>
+						</select>
+						<label class="floating-label">Type</label>
+					</div>
+
+					<div class="input-group">
+						<input type="text" class="floating-input" id="trans-wallet-type" placeholder=" " required>
+						<label class="floating-label">Wallet Type</label>
+					</div>
+
+					<div class="input-group">
+						<input type="number" class="floating-input" id="trans-amount" placeholder=" " inputmode="decimal" step="0.01" required>
+						<label class="floating-label">Amount</label>
+					</div>
+
+					<div id="transaction-message" class="message"></div>
+					<button type="submit" class="btn btn-primary">SAVE TRANSACTION</button>
+				</form>
+			</div>
 		</div>
 	</div>
 	

@@ -168,13 +168,88 @@
 				return;
 			}
 
-			openTransactionModal();
+			openCreateTransactionModal();
 		}
 
 		function openTransactionModal() {
 			closeAllModals();
 			const modal = document.getElementById('transaction-modal');
 			if (modal) modal.classList.add('active');
+		}
+
+		function setTransactionModalMode(mode, row) {
+			const titleEl = document.getElementById('transaction-modal-title');
+			const submitBtn = document.getElementById('transaction-submit-btn');
+			const idInput = document.getElementById('trans-id');
+			const messageDiv = document.getElementById('transaction-message');
+			if (messageDiv) {
+				messageDiv.innerHTML = '';
+				messageDiv.className = 'message';
+			}
+
+			const isEdit = mode === 'edit';
+			if (titleEl) titleEl.textContent = isEdit ? 'Edit Transaction' : 'New Transaction';
+			if (submitBtn) submitBtn.textContent = isEdit ? 'SAVE CHANGES' : 'SAVE TRANSACTION';
+			if (idInput) idInput.value = isEdit ? String(row?.trans_id ?? '') : '';
+
+			// Prefill fields for edit
+			if (isEdit && row) {
+				const descEl = document.getElementById('trans-description');
+				const typeEl = document.getElementById('trans-type');
+				const walletEl = document.getElementById('trans-wallet-type');
+				const walletOtherGroup = document.getElementById('trans-wallet-other-group');
+				const walletOtherInput = document.getElementById('trans-wallet-other');
+				const amountEl = document.getElementById('trans-amount');
+
+				if (descEl) descEl.value = row.description ?? row.title ?? '';
+				const typeVal = String(row.type ?? '').trim();
+				if (typeEl) typeEl.value = typeVal || '';
+
+				const walletVal = String(row.wallet_type ?? row.wallet ?? '').trim();
+				// If wallet matches one of the select options, pick it; otherwise use Other
+				if (walletEl) {
+					const options = Array.from(walletEl.options || []).map(o => String(o.value || ''));
+					const hasExact = options.includes(walletVal);
+					if (hasExact) {
+						walletEl.value = walletVal;
+						if (walletOtherGroup) walletOtherGroup.style.display = 'none';
+						if (walletOtherInput) {
+							walletOtherInput.value = '';
+							walletOtherInput.required = false;
+						}
+					} else {
+						walletEl.value = 'Other';
+						if (walletOtherGroup) walletOtherGroup.style.display = '';
+						if (walletOtherInput) {
+							walletOtherInput.value = walletVal;
+							walletOtherInput.required = true;
+						}
+					}
+				}
+
+				if (amountEl) amountEl.value = String(row.amount ?? '');
+			} else {
+				// Reset "Other" wallet field visibility
+				const walletOtherGroup = document.getElementById('trans-wallet-other-group');
+				const walletOtherInput = document.getElementById('trans-wallet-other');
+				if (walletOtherGroup) walletOtherGroup.style.display = 'none';
+				if (walletOtherInput) {
+					walletOtherInput.value = '';
+					walletOtherInput.required = false;
+				}
+			}
+		}
+
+		function openCreateTransactionModal() {
+			const form = document.getElementById('transaction-form');
+			if (form) form.reset();
+			setTransactionModalMode('create');
+			openTransactionModal();
+		}
+
+		function openEditTransactionModal(row) {
+			setTransactionModalMode('edit', row);
+			openTransactionModal();
 		}
 
 		function closeTransactionModal() {
@@ -304,9 +379,10 @@
 			const badgeClass = isIncome ? 'badge-income' : isExpense ? 'badge-expense' : '';
 			const wallet = escapeHtml(row.wallet_type ?? row.wallet ?? '');
 			const date = formatDate(row.dateoftrans ?? row.date);
+			const transId = row.trans_id ?? row.id ?? '';
 
 			return `
-				<div class="transaction-item">
+				<div class="transaction-item" data-trans-id="${escapeHtml(transId)}">
 					<div class="transaction-row" onclick="this.parentElement.classList.toggle('expanded')">
 						<span class="rec-number">${recNumber}</span>
 						<span class="rec-title">${title}</span>
@@ -315,8 +391,8 @@
 						<span class="rec-date">${escapeHtml(date)}</span>
 						<span class="rec-wallet">${wallet}</span>
 						<span class="rec-actions">
-							<button class="icon-btn edit-btn" type="button">✎</button>
-							<button class="icon-btn delete-btn" type="button">🗑</button>
+							<button class="icon-btn edit-btn" type="button" data-action="edit" title="Edit">✎</button>
+							<button class="icon-btn delete-btn" type="button" data-action="delete" title="Delete">🗑</button>
 							<span class="expand-arrow">▼</span>
 						</span>
 					</div>
@@ -328,6 +404,10 @@
 		}
 
 		document.addEventListener('DOMContentLoaded', function() {
+			// Guard against duplicate script execution / bindings
+			if (window.__bbmUserInitDone) return;
+			window.__bbmUserInitDone = true;
+
 			checkAuthenticationForUserPage();
 			loadTransactions();
 
@@ -457,6 +537,12 @@
 
 			const transactionForm = document.getElementById('transaction-form');
 			if (transactionForm) {
+<<<<<<< Updated upstream
+=======
+				if (transactionForm.dataset.bound === '1') return;
+				transactionForm.dataset.bound = '1';
+
+>>>>>>> Stashed changes
 				const walletTypeSelect = document.getElementById('trans-wallet-type');
 				const walletOtherGroup = document.getElementById('trans-wallet-other-group');
 				const walletOtherInput = document.getElementById('trans-wallet-other');
@@ -472,8 +558,15 @@
 					});
 				}
 
+<<<<<<< Updated upstream
+=======
+				const submitBtn = document.getElementById('transaction-submit-btn');
+				let submitInFlight = false;
+
+>>>>>>> Stashed changes
 				transactionForm.addEventListener('submit', async function (e) {
 					e.preventDefault();
+					if (submitInFlight) return;
 
 					const description = document.getElementById('trans-description')?.value?.trim() || '';
 					const type = document.getElementById('trans-type')?.value?.trim() || '';
@@ -484,6 +577,7 @@
 							? walletOther
 							: walletTypeRaw;
 					const amountStr = document.getElementById('trans-amount')?.value?.trim() || '';
+					const transId = document.getElementById('trans-id')?.value?.trim() || '';
 					const messageDiv = document.getElementById('transaction-message');
 					if (messageDiv) {
 						messageDiv.innerHTML = '';
@@ -514,13 +608,23 @@
 					}
 
 					try {
+						submitInFlight = true;
+						if (submitBtn) {
+							submitBtn.disabled = true;
+							submitBtn.setAttribute('aria-disabled', 'true');
+							submitBtn.textContent = transId ? 'SAVING…' : 'SAVING…';
+						}
+
+						const isEdit = Boolean(transId);
+						const method = isEdit ? 'PUT' : 'POST';
 						const res = await fetch('/api/transactions', {
-							method: 'POST',
+							method,
 							headers: {
 								'Content-Type': 'application/json',
 								Authorization: `Bearer ${getToken()}`
 							},
 							body: JSON.stringify({
+								...(isEdit ? { trans_id: transId } : {}),
 								description,
 								type,
 								wallet_type: walletType,
@@ -530,24 +634,125 @@
 
 						const payload = await readResponsePayload(res);
 						if (!res.ok) {
+<<<<<<< Updated upstream
 							console.error('Create transaction failed:', {
 								status: res.status,
 								payload: payload?.json ?? payload?.text,
 								request: { description, type, wallet_type: walletType, amount }
 							});
 							throw new Error(getErrorMessage(payload, 'Failed to create transaction'));
+=======
+							console.error(`${isEdit ? 'Update' : 'Create'} transaction failed:`, {
+								status: res.status,
+								payload: payload?.json ?? payload?.text,
+								request: { trans_id: transId || undefined, description, type, wallet_type: walletType, amount }
+							});
+							throw new Error(getErrorMessage(payload, isEdit ? 'Failed to update transaction' : 'Failed to create transaction'));
+>>>>>>> Stashed changes
 						}
 
 						transactionForm.reset();
+						const idEl = document.getElementById('trans-id');
+						if (idEl) idEl.value = '';
 						closeTransactionModal();
 						await loadTransactions();
+<<<<<<< Updated upstream
 						showToast('Transaction saved', 'success');
+=======
+						showToast(isEdit ? 'Transaction updated' : 'Transaction saved', 'success');
+>>>>>>> Stashed changes
 					} catch (err) {
 						if (messageDiv) {
 							messageDiv.innerHTML = escapeHtml(err.message);
 							messageDiv.className = 'message error';
 						}
-						console.error('Create transaction error:', err);
+						console.error('Transaction submit error:', err);
+					} finally {
+						submitInFlight = false;
+						const titleEl = document.getElementById('transaction-modal-title');
+						const idVal = document.getElementById('trans-id')?.value?.trim() || '';
+						if (submitBtn) {
+							submitBtn.disabled = false;
+							submitBtn.removeAttribute('aria-disabled');
+							submitBtn.textContent = idVal ? 'SAVE CHANGES' : 'SAVE TRANSACTION';
+						}
+						if (titleEl && titleEl.textContent?.toLowerCase().includes('edit') && !idVal) {
+							titleEl.textContent = 'New Transaction';
+						}
+					}
+				});
+			}
+
+			// Event delegation for transaction list actions (no duplicate bindings on re-render)
+			const listEl = document.getElementById('transaction-list-items');
+			if (listEl && listEl.dataset.bound !== '1') {
+				listEl.dataset.bound = '1';
+				listEl.addEventListener('click', async (e) => {
+					const btn = e.target?.closest?.('button[data-action]');
+					if (!btn) return;
+					e.preventDefault();
+					e.stopPropagation();
+
+					const action = btn.getAttribute('data-action');
+					const item = btn.closest('.transaction-item');
+					const transId = item?.getAttribute('data-trans-id') || '';
+					if (!transId) return;
+
+					if (!isAuthenticated()) {
+						openLoginModal();
+						return;
+					}
+
+					if (action === 'delete') {
+						const ok = window.confirm('Are you sure you want to delete this transaction?');
+						if (!ok) return;
+
+						btn.disabled = true;
+						try {
+							const res = await fetch('/api/transactions', {
+								method: 'DELETE',
+								headers: {
+									'Content-Type': 'application/json',
+									Authorization: `Bearer ${getToken()}`
+								},
+								body: JSON.stringify({ trans_id: transId })
+							});
+							const payload = await readResponsePayload(res);
+							if (!res.ok) {
+								console.error('Delete transaction failed:', {
+									status: res.status,
+									payload: payload?.json ?? payload?.text,
+									trans_id: transId
+								});
+								throw new Error(getErrorMessage(payload, 'Failed to delete transaction'));
+							}
+
+							showToast('Transaction deleted', 'success');
+							await loadTransactions();
+						} catch (err) {
+							showToast(err.message || 'Failed to delete transaction', 'error');
+						} finally {
+							btn.disabled = false;
+						}
+						return;
+					}
+
+					if (action === 'edit') {
+						// Read values from the rendered row (best-effort) then open modal.
+						const rowEl = item.querySelector('.transaction-row');
+						const desc = rowEl?.querySelector?.('.rec-title')?.textContent?.trim() || '';
+						const type = rowEl?.querySelector?.('.badge')?.textContent?.trim() || '';
+						const wallet = rowEl?.querySelector?.('.rec-wallet')?.textContent?.trim() || '';
+						const amtText = rowEl?.querySelector?.('.rec-stats')?.textContent || '';
+						const amt = Number(String(amtText).replace(/[^\d.-]/g, ''));
+
+						openEditTransactionModal({
+							trans_id: transId,
+							description: desc,
+							type,
+							wallet_type: wallet,
+							amount: Number.isFinite(amt) ? amt : ''
+						});
 					}
 				});
 			}

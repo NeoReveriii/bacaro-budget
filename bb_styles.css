@@ -160,6 +160,13 @@ body {
 }
 .btn-primary:hover { opacity: 0.9; }
 
+.btn:disabled,
+.btn[aria-disabled="true"] {
+    opacity: 0.55;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
 .btn-secondary { 
     background-color: var(--white); 
     color: var(--dark-green); 

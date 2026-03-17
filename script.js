@@ -203,20 +203,76 @@
 			return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 		}
 
+		async function readResponsePayload(res) {
+			const contentType = res.headers.get('content-type') || '';
+			try {
+				if (contentType.includes('application/json')) {
+					const json = await res.json();
+					return { json, text: null };
+				}
+			} catch (e) {
+				// fall through to text read
+			}
+
+			try {
+				const text = await res.text();
+				// Try to parse JSON anyway (some backends forget headers)
+				try {
+					return { json: JSON.parse(text), text };
+				} catch {
+					return { json: null, text };
+				}
+			} catch {
+				return { json: null, text: null };
+			}
+		}
+
+		function getErrorMessage(payload, fallback) {
+			const msg =
+				payload?.json?.error ||
+				payload?.json?.message ||
+				(typeof payload?.text === 'string' ? payload.text : '') ||
+				fallback;
+			return String(msg || fallback || 'Request failed').trim();
+		}
+
+		function showToast(message, type = 'success') {
+			const existing = document.getElementById('bbm-toast');
+			if (existing) existing.remove();
+			const el = document.createElement('div');
+			el.id = 'bbm-toast';
+			el.className = `bbm-toast ${type}`;
+			el.textContent = message;
+			document.body.appendChild(el);
+			setTimeout(() => el.classList.add('show'), 10);
+			setTimeout(() => {
+				el.classList.remove('show');
+				setTimeout(() => el.remove(), 250);
+			}, 2200);
+		}
+
 		async function loadTransactions() {
 			if (!isAuthenticated()) return;
 			const listEl = document.getElementById('transaction-list-items');
 			if (!listEl) return;
 
 			try {
+				listEl.innerHTML = `<div class="empty-history"><p>Loading transactions…</p></div>`;
 				const res = await fetch('/api/transactions', {
 					headers: {
 						Authorization: `Bearer ${getToken()}`
 					}
 				});
-				const data = await res.json();
-				if (!res.ok) throw new Error(data?.error || 'Failed to load transactions');
+				const payload = await readResponsePayload(res);
+				if (!res.ok) {
+					console.error('Load transactions failed:', {
+						status: res.status,
+						payload: payload?.json ?? payload?.text
+					});
+					throw new Error(getErrorMessage(payload, 'Failed to load transactions'));
+				}
 
+				const data = payload?.json;
 				renderTransactions(Array.isArray(data) ? data : data?.data || []);
 			} catch (e) {
 				console.error('Load transactions error:', e);
@@ -401,12 +457,32 @@
 
 			const transactionForm = document.getElementById('transaction-form');
 			if (transactionForm) {
+				const walletTypeSelect = document.getElementById('trans-wallet-type');
+				const walletOtherGroup = document.getElementById('trans-wallet-other-group');
+				const walletOtherInput = document.getElementById('trans-wallet-other');
+				if (walletTypeSelect) {
+					walletTypeSelect.addEventListener('change', () => {
+						const v = String(walletTypeSelect.value || '').trim();
+						const isOther = v.toLowerCase() === 'other';
+						if (walletOtherGroup) walletOtherGroup.style.display = isOther ? '' : 'none';
+						if (walletOtherInput) {
+							walletOtherInput.value = isOther ? walletOtherInput.value : '';
+							walletOtherInput.required = isOther;
+						}
+					});
+				}
+
 				transactionForm.addEventListener('submit', async function (e) {
 					e.preventDefault();
 
 					const description = document.getElementById('trans-description')?.value?.trim() || '';
 					const type = document.getElementById('trans-type')?.value?.trim() || '';
-					const walletType = document.getElementById('trans-wallet-type')?.value?.trim() || '';
+					const walletTypeRaw = document.getElementById('trans-wallet-type')?.value?.trim() || '';
+					const walletOther = document.getElementById('trans-wallet-other')?.value?.trim() || '';
+					const walletType =
+						walletTypeRaw.toLowerCase() === 'other'
+							? walletOther
+							: walletTypeRaw;
 					const amountStr = document.getElementById('trans-amount')?.value?.trim() || '';
 					const messageDiv = document.getElementById('transaction-message');
 					if (messageDiv) {
@@ -417,7 +493,8 @@
 					const errors = [];
 					if (!description) errors.push('Description is required');
 					if (!type) errors.push('Type is required');
-					if (!walletType) errors.push('Wallet Type is required');
+					if (!walletTypeRaw) errors.push('Wallet Type is required');
+					else if (walletTypeRaw.toLowerCase() === 'other' && !walletOther) errors.push('Please enter your wallet type');
 					const amount = Number(amountStr);
 					if (!amountStr) errors.push('Amount is required');
 					else if (!Number.isFinite(amount)) errors.push('Amount must be a number');
@@ -451,12 +528,20 @@
 							})
 						});
 
-						const data = await res.json();
-						if (!res.ok) throw new Error(data?.error || 'Failed to create transaction');
+						const payload = await readResponsePayload(res);
+						if (!res.ok) {
+							console.error('Create transaction failed:', {
+								status: res.status,
+								payload: payload?.json ?? payload?.text,
+								request: { description, type, wallet_type: walletType, amount }
+							});
+							throw new Error(getErrorMessage(payload, 'Failed to create transaction'));
+						}
 
 						transactionForm.reset();
 						closeTransactionModal();
 						await loadTransactions();
+						showToast('Transaction saved', 'success');
 					} catch (err) {
 						if (messageDiv) {
 							messageDiv.innerHTML = escapeHtml(err.message);

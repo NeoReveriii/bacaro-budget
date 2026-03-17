@@ -573,6 +573,36 @@
 
         .modal-card .btn-primary { width: 100%; margin-top: 10px; }
 
+		/* Toast notifications */
+		.bbm-toast {
+			position: fixed;
+			right: 18px;
+			bottom: 18px;
+			z-index: 3000;
+			max-width: min(360px, calc(100vw - 36px));
+			padding: 12px 14px;
+			border-radius: 12px;
+			font-weight: 700;
+			font-size: 0.95em;
+			letter-spacing: 0.2px;
+			backdrop-filter: blur(10px);
+			box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+			opacity: 0;
+			transform: translateY(10px);
+			transition: opacity 0.2s ease, transform 0.2s ease;
+		}
+		.bbm-toast.show { opacity: 1; transform: translateY(0); }
+		.bbm-toast.success {
+			background: rgba(89, 133, 57, 0.92);
+			color: white;
+			border: 1px solid rgba(255,255,255,0.22);
+		}
+		.bbm-toast.error {
+			background: rgba(231, 76, 60, 0.92);
+			color: white;
+			border: 1px solid rgba(255,255,255,0.18);
+		}
+
 		/* --- Transactions Page Styles --- */
 		.transaction-list {
 			background: white;

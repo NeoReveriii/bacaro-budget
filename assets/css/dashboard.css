@@ -836,7 +836,7 @@
 		#main-content-area {
 			flex-grow: 1;
 			position: relative;
-			overflow-y: auto;
+			overflow: hidden; /* Individual views inside handle their own scroll */
 			background-color: rgba(255, 255, 255, 0.85);
 			backdrop-filter: blur(15px);
 			display: flex;

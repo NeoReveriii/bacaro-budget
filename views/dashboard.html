@@ -8,9 +8,9 @@
 
 		<link rel="stylesheet" href="/assets/css/dashboard.css"> 
 		<link rel="stylesheet" href="/assets/css/global.css">
-		<link rel="stylesheet" href="/assets/css/kwarta_ai.css?v=2">
-		<script src="/assets/js/main.js?v=2"></script>
-		<script src="/assets/js/kwarta-ai.js?v=2" defer></script>
+		<link rel="stylesheet" href="/assets/css/kwarta_ai.css?v=3">
+		<script src="/assets/js/main.js?v=3"></script>
+		<script src="/assets/js/kwarta-ai.js?v=3" defer></script>
 		
 		<!-- Premium AI Libraries -->
 		<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -275,6 +275,11 @@
         <div class="modal-card">
 			<button class="modal-close" onclick="closeAllModals()">&times;</button>
             <div class="modal-form-container">
+                <div style="text-align:center; margin-bottom: 15px;">
+                    <div style="width: 50px; height: 50px; background: var(--primary-green); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(89,133,57,0.3);">
+                        <span style="font-size: 1.5em; color: white;">👋</span>
+                    </div>
+                </div>
                 <h2 class="header login-header">Welcome Back!</h2>
                 <form class="login-form" id="login-form">
                     <div class="input-group">
@@ -410,7 +415,7 @@
 					</div>
 
 					<div class="input-group">
-						<input type="number" class="floating-input" id="trans-amount" placeholder=" " inputmode="decimal" step="0.01" required>
+						<input type="number" class="floating-input" id="trans-amount" placeholder=" " inputmode="decimal" step="1" min="0" required>
 						<label class="floating-label">Amount</label>
 					</div>
 

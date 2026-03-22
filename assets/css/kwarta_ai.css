@@ -98,10 +98,23 @@
     background: #e8f5e9;
     border: 1px solid var(--primary-green);
     color: var(--dark-green);
-    padding: 5px 12px;
+    padding: 8px 16px;
     border-radius: 20px;
-    font-size: 0.8em;
+    font-size: 0.85em;
+    font-weight: 600;
     cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chip:hover {
+    background: var(--primary-green);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(89, 133, 57, 0.3);
+}
+
+.chip:active {
+    transform: translateY(0) scale(0.97);
 }
 
 .input-wrapper {

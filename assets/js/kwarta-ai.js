@@ -92,7 +92,6 @@ async function renderChatChart(canvasId, typeToGraph = 'expense') {
     const canvas = document.getElementById(canvasId);
     if (!canvas || typeof Chart === 'undefined') return;
     
-    // Fetch transaction data over the last 30 days
     try {
         const res = await fetch('/api/transactions', {
             headers: { 'Authorization': `Bearer ${getToken()}` }
@@ -100,14 +99,24 @@ async function renderChatChart(canvasId, typeToGraph = 'expense') {
         const payload = await res.json();
         const data = Array.isArray(payload) ? payload : (payload.data || []);
         
-        let filteredData = data.filter(t => t.type.toLowerCase() === typeToGraph.toLowerCase());
+        console.log('Chart: Total transactions fetched:', data.length);
+        console.log('Chart: Types found:', [...new Set(data.map(t => t.type))]);
+        console.log('Chart: Filtering for type:', typeToGraph);
+        
+        let filteredData = data.filter(t => (t.type || '').toLowerCase() === typeToGraph.toLowerCase());
+        
+        // If no data for that specific type, try showing ALL data as a fallback
+        if (filteredData.length === 0 && data.length > 0) {
+            console.log('Chart: No data for type', typeToGraph, ', showing all transactions instead');
+            filteredData = data;
+        }
         
         if (filteredData.length === 0) {
             const ctx = canvas.getContext('2d');
             ctx.font = '12px Arial';
             ctx.fillStyle = '#999';
             ctx.textAlign = 'center';
-            ctx.fillText(`No recent ${typeToGraph} data to plot`, canvas.width/2, canvas.height/2);
+            ctx.fillText('No transaction data to plot', canvas.width/2, canvas.height/2);
             return;
         }
 

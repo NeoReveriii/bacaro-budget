@@ -65,6 +65,7 @@ export default async function handler(req, res) {
       // Fetch user's recent transactions for better context
       let transactionsText = "No recent transactions found.";
       try {
+        console.log('Chat API: Fetching transactions for account_id:', acc_id);
         const trans = await sql`
           SELECT type, amount, description, wallet_type, dateoftrans 
           FROM transactions 
@@ -72,6 +73,7 @@ export default async function handler(req, res) {
           ORDER BY dateoftrans DESC 
           LIMIT 30
         `;
+        console.log('Chat API: Found', trans.length, 'transactions');
         if (trans.length > 0) {
           transactionsText = JSON.stringify(trans.map(t => ({
             date: t.dateoftrans,
@@ -80,8 +82,11 @@ export default async function handler(req, res) {
             desc: t.description,
             wallet: t.wallet_type
           })));
+          console.log('Chat API: Transaction context:', transactionsText.substring(0, 200));
         }
-      } catch(e) { /* Ignore trans errors if table doesn't exist yet */ }
+      } catch(e) {
+        console.error('Chat API: ERROR fetching transactions:', e.message);
+      }
 
       // System Prompt
       const systemPrompt = {
@@ -102,18 +107,24 @@ If the user explicitly asks for a visual summary, graph, chart, or visual breakd
 - If they ask for a general summary without specifying, default to outputting "[CHART:EXPENSE]".`
       };
 
-      // Fetch history for context
+      // Fetch MINIMAL history for conversational continuity only
+      // We deliberately keep this small to prevent the AI from
+      // trusting stale financial data from its own old responses
       const history = await sql`
         SELECT role, content
         FROM ai_chats
         WHERE acc_id = ${acc_id}
         ORDER BY chat_id DESC
-        LIMIT 15
+        LIMIT 4
       `;
-      const apiMessages = history.reverse().map(row => ({
-        role: row.role,
-        content: row.content
-      }));
+      // Only keep user messages from history to avoid data pollution
+      // from old AI responses that contain outdated numbers
+      const apiMessages = history.reverse()
+        .filter(row => row.role === 'user')
+        .map(row => ({
+          role: row.role,
+          content: row.content
+        }));
 
       const apiKey = process.env.DEEPSEEK_API_KEY ? process.env.DEEPSEEK_API_KEY.replace(/^"|"$/g, '') : null;
       if (!apiKey) return res.status(500).json({ error: 'API key missing' });

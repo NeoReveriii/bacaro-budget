@@ -1120,6 +1120,7 @@
         transition: left 0.3s ease;
         border-radius: 0;
         box-shadow: 2px 0 15px rgba(0,0,0,0.5);
+        overflow-y: auto; /* Allow scrolling to Settings */
     }
 
     #main-sidebar.open {

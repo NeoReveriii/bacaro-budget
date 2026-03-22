@@ -99,6 +99,9 @@
 		});
 		
 		function showView(viewId, element) {
+			// Close mobile sidebar if open
+			toggleMainSidebar(false);
+
 			// 1. Hide all views
 			const views = document.querySelectorAll('.main-view');
 			views.forEach(view => view.style.display = 'none');
@@ -131,6 +134,7 @@
 		}
 		
 		function openAdminModal() {
+			toggleMainSidebar(false);
 			document.getElementById('admin-modal').style.display = 'flex';
 		}
 
@@ -211,6 +215,7 @@
 		}
 
 		function handleNewTransactionClick() {
+			toggleMainSidebar(false);
 			if (!isAuthenticated()) {
 				openLoginModal();
 				return;

@@ -21,6 +21,21 @@ async function loadAIComponent() {
         initAIListeners();
         loadChatHistory();
         
+        // --- Keyboard Handling for Mobile ---
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', () => {
+                const aiView = document.getElementById('view-ai');
+                if (!aiView || aiView.style.display === 'none') return;
+                
+                // Adjust height to match the visible area (viewport minus keyboard)
+                aiView.style.height = `${window.visualViewport.height}px`;
+                
+                // Scroll to bottom when keyboard appears
+                const chatList = document.getElementById('chat-messages');
+                if (chatList) chatList.scrollTop = chatList.scrollHeight;
+            });
+        }
+
         // Custom auto-scroll listener
         const chatList = document.getElementById('chat-messages');
         if (chatList) {

@@ -158,6 +158,7 @@
 				const balance = formatCurrency(w.calculated_balance);
 				return `
 					<div class="card-item ${colorClass}" onclick="openWalletDetails('${escapeHtml(w.name)}', '${escapeHtml(w.type)}', '${escapeHtml(w.status)}', ${Number(w.calculated_balance)})">
+						<button class="card-delete-btn" onclick="event.stopPropagation(); handleDeleteWallet(${w.wallet_id}, '${escapeHtml(w.name)}')">×</button>
 						<div class="card-chip"></div>
 						<div class="card-status-badge">${escapeHtml(w.status)}</div>
 						<div class="card-content">
@@ -174,6 +175,28 @@
 			const totalEl = document.querySelector('.wallet-card .stat-value');
 			if (totalEl) totalEl.innerText = formatCurrency(totalBalance);
 		}
+
+		window.handleDeleteWallet = async function(walletId, name) {
+			showConfirm('Delete Wallet', `Are you sure you want to delete "${name}"? You can only delete wallets with no transaction history.`, async () => {
+				showCoinLoader('DELETING WALLET...');
+				try {
+					const res = await fetch('/api/wallets', {
+						method: 'DELETE',
+						headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
+						body: JSON.stringify({ wallet_id: walletId })
+					});
+					const payload = await readResponsePayload(res);
+					if (!res.ok) throw new Error(getErrorMessage(payload, 'Failed to delete wallet'));
+					
+					showToast('Wallet deleted successfully');
+					await loadWallets();
+				} catch (err) {
+					showToast(err.message, 'error');
+				} finally {
+					hideCoinLoader();
+				}
+			});
+		};
 
 		function renderWalletDropdowns() {
 			const options = window.wallets.map(w => `<option value="${escapeHtml(w.name)}">${escapeHtml(w.name)}</option>`).join('');
@@ -625,6 +648,12 @@
 					if (from === to) return (messageDiv.innerHTML = 'Cannot transfer to the same wallet', messageDiv.className = 'message error');
 					if (!amount || amount <= 0) return (messageDiv.innerHTML = 'Amount must be greater than 0', messageDiv.className = 'message error');
 
+					// Check for sufficient funds
+					const sourceWallet = window.wallets.find(w => w.name === from);
+					if (sourceWallet && Number(sourceWallet.calculated_balance) < amount) {
+						return (messageDiv.innerHTML = `Insufficient funds in "${from}" (Balance: ${formatCurrency(sourceWallet.calculated_balance)})`, messageDiv.className = 'message error');
+					}
+
 					showCoinLoader('TRANSFERRING FUNDS...');
 					try {
 						// Create Transfer Out from From Wallet
@@ -898,6 +927,7 @@
 						hideCoinLoader();
 						closeTransactionModal();
 						await loadTransactions();
+						await loadWallets(); // Refresh wallet balances
 						showToast(transId ? 'Transaction updated' : 'Transaction saved', 'success');
 					} catch (err) {
 						hideCoinLoader();

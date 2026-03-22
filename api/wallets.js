@@ -172,6 +172,19 @@ export default async function handler(req, res) {
       if (!wallet_id) {
         return res.status(400).json({ error: 'wallet_id is required' });
       }
+
+      // Check if wallet has transactions
+      const walletRows = await sql`SELECT name FROM wallets WHERE wallet_id = ${wallet_id} AND account_id = ${account.acc_id}`;
+      if (walletRows.length === 0) return res.status(404).json({ error: 'Wallet not found' });
+      const walletName = walletRows[0].name;
+
+      const transCheck = await sql`
+        SELECT COUNT(*) as count FROM transactions 
+        WHERE wallet_type = ${walletName} AND account_id = ${account.acc_id}
+      `;
+      if (parseInt(transCheck[0].count) > 0) {
+        return res.status(400).json({ error: 'Cannot delete a wallet that has transactions. Delete or reassign the transactions first.' });
+      }
       
       await sql`
         DELETE FROM wallets 

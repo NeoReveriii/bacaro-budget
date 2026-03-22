@@ -1062,23 +1062,35 @@
         display: block;
     }
 
+    body {
+        overflow: auto !important; /* Allow scrolling on mobile */
+    }
+
     /* Main Layout */
     .dashboard-container, #app-content {
         position: static !important;
         z-index: auto !important;
         transform: none !important;
+        transform-style: flat !important;  /* KILL preserve-3d */
+        perspective: none !important;      /* KILL perspective */
+        will-change: auto !important;      /* KILL will-change */
     }
 
     .main-app-card {
         width: 100vw;
-        height: 100vh;
+        height: auto;
+        min-height: 100vh;
         border-radius: 0;
         margin: 0;
         box-shadow: none;
-        display: block; /* Let sidebar handle mobile placement */
-        position: static !important; /* Release sidebar from scaling context */
-        z-index: auto !important; /* Release sidebar from scaling context */
+        display: block !important;
+        position: static !important;
+        z-index: auto !important;
         transform: none !important;
+        transform-style: flat !important;  /* CRITICAL: this was preserve-3d */
+        perspective: none !important;       /* CRITICAL: was 1200px */
+        will-change: auto !important;       /* CRITICAL: was transform */
+        overflow: visible !important;
     }
 
     #app-content {

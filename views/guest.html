@@ -43,29 +43,24 @@
         <div id="app-content">
             <div class="main-app-card"> 
                 <aside id="main-sidebar">
-                    <div class="sidebar-section">
-					
-					<div class="sidebar-section quick-add-section">
-                        <button class="btn-quick-add" onclick="handleNewTransactionClick()">
-                            NEW TRANSACTION
-                        </button>
-                    </div>
-					
-                        <nav class="sidebar-nav">
-                            <a href="#" class="nav-item active" onclick="showView('dashboard', this)">Dashboard</a>
-                            <a href="#" class="nav-item" onclick="showView('transactions', this)">Transactions</a>
-                            <a href="#" class="nav-item">Wallets</a>
-                            <a href="#" class="nav-item">Kwarta AI</a>
-                        </nav>
-                    </div>
-
-                    
-
-                    <div class="sidebar-section bottom-section">
-                        <a href="#" class="nav-item"><span class="nav-icon">⛯</span>Settings</a>
-                    </div>
+				<div class="sidebar-section quick-add-section">
+					<button class="btn-quick-add" onclick="handleNewTransactionClick()">
+						NEW TRANSACTION
+					</button>
+				</div>
+				<div class="sidebar-section">
+					<nav class="sidebar-nav">
+						<a href="#" class="nav-item active" onclick="showView('dashboard', this)">Dashboard</a>
+						<a href="#" class="nav-item" onclick="showView('transactions', this)">Transactions</a>
+						<a href="#" class="nav-item">Wallets</a>
+						<a href="#" class="nav-item">Kwarta AI</a>
+					</nav>
+				</div>
+				<div class="sidebar-section bottom-section">
+					<a href="#" class="nav-item"><span class="nav-icon">⛯</span>Settings</a>
+				</div>
                 </aside>
-			
+		
 		<div id="main-content-area" style="flex-grow: 1; position: relative; overflow-y: auto; background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(15px);">
 			<div id="view-dashboard" class="main-view">
                 <main id="main-dashboard">

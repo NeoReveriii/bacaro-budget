@@ -439,20 +439,24 @@
 
 						const data = await response.json();
 
-						if (response.ok) {
-							const rawDate = data.data.createdat || new Date();
-    					const createdDate = new Date(rawDate);
+					if (response.ok) {
+							// Change this line to be more defensive:
+							const rawDate = data.data.createdat || data.data.createdAt || new Date();
+							const createdDate = new Date(rawDate);
+							
 							const formattedDate = createdDate.toLocaleDateString('en-US', { 
-        			year: 'numeric', month: 'short', day: 'numeric'});
-							messageDiv.innerHTML = `✓ Account created! Redirecting to login...`;
+									year: 'numeric', month: 'short', day: 'numeric' 
+							});
+							
+							messageDiv.innerHTML = `✓ Account created! Redirecting...`;
 							messageDiv.className = 'message success';
 							signupForm.reset();
 
 							setTimeout(() => {
-								closeAllModals();
-								openLoginModal();
+									closeAllModals();
+									openLoginModal();
 							}, 2000);
-						} else {
+					} else {
 							messageDiv.innerHTML = data.error || 'An error occurred';
 							messageDiv.className = 'message error';
 						}

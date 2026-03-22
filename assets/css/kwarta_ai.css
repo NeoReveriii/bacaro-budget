@@ -110,67 +110,65 @@
 
 /* Input Area */
 .chat-input-area {
-    padding: 30px 40px 45px 40px; /* Increased padding, especially at the bottom */
+    padding: 20px 30px;
+    padding-bottom: calc(20px + env(safe-area-inset-bottom)); /* Dynamic breathing room + safe area */
     background: white;
     border-top: 1px solid #f0f0f0;
     flex-shrink: 0; /* Input area stays fixed at bottom */
     position: relative;
     z-index: 10;
-    box-shadow: 0 -10px 25px rgba(0,0,0,0.02); /* Very subtle shadow to separate from message area */
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .prompt-chips {
     display: flex;
-    gap: 12px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+    overflow-x: auto; /* Allow horizontal scroll if many chips */
+    padding-bottom: 5px;
+    -webkit-overflow-scrolling: touch;
 }
+
+/* Hide scrollbar for chips but keep functionality */
+.prompt-chips::-webkit-scrollbar { display: none; }
 
 .chip {
     background: #f1f8f1;
-    border: 1px solid rgba(89, 133, 57, 0.2);
+    border: 1px solid rgba(89, 133, 57, 0.15);
     color: var(--dark-green);
-    padding: 8px 18px;
+    padding: 6px 16px;
     border-radius: 20px;
-    font-size: 0.85em;
+    font-size: 0.8em;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.chip:hover {
-    background: var(--primary-green);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(89, 133, 57, 0.2);
-    border-color: var(--primary-green);
+    white-space: nowrap;
+    transition: all 0.2s ease;
 }
 
 .input-wrapper {
     display: flex;
-    gap: 15px;
-    background: #f9f9f9;
-    padding: 8px 8px 8px 20px;
-    border-radius: 30px;
-    border: 1px solid #eee;
-    transition: all 0.3s ease;
+    gap: 12px;
+    width: 100%;
     align-items: center;
 }
 
-.input-wrapper:focus-within {
-    background: white;
-    border-color: var(--primary-green);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+.input-wrapper input {
+    flex: 1; /* Scales proportionally */
+    min-width: 0; /* Prevents overflow in flexbox */
+    padding: 12px 20px;
+    background: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 25px;
+    outline: none;
+    font-size: 0.95em;
+    transition: all 0.2s ease;
 }
 
-.input-wrapper input {
-    flex-grow: 1;
-    padding: 10px 0;
-    border: none;
-    background: transparent;
-    outline: none;
-    font-size: 1em;
-    color: #333;
+.input-wrapper input:focus {
+    background: white;
+    border-color: var(--primary-green);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 .btn-send {
@@ -183,7 +181,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.1rem;
+    font-size: 1rem;
     cursor: pointer;
     transition: all 0.3s ease;
     flex-shrink: 0;

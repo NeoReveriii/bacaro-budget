@@ -1,0 +1,106 @@
+/* --- Kwarta AI View Container --- */
+.ai-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+}
+
+/* --- Chat Header --- */
+.ai-header {
+    padding: 20px;
+    background: var(--dark-green);
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.ai-status-dot {
+    width: 10px;
+    height: 10px;
+    background: #2ecc71;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #2ecc71;
+}
+
+/* --- Messages Area --- */
+.ai-messages-display {
+    flex-grow: 1;
+    padding: 25px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.chat-bubble {
+    max-width: 75%;
+    padding: 12px 18px;
+    border-radius: 15px;
+    font-size: 0.95em;
+    line-height: 1.4;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.chat-bubble.ai {
+    align-self: flex-start;
+    background: var(--white);
+    color: var(--dark-green);
+    border-bottom-left-radius: 2px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.chat-bubble.user {
+    align-self: flex-end;
+    background: var(--primary-green);
+    color: white;
+    border-bottom-right-radius: 2px;
+}
+
+/* --- Input Area --- */
+.ai-input-area {
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.5);
+    display: flex;
+    gap: 10px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+.ai-input-area input {
+    flex-grow: 1;
+    padding: 12px 20px;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 30px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.ai-input-area input:focus {
+    border-color: var(--primary-green);
+}
+
+.btn-send-ai {
+    background: var(--primary-green);
+    color: white;
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+.btn-send-ai:hover {
+    transform: scale(1.1);
+    background: var(--dark-green);
+}

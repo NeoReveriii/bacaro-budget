@@ -92,10 +92,14 @@ Here is the user's REAL-TIME transaction data right now:
 ${transactionsText}
 
 CRITICAL DATA OVERRIDE: 
-Users can edit or delete their transactions at any time. Therefore, ALWAYS base your calculations, summaries, and answers STRICTLY on the JSON real-time transaction data provided above. Do NOT rely on older chat history for transaction totals or data, because the older chat messages might be outdated. Always recalculate your answers using ONLY the exact JSON above as your source of truth!
+Users frequently edit, delete, or wipe their transactions. ALWAYS base your calculations strictly on the JSON data provided above. 
+If the data above says "No recent transactions found.", it means the user has DELETED everything. You MUST proudly state that they have ZERO transactions and ZERO expenses/income. You are FORBIDDEN from quoting, repeating, or remembering any numbers, totals, or data from previous chat history messages. The chat history is a lie if it conflicts with the JSON data above.
 
 IMPORTANT INSTRUCTION FOR UI VISUALS:
-If the user explicitly asks for a visual summary, graph, chart, or visual breakdown of their expenses/spending, you must include the exact string: "[CHART]" at the very end of your response. This will trigger the UI to render a beautiful Pie Chart. Only use it when a visual graph makes sense.`
+If the user explicitly asks for a visual summary, graph, chart, or visual breakdown:
+- If they ask about Income, output exactly "[CHART:INCOME]" at the very end of your response.
+- If they ask about Expenses, output exactly "[CHART:EXPENSE]" at the very end of your response.
+- If they ask for a general summary without specifying, default to outputting "[CHART:EXPENSE]".`
       };
 
       // Fetch history for context

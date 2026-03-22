@@ -35,10 +35,15 @@ async function loadAIComponent() {
 }
 
 function processAndRenderContent(content) {
-    // Check for chart trigger
+    // Check for chart trigger dynamically
     let finalHtml = "";
-    const hasChart = content.includes('[CHART]');
-    const rawContent = content.replace(/\[CHART\]/g, ''); // Remove the tag
+    
+    let chartType = null;
+    if (content.includes('[CHART:INCOME]')) chartType = 'income';
+    else if (content.includes('[CHART:EXPENSE]')) chartType = 'expense';
+    else if (content.includes('[CHART]')) chartType = 'expense';
+    
+    const rawContent = content.replace(/\[CHART.*?\]/g, ''); // Remove the tag
     
     // Parse markdown (assuming marked is loaded in dashboard.html)
     if (typeof marked !== 'undefined') {
@@ -47,7 +52,7 @@ function processAndRenderContent(content) {
         finalHtml = rawContent.replace(/\n/g, '<br>');
     }
 
-    if (hasChart) {
+    if (chartType) {
         // Append a canvas element and trigger the chart render logic
         const chartId = 'chart-' + Date.now() + Math.floor(Math.random() * 1000);
         finalHtml += `
@@ -55,7 +60,7 @@ function processAndRenderContent(content) {
                 <canvas id="${chartId}"></canvas>
             </div>
         `;
-        setTimeout(() => renderChatChart(chartId), 100);
+        setTimeout(() => renderChatChart(chartId, chartType), 100);
     }
     
     return finalHtml;
@@ -83,7 +88,7 @@ function appendMessage(role, content, isEmptyStreamTarget = false) {
     return msgDiv;
 }
 
-async function renderChatChart(canvasId) {
+async function renderChatChart(canvasId, typeToGraph = 'expense') {
     const canvas = document.getElementById(canvasId);
     if (!canvas || typeof Chart === 'undefined') return;
     
@@ -95,20 +100,20 @@ async function renderChatChart(canvasId) {
         const payload = await res.json();
         const data = Array.isArray(payload) ? payload : (payload.data || []);
         
-        let expenses = data.filter(t => t.type.toLowerCase() === 'expense');
+        let filteredData = data.filter(t => t.type.toLowerCase() === typeToGraph.toLowerCase());
         
-        if (expenses.length === 0) {
+        if (filteredData.length === 0) {
             const ctx = canvas.getContext('2d');
             ctx.font = '12px Arial';
             ctx.fillStyle = '#999';
             ctx.textAlign = 'center';
-            ctx.fillText('No recent data to plot', canvas.width/2, canvas.height/2);
+            ctx.fillText(`No recent ${typeToGraph} data to plot`, canvas.width/2, canvas.height/2);
             return;
         }
 
         // Group by title/desc (simple categorizing fallback)
         const categories = {};
-        expenses.forEach(e => {
+        filteredData.forEach(e => {
             const label = e.description || 'Other';
             categories[label] = (categories[label] || 0) + Number(e.amount);
         });

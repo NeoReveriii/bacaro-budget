@@ -9,6 +9,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    overflow: hidden; /* Prevent container itself from scrolling */
 }
 
 .chat-window {
@@ -19,23 +20,24 @@
     flex-direction: column;
     border-radius: 0; 
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    overflow: hidden;
+    overflow: hidden; /* Contain children */
 }
 
 .chat-header {
-    padding: 0 20px;
+    padding: 10px 20px;
     background: var(--dark-green);
     color: white;
+    flex-shrink: 0; /* Header stays fixed size */
 }
 
 .chat-header h3 {
     font-size: 1.2em;
-    padding-bottom: 0px;
+    margin: 0;
 }
 
 .chat-header p {
     font-size: 0.9em;
-    padding-top: 0px;
+    margin: 5px 0 0;
 }
 
 .chat-header h3 span {
@@ -45,9 +47,9 @@
 }
 
 .chat-messages {
-    flex-grow: 1;
+    flex-grow: 1; /* Message area takes available space */
     padding: 30px;
-    overflow-y: auto;
+    overflow-y: auto; /* Only this part scrolls */
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -83,9 +85,10 @@
 
 /* Input Area */
 .chat-input-area {
-    padding: 25px 30px;
+    padding: 20px 30px;
     background: white;
     border-top: 1px solid #eee;
+    flex-shrink: 0; /* Input area stays fixed at bottom */
 }
 
 .prompt-chips {

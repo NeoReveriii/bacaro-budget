@@ -110,25 +110,27 @@
 
 /* Input Area */
 .chat-input-area {
-    padding: 20px 30px;
+    padding: 30px 40px 45px 40px; /* Increased padding, especially at the bottom */
     background: white;
-    border-top: 1px solid #eee;
+    border-top: 1px solid #f0f0f0;
     flex-shrink: 0; /* Input area stays fixed at bottom */
     position: relative;
     z-index: 10;
+    box-shadow: 0 -10px 25px rgba(0,0,0,0.02); /* Very subtle shadow to separate from message area */
 }
 
 .prompt-chips {
     display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
 .chip {
-    background: #e8f5e9;
-    border: 1px solid var(--primary-green);
+    background: #f1f8f1;
+    border: 1px solid rgba(89, 133, 57, 0.2);
     color: var(--dark-green);
-    padding: 8px 16px;
+    padding: 8px 18px;
     border-radius: 20px;
     font-size: 0.85em;
     font-weight: 600;
@@ -140,102 +142,81 @@
     background: var(--primary-green);
     color: white;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(89, 133, 57, 0.3);
-}
-
-.chip:active {
-    transform: translateY(0) scale(0.97);
+    box-shadow: 0 4px 12px rgba(89, 133, 57, 0.2);
+    border-color: var(--primary-green);
 }
 
 .input-wrapper {
     display: flex;
-    gap: 10px;
+    gap: 15px;
+    background: #f9f9f9;
+    padding: 8px 8px 8px 20px;
+    border-radius: 30px;
+    border: 1px solid #eee;
+    transition: all 0.3s ease;
+    align-items: center;
+}
+
+.input-wrapper:focus-within {
+    background: white;
+    border-color: var(--primary-green);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
 }
 
 .input-wrapper input {
     flex-grow: 1;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    padding: 10px 0;
+    border: none;
+    background: transparent;
     outline: none;
+    font-size: 1em;
+    color: #333;
 }
 
 .btn-send {
     background-color: var(--dark-green);
     color: white;
     border: none;
-    width: 45px;
-    height: 45px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     cursor: pointer;
     transition: all 0.3s ease;
     flex-shrink: 0;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .btn-send:hover {
     background-color: var(--primary-green);
-    transform: scale(1.1);
-    box-shadow: 0 6px 15px rgba(46, 204, 113, 0.3);
-}
-
-.btn-send:active {
-    transform: scale(0.95);
-}
-
-.dummy-graph-mini {
-    margin-top: 10px;
-    height: 100px;
-    background: rgba(0,0,0,0.05);
-    border: 1px dashed #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-}
-
-/* AI Trashcan Hover */
-#btn-clear-chat:hover {
-    background: rgba(255, 100, 100, 0.15) !important;
-    border-color: rgba(255, 100, 100, 0.4) !important;
-    color: #ff8c8c !important;
-    transform: scale(1.15) rotate(5deg) !important;
-    box-shadow: 0 4px 10px rgba(255, 100, 100, 0.2);
+    transform: scale(1.05);
 }
 
 /* ==========================================================
    MOBILE RESPONSIVENESS
 ========================================================== */
 @media (max-width: 768px) {
-    .chat-container {
-        height: calc(100vh - 90px); /* Adjust for mobile header area */
-        margin: 10px 15px;
-        border-radius: 12px;
+    .chat-messages {
+        padding: 20px;
     }
     
     .msg-bubble {
-        max-width: 90%; /* Chat bubbles take up more width on narrow screens */
-        padding: 12px 15px;
+        max-width: 90%; 
+        padding: 10px 15px;
     }
     
     .chat-header {
         padding: 12px 20px;
     }
     
-    .chat-input {
-        padding: 10px 15px;
+    .chat-input-area {
+        padding: 20px 20px 30px 20px;
     }
     
     .chip {
-        padding: 6px 12px;
+        padding: 6px 14px;
         font-size: 0.8em;
-    }
-    
-    .dummy-graph-mini {
-        height: 150px;
     }
 }

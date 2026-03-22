@@ -8,6 +8,7 @@
 		<link rel="stylesheet" href="/assets/css/dashboard.css"> 
 		<link rel="stylesheet" href="/assets/css/global.css">
 		<script src="/assets/js/main.js"></script>
+		<script src="/assets/js/kwarta-ai.js" defer></script>
 </head>
 <body>
     
@@ -207,47 +208,7 @@
 								</div>
 		
 		<div id="view-ai" class="main-view" style="display: none;">
-			<div class="ai-container">
-				<div class="chat-window">
-					<div class="chat-header">
-						<h3>Kwarta AI <span>• Online</span></h3>
-						<p>Personal Financial Assistant</p>
-					</div>
-					
-					<div class="chat-messages" id="chat-messages">
-						<div class="msg ai-msg">
-							<div class="msg-bubble">
-								Hello {User}! I'm Kwarta, your budget assistant. Want me to do a breakdown of your finance? Just tell me what to do!
-							</div>
-						</div>
-
-						<div class="msg user-msg">
-							<div class="msg-bubble">
-								User message placeholder.
-							</div>
-						</div>
-
-						<div class="msg ai-msg">
-							<div class="msg-bubble">
-								<p>Label placeholder:</p>
-								<div class="dummy-graph-mini">Mini Graph Placeholder</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="chat-input-area">
-						<div class="prompt-chips">
-							<button class="chip">Monthly Summary</button>
-							<button class="chip">Top Expense</button>
-							<button class="chip">Savings Tips</button>
-						</div>
-						<div class="input-wrapper">
-							<input type="text" placeholder="Ask Kwarta AI about your finances...">
-							<button class="btn-send">➤</button>
-						</div>
-					</div>
-				</div>
-			</div>
+			<div id="kwarta-ai-interface"></div>
 		</div>
 
 
@@ -451,6 +412,5 @@
 		</div>
 	</div>
 	
-	<script src="assets/js/main.js"></script>
 </body>
 </html>

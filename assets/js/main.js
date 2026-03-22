@@ -704,20 +704,22 @@
 
 						transactionForm.reset();
 						document.getElementById('trans-id').value = '';
+						hideCoinLoader();
 						closeTransactionModal();
 						await loadTransactions();
 						showToast(transId ? 'Transaction updated' : 'Transaction saved', 'success');
 					} catch (err) {
+						hideCoinLoader();
 						if (messageDiv) {
 							messageDiv.innerHTML = escapeHtml(err.message);
 							messageDiv.className = 'message error';
 						}
 						console.error('Save transaction error:', err);
 					} finally {
-						hideCoinLoader();
+						try { hideCoinLoader(); } catch(e) {}
 						if (submitBtn) {
 							submitBtn.disabled = false;
-							submitBtn.textContent = originalBtnText;
+							try { submitBtn.textContent = originalBtnText; } catch(e) { submitBtn.textContent = 'SAVE TRANSACTION'; }
 							submitBtn.style.backgroundColor = '';
 						}
 					}

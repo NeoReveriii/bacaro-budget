@@ -61,22 +61,24 @@
 
 .msg-bubble {
     max-width: 85%;
-    padding: 10px 14px;
-    font-size: 0.9em;
-    line-height: 1.4;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    padding: 12px 18px;
+    font-size: 0.95em;
+    line-height: 1.5;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    word-wrap: break-word;
+    border-radius: 20px; /* Base radius for top corners */
 }
 
 .ai-msg .msg-bubble {
     background: #f0f2f5;
     color: #333;
-    border-bottom-left-radius: 2px;
+    border-radius: 20px 20px 20px 4px;
 }
 
 .user-msg .msg-bubble {
     background: var(--primary-green);
     color: white;
-    border-bottom-right-radius: 2px;
+    border-radius: 20px 20px 4px 20px;
 }
 
 /* Input Area */

@@ -51,7 +51,7 @@ function processAndRenderContent(content) {
         // Append a canvas element and trigger the chart render logic
         const chartId = 'chart-' + Date.now() + Math.floor(Math.random() * 1000);
         finalHtml += `
-            <div class="chart-container" style="position: relative; height: 250px; width: 100%; margin-top: 15px; background: white; border-radius: 8px; padding: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+            <div class="chart-container" style="position: relative; height: 220px; width: 100%; box-sizing: border-box; margin-top: 15px;">
                 <canvas id="${chartId}"></canvas>
             </div>
         `;

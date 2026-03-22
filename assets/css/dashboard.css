@@ -1042,3 +1042,115 @@
 		.admin-box .auth-desc {
 			color: var(--primary-green);
 		}
+
+/* ==========================================================
+   MOBILE RESPONSIVENESS
+========================================================== */
+@media (max-width: 768px) {
+    /* Main Layout */
+    .main-app-card {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+        margin: 0;
+        box-shadow: none;
+        display: block; /* Let sidebar handle mobile placement */
+    }
+
+    #app-content {
+        width: 100vw;
+        border-radius: 0;
+        padding-bottom: 20px;
+    }
+
+    /* Sidebar as Mobile Off-Canvas Drawer */
+    .sidebar {
+        position: fixed;
+        left: -100%;
+        top: 0;
+        height: 100vh;
+        width: 280px;
+        z-index: 2001;
+        transition: left 0.3s ease;
+        border-radius: 0;
+        box-shadow: 2px 0 15px rgba(0,0,0,0.5);
+    }
+
+    .sidebar.open {
+        left: 0;
+    }
+
+    .drawer-overlay {
+        z-index: 2000;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+    }
+
+    /* Wallet Grid */
+    .wallet-grid {
+        grid-template-columns: 1fr;
+        padding: 15px;
+    }
+
+    .wallet-balance-card {
+        border-radius: 12px;
+        padding: 25px;
+        margin: 15px;
+    }
+
+    .balance-amount {
+        font-size: 2.5em;
+    }
+
+    /* Transaction List - Horizontal Scroll */
+    .transaction-list {
+        border-radius: 12px;
+        margin: 15px;
+        overflow-x: auto;
+    }
+
+    .transaction-row {
+        min-width: 650px; 
+    }
+
+    .wallet-history-section {
+        padding: 0 15px;
+    }
+
+    /* Modals - Full Screen Overlay on Mobile */
+    .modal-card, .transaction-modal-card {
+        width: 100%;
+        height: 100vh;
+        max-width: none;
+        border-radius: 0;
+        padding: 40px 20px;
+        justify-content: flex-start;
+        overflow-y: auto;
+        margin: 0;
+    }
+
+    .modal-close {
+        top: 15px;
+        right: 15px;
+        color: #888;
+    }
+
+    .transaction-modal-card .modal-close {
+        color: #333;
+    }
+
+    /* Form Layouts */
+    .modal-form-container .header {
+        margin-bottom: 25px;
+    }
+
+    .app-header {
+        padding: 15px 20px;
+    }
+}

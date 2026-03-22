@@ -482,3 +482,39 @@ input[type="number"] {
     0%, 100% { opacity: 0.5; transform: scale(0.98); color: var(--text-light); }
     50% { opacity: 1; transform: scale(1); color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 }
+
+/* ==========================================================
+   MOBILE RESPONSIVENESS
+========================================================== */
+@media (max-width: 768px) {
+    body {
+        padding: 0;
+        background-color: var(--dark-green);
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    h2.header {
+        font-size: 1.6em;
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        padding: 12px;
+        font-size: 0.95em;
+    }
+
+    .input-group select.floating-input {
+        font-size: 1em; /* Prevent iOS Safari auto-zoom on inputs */
+    }
+
+    input[type="text"], 
+    input[type="email"], 
+    input[type="password"], 
+    input[type="number"], 
+    input[type="tel"] {
+        font-size: 16px !important; /* Forces iOS to not zoom */
+    }
+}

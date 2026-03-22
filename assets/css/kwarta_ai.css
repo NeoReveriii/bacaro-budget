@@ -176,3 +176,36 @@
     transform: scale(1.15) rotate(5deg) !important;
     box-shadow: 0 4px 10px rgba(255, 100, 100, 0.2);
 }
+
+/* ==========================================================
+   MOBILE RESPONSIVENESS
+========================================================== */
+@media (max-width: 768px) {
+    .chat-container {
+        height: calc(100vh - 90px); /* Adjust for mobile header area */
+        margin: 10px 15px;
+        border-radius: 12px;
+    }
+    
+    .msg-bubble {
+        max-width: 90%; /* Chat bubbles take up more width on narrow screens */
+        padding: 12px 15px;
+    }
+    
+    .chat-header {
+        padding: 12px 20px;
+    }
+    
+    .chat-input {
+        padding: 10px 15px;
+    }
+    
+    .chip {
+        padding: 6px 12px;
+        font-size: 0.8em;
+    }
+    
+    .dummy-graph-mini {
+        height: 150px;
+    }
+}

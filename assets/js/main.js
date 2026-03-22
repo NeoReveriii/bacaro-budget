@@ -190,6 +190,15 @@
 					
 					showToast('Wallet deleted successfully');
 					await loadWallets();
+					
+					// If we are currently viewing the details of the wallet we just deleted, go back
+					const detailsView = document.getElementById('view-wallet-details');
+					if (detailsView && detailsView.style.display !== 'none') {
+						const currentDetailName = document.getElementById('detail-wallet-name').innerText;
+						if (currentDetailName === name) {
+							showView('wallets', document.querySelector('[onclick*="wallets"]'));
+						}
+					}
 				} catch (err) {
 					showToast(err.message, 'error');
 				} finally {

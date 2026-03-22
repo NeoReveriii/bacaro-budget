@@ -153,11 +153,12 @@
 			document.getElementById('profile-username').textContent = userData.username;
 			document.getElementById('profile-email').textContent = userData.email;
 			document.getElementById('profile-phone').textContent = userData.pnumber || 'Not provided';
-			const createdDate = new Date(userData.created_at || userData.createdat);
+			
+			// Use OR (||) to catch both naming styles
+			const createdDate = new Date(userData.createdat || userData.created_at);
 			const formattedDate = createdDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-			const createdEl =
-				document.getElementById('profile-createdat') ||
-				document.getElementById('profile-createdAt');
+			
+			const createdEl = document.getElementById('profile-createdat') || document.getElementById('profile-createdAt');
 			if (createdEl) createdEl.textContent = formattedDate;
 		}
 
@@ -439,7 +440,7 @@
 						const data = await response.json();
 
 						if (response.ok) {
-							const createdDate = new Date(data.data.created_at);
+							const createdDate = new Date(data.data.createdat);
 							const formattedDate = createdDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 							messageDiv.innerHTML = `✓ Account created on ${formattedDate}! Redirecting to login...`;
 							messageDiv.className = 'message success';

@@ -877,6 +877,14 @@
 					if (!amountStr) errors.push('Amount is required');
 					else if (!Number.isFinite(amount)) errors.push('Amount must be a number');
 
+					// Check for sufficient funds if it's an Expense
+					if (type === 'Expense') {
+						const selectedWallet = window.wallets.find(w => w.name === walletType);
+						if (selectedWallet && Number(selectedWallet.calculated_balance) < amount) {
+							errors.push(`Insufficient funds in "${walletType}" (Available: ${formatCurrency(selectedWallet.calculated_balance)})`);
+						}
+					}
+
 					if (errors.length > 0) {
 						if (messageDiv) {
 							messageDiv.innerHTML = escapeHtml(errors[0]);

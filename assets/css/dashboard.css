@@ -106,15 +106,44 @@
         .account-pfp-placeholder {
             width: 40px;
             height: 40px;
-            background-color: var(--text-light);
+            background: linear-gradient(135deg, var(--primary-green), #4a7c3f);
             border-radius: 50%;
-            border: 2px solid var(--primary-green);
+            border: 2px solid rgba(255,255,255,0.3);
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.85em;
+            letter-spacing: 0.5px;
+            user-select: none;
         }
 
         .account-pfp-placeholder:hover {
             transform: scale(1.1);
+            box-shadow: 0 0 12px rgba(89, 133, 57, 0.5);
+        }
+
+        .header-signin-btn {
+            background: transparent;
+            color: var(--white);
+            border: 1.5px solid rgba(255,255,255,0.4);
+            padding: 7px 20px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .header-signin-btn:hover {
+            background: var(--primary-green);
+            border-color: var(--primary-green);
+            box-shadow: 0 0 15px rgba(89, 133, 57, 0.4);
+            transform: translateY(-1px);
         }
 		
 		.reports-dropdown-container {

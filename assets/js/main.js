@@ -197,6 +197,8 @@
 
 			const initials = userData.username.substring(0, 2).toUpperCase();
 			document.getElementById('profile-initials').textContent = initials;
+			const headerInitials = document.getElementById('header-initials');
+			if (headerInitials) headerInitials.textContent = initials;
 			document.getElementById('profile-username').textContent = userData.username;
 			document.getElementById('profile-email').textContent = userData.email;
 			document.getElementById('profile-phone').textContent = userData.pnumber || 'Not provided';
@@ -625,6 +627,7 @@
 					e.preventDefault();
 					
 					const submitBtn = transactionForm.querySelector('button[type="submit"]');
+					const originalBtnText = submitBtn ? submitBtn.textContent : 'SAVE';
 					const isEdit = !!document.getElementById('trans-id')?.value;
 					if (submitBtn) submitBtn.disabled = true;
 					showCoinLoader(isEdit ? 'UPDATING RECORD...' : 'SAVING TRANSACTION...');
@@ -711,6 +714,7 @@
 						}
 						console.error('Save transaction error:', err);
 					} finally {
+						hideCoinLoader();
 						if (submitBtn) {
 							submitBtn.disabled = false;
 							submitBtn.textContent = originalBtnText;

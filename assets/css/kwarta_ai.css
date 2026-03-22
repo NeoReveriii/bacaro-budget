@@ -1,5 +1,9 @@
 /* assets/css/kwarta-ai.css */
 
+#kwarta-ai-interface {
+    height: 100%;
+}
+
 .ai-container {
     height: 100%;
     width: 100%;

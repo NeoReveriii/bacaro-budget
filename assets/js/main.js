@@ -238,6 +238,15 @@
 			// Filter transactions
 			const listEl = document.querySelector('#main-wallet-details .transaction-list');
 			const filtered = (window.currentTransactions || []).filter(t => t.wallet_type === name);
+			
+			// Handle delete button visibility in details
+			const walletObj = window.wallets.find(w => w.name === name);
+			const btnDel = document.getElementById('btn-delete-wallet-detail');
+			if (btnDel && walletObj) {
+				btnDel.style.display = (filtered.length === 0) ? 'inline-block' : 'none';
+				btnDel.onclick = () => handleDeleteWallet(walletObj.wallet_id, name);
+			}
+
 			if (filtered.length === 0) {
 				listEl.innerHTML = `
 					<div class="transaction-row header-row">

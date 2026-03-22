@@ -1067,6 +1067,25 @@
 			color: white;
 		}
 
+		.btn-delete-wallet {
+			background: none;
+			border: 1px solid #ff7675;
+			color: #ff7675;
+			padding: 5px 10px;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 1.1em;
+			margin-left: 10px;
+			transition: all 0.2s;
+			vertical-align: middle;
+		}
+
+		.btn-delete-wallet:hover {
+			background: #ff7675;
+			color: white;
+			transform: scale(1.1);
+		}
+
 		/* Balance Card */
 		.wallet-balance-card {
 			background: white;

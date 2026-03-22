@@ -8,21 +8,15 @@ const AUTH_SECRET = process.env.AUTH_SECRET;
 function verifyToken(token) {
   try {
     if (!AUTH_SECRET) {
-      // Fallback for unsigned locally encoded token
       const parts = token.split('.');
       if (parts.length === 1) {
-        const decoded = JSON.parse(Buffer.from(token, 'base64').toString('utf-8'));
-        return decoded;
+        return JSON.parse(Buffer.from(token, 'base64').toString('utf-8'));
       }
     }
-    
-    // Signed token
     const [body, sig] = token.split('.');
     if (!body || !sig) return null;
-    
     const expectedSig = crypto.createHmac('sha256', AUTH_SECRET).update(body).digest('hex');
     if (sig !== expectedSig) return null;
-    
     return JSON.parse(Buffer.from(body, 'base64').toString('utf-8'));
   } catch (err) {
     return null;
@@ -32,7 +26,6 @@ function verifyToken(token) {
 export default async function handler(req, res) {
   const { method } = req;
   
-  // Verify user token
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -46,7 +39,6 @@ export default async function handler(req, res) {
 
   try {
     if (method === 'GET') {
-      // Get chat history
       const history = await sql`
         SELECT role, content, created_at
         FROM ai_chats
@@ -55,47 +47,72 @@ export default async function handler(req, res) {
       `;
       return res.status(200).json({ success: true, data: history });
       
+    } else if (method === 'DELETE') {
+      await sql`DELETE FROM ai_chats WHERE acc_id = ${acc_id}`;
+      return res.status(200).json({ success: true, message: 'Chat cleared' });
+
     } else if (method === 'POST') {
-      // Handle new message
       const { message } = req.body;
       if (!message || message.trim() === '') {
         return res.status(400).json({ error: 'Message is required' });
       }
 
-      // Save user message to database
       await sql`
         INSERT INTO ai_chats (acc_id, role, content)
         VALUES (${acc_id}, 'user', ${message})
       `;
 
-      // Fetch history for context (limit to last 20 messages to save tokens)
+      // Fetch user's recent transactions for better context
+      let transactionsText = "No recent transactions found.";
+      try {
+        const trans = await sql`
+          SELECT type, amount, description, wallet_type, dateoftrans 
+          FROM transactions 
+          WHERE acc_id = ${acc_id} 
+          ORDER BY dateoftrans DESC 
+          LIMIT 30
+        `;
+        if (trans.length > 0) {
+          transactionsText = JSON.stringify(trans.map(t => ({
+            date: t.dateoftrans,
+            type: t.type,
+            amount: t.amount,
+            desc: t.description,
+            wallet: t.wallet_type
+          })));
+        }
+      } catch(e) { /* Ignore trans errors if table doesn't exist yet */ }
+
+      // System Prompt
+      const systemPrompt = {
+        role: 'system',
+        content: `You are Kwarta AI, a strict financial assistant bot. You must ONLY answer questions related to finance, budgeting, money management, investments, economics, or the user's transaction data. If the user asks about anything else, politely decline and steer the conversation back to finance. Be helpful, concise, and friendly. You MUST use Markdown for formatting (lists, bolding, etc.).
+
+Here is the user's latest transaction data:
+${transactionsText}
+
+IMPORTANT INSTRUCTION FOR UI VISUALS:
+If the user explicitly asks for a visual summary, graph, chart, or visual breakdown of their expenses/spending, you must include the exact string: "[CHART]" at the very end of your response. This will trigger the UI to render a beautiful Pie Chart. Only use it when a visual graph makes sense.`
+      };
+
+      // Fetch history for context
       const history = await sql`
         SELECT role, content
         FROM ai_chats
         WHERE acc_id = ${acc_id}
         ORDER BY chat_id DESC
-        LIMIT 20
+        LIMIT 15
       `;
-
-      // Reverse history to chronological order
       const apiMessages = history.reverse().map(row => ({
         role: row.role,
         content: row.content
       }));
 
-      // System Prompt
-      const systemPrompt = {
-        role: 'system',
-        content: "You are Kwarta AI, a strict financial assistant bot. You must ONLY answer questions related to finance, budgeting, money management, investments, economics, or the user's transaction data. If the user asks about anything else, politely decline and steer the conversation back to finance. Be helpful, concise, and friendly."
-      };
-
-      // Call Deepseek API
       const apiKey = process.env.DEEPSEEK_API_KEY ? process.env.DEEPSEEK_API_KEY.replace(/^"|"$/g, '') : null;
-      if (!apiKey) {
-        return res.status(500).json({ error: 'DEEPSEEK_API_KEY is missing' });
-      }
+      if (!apiKey) return res.status(500).json({ error: 'API key missing' });
 
-      const response = await fetch('https://api.deepseek.com/chat/completions', {
+      // Call API with STREAMING enabled
+      const fetchRes = await fetch('https://api.deepseek.com/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -105,35 +122,62 @@ export default async function handler(req, res) {
           model: 'deepseek-chat',
           messages: [systemPrompt, ...apiMessages],
           temperature: 0.7,
-          max_tokens: 1000
+          stream: true
         })
       });
 
-      if (!response.ok) {
-        const errText = await response.text();
-        console.error('Deepseek API error:', errText);
+      if (!fetchRes.ok) {
         return res.status(502).json({ error: 'AI provider error' });
       }
 
-      const data = await response.json();
-      const aiReply = data.choices[0].message.content;
-
-      // Save AI message to database
-      await sql`
-        INSERT INTO ai_chats (acc_id, role, content)
-        VALUES (${acc_id}, 'assistant', ${aiReply})
-      `;
-
-      return res.status(200).json({
-        success: true,
-        reply: aiReply
+      // Stream the response back via SSE
+      res.writeHead(200, {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache, no-transform',
+        'Connection': 'keep-alive'
       });
 
+      const reader = fetchRes.body.getReader();
+      const decoder = new TextDecoder("utf-8");
+      let fullResponse = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        
+        const chunkStr = decoder.decode(value, { stream: true });
+        res.write(chunkStr);
+
+        // Parse chunks to save to DB
+        const lines = chunkStr.split('\n');
+        for (const line of lines) {
+          if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+            try {
+              const parsed = JSON.parse(line.slice(6));
+              if (parsed.choices[0].delta.content) {
+                fullResponse += parsed.choices[0].delta.content;
+              }
+            } catch(e) {}
+          }
+        }
+      }
+      res.write('data: [DONE]\n\n');
+      res.end();
+
+      // Save complete AI message to database
+      if (fullResponse) {
+        await sql`
+          INSERT INTO ai_chats (acc_id, role, content)
+          VALUES (${acc_id}, 'assistant', ${fullResponse})
+        `;
+      }
     } else {
       res.status(405).json({ error: 'Method not allowed' });
     }
   } catch (error) {
     console.error('Chat error:', error);
-    res.status(500).json({ error: error.message || 'Internal server error' });
+    if (!res.headersSent) {
+      res.status(500).json({ error: error.message || 'Internal server error' });
+    }
   }
 }

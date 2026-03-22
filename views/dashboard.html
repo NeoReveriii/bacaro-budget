@@ -145,9 +145,13 @@
 			
 			<div id="view-wallets" class="main-view" style="display: none;">
 				<main id="main-wallets">
-					<div class="wallet-actions-bar" style="display: flex; gap: 10px; margin-bottom: 20px;">
-						<button class="btn-primary" onclick="openAddWalletModal()">+ Add Wallet</button>
-						<button class="btn-secondary" onclick="openTransferModal()">Transfer Funds</button>
+					<div class="wallet-actions-bar">
+						<button class="btn-wallet-action add" onclick="openAddWalletModal()">
+							<span class="icon">⊕</span> Add New Wallet
+						</button>
+						<button class="btn-wallet-action transfer" onclick="openTransferModal()">
+							<span class="icon">⇄</span> Transfer Funds
+						</button>
 					</div>
 					<div class="wallet-grid" id="wallet-grid-container">
 						<!-- Wallets will be rendered here dynamically -->

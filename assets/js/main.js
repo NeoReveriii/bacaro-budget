@@ -131,9 +131,13 @@
 		}
 
 		function checkAuthenticationForUserPage() {
-			if (window.location.pathname.includes('BBMAI_USER')) {
+			// Check if we are on any page inside the views folder or the dashboard
+			const isUserPage = window.location.pathname.includes('dashboard') || 
+												window.location.pathname.includes('views');
+												
+			if (isUserPage) {
 				if (!isAuthenticated()) {
-					window.location.href = 'BBMAI_GUEST.html';
+					window.location.href = '/'; // Redirect to home/login
 				} else {
 					loadUserProfileData();
 				}
@@ -371,7 +375,9 @@
 							loginForm.reset();
 
 							setTimeout(() => {
-								window.location.href = 'BBMAI_USER.html';
+								window.location.href = '/dashboard'; // If using your vercel.json rewrite
+								// OR 
+								window.location.href = '/views/dashboard.html'; // Direct path
 							}, 1500);
 						} else {
 							messageDiv.innerHTML = data.error || 'An error occurred';

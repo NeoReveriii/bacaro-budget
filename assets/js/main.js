@@ -20,8 +20,12 @@
 				        overlay.classList.remove('active');
 				    }
 			    } else {
-				    accountSidebar.classList.toggle('open');
-				    overlay.classList.add('active');
+				    const isOpen = accountSidebar.classList.toggle('open');
+                    if (isOpen) {
+                        overlay.classList.add('active');
+                    } else if (!document.getElementById('main-sidebar')?.classList.contains('open')) {
+                        overlay.classList.remove('active');
+                    }
 			    }
 			}
 		}
@@ -37,8 +41,12 @@
 				        overlay.classList.remove('active');
 				    }
 			    } else {
-				    mainSidebar.classList.toggle('open');
-				    overlay.classList.add('active');
+				    const isOpen = mainSidebar.classList.toggle('open');
+                    if (isOpen) {
+                        overlay.classList.add('active');
+                    } else if (!document.getElementById('account-sidebar')?.classList.contains('open')) {
+                        overlay.classList.remove('active');
+                    }
 			    }
 			}
 		}

@@ -677,11 +677,13 @@
 			border-radius: 0 15px 15px 0;
 			padding: 10px;
 			box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            overflow-x: auto;
 		}
 
 		.transaction-row {
 			display: grid;
-			grid-template-columns: 0.5fr 2fr 1.5fr 1fr 1.5fr 1.2fr 1.2fr;
+			grid-template-columns: 0.5fr 2.5fr 1.5fr 1fr 1.2fr 1.2fr 1.2fr;
+            min-width: 800px;
 			padding: 15px 20px;
 			align-items: center;
 			border-bottom: 1px solid rgba(0,0,0,0.05);

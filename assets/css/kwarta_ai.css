@@ -6,10 +6,12 @@
     left: 0;
     right: 0;
     bottom: 0;
-    height: 100dvh !important; /* Dynamic viewport height */
+    height: 100dvh !important;
     display: none; /* Controlled by JS showView */
     flex-direction: column;
     overflow: hidden !important;
+    padding: 0 !important; /* Neutralize #main-dashboard padding */
+    margin: 0 !important;
 }
 
 #view-ai[style*="display: block"] {
@@ -39,7 +41,7 @@
     display: flex;
     flex-direction: column;
     border-radius: 0; 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    box-shadow: none; /* Remove shadow to prevent weird gaps at edges */
     overflow: hidden;
 }
 
@@ -111,11 +113,13 @@
 /* Input Area */
 .chat-input-area {
     padding: 20px 30px;
-    padding-bottom: calc(20px + env(safe-area-inset-bottom)); /* Dynamic breathing room + safe area */
+    /* Use padding-bottom for visual breathing room while staying 'glued' to edge */
+    padding-bottom: calc(20px + env(safe-area-inset-bottom)); 
     background: white;
     border-top: 1px solid #f0f0f0;
     flex-shrink: 0; /* Input area stays fixed at bottom */
-    position: relative;
+    position: sticky;
+    bottom: 0;
     z-index: 10;
     width: 100%;
     box-sizing: border-box;

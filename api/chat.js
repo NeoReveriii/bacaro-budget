@@ -68,7 +68,7 @@ export default async function handler(req, res) {
         const trans = await sql`
           SELECT type, amount, description, wallet_type, dateoftrans 
           FROM transactions 
-          WHERE acc_id = ${acc_id} 
+          WHERE account_id = ${acc_id} 
           ORDER BY dateoftrans DESC 
           LIMIT 30
         `;

@@ -1,11 +1,14 @@
-        // --- Dashboard Tilt Logic ---
-        const mainAppCard = document.querySelector('.main-app-card');
-        const trackingArea = document.getElementById('app-content');
+		// --- Dashboard Tilt Logic ---
+		const mainAppCard = document.querySelector('.main-app-card');
+		const trackingArea = document.getElementById('app-content');
 
-        trackingArea.addEventListener('mouseleave', () => {
-            mainAppCard.style.boxShadow = '0 10px 30px rgba(0,0,0,0.2)';
-        });
-        
+		// Only run this if the elements actually exist on the current page
+		if (trackingArea && mainAppCard) {
+				trackingArea.addEventListener('mouseleave', () => {
+						mainAppCard.style.boxShadow = '0 10px 30px rgba(0,0,0,0.2)';
+				});
+		}
+						
 		function toggleAccountSidebar(forceState) {
 			const sidebar = document.getElementById('account-sidebar');
 			const overlay = document.getElementById('drawer-overlay');
@@ -131,13 +134,13 @@
 		}
 
 		function checkAuthenticationForUserPage() {
-			// Check if we are on any page inside the views folder or the dashboard
-			const isUserPage = window.location.pathname.includes('dashboard') || 
-												window.location.pathname.includes('views');
+			const path = window.location.pathname;
+			const isUserPage = (path.includes('dashboard') || path.includes('views')) 
+												&& !path.includes('guest.html');
 												
 			if (isUserPage) {
 				if (!isAuthenticated()) {
-					window.location.href = '/'; // Redirect to home/login
+					window.location.href = '/'; 
 				} else {
 					loadUserProfileData();
 				}

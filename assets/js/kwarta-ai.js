@@ -5,8 +5,14 @@ async function loadAIComponent() {
     if (!aiContainer) return;
 
     try {
-        const response = await fetch('/assets/components/kwarta-ai.html');
-        const html = await response.text();
+        const response = await fetch('/assets/components/kwarta-ai.html?v=3');
+        let html = await response.text();
+        
+        // Dynamically inject user name
+        const userData = typeof getUserData === 'function' ? getUserData() : null;
+        const userName = userData ? userData.username : 'there';
+        html = html.replace('{User}', userName);
+        
         aiContainer.innerHTML = html;
         console.log("Kwarta AI: Component HTML Loaded");
         

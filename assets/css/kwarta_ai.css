@@ -1,10 +1,19 @@
 /* assets/css/kwarta-ai.css */
 
 #view-ai {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     height: 100% !important;
-    display: flex !important; /* Overrides the 'block' from showView() */
+    display: none; /* Controlled by JS showView */
     flex-direction: column;
-    overflow: hidden !important; /* Prevent main-content-area from scrolling this view */
+    overflow: hidden !important;
+}
+
+#view-ai[style*="display: block"] {
+    display: flex !important;
 }
 
 #kwarta-ai-interface {
@@ -12,10 +21,11 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .ai-container {
-    flex-grow: 1;
+    height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -23,8 +33,8 @@
 }
 
 .chat-window {
+    flex-grow: 1;
     width: 100%;
-    height: 100%;
     background: white;
     display: flex;
     flex-direction: column;
@@ -38,6 +48,7 @@
     background: var(--dark-green);
     color: white;
     flex-shrink: 0;
+    z-index: 10;
 }
 
 .chat-header h3 {
@@ -103,6 +114,8 @@
     background: white;
     border-top: 1px solid #eee;
     flex-shrink: 0; /* Input area stays fixed at bottom */
+    position: relative;
+    z-index: 10;
 }
 
 .prompt-chips {

@@ -10,14 +10,36 @@
 		}
 						
 		function toggleAccountSidebar(forceState) {
-			const sidebar = document.getElementById('account-sidebar');
+			const accountSidebar = document.getElementById('account-sidebar');
 			const overlay = document.getElementById('drawer-overlay');
-			if (forceState === false) {
-				sidebar.classList.remove('open');
-				overlay.classList.remove('active');
-			} else {
-				sidebar.classList.toggle('open');
-				overlay.classList.toggle('active');
+			
+			if (accountSidebar) {
+			    if (forceState === false) {
+				    accountSidebar.classList.remove('open');
+				    if (!document.getElementById('main-sidebar')?.classList.contains('open')) {
+				        overlay.classList.remove('active');
+				    }
+			    } else {
+				    accountSidebar.classList.toggle('open');
+				    overlay.classList.add('active');
+			    }
+			}
+		}
+
+		function toggleMainSidebar(forceState) {
+			const mainSidebar = document.getElementById('main-sidebar');
+			const overlay = document.getElementById('drawer-overlay');
+			
+			if (mainSidebar) {
+			    if (forceState === false) {
+				    mainSidebar.classList.remove('open');
+				    if (!document.getElementById('account-sidebar')?.classList.contains('open')) {
+				        overlay.classList.remove('active');
+				    }
+			    } else {
+				    mainSidebar.classList.toggle('open');
+				    overlay.classList.add('active');
+			    }
 			}
 		}
 		
@@ -25,13 +47,21 @@
 			document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
 		}
 		
-		function openLoginModal() { closeAllModals(); toggleAccountSidebar(false); document.getElementById('login-modal').classList.add('active'); }
-		function openSignupModal() { closeAllModals(); document.getElementById('signup-modal').classList.add('active'); }
-		function openForgotModal() { closeAllModals(); document.getElementById('forgot-modal').classList.add('active'); }
+		function openLoginModal() { 
+            closeAllModals(); 
+            toggleAccountSidebar(false); 
+            toggleMainSidebar(false);
+            document.getElementById('login-modal').classList.add('active'); 
+        }
+		function openSignupModal() { closeAllModals(); toggleAccountSidebar(false); toggleMainSidebar(false); document.getElementById('signup-modal').classList.add('active'); }
+		function openForgotModal() { closeAllModals(); toggleAccountSidebar(false); toggleMainSidebar(false); document.getElementById('forgot-modal').classList.add('active'); }
 
 		window.onclick = function(event) {
 			if (event.target.classList.contains('modal-overlay')) closeAllModals();
-			if (event.target.id === 'drawer-overlay') toggleAccountSidebar(false);
+			if (event.target.id === 'drawer-overlay') {
+                toggleAccountSidebar(false);
+                toggleMainSidebar(false);
+            }
 		}
 		
 		document.querySelectorAll('.modal-overlay').forEach(overlay => {

@@ -1,106 +1,148 @@
-/* --- Kwarta AI View Container --- */
+/* assets/css/kwarta-ai.css */
+
 .ai-container {
+    height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
+}
+
+.chat-window {
+    width: 100%;
     height: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: white;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     overflow: hidden;
 }
 
-/* --- Chat Header --- */
-.ai-header {
-    padding: 20px;
+.chat-header {
+    padding: 0 20px;
     background: var(--dark-green);
     color: white;
-    display: flex;
-    align-items: center;
-    gap: 15px;
 }
 
-.ai-status-dot {
-    width: 10px;
-    height: 10px;
-    background: #2ecc71;
-    border-radius: 50%;
-    box-shadow: 0 0 10px #2ecc71;
+.chat-header h3 {
+    font-size: 1.2em;
+    padding-bottom: 0px;
 }
 
-/* --- Messages Area --- */
-.ai-messages-display {
+.chat-header p {
+    font-size: 0.9em;
+    padding-top: 0px;
+}
+
+.chat-header h3 span {
+    font-size: 0.8em;
+    color: #2ecc71;
+    margin-left: 10px;
+}
+
+.chat-messages {
     flex-grow: 1;
-    padding: 25px;
+    padding: 30px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
+    background-color: #fcfcfc;
 }
 
-.chat-bubble {
-    max-width: 75%;
-    padding: 12px 18px;
-    border-radius: 15px;
-    font-size: 0.95em;
-    line-height: 1.4;
-    animation: fadeIn 0.3s ease-out;
+/* Chat Bubbles */
+.msg { display: flex; width: 100%; }
+.ai-msg { justify-content: flex-start; }
+.user-msg { justify-content: flex-end; }
+
+.msg-bubble {
+    max-width: 85%;
+    padding: 15px 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
 }
 
-.chat-bubble.ai {
-    align-self: flex-start;
-    background: var(--white);
-    color: var(--dark-green);
+.ai-msg .msg-bubble {
+    background: #f0f2f5;
+    color: #333;
     border-bottom-left-radius: 2px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
-.chat-bubble.user {
-    align-self: flex-end;
+.user-msg .msg-bubble {
     background: var(--primary-green);
     color: white;
     border-bottom-right-radius: 2px;
 }
 
-/* --- Input Area --- */
-.ai-input-area {
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.5);
+/* Input Area */
+.chat-input-area {
+    padding: 25px 30px;
+    background: white;
+    border-top: 1px solid #eee;
+}
+
+.prompt-chips {
     display: flex;
     gap: 10px;
-    border-top: 1px solid rgba(0,0,0,0.05);
+    margin-bottom: 15px;
 }
 
-.ai-input-area input {
+.chip {
+    background: #e8f5e9;
+    border: 1px solid var(--primary-green);
+    color: var(--dark-green);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    cursor: pointer;
+}
+
+.input-wrapper {
+    display: flex;
+    gap: 10px;
+}
+
+.input-wrapper input {
     flex-grow: 1;
-    padding: 12px 20px;
-    border: 1px solid rgba(0,0,0,0.1);
-    border-radius: 30px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
     outline: none;
-    transition: border-color 0.3s;
 }
 
-.ai-input-area input:focus {
-    border-color: var(--primary-green);
-}
-
-.btn-send-ai {
-    background: var(--primary-green);
+.btn-send {
+    background-color: var(--dark-green);
     color: white;
     border: none;
     width: 45px;
     height: 45px;
     border-radius: 50%;
-    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.2s;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.btn-send-ai:hover {
+.btn-send:hover {
+    background-color: var(--primary-green);
     transform: scale(1.1);
-    background: var(--dark-green);
+    box-shadow: 0 6px 15px rgba(46, 204, 113, 0.3);
+}
+
+.btn-send:active {
+    transform: scale(0.95);
+}
+
+.dummy-graph-mini {
+    margin-top: 10px;
+    height: 100px;
+    background: rgba(0,0,0,0.05);
+    border: 1px dashed #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
 }

@@ -52,7 +52,11 @@
 			if (e.target.classList.contains('password-toggle')) {
 				const input = e.target.closest('.password-input-wrapper').querySelector('input');
 				input.type = input.type === 'password' ? 'text' : 'password';
-				e.target.style.color = input.type === 'text' ? 'white' : 'var(--primary-green)';
+				e.target.innerHTML = input.type === 'text' ? '👁' : '⛉';
+				e.target.style.color = input.type === 'text' ? 'var(--primary-green)' : 'var(--text-light)';
+				
+				e.target.style.transform = 'scale(1.4)';
+				setTimeout(() => e.target.style.transform = 'scale(1)', 150);
 			}
 		});
 		
@@ -102,9 +106,7 @@
 		}
 
 		function togglePasswordVisibility(element) {
-			const input = element.closest('.password-input-wrapper').querySelector('input');
-			input.type = input.type === 'password' ? 'text' : 'password';
-			element.style.color = input.type === 'text' ? 'white' : 'var(--primary-green)';
+			// Deprecated - handled by global click listener
 		}
 
 		function getToken() {

@@ -578,6 +578,65 @@
 			position: fixed;
 			right: 18px;
 			bottom: 18px;
+
+/* --- New Transaction Modal White Theme Override --- */
+.transaction-modal-card {
+    background-color: #ffffff;
+    min-height: 480px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+.transaction-modal-card .header {
+    color: var(--dark-green);
+}
+.transaction-modal-card .floating-input {
+    color: #222;
+    border-bottom: 2px solid #ccc;
+}
+.transaction-modal-card .floating-input:focus {
+    border-bottom-color: var(--primary-green);
+}
+.transaction-modal-card .floating-label {
+    color: #666;
+}
+.transaction-modal-card .custom-select-trigger {
+    color: #222;
+    border-bottom: 2px solid #ccc;
+}
+.transaction-modal-card .custom-select-wrapper:focus .custom-select-trigger,
+.transaction-modal-card .custom-select-wrapper.open .custom-select-trigger {
+    border-bottom-color: var(--primary-green);
+}
+.transaction-modal-card .modal-close {
+    color: var(--dark-green);
+    opacity: 0.5;
+}
+.transaction-modal-card .modal-close:hover {
+    color: var(--primary-green);
+    opacity: 1;
+}
+.transaction-modal-card .input-group select.floating-input {
+    border-bottom: 2px solid #ccc !important;
+}
+.transaction-modal-card .custom-select-options {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+.transaction-modal-card .custom-option {
+    color: #444;
+    border-bottom: 1px solid #f2f2f2;
+}
+.transaction-modal-card .custom-option:hover {
+    background: #f8f9fa;
+    color: var(--primary-green);
+}
+.transaction-modal-card .custom-option.selected {
+    background: rgba(89, 133, 57, 0.1);
+    color: var(--primary-green);
+}
+.transaction-modal-card .input-group {
+    --select-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 20 20'%3E%3Cpath fill='%23666666' d='M5.6 7.6a1 1 0 0 1 1.4 0L10 10.6l3-3a1 1 0 1 1 1.4 1.4l-3.7 3.7a1 1 0 0 1-1.4 0L5.6 9a1 1 0 0 1 0-1.4Z'/%3E%3C/svg%3E");
+}
 			z-index: 3000;
 			max-width: min(360px, calc(100vw - 36px));
 			padding: 12px 14px;

@@ -115,7 +115,8 @@ input[type="number"] {
 }
         
 .floating-input { 
-    width: calc(100% - 25px); 
+    width: 100%; 
+    box-sizing: border-box;
     padding: 5px 0; border: none; 
     border-bottom: 2px solid var(--primary-green); background: transparent; 
     color: var(--white); font-size: 1.1em; outline: none; 

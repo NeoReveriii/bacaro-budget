@@ -234,7 +234,7 @@
             flex-direction: column;
         }
 
-        #main-dashboard {
+        #main-dashboard, #main-transactions, #main-wallets, #main-wallet-details {
             flex-grow: 1; 
             background-color: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(15px);
@@ -246,7 +246,7 @@
 		.dashboard-overview {
 			display: flex;
 			flex-direction: column;
-			gap: 20px;
+			gap: 25px;
 			margin-top: 10px;
 		}
 		
@@ -255,33 +255,39 @@
 			padding: 25px;
 			border-radius: 15px;
 			box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-			border: 1px solid rgba(0,0,0,0.05);
-			transition: transform 0.3s ease;
+			border: 1px solid rgba(0,0,0,0.08);
+			transition: all 0.3s ease;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			min-height: 140px;
 		}
 
 		.stat-card:hover {
 			transform: translateY(-5px);
+			box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 		}
 
 		.stat-label {
-			font-size: 0.9em;
+			font-size: 0.85em;
 			font-weight: 700;
 			color: #555555;
 			text-transform: uppercase;
-			letter-spacing: 1px;
-			margin-bottom: 10px;
-			opacity: 0.5;
+			letter-spacing: 1.2px;
+			margin-bottom: 12px;
+			opacity: 0.6;
 		}
 		
 		.stat-card.wallet-card .stat-label {
-			color: white;
-			opacity: 0.6;
+			color: var(--primary-green);
+			opacity: 0.8;
 		}
 
 		.stat-value {
 			font-size: 2.2em;
-			font-weight: 600;
+			font-weight: 700;
 			color: var(--dark-green);
+			letter-spacing: -1px;
 		}
 
 		/* Wallet Card Special Styling */
@@ -290,18 +296,12 @@
 			color: white;
 		}
 
-		.wallet-card .stat-label { color: var(--primary-green); }
-		.wallet-card .stat-value { color: white; font-size: 3em; }
-		.wallet-card .stat-meta {
-			margin-top: 15px;
-			font-size: 0.85em;
-			opacity: 0.7;
-		}
+		.wallet-card .stat-value { color: white; }
 
-		/* Grid for the sub-stats */
+		/* Grid for all stats */
 		.stat-grid {
 			display: grid;
-			grid-template-columns: repeat(3, 1fr);
+			grid-template-columns: repeat(4, 1fr);
 			gap: 20px;
 		}
 
@@ -711,7 +711,7 @@
 		/* --- Transactions Page Styles --- */
 		.transaction-list {
 			background: white;
-			border-radius: 0 15px 15px 0;
+			border-radius: 15px;
 			padding: 10px;
 			box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             overflow-x: auto;
@@ -1037,7 +1037,7 @@
 		.wallet-balance-card {
 			background: white;
 			padding: 40px;
-			border-radius: 0 15px 15px 0;
+			border-radius: 15px;
 			margin-bottom: 30px;
 			box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 			text-align: center;

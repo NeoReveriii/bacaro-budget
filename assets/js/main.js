@@ -571,6 +571,10 @@
 					const type = document.getElementById('wallet-type').value;
 					const initial_balance = document.getElementById('wallet-initial-balance').value;
 					
+					const messageDiv = document.getElementById('add-wallet-message');
+					messageDiv.innerHTML = '';
+					messageDiv.className = 'message';
+
 					showCoinLoader('SAVING WALLET...');
 					try {
 						const res = await fetch('/api/wallets', {
@@ -578,15 +582,20 @@
 							headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
 							body: JSON.stringify({ name, type, initial_balance })
 						});
-						if (!res.ok) throw new Error('Failed to create wallet');
+						
+						const payload = await readResponsePayload(res);
+						if (!res.ok) {
+							throw new Error(getErrorMessage(payload, 'Failed to create wallet'));
+						}
 						
 						addWalletForm.reset();
 						closeAllModals();
 						showToast('Wallet created successfully');
 						await loadWallets();
 					} catch (err) {
-						document.getElementById('add-wallet-message').innerHTML = escapeHtml(err.message);
-						document.getElementById('add-wallet-message').className = 'message error';
+						messageDiv.innerHTML = escapeHtml(err.message);
+						messageDiv.className = 'message error';
+						console.error('Add wallet error:', err);
 					} finally {
 						hideCoinLoader();
 					}

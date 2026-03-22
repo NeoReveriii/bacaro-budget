@@ -1,21 +1,38 @@
 /* assets/css/kwarta-ai.css */
 
 #view-ai {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 100dvh !important;
+    position: fixed; /* Fixed to viewport to ignore parent padding/scrolling */
+    top: 70px; /* Match header height */
+    left: 320px; /* Match sidebar width + padding */
+    right: 20px; /* Match app-content padding */
+    bottom: 20px; /* Match app-content padding */
+    height: auto !important;
     display: none; /* Controlled by JS showView */
     flex-direction: column;
     overflow: hidden !important;
-    padding: 0 !important; /* Neutralize #main-dashboard padding */
-    margin: 0 !important;
+    z-index: 100;
+    background: white;
+    border-radius: 12px;
+}
+
+/* On mobile, take up the whole screen area below header */
+@media (max-width: 768px) {
+    #view-ai {
+        top: 70px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 0;
+    }
 }
 
 #view-ai[style*="display: block"] {
     display: flex !important;
+}
+
+/* Hide parent scrollbar when AI is active to prevent the 'gap' reveal */
+body:has(#view-ai[style*="display: block"]) #main-content-area {
+    overflow: hidden !important;
 }
 
 #kwarta-ai-interface {
@@ -41,7 +58,6 @@
     display: flex;
     flex-direction: column;
     border-radius: 0; 
-    box-shadow: none; /* Remove shadow to prevent weird gaps at edges */
     overflow: hidden;
 }
 
@@ -74,7 +90,7 @@
 }
 
 .chat-messages {
-    flex-grow: 1;
+    flex-grow: 1; /* Scales proportionally to fill height */
     padding: 25px;
     overflow-y: auto;
     display: flex;
@@ -113,16 +129,13 @@
 /* Input Area */
 .chat-input-area {
     padding: 20px 30px;
-    /* Use padding-bottom for visual breathing room while staying 'glued' to edge */
     padding-bottom: calc(20px + env(safe-area-inset-bottom)); 
     background: white;
     border-top: 1px solid #f0f0f0;
     flex-shrink: 0; /* Input area stays fixed at bottom */
-    position: sticky;
-    bottom: 0;
-    z-index: 10;
     width: 100%;
     box-sizing: border-box;
+    z-index: 10;
 }
 
 .prompt-chips {

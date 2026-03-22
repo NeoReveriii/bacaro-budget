@@ -424,7 +424,7 @@
 					}
 
 					try {
-						const response = await fetch('/api/accounts', {
+						const response = await fetch('/api/accounts.js', {
 							method: 'POST',
 							headers: {
 								'Content-Type': 'application/json',

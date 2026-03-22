@@ -1,63 +1,44 @@
 /* assets/css/kwarta-ai.css */
 
+/* The main view container inside #main-content-area */
 #view-ai {
-    position: fixed; /* Fixed to viewport to ignore parent padding/scrolling */
-    top: 70px; /* Match header height */
-    left: 320px; /* Match sidebar width + padding */
-    right: 20px; /* Match app-content padding */
-    bottom: 20px; /* Match app-content padding */
-    height: auto !important;
+    height: 100% !important;
+    width: 100% !important;
     display: none; /* Controlled by JS showView */
     flex-direction: column;
     overflow: hidden !important;
-    z-index: 100;
-    background: white;
-    border-radius: 12px;
+    padding: 0 !important; /* Neutralize parent padding */
+    margin: 0 !important;
+    background: #fff;
 }
 
-/* On mobile, take up the whole screen area below header */
-@media (max-width: 768px) {
-    #view-ai {
-        top: 70px;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        border-radius: 0;
-    }
-}
-
+/* Force flex display when shown by JS */
 #view-ai[style*="display: block"] {
     display: flex !important;
 }
 
-/* Hide parent scrollbar when AI is active to prevent the 'gap' reveal */
-body:has(#view-ai[style*="display: block"]) #main-content-area {
-    overflow: hidden !important;
-}
-
 #kwarta-ai-interface {
-    height: 100%;
-    width: 100%;
+    flex: 1;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    height: 100%;
+    width: 100%;
 }
 
 .ai-container {
-    height: 100%;
-    width: 100%;
+    flex: 1;
     display: flex;
     flex-direction: column;
+    height: 100%;
     overflow: hidden;
 }
 
 .chat-window {
-    flex-grow: 1;
-    width: 100%;
-    background: white;
+    flex: 1;
     display: flex;
     flex-direction: column;
-    border-radius: 0; 
+    background: white;
+    height: 100%;
     overflow: hidden;
 }
 
@@ -66,7 +47,6 @@ body:has(#view-ai[style*="display: block"]) #main-content-area {
     background: var(--dark-green);
     color: white;
     flex-shrink: 0;
-    z-index: 10;
 }
 
 .chat-header h3 {
@@ -90,7 +70,7 @@ body:has(#view-ai[style*="display: block"]) #main-content-area {
 }
 
 .chat-messages {
-    flex-grow: 1; /* Scales proportionally to fill height */
+    flex: 1;
     padding: 25px;
     overflow-y: auto;
     display: flex;
@@ -111,7 +91,7 @@ body:has(#view-ai[style*="display: block"]) #main-content-area {
     line-height: 1.5;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     word-wrap: break-word;
-    border-radius: 20px; /* Base radius for top corners */
+    border-radius: 20px;
 }
 
 .ai-msg .msg-bubble {
@@ -129,25 +109,20 @@ body:has(#view-ai[style*="display: block"]) #main-content-area {
 /* Input Area */
 .chat-input-area {
     padding: 20px 30px;
-    padding-bottom: calc(20px + env(safe-area-inset-bottom)); 
+    padding-bottom: calc(20px + env(safe-area-inset-bottom));
     background: white;
-    border-top: 1px solid #f0f0f0;
-    flex-shrink: 0; /* Input area stays fixed at bottom */
-    width: 100%;
-    box-sizing: border-box;
-    z-index: 10;
+    border-top: 1px solid #eee;
+    flex-shrink: 0;
 }
 
 .prompt-chips {
     display: flex;
     gap: 10px;
     margin-bottom: 15px;
-    overflow-x: auto; /* Allow horizontal scroll if many chips */
+    overflow-x: auto;
     padding-bottom: 5px;
-    -webkit-overflow-scrolling: touch;
 }
 
-/* Hide scrollbar for chips but keep functionality */
 .prompt-chips::-webkit-scrollbar { display: none; }
 
 .chip {
@@ -166,26 +141,22 @@ body:has(#view-ai[style*="display: block"]) #main-content-area {
 .input-wrapper {
     display: flex;
     gap: 12px;
-    width: 100%;
     align-items: center;
 }
 
 .input-wrapper input {
-    flex: 1; /* Scales proportionally */
-    min-width: 0; /* Prevents overflow in flexbox */
+    flex: 1;
+    min-width: 0;
     padding: 12px 20px;
     background: #f9f9f9;
     border: 1px solid #eee;
     border-radius: 25px;
     outline: none;
-    font-size: 0.95em;
-    transition: all 0.2s ease;
 }
 
 .input-wrapper input:focus {
     background: white;
     border-color: var(--primary-green);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 .btn-send {
@@ -198,40 +169,14 @@ body:has(#view-ai[style*="display: block"]) #main-content-area {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1rem;
     cursor: pointer;
-    transition: all 0.3s ease;
-    flex-shrink: 0;
-}
-
-.btn-send:hover {
-    background-color: var(--primary-green);
-    transform: scale(1.05);
 }
 
 /* ==========================================================
    MOBILE RESPONSIVENESS
 ========================================================== */
 @media (max-width: 768px) {
-    .chat-messages {
-        padding: 20px;
-    }
-    
-    .msg-bubble {
-        max-width: 90%; 
-        padding: 10px 15px;
-    }
-    
-    .chat-header {
-        padding: 12px 20px;
-    }
-    
-    .chat-input-area {
-        padding: 20px 20px 30px 20px;
-    }
-    
-    .chip {
-        padding: 6px 14px;
-        font-size: 0.8em;
-    }
+    .chat-messages { padding: 20px; }
+    .chat-header { padding: 12px 20px; }
+    .chat-input-area { padding: 15px 20px 25px 20px; }
 }

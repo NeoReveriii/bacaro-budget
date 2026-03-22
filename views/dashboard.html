@@ -376,6 +376,7 @@
 			<div class="modal-form-container">
 				<h2 class="header login-header">New Transaction</h2>
 				<form class="login-form" id="transaction-form">
+					<input type="hidden" id="trans-id">
 					<div class="input-group">
 						<input type="text" class="floating-input" id="trans-description" placeholder=" " required>
 						<label class="floating-label">Description</label>
@@ -418,6 +419,18 @@
 				</form>
 			</div>
 		</div>
+	</div>
+	
+	<div id="confirm-modal" class="modal-overlay">
+        <div class="modal-card" style="min-height: auto; padding: 30px; border-top: 4px solid #ff7675;">
+            <button class="modal-close" onclick="closeAllModals()">&times;</button>
+            <h2 id="confirm-title" style="color: white; margin-bottom: 15px; font-family: 'Times New Roman', serif;">Confirm Action</h2>
+            <p id="confirm-message" style="color: rgba(255,255,255,0.8); margin-bottom: 25px; line-height: 1.5;">Are you sure you want to proceed?</p>
+            <div style="display: flex; gap: 10px;">
+                <button id="btn-confirm-cancel" class="btn btn-secondary-cancel" style="margin: 0;">Cancel</button>
+                <button id="btn-confirm-ok" class="btn btn-primary" style="margin: 0; background-color: #ff7675;">Confirm</button>
+            </div>
+        </div>
 	</div>
 	
 </body>

@@ -161,7 +161,17 @@ async function loadChatHistory() {
 }
 
 async function clearChatHistory() {
-    if (!confirm('Are you sure you want to clear your chat history?')) return;
+    if (typeof showConfirm !== 'undefined') {
+        showConfirm('Clear Chat', 'Are you sure you want to clear your entire chat history?', async () => {
+            await executeClearChat();
+        });
+    } else {
+        if (!confirm('Are you sure you want to clear your chat history?')) return;
+        await executeClearChat();
+    }
+}
+
+async function executeClearChat() {
     try {
         const res = await fetch('/api/chat', {
             method: 'DELETE',

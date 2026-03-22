@@ -635,7 +635,7 @@
 		.rec-title { font-weight: 700; color: var(--dark-green); }
 		.rec-stats { font-weight: 800; }
 		.rec-stats.income { color: #2ecc71; }
-		.rec-stats.expense { color: #e74c3c; }
+		.rec-stats.expense { color: #e56b6b; } /* Softer red/coral */
 		.rec-wallet { font-size: 0.85em; font-weight: 600; color: #666; }
 
 		/* Badges */

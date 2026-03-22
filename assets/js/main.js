@@ -179,9 +179,21 @@
 			openTransactionModal();
 		}
 
-		function openTransactionModal() {
+		function openTransactionModal(isEdit = false) {
 			closeAllModals();
 			const modal = document.getElementById('transaction-modal');
+			const header = modal ? modal.querySelector('.login-header') : null;
+			if (header) {
+				header.textContent = isEdit ? 'Edit Transaction' : 'New Transaction';
+			}
+			if (!isEdit) {
+				const form = document.getElementById('transaction-form');
+				if (form) form.reset();
+				const idInput = document.getElementById('trans-id');
+				if (idInput) idInput.value = '';
+				const otherGrp = document.getElementById('trans-wallet-other-group');
+				if (otherGrp) otherGrp.style.display = 'none';
+			}
 			if (modal) modal.classList.add('active');
 		}
 
@@ -259,6 +271,72 @@
 			}, 2200);
 		}
 
+		function showConfirm(title, message, onConfirm) {
+			document.getElementById('confirm-title').textContent = title;
+			document.getElementById('confirm-message').textContent = message;
+			const modal = document.getElementById('confirm-modal');
+			if (modal) modal.classList.add('active');
+			
+			const btnOk = document.getElementById('btn-confirm-ok');
+			const btnCancel = document.getElementById('btn-confirm-cancel');
+			
+			const newOk = btnOk.cloneNode(true);
+			btnOk.parentNode.replaceChild(newOk, btnOk);
+			const newCancel = btnCancel.cloneNode(true);
+			btnCancel.parentNode.replaceChild(newCancel, btnCancel);
+			
+			newOk.addEventListener('click', () => {
+				if (modal) modal.classList.remove('active');
+				if (typeof onConfirm === 'function') onConfirm();
+			});
+			newCancel.addEventListener('click', () => {
+				if (modal) modal.classList.remove('active');
+			});
+		}
+
+		window.handleDeleteTransaction = async function(id) {
+			showConfirm('Delete Transaction', 'Are you sure you want to delete this transaction?', async () => {
+				try {
+					const res = await fetch('/api/transactions', {
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json',
+							'Authorization': `Bearer ${getToken()}`
+						},
+						body: JSON.stringify({ id })
+					});
+					if (!res.ok) throw new Error('Delete failed');
+					showToast('Transaction deleted', 'success');
+					loadTransactions();
+				} catch (err) {
+					showToast('Error deleting transaction', 'error');
+				}
+			});
+		};
+
+		window.handleEditTransaction = function(id) {
+			const row = (window.currentTransactions || []).find(t => t.trans_id === id);
+			if (!row) return;
+			
+			document.getElementById('trans-id').value = id;
+			document.getElementById('trans-description').value = row.description;
+			document.getElementById('trans-type').value = row.type;
+			
+			const walletTypeSelect = document.getElementById('trans-wallet-type');
+			const customWallets = ['Cash', 'Bank Account', 'E-Money', 'Credit Card'];
+			if (customWallets.includes(row.wallet_type)) {
+				walletTypeSelect.value = row.wallet_type;
+				document.getElementById('trans-wallet-other-group').style.display = 'none';
+			} else {
+				walletTypeSelect.value = 'Other';
+				document.getElementById('trans-wallet-other').value = row.wallet_type;
+				document.getElementById('trans-wallet-other-group').style.display = '';
+			}
+			document.getElementById('trans-amount').value = row.amount;
+			
+			openTransactionModal(true);
+		};
+
 		async function loadTransactions() {
 			if (!isAuthenticated()) return;
 			const listEl = document.getElementById('transaction-list-items');
@@ -296,6 +374,8 @@
 				listEl.innerHTML = `<div class="empty-history"><p>No transactions found.</p></div>`;
 				return;
 			}
+			
+			window.currentTransactions = rows;
 
 			listEl.innerHTML = rows
 				.map((row, idx) => renderTransactionItem(row, idx + 1))
@@ -323,8 +403,8 @@
 						<span class="rec-date">${escapeHtml(date)}</span>
 						<span class="rec-wallet">${wallet}</span>
 						<span class="rec-actions">
-							<button class="icon-btn edit-btn" type="button">✎</button>
-							<button class="icon-btn delete-btn" type="button">🗑</button>
+							<button class="icon-btn edit-btn" type="button" onclick="handleEditTransaction(${row.trans_id})">✎</button>
+							<button class="icon-btn delete-btn" type="button" onclick="handleDeleteTransaction(${row.trans_id})">🗑</button>
 							<span class="expand-arrow">▼</span>
 						</span>
 					</div>
@@ -490,7 +570,16 @@
 
 				transactionForm.addEventListener('submit', async function (e) {
 					e.preventDefault();
+					
+					const submitBtn = transactionForm.querySelector('button[type="submit"]');
+					const originalBtnText = submitBtn ? submitBtn.textContent : 'SAVE';
+					if (submitBtn) {
+						submitBtn.disabled = true;
+						submitBtn.textContent = 'SAVING...';
+						submitBtn.style.backgroundColor = '#95a5a6';
+					}
 
+					const transId = document.getElementById('trans-id')?.value;
 					const description = document.getElementById('trans-description')?.value?.trim() || '';
 					const type = document.getElementById('trans-type')?.value?.trim() || '';
 					const walletTypeRaw = document.getElementById('trans-wallet-type')?.value?.trim() || '';
@@ -520,6 +609,11 @@
 							messageDiv.innerHTML = escapeHtml(errors[0]);
 							messageDiv.className = 'message error';
 						}
+						if (submitBtn) {
+							submitBtn.disabled = false;
+							submitBtn.textContent = originalBtnText;
+							submitBtn.style.backgroundColor = '';
+						}
 						return;
 					}
 
@@ -531,12 +625,13 @@
 
 					try {
 						const res = await fetch('/api/transactions', {
-							method: 'POST',
+							method: transId ? 'PUT' : 'POST',
 							headers: {
 								'Content-Type': 'application/json',
 								Authorization: `Bearer ${getToken()}`
 							},
 							body: JSON.stringify({
+								...(transId ? { id: transId } : {}),
 								description,
 								type,
 								wallet_type: walletType,
@@ -546,24 +641,31 @@
 
 						const payload = await readResponsePayload(res);
 						if (!res.ok) {
-							console.error('Create transaction failed:', {
+							console.error('Save transaction failed:', {
 								status: res.status,
 								payload: payload?.json ?? payload?.text,
-								request: { description, type, wallet_type: walletType, amount }
+								request: { id: transId, description, type, wallet_type: walletType, amount }
 							});
-							throw new Error(getErrorMessage(payload, 'Failed to create transaction'));
+							throw new Error(getErrorMessage(payload, 'Failed to save transaction'));
 						}
 
 						transactionForm.reset();
+						document.getElementById('trans-id').value = '';
 						closeTransactionModal();
 						await loadTransactions();
-						showToast('Transaction saved', 'success');
+						showToast(transId ? 'Transaction updated' : 'Transaction saved', 'success');
 					} catch (err) {
 						if (messageDiv) {
 							messageDiv.innerHTML = escapeHtml(err.message);
 							messageDiv.className = 'message error';
 						}
-						console.error('Create transaction error:', err);
+						console.error('Save transaction error:', err);
+					} finally {
+						if (submitBtn) {
+							submitBtn.disabled = false;
+							submitBtn.textContent = originalBtnText;
+							submitBtn.style.backgroundColor = '';
+						}
 					}
 				});
 			}

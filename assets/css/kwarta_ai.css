@@ -61,7 +61,9 @@
 
 .msg-bubble {
     max-width: 85%;
-    padding: 15px 20px;
+    padding: 10px 14px;
+    font-size: 0.9em;
+    line-height: 1.4;
     box-shadow: 0 2px 5px rgba(0,0,0,0.02);
 }
 

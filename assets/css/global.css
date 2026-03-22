@@ -134,7 +134,10 @@ input[type="number"] {
 }
 			
 .floating-input:focus ~ .floating-label, 
-.floating-input:not(:placeholder-shown) ~ .floating-label { 
+.floating-input:not(:placeholder-shown) ~ .floating-label,
+.custom-select-wrapper.has-value ~ .floating-label,
+.custom-select-wrapper.open ~ .floating-label,
+.custom-select-wrapper:focus ~ .floating-label { 
     top: -20px; font-size: 0.8em; color: var(--primary-green); 
 }
 
@@ -319,66 +322,162 @@ input[type="number"] {
     min-height: 420px;
 }
 
-/* Make select work with floating labels */
-select.floating-input {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    padding-right: 28px;
+/* Custom Select UI Elements */
+.custom-select-wrapper {
+    position: relative;
+    width: 100%;
+    outline: none;
 }
 
-/* Modern themed select styling (contrast + focus/hover) */
-.input-group select.floating-input {
+.custom-select-trigger {
     width: 100%;
     height: 40px;
     padding: 8px 28px 8px 0;
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border: none;
     border-bottom: 2px solid var(--primary-green);
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.06);
+    background: transparent;
     color: var(--white);
-    letter-spacing: 0.2px;
-    transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    font-size: 1.1em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    background-image: var(--select-chevron);
+    background-repeat: no-repeat;
+    background-position: right 4px center;
+    background-size: 16px 16px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.input-group select.floating-input:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.22);
-}
-
-.input-group select.floating-input:focus,
-.input-group select.floating-input:focus-visible {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.35);
+.custom-select-wrapper:focus .custom-select-trigger,
+.custom-select-wrapper.open .custom-select-trigger {
     border-bottom-color: var(--white);
-    box-shadow: 0 0 0 3px rgba(89, 133, 57, 0.25);
 }
 
-/* Placeholder option */
-.input-group select.floating-input:invalid {
-    color: rgba(212, 212, 212, 0.9);
+.custom-select-options {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    right: 0;
+    background: var(--dark-green);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    z-index: 1001;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    max-height: 220px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
-/* Dropdown menu items (best-effort; browser support varies) */
-.input-group select.floating-input option {
-    color: #111;
-    background: #fff;
+.custom-select-wrapper.open .custom-select-options {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.custom-option {
+    padding: 12px 18px;
+    color: var(--white);
+    cursor: pointer;
+    font-size: 0.95em;
+    transition: background 0.2s, padding-left 0.2s;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.custom-option:last-child {
+    border-bottom: none;
+}
+.custom-option:hover {
+    background: var(--primary-green);
+    padding-left: 24px;
+}
+.custom-option.selected {
+    background: rgba(89, 133, 57, 0.5);
+    font-weight: bold;
+    color: #fff;
+    border-left: 4px solid #a8d86e;
+    padding-left: 14px;
 }
 
 /* Subtle chevron */
 .input-group {
     --select-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 20 20'%3E%3Cpath fill='%23d4d4d4' d='M5.6 7.6a1 1 0 0 1 1.4 0L10 10.6l3-3a1 1 0 1 1 1.4 1.4l-3.7 3.7a1 1 0 0 1-1.4 0L5.6 9a1 1 0 0 1 0-1.4Z'/%3E%3C/svg%3E");
 }
-.input-group select.floating-input {
-    background-image: var(--select-chevron);
-    background-repeat: no-repeat;
-    background-position: right 4px center;
-    background-size: 16px 16px;
+
+/* --- Coin Loader Overlay --- */
+.coin-loader-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(10, 20, 15, 0.85); /* Dark green tint */
+    backdrop-filter: blur(12px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 
-.input-group select.floating-input:focus ~ .floating-label,
-.input-group select.floating-input:valid ~ .floating-label {
-    top: -20px;
-    font-size: 0.8em;
-    color: var(--primary-green);
+.coin-loader-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.spinning-coin {
+    width: 70px;
+    height: 70px;
+    background: radial-gradient(circle at 30% 30%, #FFDF00, #DAA520, #B8860B);
+    border-radius: 50%;
+    border: 4px solid #F1C40F;
+    box-shadow: 
+        inset 0 0 15px rgba(0,0,0,0.3), 
+        inset 0 0 5px rgba(255,255,255,0.8),
+        0 15px 30px rgba(0,0,0,0.6),
+        0 0 40px rgba(255, 215, 0, 0.4); /* Glow effect */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFF8DC;
+    font-size: 38px;
+    font-weight: 800;
+    font-family: 'Times New Roman', serif;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.4), -1px -1px 2px rgba(255,255,255,0.4);
+    animation: coinFlip 1.2s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+/* Inner ridge of the coin */
+.spinning-coin::after {
+    content: '';
+    position: absolute;
+    width: 52px;
+    height: 52px;
+    border: 2px dashed rgba(255,255,255,0.4);
+    border-radius: 50%;
+}
+
+@keyframes coinFlip {
+    0% { transform: perspective(600px) rotateY(0deg) scale(1); }
+    50% { transform: perspective(600px) rotateY(180deg) scale(1.1); }
+    100% { transform: perspective(600px) rotateY(360deg) scale(1); }
+}
+
+.coin-loader-text {
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 0.9em;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    animation: loaderPulseText 1.5s infinite;
+}
+
+@keyframes loaderPulseText {
+    0%, 100% { opacity: 0.5; transform: scale(0.98); color: var(--text-light); }
+    50% { opacity: 1; transform: scale(1); color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 }

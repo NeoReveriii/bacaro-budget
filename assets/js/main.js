@@ -436,6 +436,8 @@
 						return;
 					}
 
+					showCoinLoader('VERIFYING CREDENTIALS...');
+
 					try {
 						const response = await fetch('/api/accounts?action=login', {
 							method: 'POST',
@@ -466,11 +468,13 @@
 						} else {
 							messageDiv.innerHTML = data.error || 'An error occurred';
 							messageDiv.className = 'message error';
+							hideCoinLoader();
 						}
 					} catch (error) {
 						messageDiv.innerHTML = 'Connection error: ' + error.message;
 						messageDiv.className = 'message error';
 						console.error('Login error:', error);
+						hideCoinLoader();
 					}
 				});
 			}
@@ -505,6 +509,8 @@
 						messageDiv.className = 'message error';
 						return;
 					}
+
+					showCoinLoader('CREATING ACCOUNT...');
 
 					try {
 						const response = await fetch('/api/accounts.js', {
@@ -547,6 +553,8 @@
 						messageDiv.innerHTML = 'Connection error: ' + error.message;
 						messageDiv.className = 'message error';
 						console.error('Signup error:', error);
+					} finally {
+						hideCoinLoader();
 					}
 				});
 			}
@@ -572,12 +580,9 @@
 					e.preventDefault();
 					
 					const submitBtn = transactionForm.querySelector('button[type="submit"]');
-					const originalBtnText = submitBtn ? submitBtn.textContent : 'SAVE';
-					if (submitBtn) {
-						submitBtn.disabled = true;
-						submitBtn.textContent = 'SAVING...';
-						submitBtn.style.backgroundColor = '#95a5a6';
-					}
+					const isEdit = !!document.getElementById('trans-id')?.value;
+					if (submitBtn) submitBtn.disabled = true;
+					showCoinLoader(isEdit ? 'UPDATING RECORD...' : 'SAVING TRANSACTION...');
 
 					const transId = document.getElementById('trans-id')?.value;
 					const description = document.getElementById('trans-description')?.value?.trim() || '';
@@ -611,13 +616,13 @@
 						}
 						if (submitBtn) {
 							submitBtn.disabled = false;
-							submitBtn.textContent = originalBtnText;
-							submitBtn.style.backgroundColor = '';
 						}
+						hideCoinLoader();
 						return;
 					}
 
 					if (!isAuthenticated()) {
+						hideCoinLoader();
 						closeTransactionModal();
 						openLoginModal();
 						return;
@@ -669,4 +674,114 @@
 					}
 				});
 			}
+			
+			// Initialize Custom Selects
+			initializeCustomSelects();
 		});
+
+// --- Coin Loader UI ---
+function showCoinLoader(text = 'PROCESSING...') {
+	let loader = document.getElementById('coin-loader');
+	if (!loader) {
+		loader = document.createElement('div');
+		loader.id = 'coin-loader';
+		loader.className = 'coin-loader-overlay';
+		loader.innerHTML = `
+			<div class="spinning-coin">₱</div>
+			<div class="coin-loader-text" id="coin-loader-text"></div>
+		`;
+		document.body.appendChild(loader);
+	}
+	document.getElementById('coin-loader-text').innerText = text;
+	loader.classList.add('active');
+}
+
+function hideCoinLoader() {
+	const loader = document.getElementById('coin-loader');
+	if (loader) loader.classList.remove('active');
+}
+
+// --- Custom Select Dropdowns ---
+function initializeCustomSelects() {
+	const selects = document.querySelectorAll('select.floating-input');
+	selects.forEach(select => {
+		if (select.closest('.custom-select-wrapper')) return;
+
+		const wrapper = document.createElement('div');
+		wrapper.className = 'custom-select-wrapper';
+		wrapper.setAttribute('tabindex', '0');
+		
+		select.parentNode.insertBefore(wrapper, select);
+		wrapper.appendChild(select);
+		select.style.display = 'none';
+
+		const trigger = document.createElement('div');
+		trigger.className = 'custom-select-trigger floating-input';
+		
+		const textSpan = document.createElement('span');
+		if (select.value) {
+			const opt = select.options[select.selectedIndex];
+			textSpan.innerText = opt ? opt.text : '';
+			wrapper.classList.add('has-value');
+		} else {
+			textSpan.innerText = '';
+		}
+		trigger.appendChild(textSpan);
+		
+		const optionsList = document.createElement('div');
+		optionsList.className = 'custom-select-options';
+		
+		Array.from(select.options).forEach(opt => {
+			if (opt.hidden || opt.disabled || opt.value === "") return;
+			
+			const optionDiv = document.createElement('div');
+			optionDiv.className = 'custom-option';
+			if (opt.selected) optionDiv.classList.add('selected');
+			optionDiv.innerText = opt.text;
+			
+			optionDiv.addEventListener('click', (e) => {
+				e.stopPropagation();
+				select.value = opt.value;
+				textSpan.innerText = opt.text;
+				wrapper.classList.add('has-value');
+				optionsList.classList.remove('open');
+				wrapper.classList.remove('open');
+				
+				select.dispatchEvent(new Event('change'));
+				
+				Array.from(optionsList.children).forEach(c => c.classList.remove('selected'));
+				optionDiv.classList.add('selected');
+			});
+			optionsList.appendChild(optionDiv);
+		});
+		
+		wrapper.appendChild(trigger);
+		wrapper.appendChild(optionsList);
+		
+		trigger.addEventListener('click', (e) => {
+			e.stopPropagation();
+			document.querySelectorAll('.custom-select-wrapper').forEach(w => {
+				if (w !== wrapper) {
+					w.classList.remove('open');
+					w.querySelector('.custom-select-options')?.classList.remove('open');
+				}
+			});
+			wrapper.classList.toggle('open');
+		});
+		
+		select.addEventListener('change', () => {
+			if (select.value) {
+				const opt = select.options[select.selectedIndex];
+				textSpan.innerText = opt ? opt.text : '';
+				wrapper.classList.add('has-value');
+			} else {
+				textSpan.innerText = '';
+				wrapper.classList.remove('has-value');
+			}
+		});
+	});
+
+	document.addEventListener('click', () => {
+		document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
+	});
+}

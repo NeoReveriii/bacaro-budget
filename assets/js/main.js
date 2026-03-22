@@ -440,9 +440,11 @@
 						const data = await response.json();
 
 						if (response.ok) {
-							const createdDate = new Date(data.data.createdat);
-							const formattedDate = createdDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-							messageDiv.innerHTML = `✓ Account created on ${formattedDate}! Redirecting to login...`;
+							const rawDate = data.data.createdat || new Date();
+    					const createdDate = new Date(rawDate);
+							const formattedDate = createdDate.toLocaleDateString('en-US', { 
+        			year: 'numeric', month: 'short', day: 'numeric'});
+							messageDiv.innerHTML = `✓ Account created! Redirecting to login...`;
 							messageDiv.className = 'message success';
 							signupForm.reset();
 

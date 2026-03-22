@@ -148,18 +148,22 @@
 			}
 
 			container.innerHTML = window.wallets.map(w => {
-				const statusClass = w.status === 'ACTIVE' ? 'status-active' : 'status-inactive';
+				const typeLower = String(w.type || 'other').toLowerCase();
+				let colorClass = 'wallet-other';
+				if (typeLower.includes('cash')) colorClass = 'wallet-cash';
+				else if (typeLower.includes('bank')) colorClass = 'wallet-bank';
+				else if (typeLower.includes('money') || typeLower.includes('e-')) colorClass = 'wallet-emoney';
+				else if (typeLower.includes('credit')) colorClass = 'wallet-credit';
+
 				const balance = formatCurrency(w.calculated_balance);
 				return `
-					<div class="card-item ${statusClass}" onclick="openWalletDetails('${escapeHtml(w.name)}', '${escapeHtml(w.type)}', '${escapeHtml(w.status)}', ${Number(w.calculated_balance)})">
-						<div class="card-inner">
-							<div class="card-status-badge">${escapeHtml(w.status)}</div>
-							<div class="card-content">
-								<h3 class="card-name">${escapeHtml(w.name)}</h3>
-								<p class="card-type">${escapeHtml(w.type)}</p>
-								<p class="card-balance" style="font-weight: bold; margin-top: 10px; font-size: 1.2em;">${balance}</p>
-							</div>
-							<div class="card-chip"></div>
+					<div class="card-item ${colorClass}" onclick="openWalletDetails('${escapeHtml(w.name)}', '${escapeHtml(w.type)}', '${escapeHtml(w.status)}', ${Number(w.calculated_balance)})">
+						<div class="card-chip"></div>
+						<div class="card-status-badge">${escapeHtml(w.status)}</div>
+						<div class="card-content">
+							<h3 class="card-name">${escapeHtml(w.name)}</h3>
+							<p class="card-type">${escapeHtml(w.type)}</p>
+							<p class="card-balance" style="font-weight: bold; font-size: 1.4em;">${balance}</p>
 						</div>
 					</div>
 				`;
@@ -530,9 +534,12 @@
 			const type = String(row.type ?? '').toLowerCase();
 			const isIncome = type === 'income';
 			const isExpense = type === 'expense';
+			const isTransfer = type === 'transfer';
+			
 			const amountValue = Number(row.amount ?? 0);
-			const amountClass = isIncome ? 'income' : isExpense ? 'expense' : '';
-			const badgeClass = isIncome ? 'badge-income' : isExpense ? 'badge-expense' : '';
+			const amountClass = isIncome ? 'income' : (isExpense ? 'expense' : (isTransfer ? 'transfer' : ''));
+			const badgeClass = isIncome ? 'badge-income' : (isExpense ? 'badge-expense' : (isTransfer ? 'badge-transfer' : ''));
+			
 			const wallet = escapeHtml(row.wallet_type ?? row.wallet ?? '');
 			const date = formatDate(row.dateoftrans ?? row.date);
 
@@ -620,19 +627,19 @@
 
 					showCoinLoader('TRANSFERRING FUNDS...');
 					try {
-						// Create Expense on From Wallet
+						// Create Transfer Out from From Wallet
 						const res1 = await fetch('/api/transactions', {
 							method: 'POST',
 							headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
-							body: JSON.stringify({ description: `Transfer to ${to}`, type: 'Expense', wallet_type: from, amount })
+							body: JSON.stringify({ description: `Transfer to ${to}`, type: 'Transfer', wallet_type: from, amount })
 						});
 						if (!res1.ok) throw new Error('Failed to process transfer (Step 1)');
 
-						// Create Income on To Wallet
+						// Create Transfer In to To Wallet
 						const res2 = await fetch('/api/transactions', {
 							method: 'POST',
 							headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
-							body: JSON.stringify({ description: `Transfer from ${from}`, type: 'Income', wallet_type: to, amount })
+							body: JSON.stringify({ description: `Transfer from ${from}`, type: 'Transfer', wallet_type: to, amount })
 						});
 						if (!res2.ok) throw new Error('Failed to process transfer (Step 2)');
 

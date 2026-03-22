@@ -99,8 +99,14 @@ export default async function handler(req, res) {
           w.created_at,
           (
             w.initial_balance + 
-            COALESCE(SUM(CASE WHEN t.type = 'Income' THEN t.amount ELSE 0 END), 0) - 
-            COALESCE(SUM(CASE WHEN t.type = 'Expense' THEN t.amount ELSE 0 END), 0)
+            COALESCE(SUM(CASE 
+              WHEN t.type = 'Income' THEN t.amount 
+              WHEN t.type = 'Transfer' AND t.description ILIKE 'Transfer from%' THEN t.amount
+              ELSE 0 END), 0) - 
+            COALESCE(SUM(CASE 
+              WHEN t.type = 'Expense' THEN t.amount 
+              WHEN t.type = 'Transfer' AND t.description ILIKE 'Transfer to%' THEN t.amount
+              ELSE 0 END), 0)
           ) as calculated_balance
         FROM wallets w
         LEFT JOIN transactions t 

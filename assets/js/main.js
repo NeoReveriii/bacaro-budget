@@ -63,6 +63,8 @@
         }
 		function openSignupModal() { closeAllModals(); toggleAccountSidebar(false); toggleMainSidebar(false); document.getElementById('signup-modal').classList.add('active'); }
 		function openForgotModal() { closeAllModals(); toggleAccountSidebar(false); toggleMainSidebar(false); document.getElementById('forgot-modal').classList.add('active'); }
+		function openAddWalletModal() { closeAllModals(); document.getElementById('add-wallet-modal').classList.add('active'); }
+		function openTransferModal() { closeAllModals(); document.getElementById('transfer-modal').classList.add('active'); }
 
 		window.onclick = function(event) {
 			if (event.target.classList.contains('modal-overlay')) closeAllModals();
@@ -118,18 +120,112 @@
 			element.classList.add('active');
 		}
 		
+		window.wallets = [];
+
+		async function loadWallets() {
+			if (!isAuthenticated()) return;
+			try {
+				const res = await fetch('/api/wallets', {
+					headers: { Authorization: `Bearer ${getToken()}` }
+				});
+				if (!res.ok) throw new Error('Failed to load wallets');
+				const data = await res.json();
+				window.wallets = data.wallets || [];
+				renderWallets();
+				renderWalletDropdowns();
+			} catch (e) {
+				console.error('Load wallets error:', e);
+			}
+		}
+
+		function renderWallets() {
+			const container = document.getElementById('wallet-grid-container');
+			if (!container) return;
+			
+			if (window.wallets.length === 0) {
+				container.innerHTML = '<p style="grid-column: 1 / -1; color: #666; text-align: center;">No wallets found. Add one to get started.</p>';
+				return;
+			}
+
+			container.innerHTML = window.wallets.map(w => {
+				const statusClass = w.status === 'ACTIVE' ? 'status-active' : 'status-inactive';
+				const balance = formatCurrency(w.calculated_balance);
+				return `
+					<div class="card-item ${statusClass}" onclick="openWalletDetails('${escapeHtml(w.name)}', '${escapeHtml(w.type)}', '${escapeHtml(w.status)}', ${Number(w.calculated_balance)})">
+						<div class="card-inner">
+							<div class="card-status-badge">${escapeHtml(w.status)}</div>
+							<div class="card-content">
+								<h3 class="card-name">${escapeHtml(w.name)}</h3>
+								<p class="card-type">${escapeHtml(w.type)}</p>
+								<p class="card-balance" style="font-weight: bold; margin-top: 10px; font-size: 1.2em;">${balance}</p>
+							</div>
+							<div class="card-chip"></div>
+						</div>
+					</div>
+				`;
+			}).join('');
+
+			// Update total balance card
+			const totalBalance = window.wallets.reduce((sum, w) => sum + Number(w.calculated_balance), 0);
+			const totalEl = document.querySelector('.wallet-card .stat-value');
+			if (totalEl) totalEl.innerText = formatCurrency(totalBalance);
+		}
+
+		function renderWalletDropdowns() {
+			const options = window.wallets.map(w => `<option value="${escapeHtml(w.name)}">${escapeHtml(w.name)}</option>`).join('');
+			
+			const transWallet = document.getElementById('trans-wallet-type');
+			if (transWallet) {
+				transWallet.innerHTML = `<option value="" selected disabled hidden></option>${options}<option value="Other">Other</option>`;
+			}
+
+			const transferFrom = document.getElementById('transfer-from');
+			const transferTo = document.getElementById('transfer-to');
+			if (transferFrom) transferFrom.innerHTML = `<option value="" selected disabled hidden></option>${options}`;
+			if (transferTo) transferTo.innerHTML = `<option value="" selected disabled hidden></option>${options}`;
+			
+			// Custom selects have to be updated. Since initializeCustomSelects wraps them,
+			// we need to remove the wrappers and re-initialize.
+			document.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
+				const select = wrapper.querySelector('select');
+				if (select && ['trans-wallet-type', 'transfer-from', 'transfer-to'].includes(select.id)) {
+					wrapper.parentNode.insertBefore(select, wrapper);
+					select.style.display = '';
+					wrapper.remove();
+				}
+			});
+			initializeCustomSelects();
+		}
+
 		// Function to "open" a wallet's details
-		function openWalletDetails(name, type, status) {
-			// Fill the data
+		function openWalletDetails(name, type, status, balance = 0) {
 			document.getElementById('detail-wallet-name').innerText = name;
 			document.getElementById('detail-wallet-type').innerText = type;
 			document.getElementById('detail-wallet-status').innerText = status;
+			const balanceEl = document.querySelector('.wallet-balance-card .balance-amount');
+			if (balanceEl) balanceEl.innerText = formatCurrency(balance);
 			
-			// Toggle status badge class
 			const statusBadge = document.getElementById('detail-wallet-status');
 			statusBadge.className = 'badge-status ' + (status === 'ACTIVE' ? 'status-active' : 'status-inactive');
 
-			// Switch view
+			// Filter transactions
+			const listEl = document.querySelector('#main-wallet-details .transaction-list');
+			const filtered = (window.currentTransactions || []).filter(t => t.wallet_type === name);
+			if (filtered.length === 0) {
+				listEl.innerHTML = `
+					<div class="transaction-row header-row">
+						<span>#</span><span>TITLE</span><span>AMOUNT</span><span>TYPE</span><span>DATE</span><span></span> 
+					</div>
+					<div class="empty-history"><p>No transactions found for this wallet.</p></div>
+				`;
+			} else {
+				listEl.innerHTML = `
+					<div class="transaction-row header-row">
+						<span>#</span><span>TITLE</span><span>AMOUNT</span><span>TYPE</span><span>DATE</span><span></span> 
+					</div>
+				` + filtered.map((row, idx) => renderTransactionItem(row, idx + 1)).join('');
+			}
+
 			showView('wallet-details', document.querySelector('[onclick*="wallets"]'));
 		}
 		
@@ -465,6 +561,85 @@
 		document.addEventListener('DOMContentLoaded', function() {
 			checkAuthenticationForUserPage();
 			loadTransactions();
+			loadWallets();
+
+			const addWalletForm = document.getElementById('add-wallet-form');
+			if (addWalletForm) {
+				addWalletForm.addEventListener('submit', async function(e) {
+					e.preventDefault();
+					const name = document.getElementById('wallet-name').value.trim();
+					const type = document.getElementById('wallet-type').value;
+					const initial_balance = document.getElementById('wallet-initial-balance').value;
+					
+					showCoinLoader('SAVING WALLET...');
+					try {
+						const res = await fetch('/api/wallets', {
+							method: 'POST',
+							headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
+							body: JSON.stringify({ name, type, initial_balance })
+						});
+						if (!res.ok) throw new Error('Failed to create wallet');
+						
+						addWalletForm.reset();
+						closeAllModals();
+						showToast('Wallet created successfully');
+						await loadWallets();
+					} catch (err) {
+						document.getElementById('add-wallet-message').innerHTML = escapeHtml(err.message);
+						document.getElementById('add-wallet-message').className = 'message error';
+					} finally {
+						hideCoinLoader();
+					}
+				});
+			}
+
+			const transferForm = document.getElementById('transfer-form');
+			if (transferForm) {
+				transferForm.addEventListener('submit', async function(e) {
+					e.preventDefault();
+					const from = document.getElementById('transfer-from').value;
+					const to = document.getElementById('transfer-to').value;
+					const amount = parseFloat(document.getElementById('transfer-amount').value);
+					
+					const messageDiv = document.getElementById('transfer-message');
+					messageDiv.className = 'message';
+					messageDiv.innerHTML = '';
+
+					if (!from || !to) return (messageDiv.innerHTML = 'Please select both wallets', messageDiv.className = 'message error');
+					if (from === to) return (messageDiv.innerHTML = 'Cannot transfer to the same wallet', messageDiv.className = 'message error');
+					if (!amount || amount <= 0) return (messageDiv.innerHTML = 'Amount must be greater than 0', messageDiv.className = 'message error');
+
+					showCoinLoader('TRANSFERRING FUNDS...');
+					try {
+						// Create Expense on From Wallet
+						const res1 = await fetch('/api/transactions', {
+							method: 'POST',
+							headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
+							body: JSON.stringify({ description: `Transfer to ${to}`, type: 'Expense', wallet_type: from, amount })
+						});
+						if (!res1.ok) throw new Error('Failed to process transfer (Step 1)');
+
+						// Create Income on To Wallet
+						const res2 = await fetch('/api/transactions', {
+							method: 'POST',
+							headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
+							body: JSON.stringify({ description: `Transfer from ${from}`, type: 'Income', wallet_type: to, amount })
+						});
+						if (!res2.ok) throw new Error('Failed to process transfer (Step 2)');
+
+						transferForm.reset();
+						closeAllModals();
+						showToast('Transfer completed successfully');
+						await loadTransactions();
+						await loadWallets();
+					} catch (err) {
+						messageDiv.innerHTML = escapeHtml(err.message);
+						messageDiv.className = 'message error';
+					} finally {
+						hideCoinLoader();
+					}
+				});
+			}
 
 			const loginForm = document.getElementById('login-form');
 			if (loginForm) {

@@ -145,28 +145,12 @@
 			
 			<div id="view-wallets" class="main-view" style="display: none;">
 				<main id="main-wallets">
-					<div class="wallet-grid">
-						
-						<div class="card-item status-active" onclick="openWalletDetails('BDO Savings', 'Bank Account', 'ACTIVE')"> <div class="card-inner">
-								<div class="card-status-badge">ACTIVE</div>
-								<div class="card-content">
-									<h3 class="card-name">BDO Savings</h3>
-									<p class="card-type">Bank Account</p>
-								</div>
-								<div class="card-chip"></div> </div>
-						</div>
-
-						<div class="card-item status-inactive" onclick="openWalletDetails('BDO Savings', 'Bank Account', 'ACTIVE')">
-							<div class="card-inner">
-								<div class="card-status-badge">INACTIVE</div>
-								<div class="card-content">
-									<h3 class="card-name">GCash</h3>
-									<p class="card-type">E-Money</p>
-								</div>
-								<div class="card-chip"></div>
-							</div>
-						</div>
-
+					<div class="wallet-actions-bar" style="display: flex; gap: 10px; margin-bottom: 20px;">
+						<button class="btn-primary" onclick="openAddWalletModal()">+ Add Wallet</button>
+						<button class="btn-secondary" onclick="openTransferModal()">Transfer Funds</button>
+					</div>
+					<div class="wallet-grid" id="wallet-grid-container">
+						<!-- Wallets will be rendered here dynamically -->
 					</div>
 				</main>
 			</div>
@@ -438,5 +422,65 @@
         </div>
 	</div>
 	
+	<div id="add-wallet-modal" class="modal-overlay">
+		<div class="modal-card">
+			<button class="modal-close" onclick="closeAllModals()">&times;</button>
+			<div class="modal-form-container">
+				<h2 class="header login-header">Add Wallet</h2>
+				<form class="login-form" id="add-wallet-form">
+					<div class="input-group">
+						<input type="text" class="floating-input" id="wallet-name" placeholder=" " required>
+						<label class="floating-label">Wallet Name</label>
+					</div>
+					<div class="input-group">
+						<select class="floating-input" id="wallet-type" required>
+							<option value="" selected disabled hidden></option>
+							<option value="Cash">Cash</option>
+							<option value="Bank Account">Bank Account</option>
+							<option value="E-Money">E-Money</option>
+							<option value="Credit Card">Credit Card</option>
+						</select>
+						<label class="floating-label">Type</label>
+					</div>
+					<div class="input-group">
+						<input type="number" class="floating-input" id="wallet-initial-balance" placeholder=" " inputmode="decimal" step="0.01" min="0" required>
+						<label class="floating-label">Initial Balance (₱)</label>
+					</div>
+					<div id="add-wallet-message" class="message"></div>
+					<button type="submit" class="btn btn-primary">SAVE WALLET</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div id="transfer-modal" class="modal-overlay">
+		<div class="modal-card">
+			<button class="modal-close" onclick="closeAllModals()">&times;</button>
+			<div class="modal-form-container">
+				<h2 class="header login-header">Transfer Funds</h2>
+				<form class="login-form" id="transfer-form">
+					<div class="input-group">
+						<select class="floating-input" id="transfer-from" required>
+							<!-- Populated via JS -->
+						</select>
+						<label class="floating-label">From Wallet</label>
+					</div>
+					<div class="input-group">
+						<select class="floating-input" id="transfer-to" required>
+							<!-- Populated via JS -->
+						</select>
+						<label class="floating-label">To Wallet</label>
+					</div>
+					<div class="input-group">
+						<input type="number" class="floating-input" id="transfer-amount" placeholder=" " inputmode="decimal" step="0.01" min="0" required>
+						<label class="floating-label">Amount (₱)</label>
+					</div>
+					<div id="transfer-message" class="message"></div>
+					<button type="submit" class="btn btn-primary">TRANSFER</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
 </body>
 </html>

@@ -1,15 +1,25 @@
 /* assets/css/kwarta-ai.css */
 
-#kwarta-ai-interface {
-    height: 100%;
+#view-ai {
+    height: 100% !important;
+    display: flex !important; /* Overrides the 'block' from showView() */
+    flex-direction: column;
+    overflow: hidden !important; /* Prevent main-content-area from scrolling this view */
 }
 
-.ai-container {
+#kwarta-ai-interface {
     height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Prevent container itself from scrolling */
+}
+
+.ai-container {
+    flex-grow: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .chat-window {
@@ -20,14 +30,14 @@
     flex-direction: column;
     border-radius: 0; 
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    overflow: hidden; /* Contain children */
+    overflow: hidden;
 }
 
 .chat-header {
-    padding: 10px 20px;
+    padding: 15px 25px;
     background: var(--dark-green);
     color: white;
-    flex-shrink: 0; /* Header stays fixed size */
+    flex-shrink: 0;
 }
 
 .chat-header h3 {
@@ -36,24 +46,28 @@
 }
 
 .chat-header p {
-    font-size: 0.9em;
-    margin: 5px 0 0;
+    font-size: 0.85em;
+    margin: 4px 0 0;
+    opacity: 0.8;
 }
 
 .chat-header h3 span {
-    font-size: 0.8em;
+    font-size: 0.7em;
     color: #2ecc71;
-    margin-left: 10px;
+    margin-left: 8px;
+    background: rgba(46, 204, 113, 0.1);
+    padding: 2px 8px;
+    border-radius: 10px;
 }
 
 .chat-messages {
-    flex-grow: 1; /* Message area takes available space */
-    padding: 30px;
-    overflow-y: auto; /* Only this part scrolls */
+    flex-grow: 1;
+    padding: 25px;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    background-color: #fcfcfc;
+    gap: 15px;
+    background-color: #f8f9fa;
 }
 
 /* Chat Bubbles */

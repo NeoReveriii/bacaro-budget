@@ -1063,6 +1063,12 @@
     }
 
     /* Main Layout */
+    .dashboard-container, #app-content {
+        position: static !important;
+        z-index: auto !important;
+        transform: none !important;
+    }
+
     .main-app-card {
         width: 100vw;
         height: 100vh;
@@ -1070,8 +1076,9 @@
         margin: 0;
         box-shadow: none;
         display: block; /* Let sidebar handle mobile placement */
-        position: static; /* Release sidebar from scaling context */
-        z-index: auto; /* Release sidebar from scaling context */
+        position: static !important; /* Release sidebar from scaling context */
+        z-index: auto !important; /* Release sidebar from scaling context */
+        transform: none !important;
     }
 
     #app-content {
@@ -1114,7 +1121,7 @@
     }
 
     /* Stats Grid */
-    .stats-grid {
+    .stat-grid {
         display: flex;
         flex-direction: column;
         gap: 15px;

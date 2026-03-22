@@ -1064,6 +1064,7 @@
 
     body {
         overflow: auto !important; /* Allow scrolling on mobile */
+        background-color: rgba(255, 255, 255, 0.85) !important; /* Match content bg */
     }
 
     /* Main Layout */
@@ -1102,7 +1103,7 @@
     }
 
     #main-content-area {
-        height: calc(100vh - 70px) !important; /* viewport minus header */
+        min-height: calc(100vh - 70px) !important; /* fill at minimum */
         overflow-y: auto !important;
         -webkit-overflow-scrolling: touch; /* smooth iOS scroll */
     }

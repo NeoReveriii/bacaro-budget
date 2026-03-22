@@ -167,7 +167,7 @@
 
 		function handleLogout() {
 			removeToken();
-			window.location.href = 'BBMAI_GUEST.html';
+			window.location.href = '/';
 		}
 
 		function handleNewTransactionClick() {

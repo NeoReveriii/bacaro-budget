@@ -1070,6 +1070,8 @@
         margin: 0;
         box-shadow: none;
         display: block; /* Let sidebar handle mobile placement */
+        position: static; /* Release sidebar from scaling context */
+        z-index: auto; /* Release sidebar from scaling context */
     }
 
     #app-content {
@@ -1097,6 +1099,18 @@
 
     .drawer-overlay {
         z-index: 2000;
+    }
+
+    .account-drawer {
+        z-index: 2001; /* Ensure right drawer stays on top of overlay too */
+    }
+
+    .header-nav-link, .reports-dropdown-container {
+        display: none !important; /* Remove unneeded nav links from mobile header */
+    }
+
+    .header-title {
+        font-size: 1.3em;
     }
 
     /* Stats Grid */

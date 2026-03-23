@@ -117,7 +117,18 @@
 			// 3. Update the Active class in the sidebar
 			const navItems = document.querySelectorAll('.nav-item');
 			navItems.forEach(item => item.classList.remove('active'));
-			element.classList.add('active');
+			if (element) element.classList.add('active');
+
+            // 4. Update Tab Title
+            const titles = {
+                'dashboard': 'Dashboard',
+                'transactions': 'Transactions',
+                'wallets': 'Wallets',
+                'ai': 'Kwarta AI'
+            };
+            if (titles[viewId]) {
+                document.title = `${titles[viewId]} | Bacaro Budget Manager`;
+            }
 		}
 		
 		window.wallets = [];

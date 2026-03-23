@@ -136,19 +136,25 @@ input[type="number"] {
 			
 .floating-input:focus { border-bottom: 2px solid var(--white); }
 		
-.floating-label { 
-    position: absolute; top: 5px; left: 0; color: var(--text-light); 
-    font-size: 1.1em; pointer-events: none; 
-    transition: top 0.25s cubic-bezier(0.4, 0, 0.2, 1), font-size 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.25s ease;
-    z-index: 1; 
+.floating-label {
+    position: absolute; 
+    top: 5px; 
+    left: 0; 
+    color: var(--text-light);
+    font-size: 1.1em; 
+    pointer-events: none;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.25s ease;
+    z-index: 1;
+    transform-origin: left top;
 }
-			
+
 .floating-input:focus ~ .floating-label, 
 .floating-input:not(:placeholder-shown) ~ .floating-label,
 .custom-select-wrapper.has-value ~ .floating-label,
 .custom-select-wrapper.open ~ .floating-label,
 .custom-select-wrapper:focus ~ .floating-label { 
-    top: -20px; font-size: 0.8em; color: var(--primary-green); 
+    transform: translateY(-25px) scale(0.75); 
+    color: var(--primary-green); 
 }
 
 .password-toggle {

@@ -331,10 +331,16 @@
         <div class="modal-card">
             <button class="modal-close" onclick="closeAllModals()">&times;</button>
             <div class="modal-form-container">
-                <h2 class="header signup-header">SIGN UP</h2>
+                <h2 class="header">Sign Up</h2>
                 <form class="signup-form" id="signup-form">
-                    <div class="input-group"><input type="text" class="floating-input" id="signup-username" placeholder=" " required><label class="floating-label">Username</label></div>
-                    <div class="input-group"><input type="email" class="floating-input" id="signup-email" placeholder=" " required><label class="floating-label">Email Address</label></div>
+                    <div class="input-group">
+                        <input type="text" class="floating-input" id="signup-username" placeholder=" " required>
+                        <label class="floating-label">Username</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" class="floating-input" id="signup-email" placeholder=" " required>
+                        <label class="floating-label">Email Address</label>
+                    </div>
                     <div class="input-group">
                         <div class="password-input-wrapper">
                             <input type="password" class="floating-input" id="signup-password" placeholder=" " required>
@@ -349,10 +355,17 @@
                             <span class="password-toggle">⛉</span>
                         </div>
                     </div>
-					<div class="input-group"><input type="tel" class="floating-input" id="signup-pnumber" placeholder=" "><label class="floating-label">Phone Number (Optional)</label></div>
+					<div class="input-group">
+                        <input type="tel" class="floating-input" id="signup-pnumber" placeholder=" ">
+                        <label class="floating-label">Phone Number (Optional)</label>
+                    </div>
+                    
                     <div id="signup-message" class="message"></div>
                     <button type="submit" class="btn btn-primary">Create Account</button>
-                    <div class="login-link"><a href="javascript:void(0)" onclick="openLoginModal()">Use a Registered Account</a></div>
+                    
+                    <div class="secondary-action-container">
+                        <a href="javascript:void(0)" onclick="openLoginModal()" class="btn-secondary-outline">Use Registered Account</a>
+                    </div>
                 </form>
             </div>
         </div>

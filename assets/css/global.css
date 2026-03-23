@@ -16,6 +16,8 @@
 
 body {
     font-family: 'Inter', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     margin: 0;
     padding: 0;
     display: flex;
@@ -82,6 +84,8 @@ body {
     font-weight: normal; 
     text-align: center; 
     color: var(--white); 
+    text-rendering: optimizeLegibility;
+    letter-spacing: 0.01em;
 }
 
 .login-header { margin-bottom: 50px; }

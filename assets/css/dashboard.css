@@ -10,6 +10,8 @@
 		body {
             display: block; 
             background-color: transparent;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 		
 		/* Custom Scrollbar*/
@@ -86,6 +88,8 @@
             font-size: 1.8em; 
             color: white; 
             font-weight: bold;
+            text-rendering: optimizeLegibility;
+            letter-spacing: 0.01em;
         }
 
         .header-right {

@@ -173,7 +173,10 @@
 			// Update total balance card
 			const totalBalance = window.wallets.reduce((sum, w) => sum + Number(w.calculated_balance), 0);
 			const totalEl = document.querySelector('.wallet-card .stat-value');
-			if (totalEl) totalEl.innerText = formatCurrency(totalBalance);
+			if (totalEl) {
+                totalEl.innerHTML = formatCurrency(totalBalance);
+                totalEl.classList.add('loading-transition');
+            }
 		}
 
 		window.handleDeleteWallet = async function(walletId, name) {
@@ -547,7 +550,9 @@
 				}
 
 				const data = payload?.json;
-				renderTransactions(Array.isArray(data) ? data : data?.data || []);
+				const transactions = Array.isArray(data) ? data : data?.data || [];
+				renderTransactions(transactions);
+                updateDashboardStats(transactions);
 			} catch (e) {
 				console.error('Load transactions error:', e);
 				listEl.innerHTML = `<div class="empty-history"><p>${escapeHtml(e.message)}</p></div>`;
@@ -1082,4 +1087,107 @@ function initializeCustomSelects() {
 	document.addEventListener('click', () => {
 		document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
 	});
+}
+
+function updateDashboardStats(transactions) {
+    const income = transactions.filter(t => t.type === 'Income').reduce((sum, t) => sum + Number(t.amount), 0);
+    const expense = transactions.filter(t => t.type === 'Expense').reduce((sum, t) => sum + Number(t.amount), 0);
+    const transfer = transactions.filter(t => t.type === 'Transfer').reduce((sum, t) => sum + Number(t.amount), 0);
+
+    const incomeEl = document.querySelector('.income-card .stat-value');
+    const expenseEl = document.querySelector('.expense-card .stat-value');
+    const transferEl = document.querySelector('.transfer-card .stat-value');
+
+    if (incomeEl) {
+        incomeEl.innerHTML = formatCurrency(income);
+        incomeEl.classList.add('loading-transition');
+    }
+    if (expenseEl) {
+        expenseEl.innerHTML = formatCurrency(expense);
+        expenseEl.classList.add('loading-transition');
+    }
+    if (transferEl) {
+        transferEl.innerHTML = formatCurrency(transfer);
+        transferEl.classList.add('loading-transition');
+    }
+
+    renderIncomeSummary(transactions);
+    renderDashboardChart(transactions);
+}
+
+function renderIncomeSummary(transactions) {
+    const container = document.getElementById('income-summary-container');
+    const listEl = document.getElementById('income-summary-list');
+    if (!container || !listEl) return;
+
+    const incomeTransactions = transactions.filter(t => t.type === 'Income').slice(0, 5);
+    
+    if (incomeTransactions.length === 0) {
+        listEl.innerHTML = '<p style="color: #999; font-style: italic; padding: 10px;">No income records found.</p>';
+    } else {
+        listEl.innerHTML = incomeTransactions.map(t => `
+            <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                <span style="font-weight: 600; color: var(--dark-green);">${escapeHtml(t.description)}</span>
+                <span style="color: #2ecc71; font-weight: 700;">+ ${formatCurrency(t.amount)}</span>
+            </div>
+        `).join('');
+    }
+
+    // Transition from skeleton to content
+    const skeleton = container.querySelector('.income-summary-skeleton');
+    if (skeleton) skeleton.style.display = 'none';
+    listEl.style.display = 'block';
+}
+
+let dashboardChartInstance = null;
+function renderDashboardChart(transactions) {
+    const container = document.getElementById('chart-summary-container');
+    const wrapper = document.getElementById('dashboard-chart-wrapper');
+    const canvas = document.getElementById('dashboard-doughnut-chart');
+    if (!container || !wrapper || !canvas) return;
+
+    const expenseData = transactions.filter(t => t.type === 'Expense');
+    const categories = {};
+    expenseData.forEach(t => {
+        const label = t.wallet_type || 'Other';
+        categories[label] = (categories[label] || 0) + Number(t.amount);
+    });
+
+    const labels = Object.keys(categories);
+    const amounts = Object.values(categories);
+
+    if (dashboardChartInstance) dashboardChartInstance.destroy();
+
+    if (amounts.length > 0) {
+        dashboardChartInstance = new Chart(canvas, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: amounts,
+                    backgroundColor: ['#ff7675', '#74b9ff', '#55efc4', '#ffeaa7', '#a29bfe', '#fab1a0'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } }
+                }
+            }
+        });
+    } else {
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.font = '14px Inter';
+        ctx.fillStyle = '#999';
+        ctx.textAlign = 'center';
+        ctx.fillText('No expense data to display', canvas.width / 2, canvas.height / 2);
+    }
+
+    // Transition from skeleton to content
+    const skeleton = container.querySelector('.chart-skeleton-container');
+    if (skeleton) skeleton.style.display = 'none';
+    wrapper.style.display = 'block';
 }

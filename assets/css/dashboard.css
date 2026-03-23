@@ -1231,6 +1231,73 @@
 			color: var(--primary-green);
 		}
 
+		/* --- Dashboard Skeleton Specifics --- */
+		.chart-skeleton-container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			padding: 20px;
+			background: white;
+			border-radius: 15px;
+			min-height: 250px;
+			border: 1px solid rgba(0,0,0,0.05);
+		}
+
+		.doughnut-skeleton {
+			width: 150px;
+			height: 150px;
+			border-radius: 50%;
+			position: relative;
+			background: #e2e2e2;
+		}
+
+		/* Create a 'hole' in the middle of the circle to look like a doughnut */
+		.doughnut-skeleton::before {
+			content: "";
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 70px;
+			height: 70px;
+			background: white;
+			border-radius: 50%;
+			z-index: 2;
+		}
+
+		.income-summary-skeleton {
+			background: white;
+			padding: 25px;
+			border-radius: 15px;
+			border: 1px solid rgba(0,0,0,0.05);
+		}
+
+		.summary-skeleton-row {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 15px;
+		}
+
+		.summary-skeleton-row:last-child {
+			margin-bottom: 0;
+		}
+
+		.summary-skeleton-label {
+			width: 100px;
+			height: 12px;
+			background: #e2e2e2;
+			border-radius: 6px;
+		}
+
+		.summary-skeleton-value {
+			width: 60px;
+			height: 12px;
+			background: #e2e2e2;
+			border-radius: 6px;
+		}
+
 /* ==========================================================
    MOBILE RESPONSIVENESS
 ========================================================== */

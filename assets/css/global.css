@@ -517,4 +517,63 @@ input[type="number"] {
     input[type="tel"] {
         font-size: 16px !important; /* Forces iOS to not zoom */
     }
-}
+    }
+
+    /* --- Skeleton Loader System --- */
+    .skeleton {
+    position: relative;
+    overflow: hidden;
+    background-color: #e2e2e2; /* Neutral gray base */
+    border-radius: 4px;
+    display: block;
+    }
+
+    .skeleton::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0,
+        rgba(255, 255, 255, 0.2) 20%,
+        rgba(255, 255, 255, 0.5) 60%,
+        rgba(255, 255, 255, 0)
+    );
+    animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+    }
+
+    .skeleton-circle {
+    border-radius: 50%;
+    }
+
+    .skeleton-text {
+    height: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    width: 100%;
+    }
+
+    .skeleton-text.short { width: 35%; }
+    .skeleton-text.medium { width: 65%; }
+    .skeleton-text.long { width: 95%; }
+
+    /* Fade-in Transition for Content Loading */
+    .loading-transition {
+    opacity: 0;
+    animation: contentFadeIn 0.6s ease forwards;
+    }
+
+    @keyframes contentFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+    }

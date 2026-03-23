@@ -99,24 +99,48 @@
 					
 						<div class="stat-card wallet-card">
 							<div class="stat-label">Your Balance</div>
-							<div class="stat-value">₱ 0.00</div>
+							<div class="stat-value"><div class="skeleton skeleton-text medium" style="height: 40px; background: rgba(255,255,255,0.1);"></div></div>
 							<div class="stat-meta">Active Wallet</div>
 						</div>
 
 						<div class="stat-grid">
 							<div class="stat-card income-card">
 								<div class="stat-label">Income</div>
-								<div class="stat-value">₱ 0.00</div>
+								<div class="stat-value"><div class="skeleton skeleton-text short" style="height: 30px;"></div></div>
 							</div>
 							<div class="stat-card expense-card">
 								<div class="stat-label">Expense</div>
-								<div class="stat-value">₱ 0.00</div>
+								<div class="stat-value"><div class="skeleton skeleton-text short" style="height: 30px;"></div></div>
 							</div>
 							<div class="stat-card transfer-card">
 								<div class="stat-label">Transfer</div>
-								<div class="stat-value">₱ 0.00</div>
+								<div class="stat-value"><div class="skeleton skeleton-text short" style="height: 30px;"></div></div>
 							</div>
 						</div>
+
+                        <div class="dashboard-details-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 25px;">
+                            <div id="income-summary-container">
+                                <h3 style="margin-bottom: 15px; font-family: 'Times New Roman', serif;">Income Summary</h3>
+                                <div class="income-summary-skeleton">
+                                    <div class="summary-skeleton-row"><div class="summary-skeleton-label skeleton"></div><div class="summary-skeleton-value skeleton"></div></div>
+                                    <div class="summary-skeleton-row"><div class="summary-skeleton-label skeleton"></div><div class="summary-skeleton-value skeleton"></div></div>
+                                    <div class="summary-skeleton-row"><div class="summary-skeleton-label skeleton"></div><div class="summary-skeleton-value skeleton"></div></div>
+                                    <div class="summary-skeleton-row"><div class="summary-skeleton-label skeleton"></div><div class="summary-skeleton-value skeleton"></div></div>
+                                </div>
+                                <div id="income-summary-list" class="loading-transition" style="display: none;">
+                                    <!-- Dynamic content -->
+                                </div>
+                            </div>
+                            <div id="chart-summary-container">
+                                <h3 style="margin-bottom: 15px; font-family: 'Times New Roman', serif;">Expense Breakdown</h3>
+                                <div class="chart-skeleton-container">
+                                    <div class="doughnut-skeleton skeleton"></div>
+                                </div>
+                                <div id="dashboard-chart-wrapper" class="loading-transition" style="display: none; height: 250px; position: relative;">
+                                    <canvas id="dashboard-doughnut-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
 					</div>
 				</main>
 		

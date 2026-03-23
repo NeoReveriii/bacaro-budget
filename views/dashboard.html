@@ -299,16 +299,11 @@
         <div class="modal-card">
 			<button class="modal-close" onclick="closeAllModals()">&times;</button>
             <div class="modal-form-container">
-                <div style="text-align:center; margin-bottom: 15px;">
-                    <div style="width: 50px; height: 50px; background: var(--primary-green); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(89,133,57,0.3);">
-                        <span style="font-size: 1.5em; color: white;">👋</span>
-                    </div>
-                </div>
-                <h2 class="header login-header">Welcome Back!</h2>
+                <h2 class="header">Welcome Back!</h2>
                 <form class="login-form" id="login-form">
                     <div class="input-group">
                         <input type="email" class="floating-input" id="login-email" placeholder=" " required>
-                        <label class="floating-label">Email Address or Phone No.</label>
+                        <label class="floating-label">Email Address</label>
                     </div>
                     <div class="input-group">
                         <div class="password-input-wrapper">
@@ -319,8 +314,14 @@
                     </div>
                     <div id="login-message" class="message"></div>
                     <button type="submit" class="btn btn-primary">LOG IN</button>
-                    <div class="login-link"><a href="javascript:void(0)" onclick="openForgotModal()">Forgot Password</a></div>
-                    <div class="login-link"><a href="javascript:void(0)" onclick="openSignupModal()">Create New Account</a></div>
+                    
+                    <div class="forgot-password">
+                        <a href="javascript:void(0)" onclick="openForgotModal()">Forgot Password?</a>
+                    </div>
+
+                    <div class="secondary-action-container">
+                        <a href="javascript:void(0)" onclick="openSignupModal()" class="btn-secondary-outline">Create New Account</a>
+                    </div>
                 </form>
             </div>
         </div>

@@ -261,17 +261,24 @@
 			border-radius: 15px;
 			box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 			border: 1px solid rgba(0,0,0,0.08);
-			transition: all 0.3s ease;
+			transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
 			min-height: 140px;
+			cursor: pointer;
+			will-change: transform, box-shadow;
 		}
 
 		.stat-card:hover {
-			transform: translateY(-5px);
-			box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+			transform: translateY(-8px);
+			box-shadow: 0 15px 35px rgba(0,0,0,0.12);
 		}
+
+		.income-card:hover { border-color: rgba(46, 204, 113, 0.4); }
+		.expense-card:hover { border-color: rgba(231, 76, 60, 0.4); }
+		.transfer-card:hover { border-color: rgba(52, 152, 219, 0.4); }
+		.wallet-card:hover { border-color: var(--primary-green); }
 
 		.stat-label {
 			font-size: 0.9em;

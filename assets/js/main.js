@@ -219,7 +219,7 @@
 		};
 
 		function renderWalletDropdowns() {
-			const options = window.wallets.map(w => `<option value="${escapeHtml(w.name)}">${escapeHtml(w.name)}</option>`).join('');
+			const options = window.wallets.map(w => `<option value="${w.wallet_id}" data-name="${escapeHtml(w.name)}">${escapeHtml(w.name)}</option>`).join('');
 			
 			const transWallet = document.getElementById('trans-wallet-type');
 			if (transWallet) {
@@ -495,6 +495,40 @@
 
 		window.handleDeleteTransaction = async function(id) {
 			showConfirm('Delete Transaction', 'Are you sure you want to delete this transaction?', async () => {
+                // Optimistic Update: 
+                // 1. Save original state
+                const originalTransactions = [...(window.currentTransactions || [])];
+                const originalWallets = JSON.parse(JSON.stringify(window.wallets || []));
+                const deletedTx = originalTransactions.find(t => t.trans_id === id);
+                
+                if (!deletedTx) return;
+
+                // 2. Remove immediately from UI state
+                window.currentTransactions = originalTransactions.filter(t => t.trans_id !== id);
+                
+                // 3. Update local wallet balance optimistically
+                const walletId = deletedTx.wallet_id;
+                if (walletId && window.wallets) {
+                    const walletIndex = window.wallets.findIndex(w => w.wallet_id === walletId);
+                    if (walletIndex !== -1) {
+                        const amount = Number(deletedTx.amount);
+                        const type = String(deletedTx.type).toLowerCase();
+                        
+                        if (type === 'income' || (type === 'transfer' && deletedTx.description.toLowerCase().includes('from'))) {
+                            window.wallets[walletIndex].calculated_balance = Number(window.wallets[walletIndex].calculated_balance) - amount;
+                        } else if (type === 'expense' || (type === 'transfer' && deletedTx.description.toLowerCase().includes('to'))) {
+                            window.wallets[walletIndex].calculated_balance = Number(window.wallets[walletIndex].calculated_balance) + amount;
+                        }
+                    }
+                }
+
+                // 4. Re-render UI immediately
+                renderTransactions(window.currentTransactions);
+                updateDashboardStats(window.currentTransactions);
+                renderWallets(); 
+                
+                showToast('Transaction deleted', 'success');
+
 				try {
 					const res = await fetch('/api/transactions', {
 						method: 'DELETE',
@@ -505,10 +539,18 @@
 						body: JSON.stringify({ id })
 					});
 					if (!res.ok) throw new Error('Delete failed');
-					showToast('Transaction deleted', 'success');
-					loadTransactions();
+                    
+                    // On success, we just stay as is. Optionally we can refresh from server
+                    // loadTransactions(); 
+                    // loadWallets();
 				} catch (err) {
-					showToast('Error deleting transaction', 'error');
+                    // 5. Rollback on failure
+					showToast('Error deleting transaction. Rolling back...', 'error');
+                    window.currentTransactions = originalTransactions;
+                    window.wallets = originalWallets;
+                    renderTransactions(window.currentTransactions);
+                    updateDashboardStats(window.currentTransactions);
+                    renderWallets();
 				}
 			});
 		};
@@ -699,7 +741,13 @@
 						const res1 = await fetch('/api/transactions', {
 							method: 'POST',
 							headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
-							body: JSON.stringify({ description: `Transfer to ${to}`, type: 'Transfer', wallet_type: from, amount })
+							body: JSON.stringify({ 
+                                description: `Transfer to ${document.querySelector('#transfer-to option[value="'+to+'"]').dataset.name}`, 
+                                type: 'Transfer', 
+                                wallet_type: document.querySelector('#transfer-from option[value="'+from+'"]').dataset.name, 
+                                wallet_id: from,
+                                amount 
+                            })
 						});
 						if (!res1.ok) throw new Error('Failed to process transfer (Step 1)');
 
@@ -707,7 +755,13 @@
 						const res2 = await fetch('/api/transactions', {
 							method: 'POST',
 							headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
-							body: JSON.stringify({ description: `Transfer from ${from}`, type: 'Transfer', wallet_type: to, amount })
+							body: JSON.stringify({ 
+                                description: `Transfer from ${document.querySelector('#transfer-from option[value="'+from+'"]').dataset.name}`, 
+                                type: 'Transfer', 
+                                wallet_type: document.querySelector('#transfer-to option[value="'+to+'"]').dataset.name, 
+                                wallet_id: to,
+                                amount 
+                            })
 						});
 						if (!res2.ok) throw new Error('Failed to process transfer (Step 2)');
 
@@ -894,12 +948,21 @@
 					const transId = document.getElementById('trans-id')?.value;
 					const description = document.getElementById('trans-description')?.value?.trim() || '';
 					const type = document.getElementById('trans-type')?.value?.trim() || '';
-					const walletTypeRaw = document.getElementById('trans-wallet-type')?.value?.trim() || '';
+					const walletIdRaw = document.getElementById('trans-wallet-type')?.value?.trim() || '';
 					const walletOther = document.getElementById('trans-wallet-other')?.value?.trim() || '';
-					const walletType =
-						walletTypeRaw.toLowerCase() === 'other'
-							? walletOther
-							: walletTypeRaw;
+					
+                    let walletType = "";
+                    let walletId = null;
+
+                    if (walletIdRaw.toLowerCase() === 'other') {
+                        walletType = walletOther;
+                        walletId = null;
+                    } else {
+                        const selectedOption = document.querySelector(`#trans-wallet-type option[value="${walletIdRaw}"]`);
+                        walletType = selectedOption ? selectedOption.dataset.name : "";
+                        walletId = walletIdRaw;
+                    }
+
 					const amountStr = document.getElementById('trans-amount')?.value?.trim() || '';
 					const messageDiv = document.getElementById('transaction-message');
 					if (messageDiv) {
@@ -955,6 +1018,7 @@
 								description,
 								type,
 								wallet_type: walletType,
+                                wallet_id: walletId,
 								amount
 							})
 						});

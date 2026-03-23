@@ -110,7 +110,7 @@ export default async function handler(req, res) {
           ) as calculated_balance
         FROM wallets w
         LEFT JOIN transactions t 
-          ON t.wallet_type = w.name AND t.account_id = w.account_id
+          ON t.wallet_id = w.wallet_id AND t.account_id = w.account_id
         WHERE w.account_id = ${account.acc_id}
         GROUP BY w.wallet_id
         ORDER BY w.created_at ASC

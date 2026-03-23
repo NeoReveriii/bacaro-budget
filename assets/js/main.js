@@ -494,6 +494,14 @@
 		}
 
 		window.handleDeleteTransaction = async function(id) {
+            // Find the button and add loading state
+            const btn = event?.currentTarget;
+            if (btn) {
+                btn.disabled = true;
+                btn.style.opacity = '0.5';
+                btn.style.cursor = 'not-allowed';
+            }
+
 			showConfirm('Delete Transaction', 'Are you sure you want to delete this transaction?', async () => {
                 // Optimistic Update: 
                 // 1. Save original state
@@ -501,31 +509,68 @@
                 const originalWallets = JSON.parse(JSON.stringify(window.wallets || []));
                 const deletedTx = originalTransactions.find(t => t.trans_id === id);
                 
-                if (!deletedTx) return;
+                if (!deletedTx) {
+                    if (btn) btn.disabled = false;
+                    return;
+                }
 
                 // 2. Remove immediately from UI state
                 window.currentTransactions = originalTransactions.filter(t => t.trans_id !== id);
                 
                 // 3. Update local wallet balance optimistically
                 const walletId = deletedTx.wallet_id;
+                const walletName = deletedTx.wallet_type;
+                let balanceChange = 0;
+                const amount = Number(deletedTx.amount);
+                const type = String(deletedTx.type).toLowerCase();
+
+                if (type === 'income' || (type === 'transfer' && deletedTx.description.toLowerCase().includes('from'))) {
+                    balanceChange = -amount;
+                } else if (type === 'expense' || (type === 'transfer' && deletedTx.description.toLowerCase().includes('to'))) {
+                    balanceChange = +amount;
+                }
+
                 if (walletId && window.wallets) {
                     const walletIndex = window.wallets.findIndex(w => w.wallet_id === walletId);
                     if (walletIndex !== -1) {
-                        const amount = Number(deletedTx.amount);
-                        const type = String(deletedTx.type).toLowerCase();
-                        
-                        if (type === 'income' || (type === 'transfer' && deletedTx.description.toLowerCase().includes('from'))) {
-                            window.wallets[walletIndex].calculated_balance = Number(window.wallets[walletIndex].calculated_balance) - amount;
-                        } else if (type === 'expense' || (type === 'transfer' && deletedTx.description.toLowerCase().includes('to'))) {
-                            window.wallets[walletIndex].calculated_balance = Number(window.wallets[walletIndex].calculated_balance) + amount;
-                        }
+                        window.wallets[walletIndex].calculated_balance = Number(window.wallets[walletIndex].calculated_balance) + balanceChange;
                     }
                 }
 
-                // 4. Re-render UI immediately
+                // 4. Re-render ALL relevant UI components immediately
                 renderTransactions(window.currentTransactions);
                 updateDashboardStats(window.currentTransactions);
                 renderWallets(); 
+
+                // SPECIAL: Check if Wallet Details view is open for this specific wallet
+                const detailsView = document.getElementById('view-wallet-details');
+                const detailName = document.getElementById('detail-wallet-name')?.innerText;
+                if (detailsView && detailsView.style.display !== 'none' && detailName === walletName) {
+                    // Update balance at the top of wallet details
+                    const balanceEl = document.querySelector('.wallet-balance-card .balance-amount');
+                    if (balanceEl) {
+                        const currentVal = Number(balanceEl.innerText.replace(/[^0-9.-]+/g,""));
+                        balanceEl.innerText = formatCurrency(currentVal + balanceChange);
+                    }
+                    
+                    // Update the list inside wallet details
+                    const listEl = document.querySelector('#main-wallet-details .transaction-list');
+                    const filtered = window.currentTransactions.filter(t => t.wallet_type === walletName);
+                    if (filtered.length === 0) {
+                        listEl.innerHTML = `
+                            <div class="transaction-row header-row">
+                                <span>#</span><span>TITLE</span><span>AMOUNT</span><span>TYPE</span><span>DATE</span><span></span> 
+                            </div>
+                            <div class="empty-history"><p>No transactions found for this wallet.</p></div>
+                        `;
+                    } else {
+                        listEl.innerHTML = `
+                            <div class="transaction-row header-row">
+                                <span>#</span><span>TITLE</span><span>AMOUNT</span><span>TYPE</span><span>DATE</span><span></span> 
+                            </div>
+                        ` + filtered.map((row, idx) => renderTransactionItem(row, idx + 1)).join('');
+                    }
+                }
                 
                 showToast('Transaction deleted', 'success');
 
@@ -539,10 +584,6 @@
 						body: JSON.stringify({ id })
 					});
 					if (!res.ok) throw new Error('Delete failed');
-                    
-                    // On success, we just stay as is. Optionally we can refresh from server
-                    // loadTransactions(); 
-                    // loadWallets();
 				} catch (err) {
                     // 5. Rollback on failure
 					showToast('Error deleting transaction. Rolling back...', 'error');
@@ -551,8 +592,24 @@
                     renderTransactions(window.currentTransactions);
                     updateDashboardStats(window.currentTransactions);
                     renderWallets();
+                    
+                    // Rollback wallet details if open
+                    if (detailsView && detailsView.style.display !== 'none' && detailName === walletName) {
+                        openWalletDetails(walletName, 
+                            document.getElementById('detail-wallet-type').innerText, 
+                            document.getElementById('detail-wallet-status').innerText,
+                            originalWallets.find(w => w.name === walletName)?.calculated_balance || 0
+                        );
+                    }
 				}
-			});
+			}, () => {
+                // On Cancel: re-enable button
+                if (btn) {
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                    btn.style.cursor = 'pointer';
+                }
+            });
 		};
 
 		window.handleEditTransaction = function(id) {

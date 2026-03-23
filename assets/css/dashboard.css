@@ -12,6 +12,11 @@
             background-color: transparent;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            text-rendering: optimizeLegibility;
         }
 		
 		/* Custom Scrollbar*/
@@ -1321,15 +1326,14 @@
 			border-radius: 50%;
 			position: relative;
 			background: #e2e2e2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 		}
 
 		/* Create a 'hole' in the middle of the circle to look like a doughnut */
 		.doughnut-skeleton::before {
 			content: "";
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
 			width: 70px;
 			height: 70px;
 			background: white;

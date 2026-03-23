@@ -161,7 +161,13 @@
 							<span>DATE</span>
 							<span>WALLET</span>
 							<span></span> </div>
-						<div id="transaction-list-items"></div>
+						<div id="transaction-skeleton-list">
+                            <div class="transaction-skeleton-row"><div class="trans-skeleton-icon skeleton"></div><div class="trans-skeleton-text"><div class="skeleton skeleton-text medium"></div><div class="skeleton skeleton-text short"></div></div><div class="trans-skeleton-amount skeleton"></div></div>
+                            <div class="transaction-skeleton-row"><div class="trans-skeleton-icon skeleton"></div><div class="trans-skeleton-text"><div class="skeleton skeleton-text medium"></div><div class="skeleton skeleton-text short"></div></div><div class="trans-skeleton-amount skeleton"></div></div>
+                            <div class="transaction-skeleton-row"><div class="trans-skeleton-icon skeleton"></div><div class="trans-skeleton-text"><div class="skeleton skeleton-text medium"></div><div class="skeleton skeleton-text short"></div></div><div class="trans-skeleton-amount skeleton"></div></div>
+                            <div class="transaction-skeleton-row"><div class="trans-skeleton-icon skeleton"></div><div class="trans-skeleton-text"><div class="skeleton skeleton-text medium"></div><div class="skeleton skeleton-text short"></div></div><div class="trans-skeleton-amount skeleton"></div></div>
+                        </div>
+						<div id="transaction-list-items" class="loading-transition" style="display: none;"></div>
 					</div>
 				</section>
 				</main>
@@ -177,7 +183,12 @@
 							<span class="icon">⇄</span> Transfer Funds
 						</button>
 					</div>
-					<div class="wallet-grid" id="wallet-grid-container">
+                    <div id="wallet-skeleton-grid" class="wallet-grid">
+                        <div class="wallet-skeleton skeleton"> <div class="skeleton-chip"></div> <div class="skeleton-content"><div class="skeleton skeleton-text medium" style="height: 25px; margin-bottom: 10px;"></div><div class="skeleton skeleton-text short"></div></div> </div>
+                        <div class="wallet-skeleton skeleton"> <div class="skeleton-chip"></div> <div class="skeleton-content"><div class="skeleton skeleton-text medium" style="height: 25px; margin-bottom: 10px;"></div><div class="skeleton skeleton-text short"></div></div> </div>
+                        <div class="wallet-skeleton skeleton"> <div class="skeleton-chip"></div> <div class="skeleton-content"><div class="skeleton skeleton-text medium" style="height: 25px; margin-bottom: 10px;"></div><div class="skeleton skeleton-text short"></div></div> </div>
+                    </div>
+					<div class="wallet-grid loading-transition" id="wallet-grid-container" style="display: none;">
 						<!-- Wallets will be rendered here dynamically -->
 					</div>
 				</main>

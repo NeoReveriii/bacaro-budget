@@ -124,6 +124,11 @@
 
 		async function loadWallets() {
 			if (!isAuthenticated()) return;
+            const skeleton = document.getElementById('wallet-skeleton-grid');
+            const container = document.getElementById('wallet-grid-container');
+            if (skeleton) skeleton.style.display = 'grid';
+            if (container) container.style.display = 'none';
+
 			try {
 				const res = await fetch('/api/wallets', {
 					headers: { Authorization: `Bearer ${getToken()}` }
@@ -133,6 +138,9 @@
 				window.wallets = data.wallets || [];
 				renderWallets();
 				renderWalletDropdowns();
+
+                if (skeleton) skeleton.style.display = 'none';
+                if (container) container.style.display = 'grid';
 			} catch (e) {
 				console.error('Load wallets error:', e);
 			}
@@ -531,10 +539,13 @@
 		async function loadTransactions() {
 			if (!isAuthenticated()) return;
 			const listEl = document.getElementById('transaction-list-items');
+            const skeleton = document.getElementById('transaction-skeleton-list');
 			if (!listEl) return;
 
+            if (skeleton) skeleton.style.display = 'block';
+            listEl.style.display = 'none';
+
 			try {
-				listEl.innerHTML = `<div class="empty-history"><p>Loading transactions…</p></div>`;
 				const res = await fetch('/api/transactions', {
 					headers: {
 						Authorization: `Bearer ${getToken()}`
@@ -553,9 +564,14 @@
 				const transactions = Array.isArray(data) ? data : data?.data || [];
 				renderTransactions(transactions);
                 updateDashboardStats(transactions);
+
+                if (skeleton) skeleton.style.display = 'none';
+                listEl.style.display = 'block';
 			} catch (e) {
 				console.error('Load transactions error:', e);
 				listEl.innerHTML = `<div class="empty-history"><p>${escapeHtml(e.message)}</p></div>`;
+                if (skeleton) skeleton.style.display = 'none';
+                listEl.style.display = 'block';
 			}
 		}
 

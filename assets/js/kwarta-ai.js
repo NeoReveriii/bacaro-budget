@@ -90,7 +90,11 @@ function appendMessage(role, content, isEmptyStreamTarget = false) {
     
     let innerContent = "";
     if (isEmptyStreamTarget) {
-        innerContent = '<div class="msg-bubble stream-target loading-indicator"><span style="opacity:0.5; font-style:italic;">thinking...</span></div>';
+        innerContent = `
+            <div class="msg-bubble stream-target loading-indicator ai-bubble-skeleton skeleton">
+                <div class="skeleton skeleton-text medium"></div>
+                <div class="skeleton skeleton-text long"></div>
+            </div>`;
     } else {
         innerContent = `<div class="msg-bubble">${processAndRenderContent(content)}</div>`;
     }

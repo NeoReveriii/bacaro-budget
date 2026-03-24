@@ -702,7 +702,7 @@
 }
 .transaction-modal-card .floating-label {
     position: absolute;
-    top: 20px; /* Aligns with padding-top of inputs */
+    top: 20px !important; /* Force to align with padding-top of inputs */
     left: 16px;
     color: #888;
     font-size: 1em;

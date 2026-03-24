@@ -790,6 +790,12 @@
 
                 const otherGrp = document.getElementById('trans-wallet-other-group');
                 if (otherGrp) otherGrp.style.display = 'none';
+                
+                const messageDiv = document.getElementById('transaction-message');
+                if (messageDiv) {
+                    messageDiv.innerHTML = '';
+                    messageDiv.className = 'message';
+                }
 
                 // Reset Custom Selects UI
                 form.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {

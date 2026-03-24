@@ -1278,11 +1278,11 @@ function initializeCustomSelects() {
 		const wrapper = document.createElement('div');
 		wrapper.className = 'custom-select-wrapper';
 		wrapper.setAttribute('tabindex', '0');
-		
+
+		// Insert the wrapper as a sibling of the select and label
 		select.parentNode.insertBefore(wrapper, select);
 		wrapper.appendChild(select);
 		select.style.display = 'none';
-
 		const trigger = document.createElement('div');
 		trigger.className = 'custom-select-trigger floating-input';
 		

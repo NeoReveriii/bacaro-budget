@@ -406,9 +406,8 @@
 
 		function initializeSettingsPanel() {
 			const darkModeToggle = document.getElementById('settings-dark-mode-toggle');
-			const contrastRange = document.getElementById('settings-contrast-range');
-			const contrastValue = document.getElementById('settings-contrast-value');
-			if (!darkModeToggle || !contrastRange || !contrastValue) return;
+			const contrastToggle = document.getElementById('settings-contrast-toggle');
+			if (!darkModeToggle || !contrastToggle) return;
 
 			const darkModeEnabled = localStorage.getItem('bbm_dark_mode') === 'true';
 			const legacyHighContrast = localStorage.getItem('bbm_high_contrast') === 'true';
@@ -418,22 +417,24 @@
 				: (legacyHighContrast ? 120 : 100);
 
 			darkModeToggle.checked = darkModeEnabled;
-			contrastRange.value = String(contrastLevel);
-			contrastValue.textContent = `${contrastLevel}%`;
+			const isHighContrast = contrastLevel > 100;
+			contrastToggle.textContent = isHighContrast ? 'High Contrast' : 'Normal Contrast';
+			contrastToggle.dataset.highContrast = isHighContrast ? 'true' : 'false';
 
 			darkModeToggle.addEventListener('change', () => {
 				localStorage.setItem('bbm_dark_mode', darkModeToggle.checked ? 'true' : 'false');
 				applyThemeSettings();
 			});
 
-			contrastRange.addEventListener('input', () => {
-				contrastValue.textContent = `${contrastRange.value}%`;
-			});
-
-			contrastRange.addEventListener('change', () => {
-				const value = Number(contrastRange.value);
-				localStorage.setItem('bbm_contrast_level', String(value));
-				localStorage.setItem('bbm_high_contrast', value > 100 ? 'true' : 'false');
+			contrastToggle.addEventListener('click', () => {
+				const currentlyHighContrast = contrastToggle.dataset.highContrast === 'true';
+				const newContrastLevel = currentlyHighContrast ? 100 : 120;
+				const newIsHighContrast = newContrastLevel > 100;
+				
+				localStorage.setItem('bbm_contrast_level', String(newContrastLevel));
+				localStorage.setItem('bbm_high_contrast', newIsHighContrast ? 'true' : 'false');
+				contrastToggle.textContent = newIsHighContrast ? 'High Contrast' : 'Normal Contrast';
+				contrastToggle.dataset.highContrast = newIsHighContrast ? 'true' : 'false';
 				applyThemeSettings();
 			});
 		}

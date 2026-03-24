@@ -864,7 +864,14 @@ input[type=number] {
 			border-radius: 4px;
 		}
 
-		.transaction-row:hover { background: rgba(0,0,0,0.02); }
+		.transaction-row {
+			transition: background-color 0.2s ease, border-color 0.2s ease;
+		}
+
+		.transaction-row:hover { 
+			background: rgba(89, 133, 57, 0.08);
+			border-bottom-color: rgba(89, 133, 57, 0.2);
+		}
 
 		.header-row {
 			font-size: 0.75em;
@@ -872,13 +879,17 @@ input[type=number] {
 			color: #999;
 			letter-spacing: 1px;
 			cursor: default;
-			border-bottom: 2px solid rgba(0,0,0,0.05);
+			border-bottom: 2px solid rgba(89, 133, 57, 0.15);
+			background-color: rgba(89, 133, 57, 0.05);
 		}
 
+		.rec-number { color: #999; font-weight: 600; }
 		.rec-title { font-weight: 700; color: var(--dark-green); }
 		.rec-stats { font-weight: 800; }
 		.rec-stats.income { color: #2ecc71; }
 		.rec-stats.expense { color: #e56b6b; } /* Softer red/coral */
+		.rec-type { color: #888; }
+		.rec-date { color: #999; font-size: 0.9em; }
 		.rec-wallet { font-size: 0.85em; font-weight: 600; color: #666; }
 
 		/* Badges */
@@ -901,32 +912,40 @@ input[type=number] {
 		}
 
 		.icon-btn {
-			background: none;
-			border: none;
+			background: transparent;
+			border: 1px solid rgba(0, 0, 0, 0.1);
 			cursor: pointer;
 			font-size: 1.1em;
-			opacity: 0.4;
-			transition: opacity 0.2s;
+			padding: 4px 6px;
+			border-radius: 4px;
+			opacity: 0.6;
+			transition: all 0.2s ease;
 		}
 
-		.edit-btn:hover { opacity: 1; color: var(--primary-green); }
-		.delete-btn:hover { opacity: 1; color: #ff7675; }
+		.icon-btn:hover {
+			opacity: 1;
+			background-color: rgba(89, 133, 57, 0.1);
+			border-color: rgba(89, 133, 57, 0.3);
+		}
+
+		.edit-btn:hover { color: var(--primary-green); }
+		.delete-btn:hover { color: #ff7675; }
 
 		/* Expansion Logic */
 		.transaction-details {
 			max-height: 0;
 			overflow: hidden;
 			padding: 0 20px;
-			background: #fafafa;
+			background: rgba(89, 133, 57, 0.03);
 			transition: all 0.3s ease;
 			font-size: 0.9em;
 			color: #666;
+			border-bottom: 1px solid rgba(0,0,0,0.05);
 		}
 
 		.transaction-item.expanded .transaction-details {
-			max-height: 100px;
+			max-height: 150px;
 			padding: 15px 20px;
-			border-bottom: 1px solid rgba(0,0,0,0.05);
 		}
 
 		.transaction-item.expanded .expand-arrow {
@@ -935,8 +954,9 @@ input[type=number] {
 
 		.expand-arrow {
 			font-size: 0.7em;
-			color: #ccc;
-			transition: transform 0.3s;
+			color: #bbb;
+			transition: transform 0.3s ease;
+			display: inline-block;
 		}
 
 		.main-view {
@@ -1695,7 +1715,7 @@ input[type=number] {
     position: absolute;
     cursor: pointer;
     inset: 0;
-    background-color: rgba(255, 255, 255, 0.28);
+    background-color: #d0d0d0;
     transition: .25s;
     border-radius: 28px;
 }
@@ -1734,6 +1754,38 @@ input[type=number] {
     background: #e66767;
 }
 
+.btn-contrast-toggle {
+    padding: 0.5em 1.2em;
+    background-color: var(--primary-green);
+    border: 1px solid #4a5c4a;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.95em;
+    font-weight: 600;
+    transition: background-color 0.2s, border-color 0.2s, transform 0.1s;
+}
+
+.btn-contrast-toggle:hover {
+    background-color: var(--dark-green);
+    border-color: #598539;
+    transform: translateY(-1px);
+}
+
+.btn-contrast-toggle:active {
+    transform: translateY(0);
+}
+
+body.dark-mode .btn-contrast-toggle {
+    background-color: #6ba64f;
+    border-color: #598539;
+}
+
+body.dark-mode .btn-contrast-toggle:hover {
+    background-color: #598539;
+    border-color: #4a8a3f;
+}
+
 /* Theme and contrast controls */
 body {
     --bbm-contrast: 100%;
@@ -1743,9 +1795,7 @@ body {
     filter: contrast(var(--bbm-contrast));
 }
 
-body.dark-mode #main-header {
-    background-color: #1f2a23;
-}
+
 
 body.dark-mode #main-sidebar {
     background-color: rgba(20, 24, 22, 0.75);
@@ -1801,4 +1851,141 @@ body.dark-mode .settings-option p {
 body.dark-mode .settings-option h3,
 body.dark-mode .contrast-control span {
     color: #edf1ee;
+}
+
+/* Transaction Table Dark Mode Styling */
+body.dark-mode .transaction-row {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e0e0e0;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+body.dark-mode .transaction-row:hover {
+    background-color: rgba(107, 166, 79, 0.15);
+    border-bottom-color: rgba(107, 166, 79, 0.4);
+}
+
+body.dark-mode .transaction-row.header-row {
+    background-color: rgba(107, 166, 79, 0.1);
+    border-bottom: 2px solid rgba(107, 166, 79, 0.3);
+    font-weight: 800;
+    color: #b0e0a0;
+    letter-spacing: 1px;
+}
+
+body.dark-mode .transaction-row.header-row:hover {
+    background-color: rgba(107, 166, 79, 0.1);
+    border-bottom-color: rgba(107, 166, 79, 0.3);
+}
+
+body.dark-mode .rec-number {
+    color: #999;
+    font-weight: 600;
+}
+
+body.dark-mode .rec-title {
+    color: #edf1ee;
+    font-weight: 700;
+}
+
+body.dark-mode .rec-stats {
+    font-weight: 800;
+    color: #e0e0e0;
+}
+
+body.dark-mode .rec-stats.income {
+    color: #3eeb61;
+    font-weight: 800;
+}
+
+body.dark-mode .rec-stats.expense {
+    color: #ff6b6b;
+    font-weight: 800;
+}
+
+body.dark-mode .rec-type {
+    color: #b0b0b0;
+}
+
+body.dark-mode .rec-date {
+    color: #999;
+    font-size: 0.9em;
+}
+
+body.dark-mode .rec-wallet {
+    color: rgba(237, 241, 238, 0.7);
+    font-size: 0.9em;
+}
+
+body.dark-mode .rec-actions {
+    color: #999;
+}
+
+body.dark-mode .icon-btn {
+    background: transparent;
+    color: #999;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.2s ease;
+}
+
+body.dark-mode .icon-btn:hover {
+    background-color: rgba(107, 166, 79, 0.2);
+    color: #6ba64f;
+    border-color: rgba(107, 166, 79, 0.5);
+}
+
+body.dark-mode .edit-btn:hover {
+    background-color: rgba(107, 166, 79, 0.2);
+    color: #6ba64f;
+}
+
+body.dark-mode .delete-btn:hover {
+    background-color: rgba(255, 107, 107, 0.15);
+    color: #ff6b6b;
+    border-color: rgba(255, 107, 107, 0.4);
+}
+
+body.dark-mode .badge {
+    font-weight: 600;
+}
+
+body.dark-mode .badge-expense {
+    background-color: rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+body.dark-mode .badge-income {
+    background-color: rgba(62, 235, 97, 0.2);
+    color: #3eeb61;
+    border: 1px solid rgba(62, 235, 97, 0.3);
+}
+
+body.dark-mode .expand-arrow {
+    color: #999;
+    font-size: 0.8em;
+}
+
+/* Dark Mode Transaction Details & Expansion */
+body.dark-mode .transaction-details {
+    background-color: rgba(107, 166, 79, 0.08);
+    color: #b0b0b0;
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .transaction-item.expanded .transaction-details {
+    color: #d0d0d0;
+}
+
+body.dark-mode .transaction-details strong {
+    color: #e0e0e0;
+}
+
+body.dark-mode .transaction-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background-color 0.15s ease;
+}
+
+body.dark-mode .transaction-item:hover {
+    background-color: rgba(107, 166, 79, 0.08);
 }

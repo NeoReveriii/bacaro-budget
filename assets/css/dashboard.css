@@ -703,8 +703,8 @@
 .transaction-modal-card .custom-select-wrapper.open ~ .floating-label,
 .transaction-modal-card .custom-select-wrapper:focus ~ .floating-label,
 .transaction-modal-card .input-group.has-value .floating-label { 
-    transform: translateY(-32px) scale(0.75); /* Increased translation for more clearance */
-    color: var(--primary-green); 
+    transform: translateY(-35px) scale(0.75) !important; /* Even more clearance and !important */
+    color: var(--primary-green) !important; 
 }
 
 /* Hide spin buttons for cleaner look */

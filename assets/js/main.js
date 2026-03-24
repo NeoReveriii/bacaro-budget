@@ -1299,7 +1299,8 @@ function initializeCustomSelects() {
 			const opt = select.options[select.selectedIndex];
 			textSpan.innerText = opt ? opt.text : '';
 			wrapper.classList.add('has-value');
-			select.parentNode.classList.add('has-value');
+			const group = select.closest('.input-group');
+			if (group) group.classList.add('has-value');
 		} else {
 			textSpan.innerText = '';
 		}
@@ -1321,7 +1322,8 @@ function initializeCustomSelects() {
 				select.value = opt.value;
 				textSpan.innerText = opt.text;
 				wrapper.classList.add('has-value');
-				select.parentNode.classList.add('has-value');
+				const group = select.closest('.input-group');
+				if (group) group.classList.add('has-value');
 				optionsList.classList.remove('open');
 				wrapper.classList.remove('open');
 				
@@ -1346,9 +1348,11 @@ function initializeCustomSelects() {
 			});
 			wrapper.classList.toggle('open');
 			if (wrapper.classList.contains('open')) {
-				select.parentNode.classList.add('has-value');
+				const group = select.closest('.input-group');
+				if (group) group.classList.add('has-value');
 			} else if (!select.value) {
-				select.parentNode.classList.remove('has-value');
+				const group = select.closest('.input-group');
+				if (group) group.classList.remove('has-value');
 			}
 		});
 		
@@ -1357,11 +1361,13 @@ function initializeCustomSelects() {
 				const opt = select.options[select.selectedIndex];
 				textSpan.innerText = opt ? opt.text : '';
 				wrapper.classList.add('has-value');
-				select.parentNode.classList.add('has-value');
+				const group = select.closest('.input-group');
+				if (group) group.classList.add('has-value');
 			} else {
 				textSpan.innerText = '';
 				wrapper.classList.remove('has-value');
-				select.parentNode.classList.remove('has-value');
+				const group = select.closest('.input-group');
+				if (group) group.classList.remove('has-value');
 			}
 		});
 	});

@@ -699,6 +699,7 @@
     background-color: #ffffff;
     min-height: 480px;
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.08);
 }
 .transaction-modal-card .header {
     color: var(--dark-green);
@@ -708,8 +709,18 @@
     height: 56px;
     margin-bottom: 25px;
     overflow: visible;
+    position: relative;
 }
-.transaction-modal-card .floating-input {
+
+/* Custom select wrapper must fill its parent input-group completely */
+.transaction-modal-card .custom-select-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* Base floating-input style for text inputs (not the custom-select-trigger) */
+.transaction-modal-card input.floating-input {
     color: #222;
     border: 1.5px solid #e0e0e0;
     border-radius: 12px;
@@ -720,29 +731,53 @@
     box-sizing: border-box;
     transition: all 0.2s ease;
 }
-.transaction-modal-card .floating-input:focus {
+.transaction-modal-card input.floating-input:focus {
     border-color: var(--primary-green);
     background-color: #fff;
     outline: none;
     box-shadow: 0 0 0 3px rgba(89, 133, 57, 0.1);
 }
+
+/* Custom select trigger — explicit override to prevent inheriting dark-mode .floating-input styles */
+.transaction-modal-card .custom-select-trigger.floating-input {
+    border: 1.5px solid #e0e0e0;
+    border-radius: 12px;
+    background-color: #fcfcfc;
+    color: #222;
+    padding: 20px 35px 6px 16px;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    cursor: pointer;
+    font-size: 1em;
+    font-family: 'Inter', system-ui, sans-serif;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 20 20'%3E%3Cpath fill='%23666666' d='M5.6 7.6a1 1 0 0 1 1.4 0L10 10.6l3-3a1 1 0 1 1 1.4 1.4l-3.7 3.7a1 1 0 0 1-1.4 0L5.6 9a1 1 0 0 1 0-1.4Z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 18px;
+    transition: all 0.2s ease;
+}
+
+/* Floating label — positioned relative to input-group, above the wrapper */
 .transaction-modal-card .floating-label {
     position: absolute;
-    top: 17px !important; /* Align with global.css and fine-tune from here */
+    top: 17px !important;
     left: 16px;
     color: #888;
     font-size: 1em;
     pointer-events: none;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s ease;
     transform-origin: left top;
-    z-index: 5;
+    z-index: 10;
 }
 
 /* Float labels completely above the baseline to prevent ANY overlap */
 .transaction-modal-card .input-group:focus-within .floating-label,
 .transaction-modal-card .floating-input:not(:placeholder-shown) ~ .floating-label,
 .transaction-modal-card .input-group.has-value .floating-label { 
-    transform: translateY(-20px) scale(0.75) !important; /* Move higher to clear padding */
+    transform: translateY(-20px) scale(0.75) !important;
     color: var(--primary-green) !important; 
     font-weight: 700;
     opacity: 1;
@@ -768,30 +803,7 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-.transaction-modal-card .custom-select-trigger {
-    border: 1.5px solid #e0e0e0;
-    border-radius: 12px;
-    background-color: #fcfcfc;
-    color: #222;
-    padding: 20px 35px 6px 16px; /* Match standard input padding */
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center; /* Use center alignment for consistent baseline */
-    box-sizing: border-box;
-    cursor: pointer;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 20 20'%3E%3Cpath fill='%23666666' d='M5.6 7.6a1 1 0 0 1 1.4 0L10 10.6l3-3a1 1 0 1 1 1.4 1.4l-3.7 3.7a1 1 0 0 1-1.4 0L5.6 9a1 1 0 0 1 0-1.4Z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 18px;
-}
-
-/* Specific override for custom select trigger padding and alignment */
-.transaction-modal-card .custom-select-trigger {
-    padding: 20px 35px 6px 16px !important; /* Match standard input padding */
-    align-items: center !important; /* Use center alignment for consistent baseline */
-}
-
+/* Focus / open state for custom selects */
 .transaction-modal-card .custom-select-wrapper:focus .custom-select-trigger,
 .transaction-modal-card .custom-select-wrapper.open .custom-select-trigger {
     border-color: var(--primary-green);
@@ -807,9 +819,13 @@ input[type=number] {
     color: var(--primary-green);
     opacity: 1;
 }
+
+/* Hide native select; custom wrapper replaces it */
 .transaction-modal-card .input-group select.floating-input {
     display: none !important;
 }
+
+/* Dropdown options panel */
 .transaction-modal-card .custom-select-options {
     background: #ffffff;
     border: 1px solid #e0e0e0;

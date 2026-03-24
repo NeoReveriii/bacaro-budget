@@ -271,7 +271,7 @@
 		}
 
 		.stat-card {
-			background: white;
+			background: var(--card-bg);
 			padding: 30px 20px;
 			border-radius: 15px;
 			box-shadow: 0 4px 15px rgba(0,0,0,0.05);
@@ -307,9 +307,9 @@
 			opacity: 0.4;
 		}
 
-		.income-card:hover { border-color: rgba(46, 204, 113, 0.4); }
-		.expense-card:hover { border-color: rgba(231, 76, 60, 0.4); }
-		.transfer-card:hover { border-color: rgba(52, 152, 219, 0.4); }
+		.income-card:hover { border-color: var(--income-color); }
+		.expense-card:hover { border-color: var(--expense-color); }
+		.transfer-card:hover { border-color: var(--transfer-color); }
 		.wallet-card:hover { border-color: var(--primary-green); }
 
 		.stat-label {
@@ -349,17 +349,17 @@
 			font-weight: 600;
 		}
 
-		.income-card .stat-value { color: #2ecc71; }   /* Green for Income */
-		.expense-card .stat-value { color: #e74c3c; }  /* Red for Expense */
-		.transfer-card .stat-value { color: #3498db; } /* Blue for Transfer */
+		.income-card .stat-value { color: var(--income-color); }   /* Green for Income */
+		.expense-card .stat-value { color: var(--expense-color); }  /* Red for Expense */
+		.transfer-card .stat-value { color: var(--transfer-color); } /* Blue for Transfer */
 		
-		.stat-value.income { color: #2ecc71; }
-		.stat-value.expense { color: #e74c3c; }
-		.stat-value.transfer { color: #3498db; }
+		.stat-value.income { color: var(--income-color); }
+		.stat-value.expense { color: var(--expense-color); }
+		.stat-value.transfer { color: var(--transfer-color); }
 		
-		.rec-stats.income { color: #2ecc71; }
-		.rec-stats.expense { color: #e56b6b; }
-		.rec-stats.transfer { color: #3498db; }
+		.rec-stats.income { color: var(--income-color); }
+		.rec-stats.expense { color: var(--expense-color); }
+		.rec-stats.transfer { color: var(--transfer-color); }
 
 		/* --- Subtle Range Dropdown --- */
 		.dashboard-filter-container {
@@ -1797,6 +1797,15 @@ body {
 
 
 
+body.dark-mode {
+    --income-color: #58d68d; /* Bright desaturated lime */
+    --expense-color: #ff7675; /* Soft coral red */
+    --transfer-color: #5dade2; /* Sky blue */
+    --card-bg: #1e1e1e;       /* Deep charcoal gray */
+    --skeleton-bg: #2a2a2a;
+    --skeleton-shimmer: rgba(255, 255, 255, 0.05);
+}
+
 body.dark-mode #main-sidebar {
     background-color: rgba(20, 24, 22, 0.75);
     color: #f1f3f2;
@@ -1826,15 +1835,36 @@ body.dark-mode .stat-card,
 body.dark-mode .wallet-balance-card,
 body.dark-mode .income-summary-skeleton,
 body.dark-mode .chart-skeleton-container {
-    background: #222b25;
+    background: var(--card-bg);
     color: #edf1ee;
     border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Balance Card Exception: Keep brand green */
+body.dark-mode .stat-card.wallet-card {
+    background-color: var(--dark-green);
 }
 
 body.dark-mode .stat-value,
 body.dark-mode .rec-title,
 body.dark-mode .balance-amount {
     color: #edf1ee;
+}
+
+/* preserved color coding for stat values */
+body.dark-mode .income-card .stat-value,
+body.dark-mode .stat-value.income {
+    color: var(--income-color);
+}
+
+body.dark-mode .expense-card .stat-value,
+body.dark-mode .stat-value.expense {
+    color: var(--expense-color);
+}
+
+body.dark-mode .transfer-card .stat-value,
+body.dark-mode .stat-value.transfer {
+    color: var(--transfer-color);
 }
 
 body.dark-mode .header-row,
@@ -1894,12 +1924,17 @@ body.dark-mode .rec-stats {
 }
 
 body.dark-mode .rec-stats.income {
-    color: #3eeb61;
+    color: var(--income-color);
     font-weight: 800;
 }
 
 body.dark-mode .rec-stats.expense {
-    color: #ff6b6b;
+    color: var(--expense-color);
+    font-weight: 800;
+}
+
+body.dark-mode .rec-stats.transfer {
+    color: var(--transfer-color);
     font-weight: 800;
 }
 

@@ -8,6 +8,16 @@
     --dark-green: #374738;    
     --white: #ffffff;
     --text-light: #d4d4d4;
+
+    /* Semantic Colors (Maintain color coding) */
+    --income-color: #2ecc71;
+    --expense-color: #e74c3c;
+    --transfer-color: #3498db;
+    
+    /* Card/Skeleton Base */
+    --card-bg: #ffffff;
+    --skeleton-bg: #e2e2e2;
+    --skeleton-shimmer: rgba(255, 255, 255, 0.4);
 	
     /* blob color */
     --new-light-blob: rgba(218, 227, 209, 0.5); 
@@ -544,7 +554,7 @@ h1, h2, h3, h4, h5, h6 {
     .skeleton {
     position: relative;
     overflow: hidden;
-    background-color: #e2e2e2; /* Neutral gray base */
+    background-color: var(--skeleton-bg); /* Neutral gray base */
     border-radius: 4px;
     display: block;
     }
@@ -560,9 +570,8 @@ h1, h2, h3, h4, h5, h6 {
     background: linear-gradient(
         90deg,
         rgba(255, 255, 255, 0) 0,
-        rgba(255, 255, 255, 0.2) 20%,
-        rgba(255, 255, 255, 0.5) 60%,
-        rgba(255, 255, 255, 0)
+        var(--skeleton-shimmer) 50%,
+        rgba(255, 255, 255, 0) 100%
     );
     animation: shimmer 2s infinite;
     }

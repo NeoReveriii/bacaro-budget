@@ -67,7 +67,7 @@
 				</div>
 				<div class="sidebar-section bottom-section">
 					<a href="#" class="nav-item" onclick="openAdminModal()"><span class="nav-icon">⛨</span>Administration</a>
-					<a href="#" class="nav-item"><span class="nav-icon">⛯</span>Settings</a>
+					<a href="#" class="nav-item" onclick="openSettingsPanel(event)"><span class="nav-icon">⛯</span>Settings</a>
 				</div>
                 </aside>
 		
@@ -474,6 +474,45 @@
                 <button id="btn-confirm-ok" class="btn btn-primary" style="margin: 0; background-color: #ff7675;">Confirm</button>
             </div>
         </div>
+	</div>
+
+	<div id="settings-modal" class="modal-overlay">
+		<div class="modal-card settings-modal-card">
+			<button class="modal-close" onclick="closeSettingsPanel()">&times;</button>
+			<div class="modal-form-container settings-panel">
+				<h2 class="header">Settings</h2>
+
+				<div class="settings-option">
+					<div>
+						<h3>Dark Mode</h3>
+						<p>Switch between standard and low-light interface themes.</p>
+					</div>
+					<label class="toggle-switch">
+						<input type="checkbox" id="settings-dark-mode-toggle">
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+
+				<div class="settings-option contrast-option">
+					<div>
+						<h3>Contrast Adjustment</h3>
+						<p>Turn high contrast on or off for better readability.</p>
+					</div>
+					<label class="toggle-switch">
+						<input type="checkbox" id="settings-contrast-toggle">
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+
+				<div class="settings-option delete-account-option">
+					<div>
+						<h3>Delete Account</h3>
+						<p>Permanently remove your account and budget data.</p>
+					</div>
+					<button type="button" class="btn btn-danger" onclick="handleDeleteAccount()">Delete Account</button>
+				</div>
+			</div>
+		</div>
 	</div>
 	
 	<div id="add-wallet-modal" class="modal-overlay">

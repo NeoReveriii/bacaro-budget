@@ -65,6 +65,18 @@
 		function openForgotModal() { closeAllModals(); toggleAccountSidebar(false); toggleMainSidebar(false); document.getElementById('forgot-modal').classList.add('active'); }
 		function openAddWalletModal() { closeAllModals(); document.getElementById('add-wallet-modal').classList.add('active'); }
 		function openTransferModal() { closeAllModals(); document.getElementById('transfer-modal').classList.add('active'); }
+		function openSettingsPanel(event) {
+			if (event) event.preventDefault();
+			closeAllModals();
+			toggleAccountSidebar(false);
+			toggleMainSidebar(false);
+			const modal = document.getElementById('settings-modal');
+			if (modal) modal.classList.add('active');
+		}
+		function closeSettingsPanel() {
+			const modal = document.getElementById('settings-modal');
+			if (modal) modal.classList.remove('active');
+		}
 
 		window.onclick = function(event) {
 			if (event.target.classList.contains('modal-overlay')) closeAllModals();
@@ -377,6 +389,75 @@
 		function handleLogout() {
 			removeToken();
 			window.location.href = '/';
+		}
+
+		function applyThemeSettings() {
+			const darkMode = localStorage.getItem('bbm_dark_mode') === 'true';
+			const highContrast = localStorage.getItem('bbm_high_contrast') === 'true';
+			const contrast = highContrast ? '120' : '100';
+			document.body.classList.toggle('dark-mode', darkMode);
+			document.body.style.setProperty('--bbm-contrast', `${contrast}%`);
+		}
+
+		function initializeSettingsPanel() {
+			const darkModeToggle = document.getElementById('settings-dark-mode-toggle');
+			const contrastToggle = document.getElementById('settings-contrast-toggle');
+			if (!darkModeToggle || !contrastToggle) return;
+
+			const darkModeEnabled = localStorage.getItem('bbm_dark_mode') === 'true';
+			const highContrastEnabled = localStorage.getItem('bbm_high_contrast') === 'true';
+
+			darkModeToggle.checked = darkModeEnabled;
+			contrastToggle.checked = highContrastEnabled;
+
+			darkModeToggle.addEventListener('change', () => {
+				localStorage.setItem('bbm_dark_mode', darkModeToggle.checked ? 'true' : 'false');
+				applyThemeSettings();
+			});
+
+			contrastToggle.addEventListener('change', () => {
+				localStorage.setItem('bbm_high_contrast', contrastToggle.checked ? 'true' : 'false');
+				applyThemeSettings();
+			});
+		}
+
+		async function handleDeleteAccount() {
+			if (!isAuthenticated()) {
+				showToast('Sign in to delete your account', 'error');
+				closeSettingsPanel();
+				openLoginModal();
+				return;
+			}
+
+			const user = getUserData();
+			if (!user?.acc_id) {
+				showToast('Unable to identify account', 'error');
+				return;
+			}
+
+			showConfirm('Delete Account', 'This action is permanent and cannot be undone. Do you want to continue?', async () => {
+				showCoinLoader('DELETING ACCOUNT...');
+				try {
+					const res = await fetch('/api/accounts', {
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${getToken()}`
+						},
+						body: JSON.stringify({ id: user.acc_id })
+					});
+					const payload = await readResponsePayload(res);
+					if (!res.ok) throw new Error(getErrorMessage(payload, 'Failed to delete account'));
+					removeToken();
+					localStorage.removeItem('bbm_dark_mode');
+					localStorage.removeItem('bbm_high_contrast');
+					window.location.href = '/';
+				} catch (err) {
+					showToast(err.message || 'Unable to delete account', 'error');
+				} finally {
+					hideCoinLoader();
+				}
+			});
 		}
 
 		function handleNewTransactionClick() {
@@ -738,6 +819,8 @@
 		}
 
 		document.addEventListener('DOMContentLoaded', function() {
+			applyThemeSettings();
+			initializeSettingsPanel();
 			checkAuthenticationForUserPage();
 			loadTransactions();
 			loadWallets();
@@ -1041,8 +1124,8 @@
 					const errors = [];
 					if (!description) errors.push('Description is required');
 					if (!type) errors.push('Type is required');
-					if (!walletTypeRaw) errors.push('Wallet Type is required');
-					else if (walletTypeRaw.toLowerCase() === 'other' && !walletOther) errors.push('Please enter your wallet type');
+					if (!walletIdRaw) errors.push('Wallet Type is required');
+					else if (walletIdRaw.toLowerCase() === 'other' && !walletOther) errors.push('Please enter your wallet type');
 					const amount = Number(amountStr);
 					if (!amountStr) errors.push('Amount is required');
 					else if (!Number.isFinite(amount)) errors.push('Amount must be a number');

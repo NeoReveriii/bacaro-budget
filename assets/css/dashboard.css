@@ -1554,3 +1554,160 @@
         padding: 15px 20px;
     }
 }
+
+/* Settings Panel */
+.settings-modal-card {
+    max-width: 560px;
+    min-height: auto;
+    padding: 36px 32px;
+}
+
+.settings-panel .header {
+    margin-bottom: 18px;
+}
+
+.settings-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.settings-option h3 {
+    margin: 0 0 4px;
+    color: var(--white);
+    font-size: 1.02em;
+}
+
+.settings-option p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.9em;
+}
+
+.contrast-option {
+    align-items: flex-start;
+}
+
+.contrast-control {
+    min-width: 160px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 52px;
+    height: 28px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background-color: rgba(255, 255, 255, 0.28);
+    transition: .25s;
+    border-radius: 28px;
+}
+
+.toggle-slider::before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .25s;
+    border-radius: 50%;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+    background-color: var(--primary-green);
+}
+
+.toggle-switch input:checked + .toggle-slider::before {
+    transform: translateX(24px);
+}
+
+.btn-danger {
+    background: #ff7675;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-danger:hover {
+    background: #e66767;
+}
+
+/* Theme and contrast controls */
+body {
+    --bbm-contrast: 100%;
+}
+
+.dashboard-container {
+    filter: contrast(var(--bbm-contrast));
+}
+
+body.dark-mode #main-header {
+    background-color: #1f2a23;
+}
+
+body.dark-mode #main-sidebar {
+    background-color: rgba(20, 24, 22, 0.75);
+    color: #f1f3f2;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .nav-item {
+    color: #f1f3f2;
+}
+
+body.dark-mode .nav-item.active {
+    background-color: #2d3a31;
+}
+
+body.dark-mode #main-content-area,
+body.dark-mode #main-dashboard,
+body.dark-mode #main-transactions,
+body.dark-mode #main-wallets,
+body.dark-mode #main-wallet-details {
+    background-color: rgba(18, 22, 20, 0.88);
+    color: #e6ece8;
+}
+
+body.dark-mode .transaction-list,
+body.dark-mode .stat-card,
+body.dark-mode .wallet-balance-card,
+body.dark-mode .income-summary-skeleton,
+body.dark-mode .chart-skeleton-container {
+    background: #222b25;
+    color: #edf1ee;
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .stat-value,
+body.dark-mode .rec-title,
+body.dark-mode .balance-amount {
+    color: #edf1ee;
+}
+
+body.dark-mode .header-row,
+body.dark-mode .rec-wallet,
+body.dark-mode .transaction-details {
+    color: rgba(237, 241, 238, 0.7);
+}

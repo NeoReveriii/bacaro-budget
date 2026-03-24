@@ -65,6 +65,15 @@
 		function openForgotModal() { closeAllModals(); toggleAccountSidebar(false); toggleMainSidebar(false); document.getElementById('forgot-modal').classList.add('active'); }
 		function openAddWalletModal() { closeAllModals(); document.getElementById('add-wallet-modal').classList.add('active'); }
 		function openTransferModal() { closeAllModals(); document.getElementById('transfer-modal').classList.add('active'); }
+		function openSettingsPanel(event) {
+			if (event) event.preventDefault();
+			toggleAccountSidebar(false);
+			toggleMainSidebar(false);
+			showView('settings', document.querySelector('.sidebar-section.bottom-section .nav-item[onclick*="settings"]'));
+		}
+		function closeSettingsPanel() {
+			// Settings is now a dedicated full view, not a modal.
+		}
 
 		window.onclick = function(event) {
 			if (event.target.classList.contains('modal-overlay')) closeAllModals();
@@ -124,7 +133,8 @@
                 'dashboard': 'Dashboard',
                 'transactions': 'Transactions',
                 'wallets': 'Wallets',
-                'ai': 'Kwarta AI'
+                'ai': 'Kwarta AI',
+				'settings': 'Settings'
             };
             if (titles[viewId]) {
                 document.title = `${titles[viewId]} | Bacaro Budget Manager`;
@@ -377,6 +387,90 @@
 		function handleLogout() {
 			removeToken();
 			window.location.href = '/';
+		}
+
+		function applyThemeSettings() {
+			const darkMode = localStorage.getItem('bbm_dark_mode') === 'true';
+			const legacyHighContrast = localStorage.getItem('bbm_high_contrast') === 'true';
+			const savedContrast = Number(localStorage.getItem('bbm_contrast_level'));
+			const contrast = Number.isFinite(savedContrast)
+				? Math.min(140, Math.max(80, savedContrast))
+				: (legacyHighContrast ? 120 : 100);
+			document.body.classList.toggle('dark-mode', darkMode);
+			document.body.style.setProperty('--bbm-contrast', `${contrast}%`);
+		}
+
+		function initializeSettingsPanel() {
+			const darkModeToggle = document.getElementById('settings-dark-mode-toggle');
+			const contrastRange = document.getElementById('settings-contrast-range');
+			const contrastValue = document.getElementById('settings-contrast-value');
+			if (!darkModeToggle || !contrastRange || !contrastValue) return;
+
+			const darkModeEnabled = localStorage.getItem('bbm_dark_mode') === 'true';
+			const legacyHighContrast = localStorage.getItem('bbm_high_contrast') === 'true';
+			const savedContrast = Number(localStorage.getItem('bbm_contrast_level'));
+			const contrastLevel = Number.isFinite(savedContrast)
+				? Math.min(140, Math.max(80, savedContrast))
+				: (legacyHighContrast ? 120 : 100);
+
+			darkModeToggle.checked = darkModeEnabled;
+			contrastRange.value = String(contrastLevel);
+			contrastValue.textContent = `${contrastLevel}%`;
+
+			darkModeToggle.addEventListener('change', () => {
+				localStorage.setItem('bbm_dark_mode', darkModeToggle.checked ? 'true' : 'false');
+				applyThemeSettings();
+			});
+
+			contrastRange.addEventListener('input', () => {
+				contrastValue.textContent = `${contrastRange.value}%`;
+			});
+
+			contrastRange.addEventListener('change', () => {
+				const value = Number(contrastRange.value);
+				localStorage.setItem('bbm_contrast_level', String(value));
+				localStorage.setItem('bbm_high_contrast', value > 100 ? 'true' : 'false');
+				applyThemeSettings();
+			});
+		}
+
+		async function handleDeleteAccount() {
+			if (!isAuthenticated()) {
+				showToast('Sign in to delete your account', 'error');
+				closeSettingsPanel();
+				openLoginModal();
+				return;
+			}
+
+			const user = getUserData();
+			if (!user?.acc_id) {
+				showToast('Unable to identify account', 'error');
+				return;
+			}
+
+			showConfirm('Delete Account', 'This action is permanent and cannot be undone. Do you want to continue?', async () => {
+				showCoinLoader('DELETING ACCOUNT...');
+				try {
+					const res = await fetch('/api/accounts', {
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${getToken()}`
+						},
+						body: JSON.stringify({ id: user.acc_id })
+					});
+					const payload = await readResponsePayload(res);
+					if (!res.ok) throw new Error(getErrorMessage(payload, 'Failed to delete account'));
+					removeToken();
+					localStorage.removeItem('bbm_dark_mode');
+					localStorage.removeItem('bbm_high_contrast');
+					window.location.href = '/';
+				} catch (err) {
+					showToast(err.message || 'Unable to delete account', 'error');
+				} finally {
+					hideCoinLoader();
+				}
+			});
 		}
 
 		function handleNewTransactionClick() {
@@ -738,6 +832,8 @@
 		}
 
 		document.addEventListener('DOMContentLoaded', function() {
+			applyThemeSettings();
+			initializeSettingsPanel();
 			checkAuthenticationForUserPage();
 			loadTransactions();
 			loadWallets();
@@ -1041,8 +1137,8 @@
 					const errors = [];
 					if (!description) errors.push('Description is required');
 					if (!type) errors.push('Type is required');
-					if (!walletTypeRaw) errors.push('Wallet Type is required');
-					else if (walletTypeRaw.toLowerCase() === 'other' && !walletOther) errors.push('Please enter your wallet type');
+					if (!walletIdRaw) errors.push('Wallet Type is required');
+					else if (walletIdRaw.toLowerCase() === 'other' && !walletOther) errors.push('Please enter your wallet type');
 					const amount = Number(amountStr);
 					if (!amountStr) errors.push('Amount is required');
 					else if (!Number.isFinite(amount)) errors.push('Amount must be a number');

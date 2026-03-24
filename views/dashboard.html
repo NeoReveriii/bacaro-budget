@@ -67,7 +67,7 @@
 				</div>
 				<div class="sidebar-section bottom-section">
 					<a href="#" class="nav-item" onclick="openAdminModal()"><span class="nav-icon">⛨</span>Administration</a>
-					<a href="#" class="nav-item"><span class="nav-icon">⛯</span>Settings</a>
+					<a href="#" class="nav-item" onclick="showView('settings', this)"><span class="nav-icon">⛯</span>Settings</a>
 				</div>
                 </aside>
 		
@@ -239,6 +239,56 @@
 		
 		<div id="view-ai" class="main-view" style="display: none;">
 			<div id="kwarta-ai-interface"></div>
+		</div>
+
+		<div id="view-settings" class="main-view" style="display: none;">
+			<main id="main-settings">
+				<div class="dashboard-overview settings-page-overview">
+					<div class="stat-card settings-page-header-card">
+						<div class="stat-label">Preferences</div>
+						<div class="stat-value">Settings</div>
+						<div class="stat-meta">Personalize how Bacaro Budget Manager looks and behaves.</div>
+					</div>
+
+					<div class="settings-page-grid">
+						<div class="stat-card settings-page-card">
+							<div class="settings-option">
+								<div>
+									<h3>Dark Mode</h3>
+									<p>Switch between standard and low-light interface themes.</p>
+								</div>
+								<label class="toggle-switch">
+									<input type="checkbox" id="settings-dark-mode-toggle">
+									<span class="toggle-slider"></span>
+								</label>
+							</div>
+						</div>
+
+						<div class="stat-card settings-page-card">
+							<div class="settings-option contrast-option">
+								<div>
+									<h3>Contrast Adjustment</h3>
+									<p>Adjust contrast level for better readability.</p>
+								</div>
+								<div class="contrast-control">
+									<input type="range" id="settings-contrast-range" min="80" max="140" step="5">
+									<span id="settings-contrast-value">100%</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="stat-card settings-page-card danger">
+							<div class="settings-option delete-account-option">
+								<div>
+									<h3>Delete Account</h3>
+									<p>Permanently remove your account and budget data.</p>
+								</div>
+								<button type="button" class="btn btn-danger" onclick="handleDeleteAccount()">Delete Account</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</main>
 		</div>
 
 
@@ -475,7 +525,7 @@
             </div>
         </div>
 	</div>
-	
+
 	<div id="add-wallet-modal" class="modal-overlay">
 		<div class="modal-card">
 			<button class="modal-close" onclick="closeAllModals()">&times;</button>

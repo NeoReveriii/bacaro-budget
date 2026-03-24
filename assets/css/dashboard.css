@@ -771,6 +771,10 @@
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s ease;
     transform-origin: left top;
     z-index: 10;
+    max-width: calc(100% - 45px); /* Professional overlap prevention */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 /* Float labels completely above the baseline to prevent ANY overlap */
@@ -787,20 +791,24 @@
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
+  appearance: none;
   margin: 0;
 }
 input[type=number] {
   -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 /* Explicitly target the amount input in the transaction modal */
 .transaction-modal-card input[type=number]::-webkit-outer-spin-button,
 .transaction-modal-card input[type=number]::-webkit-inner-spin-button {
   -webkit-appearance: none;
+  appearance: none;
   margin: 0;
 }
 .transaction-modal-card input[type=number] {
   -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 /* Focus / open state for custom selects */

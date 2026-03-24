@@ -53,6 +53,9 @@
 		
 		function closeAllModals() {
 			document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+			resetAddWalletForm();
+			resetTransferForm();
+			resetTransactionForm();
 		}
 		
 		function openLoginModal() { 
@@ -804,13 +807,50 @@
                 // Reset Custom Selects UI
                 form.querySelectorAll('.input-group').forEach(group => group.classList.remove('has-value'));
                 form.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
-                wrapper.classList.remove('has-value');
-                wrapper.classList.remove('open');
-                const triggerSpan = wrapper.querySelector('.custom-select-trigger span');
-                if (triggerSpan) triggerSpan.innerText = '';
-
-                wrapper.querySelectorAll('.custom-option').forEach(opt => opt.classList.remove('selected'));
+                    wrapper.classList.remove('has-value');
+                    wrapper.classList.remove('open');
+                    const triggerSpan = wrapper.querySelector('.custom-select-trigger span');
+                    if (triggerSpan) triggerSpan.innerText = '';
+                    wrapper.querySelectorAll('.custom-option').forEach(opt => opt.classList.remove('selected'));
                 });
+                }
+
+                function resetAddWalletForm() {
+                    const form = document.getElementById('add-wallet-form');
+                    if (!form) return;
+                    form.reset();
+                    const messageDiv = document.getElementById('add-wallet-message');
+                    if (messageDiv) {
+                        messageDiv.innerHTML = '';
+                        messageDiv.className = 'message';
+                    }
+                    form.querySelectorAll('.input-group').forEach(group => group.classList.remove('has-value'));
+                    form.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
+                        wrapper.classList.remove('has-value');
+                        wrapper.classList.remove('open');
+                        const triggerSpan = wrapper.querySelector('.custom-select-trigger span');
+                        if (triggerSpan) triggerSpan.innerText = '';
+                        wrapper.querySelectorAll('.custom-option').forEach(opt => opt.classList.remove('selected'));
+                    });
+                }
+
+                function resetTransferForm() {
+                    const form = document.getElementById('transfer-form');
+                    if (!form) return;
+                    form.reset();
+                    const messageDiv = document.getElementById('transfer-message');
+                    if (messageDiv) {
+                        messageDiv.innerHTML = '';
+                        messageDiv.className = 'message';
+                    }
+                    form.querySelectorAll('.input-group').forEach(group => group.classList.remove('has-value'));
+                    form.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
+                        wrapper.classList.remove('has-value');
+                        wrapper.classList.remove('open');
+                        const triggerSpan = wrapper.querySelector('.custom-select-trigger span');
+                        if (triggerSpan) triggerSpan.innerText = '';
+                        wrapper.querySelectorAll('.custom-option').forEach(opt => opt.classList.remove('selected'));
+                    });
                 }
 
                 function renderTransactions(rows) {			const listEl = document.getElementById('transaction-list-items');
@@ -896,7 +936,7 @@
 							throw new Error(getErrorMessage(payload, 'Failed to create wallet'));
 						}
 						
-						addWalletForm.reset();
+						resetAddWalletForm();
 						closeAllModals();
 						showToast('Wallet created successfully');
 						await loadWallets();
@@ -962,7 +1002,7 @@
 						});
 						if (!res2.ok) throw new Error('Failed to process transfer (Step 2)');
 
-						transferForm.reset();
+						resetTransferForm();
 						closeAllModals();
 						showToast('Transfer completed successfully');
 						await loadTransactions();
@@ -1247,7 +1287,9 @@
 						try { hideCoinLoader(); } catch(e) {}
 						if (submitBtn) {
 							submitBtn.disabled = false;
-							try { submitBtn.textContent = originalBtnText; } catch(e) { submitBtn.textContent = 'SAVE TRANSACTION'; }
+							resetTransactionForm();
+							closeAllModals();
+							
 							submitBtn.style.backgroundColor = '';
 						}
 					}
@@ -1347,6 +1389,13 @@ function initializeCustomSelects() {
 				if (w !== wrapper) {
 					w.classList.remove('open');
 					w.querySelector('.custom-select-options')?.classList.remove('open');
+					// NEW: Also reset has-value if not selected
+					const s = w.querySelector('select');
+					if (s && !s.value) {
+						w.classList.remove('has-value');
+						const g = s.closest('.input-group');
+						if (g) g.classList.remove('has-value');
+					}
 				}
 			});
 			wrapper.classList.toggle('open');
@@ -1376,7 +1425,15 @@ function initializeCustomSelects() {
 	});
 
 	document.addEventListener('click', () => {
-		document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
+		document.querySelectorAll('.custom-select-wrapper').forEach(w => {
+			w.classList.remove('open');
+			const s = w.querySelector('select');
+			if (s && !s.value) {
+				w.classList.remove('has-value');
+				const g = s.closest('.input-group');
+				if (g) g.classList.remove('has-value');
+			}
+		});
 	});
 }
 

@@ -720,11 +720,14 @@
 		window.handleEditTransaction = function(id) {
 			const row = (window.currentTransactions || []).find(t => t.trans_id === id);
 			if (!row) return;
-			
+
 			document.getElementById('trans-id').value = id;
+			const typeSelect = document.getElementById('trans-type');
+			typeSelect.value = row.type;
+			typeSelect.dispatchEvent(new Event('change'));
+
 			document.getElementById('trans-description').value = row.description;
-			document.getElementById('trans-type').value = row.type;
-			
+
 			const walletTypeSelect = document.getElementById('trans-wallet-type');
 			const customWallets = ['Cash', 'Bank Account', 'E-Money', 'Credit Card'];
 			if (customWallets.includes(row.wallet_type)) {
@@ -735,11 +738,11 @@
 				document.getElementById('trans-wallet-other').value = row.wallet_type;
 				document.getElementById('trans-wallet-other-group').style.display = '';
 			}
+			walletTypeSelect.dispatchEvent(new Event('change'));
 			document.getElementById('trans-amount').value = row.amount;
-			
+
 			openTransactionModal(true);
 		};
-
 		async function loadTransactions() {
 			if (!isAuthenticated()) return;
 			const listEl = document.getElementById('transaction-list-items');

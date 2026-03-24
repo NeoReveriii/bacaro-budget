@@ -702,8 +702,9 @@
 }
 .transaction-modal-card .floating-label {
     position: absolute;
-    top: 20px; /* Perfectly centered vertically: (56-16)/2 */
+    top: 28px; /* Mid-point of 56px height */
     left: 16px;
+    transform: translateY(-50%); /* Perfectly center vertically */
     color: #888;
     font-size: 1em;
     pointer-events: none;
@@ -712,11 +713,11 @@
     z-index: 5;
 }
 
-/* Float labels higher to ensure NO overlap with selection text */
+/* Float labels completely above the baseline to prevent ANY overlap */
 .transaction-modal-card .input-group:focus-within .floating-label,
 .transaction-modal-card .floating-input:not(:placeholder-shown) ~ .floating-label,
 .transaction-modal-card .input-group.has-value .floating-label { 
-    transform: translateY(-15px) scale(0.75) !important; /* Increased from -10px to -15px */
+    transform: translateY(-38px) scale(0.75) !important; /* Move way up to clear the box */
     color: var(--primary-green) !important; 
     font-weight: 700;
     opacity: 1;
@@ -737,11 +738,11 @@ input[type=number] {
     border-radius: 12px;
     background-color: #fcfcfc;
     color: #222;
-    padding: 20px 35px 6px 16px; /* Space for chevron */
+    padding: 24px 35px 0 16px; /* Adjusted padding to match input text baseline */
     height: 100%;
     width: 100%;
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* Use top-alignment with padding for consistency */
     box-sizing: border-box;
     cursor: pointer;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 20 20'%3E%3Cpath fill='%23666666' d='M5.6 7.6a1 1 0 0 1 1.4 0L10 10.6l3-3a1 1 0 1 1 1.4 1.4l-3.7 3.7a1 1 0 0 1-1.4 0L5.6 9a1 1 0 0 1 0-1.4Z'/%3E%3C/svg%3E");

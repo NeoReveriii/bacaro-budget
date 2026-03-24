@@ -702,12 +702,12 @@
 }
 .transaction-modal-card .floating-label {
     position: absolute;
-    top: 20px !important; /* Force to align with padding-top of inputs */
+    top: 17px !important; /* Align with global.css and fine-tune from here */
     left: 16px;
     color: #888;
     font-size: 1em;
     pointer-events: none;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s ease;
     transform-origin: left top;
     z-index: 5;
 }
@@ -716,7 +716,7 @@
 .transaction-modal-card .input-group:focus-within .floating-label,
 .transaction-modal-card .floating-input:not(:placeholder-shown) ~ .floating-label,
 .transaction-modal-card .input-group.has-value .floating-label { 
-    transform: translateY(-12px) scale(0.75) !important; /* Move higher to clear padding */
+    transform: translateY(-20px) scale(0.75) !important; /* Move higher to clear padding */
     color: var(--primary-green) !important; 
     font-weight: 700;
     opacity: 1;
@@ -737,11 +737,11 @@ input[type=number] {
     border-radius: 12px;
     background-color: #fcfcfc;
     color: #222;
-    padding: 24px 35px 0 16px; /* Adjusted padding to match input text baseline */
+    padding: 20px 35px 6px 16px; /* Match standard input padding */
     height: 100%;
     width: 100%;
     display: flex;
-    align-items: flex-start; /* Use top-alignment with padding for consistency */
+    align-items: center; /* Use center alignment for consistent baseline */
     box-sizing: border-box;
     cursor: pointer;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 20 20'%3E%3Cpath fill='%23666666' d='M5.6 7.6a1 1 0 0 1 1.4 0L10 10.6l3-3a1 1 0 1 1 1.4 1.4l-3.7 3.7a1 1 0 0 1-1.4 0L5.6 9a1 1 0 0 1 0-1.4Z'/%3E%3C/svg%3E");

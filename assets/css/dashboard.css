@@ -732,6 +732,16 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+/* Explicitly target the amount input in the transaction modal */
+.transaction-modal-card input[type=number]::-webkit-outer-spin-button,
+.transaction-modal-card input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.transaction-modal-card input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .transaction-modal-card .custom-select-trigger {
     border: 1.5px solid #e0e0e0;
     border-radius: 12px;
@@ -748,6 +758,12 @@ input[type=number] {
     background-repeat: no-repeat;
     background-position: right 12px center;
     background-size: 18px;
+}
+
+/* Specific override for custom select trigger padding and alignment */
+.transaction-modal-card .custom-select-trigger {
+    padding: 20px 35px 6px 16px !important; /* Match standard input padding */
+    align-items: center !important; /* Use center alignment for consistent baseline */
 }
 
 .transaction-modal-card .custom-select-wrapper:focus .custom-select-trigger,

@@ -701,7 +701,8 @@
 .transaction-modal-card .floating-input:not(:placeholder-shown) ~ .floating-label,
 .transaction-modal-card .custom-select-wrapper.has-value ~ .floating-label,
 .transaction-modal-card .custom-select-wrapper.open ~ .floating-label,
-.transaction-modal-card .custom-select-wrapper:focus ~ .floating-label { 
+.transaction-modal-card .custom-select-wrapper:focus ~ .floating-label,
+.transaction-modal-card .input-group.has-value .floating-label { 
     transform: translateY(-32px) scale(0.75); /* Increased translation for more clearance */
     color: var(--primary-green); 
 }

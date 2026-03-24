@@ -300,7 +300,16 @@
 			right: 15px;
 			font-size: 1.4em;
 			opacity: 0.15;
-			transition: opacity 0.3s ease;
+			transition: all 0.3s ease;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.stat-icon svg {
+			width: 24px;
+			height: 24px;
+			stroke-width: 2.5px;
 		}
 
 		.stat-card:hover .stat-icon {
@@ -1903,8 +1912,24 @@ body.dark-mode #main-settings {
     color: #e6ece8;
 }
 
+body.dark-mode .stat-card {
+    background: var(--card-bg);
+    color: #edf1ee;
+    border-color: rgba(255, 255, 255, 0.08);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+body.dark-mode .stat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+}
+
+body.dark-mode .income-card:hover { border-color: var(--income-color); box-shadow: 0 8px 25px rgba(46, 204, 113, 0.2); }
+body.dark-mode .expense-card:hover { border-color: var(--expense-color); box-shadow: 0 8px 25px rgba(231, 76, 60, 0.2); }
+body.dark-mode .transfer-card:hover { border-color: var(--transfer-color); box-shadow: 0 8px 25px rgba(52, 152, 219, 0.2); }
+body.dark-mode .wallet-card:hover { border-color: var(--primary-green); box-shadow: 0 8px 25px rgba(107, 166, 79, 0.3); }
+
 body.dark-mode .transaction-list,
-body.dark-mode .stat-card,
 body.dark-mode .wallet-balance-card,
 body.dark-mode .income-summary-skeleton,
 body.dark-mode .chart-skeleton-container {
@@ -2097,3 +2122,85 @@ body.dark-mode .transaction-item {
 body.dark-mode .transaction-item:hover {
     background-color: rgba(107, 166, 79, 0.08);
 }
+
+/* ==========================================================================
+   DARK MODE OVERRIDES FOR MODALS (TRANSACTION, WALLET, TRANSFER)
+   ========================================================================== */
+
+body.dark-mode .transaction-modal-card {
+    background-color: #1a1f1c; /* Deep forest dark */
+    color: #edf1ee;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .transaction-modal-card .login-header {
+    color: var(--primary-green);
+}
+
+body.dark-mode .transaction-modal-card .floating-input,
+body.dark-mode .transaction-modal-card .custom-select-trigger {
+    background-color: #242926;
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+body.dark-mode .transaction-modal-card .floating-input:focus,
+body.dark-mode .transaction-modal-card .custom-select-wrapper:focus .custom-select-trigger,
+body.dark-mode .transaction-modal-card .custom-select-wrapper.open .custom-select-trigger {
+    border-color: var(--primary-green);
+    background-color: #2a302c;
+    box-shadow: 0 0 0 3px rgba(107, 166, 79, 0.15);
+}
+
+body.dark-mode .transaction-modal-card .floating-label {
+    color: #abb2ad;
+}
+
+body.dark-mode .transaction-modal-card .input-group:focus-within .floating-label,
+body.dark-mode .transaction-modal-card .floating-input:not(:placeholder-shown) ~ .floating-label,
+body.dark-mode .transaction-modal-card .input-group.has-value .floating-label {
+    color: var(--primary-green) !important;
+}
+
+/* Custom Select Dropdown in Dark Mode */
+body.dark-mode .transaction-modal-card .custom-select-options {
+    background-color: #242926;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+body.dark-mode .transaction-modal-card .custom-option {
+    color: #edf1ee;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .transaction-modal-card .custom-option:hover {
+    background-color: rgba(107, 166, 79, 0.2);
+    color: #ffffff;
+}
+
+body.dark-mode .transaction-modal-card .custom-option.selected {
+    background-color: rgba(107, 166, 79, 0.15);
+    color: var(--primary-green);
+}
+
+body.dark-mode .transaction-modal-card .modal-close {
+    color: #abb2ad;
+}
+
+body.dark-mode .transaction-modal-card .modal-close:hover {
+    color: #ff6b6b;
+}
+
+body.dark-mode .transaction-modal-card .message.error {
+    background: rgba(255, 107, 107, 0.1);
+    border-color: rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+}
+
+body.dark-mode .transaction-modal-card .message.success {
+    background: rgba(46, 204, 113, 0.1);
+    border-color: rgba(46, 204, 113, 0.2);
+    color: #2ecc71;
+}

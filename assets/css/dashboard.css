@@ -671,14 +671,25 @@
     color: #666;
     transform-origin: left top;
     transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.25s ease;
+    z-index: 5; /* Ensure label is above the trigger text */
 }
 .transaction-modal-card .floating-input:focus ~ .floating-label, 
 .transaction-modal-card .floating-input:not(:placeholder-shown) ~ .floating-label,
 .transaction-modal-card .custom-select-wrapper.has-value ~ .floating-label,
 .transaction-modal-card .custom-select-wrapper.open ~ .floating-label,
 .transaction-modal-card .custom-select-wrapper:focus ~ .floating-label { 
-    transform: translateY(-25px) scale(0.75); 
+    transform: translateY(-28px) scale(0.75); /* Increased from -25px to fix overlap */
     color: var(--primary-green); 
+}
+
+/* Hide spin buttons for cleaner look */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
 }
 .transaction-modal-card .custom-select-trigger {
     color: #222;

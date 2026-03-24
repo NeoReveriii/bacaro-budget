@@ -164,14 +164,26 @@
                 if (container) container.style.display = 'grid';
 			} catch (e) {
 				console.error('Load wallets error:', e);
+				// Shimmer Fix: Update UI even on error to clear skeleton
+				renderWallets();
+                if (skeleton) skeleton.style.display = 'none';
+                if (container) container.style.display = 'grid';
 			}
 		}
 
 		function renderWallets() {
+			// Shimmer Fix: Always update total balance card first, even if no wallets
+			const totalBalance = (window.wallets || []).reduce((sum, w) => sum + Number(w.calculated_balance || 0), 0);
+			const totalEl = document.querySelector('.wallet-card .stat-value');
+			if (totalEl) {
+				totalEl.innerHTML = formatCurrency(totalBalance);
+				totalEl.classList.add('loading-transition');
+			}
+
 			const container = document.getElementById('wallet-grid-container');
 			if (!container) return;
 			
-			if (window.wallets.length === 0) {
+			if (!window.wallets || window.wallets.length === 0) {
 				container.innerHTML = '<p style="grid-column: 1 / -1; color: #666; text-align: center;">No wallets found. Add one to get started.</p>';
 				return;
 			}
@@ -198,14 +210,6 @@
 					</div>
 				`;
 			}).join('');
-
-			// Update total balance card
-			const totalBalance = window.wallets.reduce((sum, w) => sum + Number(w.calculated_balance), 0);
-			const totalEl = document.querySelector('.wallet-card .stat-value');
-			if (totalEl) {
-                totalEl.innerHTML = formatCurrency(totalBalance);
-                totalEl.classList.add('loading-transition');
-            }
 		}
 
 		window.handleDeleteWallet = async function(walletId, name) {
@@ -491,12 +495,7 @@
 				header.textContent = isEdit ? 'Edit Transaction' : 'New Transaction';
 			}
 			if (!isEdit) {
-				const form = document.getElementById('transaction-form');
-				if (form) form.reset();
-				const idInput = document.getElementById('trans-id');
-				if (idInput) idInput.value = '';
-				const otherGrp = document.getElementById('trans-wallet-other-group');
-				if (otherGrp) otherGrp.style.display = 'none';
+				resetTransactionForm();
 			}
 			if (modal) modal.classList.add('active');
 		}
@@ -771,16 +770,39 @@
 
                 if (skeleton) skeleton.style.display = 'none';
                 listEl.style.display = 'block';
-			} catch (e) {
-				console.error('Load transactions error:', e);
-				listEl.innerHTML = `<div class="empty-history"><p>${escapeHtml(e.message)}</p></div>`;
+                } catch (e) {
+                console.error('Load transactions error:', e);
+                listEl.innerHTML = `<div class="empty-history"><p>${escapeHtml(e.message)}</p></div>`;
+                // Shimmer Fix: Update stats to 0 even on error to clear skeleton
+                updateDashboardStats([]);
                 if (skeleton) skeleton.style.display = 'none';
                 listEl.style.display = 'block';
-			}
-		}
+                }
+                }
 
-		function renderTransactions(rows) {
-			const listEl = document.getElementById('transaction-list-items');
+                function resetTransactionForm() {
+                const form = document.getElementById('transaction-form');
+                if (!form) return;
+
+                form.reset();
+                const idInput = document.getElementById('trans-id');
+                if (idInput) idInput.value = '';
+
+                const otherGrp = document.getElementById('trans-wallet-other-group');
+                if (otherGrp) otherGrp.style.display = 'none';
+
+                // Reset Custom Selects UI
+                form.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
+                wrapper.classList.remove('has-value');
+                wrapper.classList.remove('open');
+                const triggerSpan = wrapper.querySelector('.custom-select-trigger span');
+                if (triggerSpan) triggerSpan.innerText = '';
+
+                wrapper.querySelectorAll('.custom-option').forEach(opt => opt.classList.remove('selected'));
+                });
+                }
+
+                function renderTransactions(rows) {			const listEl = document.getElementById('transaction-list-items');
 			if (!listEl) return;
 
 			if (!rows || rows.length === 0) {
@@ -1197,8 +1219,7 @@
 							throw new Error(getErrorMessage(payload, 'Failed to save transaction'));
 						}
 
-						transactionForm.reset();
-						document.getElementById('trans-id').value = '';
+						resetTransactionForm();
 						hideCoinLoader();
 						closeTransactionModal();
 						await loadTransactions();

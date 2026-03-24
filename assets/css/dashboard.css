@@ -702,21 +702,24 @@
 }
 .transaction-modal-card .floating-label {
     position: absolute;
-    top: 18px;
+    top: 20px; /* Perfectly centered vertically: (56-16)/2 */
     left: 16px;
     color: #888;
     font-size: 1em;
     pointer-events: none;
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     transform-origin: left top;
     z-index: 5;
 }
-.transaction-modal-card .floating-input:focus ~ .floating-label, 
+
+/* Float labels higher to ensure NO overlap with selection text */
+.transaction-modal-card .input-group:focus-within .floating-label,
 .transaction-modal-card .floating-input:not(:placeholder-shown) ~ .floating-label,
 .transaction-modal-card .input-group.has-value .floating-label { 
-    transform: translateY(-10px) scale(0.75) !important;
+    transform: translateY(-15px) scale(0.75) !important; /* Increased from -10px to -15px */
     color: var(--primary-green) !important; 
     font-weight: 700;
+    opacity: 1;
 }
 
 /* Hide spin buttons for cleaner look */

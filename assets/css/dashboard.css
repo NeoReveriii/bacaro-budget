@@ -702,9 +702,8 @@
 }
 .transaction-modal-card .floating-label {
     position: absolute;
-    top: 28px; /* Mid-point of 56px height */
+    top: 20px; /* Aligns with padding-top of inputs */
     left: 16px;
-    transform: translateY(-50%); /* Perfectly center vertically */
     color: #888;
     font-size: 1em;
     pointer-events: none;
@@ -717,7 +716,7 @@
 .transaction-modal-card .input-group:focus-within .floating-label,
 .transaction-modal-card .floating-input:not(:placeholder-shown) ~ .floating-label,
 .transaction-modal-card .input-group.has-value .floating-label { 
-    transform: translateY(-38px) scale(0.75) !important; /* Move way up to clear the box */
+    transform: translateY(-12px) scale(0.75) !important; /* Move higher to clear padding */
     color: var(--primary-green) !important; 
     font-weight: 700;
     opacity: 1;

@@ -248,7 +248,7 @@
             flex-direction: column;
         }
 
-        #main-dashboard, #main-transactions, #main-wallets, #main-wallet-details {
+        #main-dashboard, #main-transactions, #main-wallets, #main-wallet-details, #main-settings {
             flex-grow: 1; 
             background-color: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(15px);
@@ -1553,4 +1553,212 @@
     .app-header {
         padding: 15px 20px;
     }
+}
+
+/* Settings Page */
+.settings-page-overview {
+    margin-top: 0;
+}
+
+.settings-page-header-card {
+    cursor: default;
+}
+
+.settings-page-header-card .stat-value {
+    font-size: 2.2em;
+}
+
+.settings-page-header-card .stat-meta {
+    margin-top: 8px;
+    color: rgba(55, 71, 56, 0.7);
+    font-size: 0.95em;
+}
+
+.settings-page-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.settings-page-card {
+    min-height: auto;
+    cursor: default;
+}
+
+.settings-page-card:hover {
+    transform: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.settings-page-card.danger {
+    border: 1px solid rgba(255, 118, 117, 0.25);
+}
+
+.settings-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 18px 0;
+    border-bottom: none;
+}
+
+.settings-option h3 {
+    margin: 0 0 4px;
+    color: var(--dark-green);
+    font-size: 1.02em;
+}
+
+.settings-option p {
+    margin: 0;
+    color: rgba(55, 71, 56, 0.72);
+    font-size: 0.9em;
+}
+
+.contrast-option {
+    align-items: flex-start;
+}
+
+.contrast-control {
+    min-width: 190px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.contrast-control input[type="range"] {
+    width: 100%;
+    accent-color: var(--primary-green);
+}
+
+.contrast-control span {
+    font-size: 0.85em;
+    color: #666;
+    font-weight: 700;
+    text-align: right;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 52px;
+    height: 28px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background-color: rgba(255, 255, 255, 0.28);
+    transition: .25s;
+    border-radius: 28px;
+}
+
+.toggle-slider::before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .25s;
+    border-radius: 50%;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+    background-color: var(--primary-green);
+}
+
+.toggle-switch input:checked + .toggle-slider::before {
+    transform: translateX(24px);
+}
+
+.btn-danger {
+    background: #ff7675;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-danger:hover {
+    background: #e66767;
+}
+
+/* Theme and contrast controls */
+body {
+    --bbm-contrast: 100%;
+}
+
+.dashboard-container {
+    filter: contrast(var(--bbm-contrast));
+}
+
+body.dark-mode #main-header {
+    background-color: #1f2a23;
+}
+
+body.dark-mode #main-sidebar {
+    background-color: rgba(20, 24, 22, 0.75);
+    color: #f1f3f2;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .nav-item {
+    color: #f1f3f2;
+}
+
+body.dark-mode .nav-item.active {
+    background-color: #2d3a31;
+}
+
+body.dark-mode #main-content-area,
+body.dark-mode #main-dashboard,
+body.dark-mode #main-transactions,
+body.dark-mode #main-wallets,
+body.dark-mode #main-wallet-details,
+body.dark-mode #main-settings {
+    background-color: rgba(18, 22, 20, 0.88);
+    color: #e6ece8;
+}
+
+body.dark-mode .transaction-list,
+body.dark-mode .stat-card,
+body.dark-mode .wallet-balance-card,
+body.dark-mode .income-summary-skeleton,
+body.dark-mode .chart-skeleton-container {
+    background: #222b25;
+    color: #edf1ee;
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .stat-value,
+body.dark-mode .rec-title,
+body.dark-mode .balance-amount {
+    color: #edf1ee;
+}
+
+body.dark-mode .header-row,
+body.dark-mode .rec-wallet,
+body.dark-mode .transaction-details {
+    color: rgba(237, 241, 238, 0.7);
+}
+
+body.dark-mode .settings-page-header-card .stat-meta,
+body.dark-mode .settings-option p {
+    color: rgba(237, 241, 238, 0.72);
+}
+
+body.dark-mode .settings-option h3,
+body.dark-mode .contrast-control span {
+    color: #edf1ee;
 }

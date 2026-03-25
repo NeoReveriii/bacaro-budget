@@ -56,6 +56,7 @@
 			resetAddWalletForm();
 			resetTransferForm();
 			resetTransactionForm();
+			resetGoalForm();
 		}
 		
 		function openLoginModal() { 
@@ -68,29 +69,76 @@
 		function openForgotModal() { closeAllModals(); toggleAccountSidebar(false); toggleMainSidebar(false); document.getElementById('forgot-modal').classList.add('active'); }
 		function openAddWalletModal() { closeAllModals(); document.getElementById('add-wallet-modal').classList.add('active'); }
 		function openTransferModal() { closeAllModals(); document.getElementById('transfer-modal').classList.add('active'); }
+		let goalDatePicker = null;
+
 		function openAddGoalModal() { 
 			closeAllModals(); 
 			document.getElementById('add-goal-modal').classList.add('active');
 			
-			// Set deadline to tomorrow when modal opens
-			const deadlineInput = document.getElementById('goal-deadline');
-			if (deadlineInput) {
-				const tomorrow = new Date();
-				tomorrow.setDate(tomorrow.getDate() + 1);
-				const minDate = tomorrow.toISOString().split('T')[0];
-				deadlineInput.min = minDate;
-				deadlineInput.value = minDate;
-				
-				// Add real-time validation
-				deadlineInput.addEventListener('change', validateGoalDeadline);
+			// Initialize or reset Flatpickr
+			const tomorrow = new Date();
+			tomorrow.setDate(tomorrow.getDate() + 1);
+			const tomorrowStr = tomorrow.toISOString().split('T')[0];
+
+			if (!goalDatePicker) {
+				goalDatePicker = flatpickr("#goal-deadline", {
+					minDate: "today",
+					defaultDate: tomorrowStr,
+					dateFormat: "Y-m-d",
+					disableMobile: "true",
+					static: true,
+					onChange: function(selectedDates, dateStr, instance) {
+						// Ensure label stays floated if date is selected
+						const group = document.getElementById('goal-deadline').closest('.input-group');
+						if (group) group.classList.add('has-value');
+						validateGoalDeadline();
+					}
+				});
+			} else {
+				goalDatePicker.setDate(tomorrowStr);
+				goalDatePicker.set("minDate", "today");
 			}
 			
+			// Ensure label is correct for default date
+			const group = document.getElementById('goal-deadline').closest('.input-group');
+			if (group) group.classList.add('has-value');
+
 			// Clear any previous error messages
 			const messageDiv = document.getElementById('add-goal-message');
 			if (messageDiv) {
 				messageDiv.innerHTML = '';
 				messageDiv.className = 'message';
 			}
+		}
+
+		function resetGoalForm() {
+			const form = document.getElementById('add-goal-form');
+			if (!form) return;
+			form.reset();
+			
+			// Reset Flatpickr to tomorrow
+			if (goalDatePicker) {
+				const tomorrow = new Date();
+				tomorrow.setDate(tomorrow.getDate() + 1);
+				goalDatePicker.setDate(tomorrow.toISOString().split('T')[0]);
+			}
+
+			// Clear messages
+			const messageDiv = document.getElementById('add-goal-message');
+			if (messageDiv) {
+				messageDiv.innerHTML = '';
+				messageDiv.className = 'message';
+			}
+
+			// Reset Input Groups
+			form.querySelectorAll('.input-group').forEach(group => {
+				group.classList.remove('has-value');
+				// Special check for the date input since we reset it to tomorrow
+				const input = group.querySelector('#goal-deadline');
+				if (input && input.value) {
+					group.classList.add('has-value');
+				}
+			});
 		}
 
 		function validateGoalDeadline() {
@@ -1122,6 +1170,11 @@ window.handleDeleteGoal = async function(goalId, title) {
 			loadTransactions();
 			loadWallets();
 			loadGoals();
+
+			// Initialize Lucide Icons
+			if (typeof lucide !== 'undefined') {
+				lucide.createIcons();
+			}
 
 			// Handle URL Hash for Routing
 			const hash = window.location.hash.substring(1); // remove the '#'

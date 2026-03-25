@@ -2493,6 +2493,129 @@ body.dark-mode .trend-chart-skeleton-container {
     box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
 }
 
+/* --- Date Input & Flatpickr Refactor --- */
+.input-group .input-icon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    pointer-events: none;
+    width: 18px;
+    height: 18px;
+    transition: color 0.2s ease;
+    z-index: 5;
+}
+
+.input-group:focus-within .input-icon {
+    color: var(--primary-green);
+}
+
+/* Hide default browser date picker bits */
+#goal-deadline::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
+/* Unified input design and vertical alignment fix */
+.transaction-modal-card .floating-input {
+    padding-right: 45px !important; /* Space for the calendar icon */
+}
+
+.flatpickr-input {
+    padding-top: 22px !important; /* Matches floating label baseline */
+}
+
+/* Ensure floating label works with Flatpickr wrapper */
+.transaction-modal-card .input-group:focus-within .floating-label,
+.transaction-modal-card .flatpickr-wrapper + .floating-label,
+.transaction-modal-card .input-group.has-value .floating-label { 
+    transform: translateY(-20px) scale(0.75) !important;
+    color: var(--primary-green) !important; 
+    font-weight: 700;
+    opacity: 1;
+}
+
+/* Flatpickr Custom Theming */
+.flatpickr-calendar {
+    background: #fff;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border-radius: 16px;
+    font-family: 'Inter', system-ui, sans-serif;
+    padding: 8px;
+}
+
+.flatpickr-day.selected {
+    background: var(--primary-green) !important;
+    border-color: var(--primary-green) !important;
+    color: white !important;
+}
+
+.flatpickr-day:hover {
+    background: rgba(89, 133, 57, 0.1) !important;
+}
+
+.flatpickr-months .flatpickr-month {
+    color: var(--dark-green);
+    fill: var(--dark-green);
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+    font-weight: 700;
+}
+
+.flatpickr-weekday {
+    color: #888 !important;
+    font-weight: 600 !important;
+}
+
+/* Dark Mode Flatpickr */
+body.dark-mode .flatpickr-calendar {
+    background: #1a1f1c !important; /* Match modal card bg */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .flatpickr-day {
+    color: #edf1ee !important;
+}
+
+body.dark-mode .flatpickr-months .flatpickr-month,
+body.dark-mode .flatpickr-current-month .flatpickr-monthDropdown-months,
+body.dark-mode .flatpickr-current-month input.cur-year {
+    color: #edf1ee !important;
+    fill: #edf1ee !important;
+}
+
+body.dark-mode .flatpickr-weekday {
+    color: rgba(237, 241, 238, 0.5) !important;
+}
+
+body.dark-mode .flatpickr-day.flatpickr-disabled, 
+body.dark-mode .flatpickr-day.flatpickr-disabled:hover {
+    color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body.dark-mode .flatpickr-day.prevMonthDay, 
+body.dark-mode .flatpickr-day.nextMonthDay {
+    color: rgba(255, 255, 255, 0.25) !important;
+}
+
+body.dark-mode .flatpickr-day:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Ensure Flatpickr stays within modal */
+.flatpickr-calendar.static {
+    top: 100% !important;
+}
+
+.flatpickr-wrapper {
+    width: 100%;
+    height: 100%;
+}
+
 /* --- Dark Mode Visibility Fixes --- */
 .income-summary-item {
     display: flex;

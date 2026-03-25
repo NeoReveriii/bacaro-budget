@@ -16,6 +16,11 @@
 	<!-- Premium AI Libraries -->
 	<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+	<!-- UI Enhancement Libraries -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body>
@@ -737,8 +742,9 @@
 							<label class="floating-label">Target Amount (₱)</label>
 						</div>
 						<div class="input-group">
-							<input type="date" class="floating-input" id="goal-deadline" placeholder=" " required>
+							<input type="text" class="floating-input" id="goal-deadline" placeholder=" " required>
 							<label class="floating-label">Target Date</label>
+							<i data-lucide="calendar" class="input-icon"></i>
 						</div>
 						<div id="add-goal-message" class="message"></div>
 						<button type="submit" class="btn btn-primary">SAVE GOAL</button>

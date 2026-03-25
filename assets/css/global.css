@@ -138,6 +138,21 @@ h1, h2, h3, h4, h5, h6 {
     padding-right: 50px;
 }
 
+/* Date input validation styling */
+input[type="date"] {
+    color-scheme: light; /* Ensure date picker uses light theme */
+}
+
+input[type="date"]:invalid {
+    border-color: #e74c3c;
+    background-color: rgba(231, 76, 60, 0.05);
+}
+
+input[type="date"]:invalid:focus {
+    border-color: #e74c3c;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
 .floating-input:focus {
     border-color: var(--primary-green);
     background: rgba(255, 255, 255, 0.08);

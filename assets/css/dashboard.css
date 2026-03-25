@@ -607,7 +607,6 @@
 			justify-content: center;
 			align-items: center;
 			z-index: 2000;
-			perspective: 1000px;
 		}
 
 		.modal-overlay.active { display: flex; }
@@ -624,9 +623,7 @@
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
-			transform-style: preserve-3d;
-			transition: transform 0.1s ease-out;
-			will-change: transform;
+			justify-content: center;
 		}
 		
 		.modal-form-container .header {
@@ -662,16 +659,14 @@
 			cursor: pointer; 
 			opacity: 0.6;
 			z-index: 10;
-			transform: translateZ(10px);
 			transition: opacity 0.2s, transform 0.2s;
 		}
 		
 		.modal-close:hover {
 			opacity: 1;
-			transform: translateZ(15px) scale(1.1);
+			transform: scale(1.1);
 		}
 
-		.modal-form-container { transform: translateZ(40px); }
 
         .login-link { margin-top: 20px; text-align: center; }
         .login-link a { color: var(--primary-green); text-decoration: none; font-weight: bold; }

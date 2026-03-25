@@ -129,13 +129,21 @@
 			// 2. Show the requested view
 			const targetView = document.getElementById('view-' + viewId);
 			if (targetView) {
-				targetView.style.display = 'block';
+				targetView.style.display = 'flex';
 			}
 
 			// 3. Update the Active class in the sidebar
 			const navItems = document.querySelectorAll('.nav-item');
-			navItems.forEach(item => item.classList.remove('active'));
-			if (element) element.classList.add('active');
+			navItems.forEach(item => {
+				item.classList.remove('active');
+				if (item.getAttribute('onclick') && item.getAttribute('onclick').includes(`showView('${viewId}'`)) {
+					item.classList.add('active');
+				}
+			});
+			if (element) {
+				// Also add to the clicked element just in case it's not in the main nav
+				element.classList.add('active');
+			}
 
             // 4. Update Tab Title
             const titles = {
@@ -149,6 +157,9 @@
             if (titles[viewId]) {
                 document.title = `${titles[viewId]} | Bacaro Budget Manager`;
             }
+
+			// 5. Update URL Hash
+			window.location.hash = viewId;
 		}
 		
 		window.wallets = [];
@@ -1012,6 +1023,12 @@ window.handleDeleteGoal = async function(goalId, title) {
 			loadTransactions();
 			loadWallets();
 			loadGoals();
+
+			// Handle URL Hash for Routing
+			const hash = window.location.hash.substring(1); // remove the '#'
+			if (hash && document.getElementById('view-' + hash)) {
+				showView(hash, document.querySelector(`.nav-item[onclick*="showView('${hash}'"]`));
+			}
 
 			const addGoalForm = document.getElementById('add-goal-form');
 			if (addGoalForm) {

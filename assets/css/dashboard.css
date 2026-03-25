@@ -247,7 +247,7 @@
             flex-direction: column;
         }
 
-        #main-dashboard, #main-transactions, #main-wallets, #main-wallet-details, #main-settings {
+        #main-dashboard, #main-transactions, #main-wallets, #main-wallet-details, #main-settings, #main-goals {
             flex-grow: 1; 
             background-color: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(15px);
@@ -1932,10 +1932,8 @@ body.dark-mode .wallet-card:hover { border-color: var(--primary-green); box-shad
 body.dark-mode .transaction-list,
 body.dark-mode .wallet-balance-card,
 body.dark-mode .income-summary-skeleton,
-body.dark-mode .chart-skeleton-container {
+body.dark-mode .chart-skeleton-container .doughnut-skeleton::before {
     background: var(--card-bg);
-    color: #edf1ee;
-    border-color: rgba(255, 255, 255, 0.08);
 }
 
 /* Balance Card Exception: Keep brand green */
@@ -2215,10 +2213,13 @@ body.dark-mode .transaction-modal-card .message.success {
     padding: 25px;
     margin-top: 25px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .cash-flow-chart-container h3 {
-    color: var(--white);
+    color: var(--dark-green);
     margin-bottom: 15px;
     font-family: 'Times New Roman', serif;
 }
@@ -2251,7 +2252,7 @@ body.dark-mode .cash-flow-chart-container {
 .goal-card h3 {
     margin: 0 0 5px 0;
     font-size: 1.2rem;
-    color: var(--white);
+    color: var(--dark-green);
     font-family: 'Times New Roman', serif;
 }
 

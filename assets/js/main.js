@@ -68,6 +68,12 @@
 		function openForgotModal() { closeAllModals(); toggleAccountSidebar(false); toggleMainSidebar(false); document.getElementById('forgot-modal').classList.add('active'); }
 		function openAddWalletModal() { closeAllModals(); document.getElementById('add-wallet-modal').classList.add('active'); }
 		function openTransferModal() { closeAllModals(); document.getElementById('transfer-modal').classList.add('active'); }
+		function openAddGoalModal() { closeAllModals(); document.getElementById('add-goal-modal').classList.add('active'); }
+		window.openAddFundsModal = function(id) { 
+			closeAllModals(); 
+			document.getElementById('fund-goal-id').value = id;
+			document.getElementById('add-funds-modal').classList.add('active'); 
+		}
 		function openSettingsPanel(event) {
 			if (event) event.preventDefault();
 			toggleAccountSidebar(false);
@@ -137,7 +143,8 @@
                 'transactions': 'Transactions',
                 'wallets': 'Wallets',
                 'ai': 'Kwarta AI',
-				'settings': 'Settings'
+				'settings': 'Settings',
+				'goals': 'Savings Goals'
             };
             if (titles[viewId]) {
                 document.title = `${titles[viewId]} | Bacaro Budget Manager`;
@@ -904,12 +911,178 @@
 			`;
 		}
 
+window.goals = [];
+
+async function loadGoals() {
+    if (!isAuthenticated()) return;
+    const skeleton = document.getElementById('goal-skeleton-grid');
+    const container = document.getElementById('goal-grid-container');
+    if (skeleton) skeleton.style.display = 'grid';
+    if (container) container.style.display = 'none';
+
+    try {
+        const res = await fetch('/api/goals', {
+            headers: { Authorization: `Bearer ${getToken()}` }
+        });
+        if (!res.ok) throw new Error('Failed to load goals');
+        const data = await res.json();
+        window.goals = data.goals || [];
+        renderGoals();
+
+        if (skeleton) skeleton.style.display = 'none';
+        if (container) container.style.display = 'grid';
+    } catch (e) {
+        console.error('Load goals error:', e);
+        renderGoals();
+        if (skeleton) skeleton.style.display = 'none';
+        if (container) container.style.display = 'grid';
+    }
+}
+
+function renderGoals() {
+    const container = document.getElementById('goal-grid-container');
+    if (!container) return;
+
+    if (!window.goals || window.goals.length === 0) {
+        container.innerHTML = '<p style="grid-column: 1 / -1; color: #666; text-align: center;">No savings goals found. Add one to start tracking your progress.</p>';
+        return;
+    }
+
+    container.innerHTML = window.goals.map(g => {
+        const target = Number(g.target_amount || 0);
+        const current = Number(g.current_amount || 0);
+        let percentage = target > 0 ? (current / target) * 100 : 0;
+        if (percentage > 100) percentage = 100;
+
+        let deadlineStr = '';
+        if (g.deadline) {
+            const d = new Date(g.deadline);
+            deadlineStr = `Target Date: ${d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}`;
+        }
+
+        return `
+            <div class="goal-card">
+                <button class="card-delete-btn" onclick="event.stopPropagation(); handleDeleteGoal(${g.goal_id}, '${escapeHtml(g.title)}')">×</button>
+                <h3>${escapeHtml(g.title)}</h3>
+                <div class="goal-deadline">${escapeHtml(deadlineStr)}</div>
+                
+                <div class="goal-amounts">
+                    <span class="goal-current">${formatCurrency(current)}</span>
+                    <span class="goal-target">${formatCurrency(target)}</span>
+                </div>
+                
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" style="width: ${percentage}%;"></div>
+                </div>
+
+                <div class="goal-actions">
+                    <button class="btn-add-funds" onclick="openAddFundsModal(${g.goal_id})">Add Funds</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+window.handleDeleteGoal = async function(goalId, title) {
+    showConfirm('Delete Goal', `Are you sure you want to delete the goal "${title}"?`, async () => {
+        showCoinLoader('DELETING GOAL...');
+        try {
+            const res = await fetch('/api/goals', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
+                body: JSON.stringify({ goal_id: goalId })
+            });
+            const payload = await readResponsePayload(res);
+            if (!res.ok) throw new Error(getErrorMessage(payload, 'Failed to delete goal'));
+            
+            showToast('Goal deleted successfully');
+            await loadGoals();
+        } catch (err) {
+            showToast(err.message, 'error');
+        } finally {
+            hideCoinLoader();
+        }
+    });
+};
+
 		document.addEventListener('DOMContentLoaded', function() {
 			applyThemeSettings();
 			initializeSettingsPanel();
 			checkAuthenticationForUserPage();
 			loadTransactions();
 			loadWallets();
+			loadGoals();
+
+			const addGoalForm = document.getElementById('add-goal-form');
+			if (addGoalForm) {
+				addGoalForm.addEventListener('submit', async function(e) {
+					e.preventDefault();
+					const title = document.getElementById('goal-title').value.trim();
+					const target_amount = parseFloat(document.getElementById('goal-target-amount').value);
+					const deadline = document.getElementById('goal-deadline').value;
+					
+					const messageDiv = document.getElementById('add-goal-message');
+					messageDiv.innerHTML = '';
+					messageDiv.className = 'message';
+
+					showCoinLoader('SAVING GOAL...');
+					try {
+						const res = await fetch('/api/goals', {
+							method: 'POST',
+							headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
+							body: JSON.stringify({ title, target_amount, deadline })
+						});
+						
+						const payload = await readResponsePayload(res);
+						if (!res.ok) throw new Error(getErrorMessage(payload, 'Failed to create goal'));
+						
+						addGoalForm.reset();
+						closeAllModals();
+						showToast('Goal created successfully');
+						await loadGoals();
+					} catch (err) {
+						messageDiv.innerHTML = escapeHtml(err.message);
+						messageDiv.className = 'message error';
+					} finally {
+						hideCoinLoader();
+					}
+				});
+			}
+
+			const addFundsForm = document.getElementById('add-funds-form');
+			if (addFundsForm) {
+				addFundsForm.addEventListener('submit', async function(e) {
+					e.preventDefault();
+					const goal_id = document.getElementById('fund-goal-id').value;
+					const add_amount = parseFloat(document.getElementById('fund-amount').value);
+					
+					const messageDiv = document.getElementById('add-funds-message');
+					messageDiv.innerHTML = '';
+					messageDiv.className = 'message';
+
+					showCoinLoader('ADDING FUNDS...');
+					try {
+						const res = await fetch('/api/goals', {
+							method: 'PUT',
+							headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
+							body: JSON.stringify({ goal_id, add_amount })
+						});
+						
+						const payload = await readResponsePayload(res);
+						if (!res.ok) throw new Error(getErrorMessage(payload, 'Failed to update goal'));
+						
+						addFundsForm.reset();
+						closeAllModals();
+						showToast('Funds added successfully');
+						await loadGoals();
+					} catch (err) {
+						messageDiv.innerHTML = escapeHtml(err.message);
+						messageDiv.className = 'message error';
+					} finally {
+						hideCoinLoader();
+					}
+				});
+			}
 
 			const addWalletForm = document.getElementById('add-wallet-form');
 			if (addWalletForm) {
@@ -1461,6 +1634,7 @@ function updateDashboardStats(transactions) {
 
     renderIncomeSummary(transactions);
     renderDashboardChart(transactions);
+    renderCashFlowChart(transactions);
 }
 
 function renderIncomeSummary(transactions) {
@@ -1536,6 +1710,97 @@ function renderDashboardChart(transactions) {
 
     // Transition from skeleton to content
     const skeleton = container.querySelector('.chart-skeleton-container');
+    if (skeleton) skeleton.style.display = 'none';
+    wrapper.style.display = 'block';
+}
+
+let cashFlowChartInstance = null;
+function renderCashFlowChart(transactions) {
+    const container = document.querySelector('.cash-flow-chart-container');
+    const wrapper = document.getElementById('cash-flow-chart-wrapper');
+    const canvas = document.getElementById('cash-flow-line-chart');
+    if (!container || !wrapper || !canvas) return;
+
+    // Group transactions by date
+    const dateMap = {};
+    transactions.forEach(t => {
+        if (t.type === 'Transfer') return; // Skip transfers for cash flow
+        const dateStr = t.dateoftrans ?? t.date;
+        if (!dateStr) return;
+        const rawDate = new Date(dateStr);
+        const dateLabel = rawDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+        
+        if (!dateMap[dateLabel]) dateMap[dateLabel] = { income: 0, expense: 0, rawDate: rawDate };
+        
+        if (t.type === 'Income') dateMap[dateLabel].income += Number(t.amount);
+        if (t.type === 'Expense') dateMap[dateLabel].expense += Number(t.amount);
+    });
+
+    // Sort dates
+    const sortedDates = Object.keys(dateMap).sort((a, b) => dateMap[a].rawDate - dateMap[b].rawDate);
+    const incomeData = sortedDates.map(d => dateMap[d].income);
+    const expenseData = sortedDates.map(d => dateMap[d].expense);
+
+    if (cashFlowChartInstance) cashFlowChartInstance.destroy();
+
+    if (sortedDates.length > 0) {
+        cashFlowChartInstance = new Chart(canvas, {
+            type: 'line',
+            data: {
+                labels: sortedDates,
+                datasets: [
+                    {
+                        label: 'Income',
+                        data: incomeData,
+                        borderColor: '#2ecc71',
+                        backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Expense',
+                        data: expenseData,
+                        borderColor: '#ff7675',
+                        backgroundColor: 'rgba(255, 118, 117, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                plugins: {
+                    legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 }, color: document.body.classList.contains('dark-mode') ? '#edf1ee' : '#666' } }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false, color: document.body.classList.contains('dark-mode') ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' },
+                        ticks: { color: document.body.classList.contains('dark-mode') ? '#aaa' : '#888' }
+                    },
+                    y: {
+                        grid: { color: document.body.classList.contains('dark-mode') ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' },
+                        ticks: { color: document.body.classList.contains('dark-mode') ? '#aaa' : '#888' }
+                    }
+                }
+            }
+        });
+    } else {
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.font = '14px Inter';
+        ctx.fillStyle = '#999';
+        ctx.textAlign = 'center';
+        ctx.fillText('No transaction data to display', canvas.width / 2, canvas.height / 2);
+    }
+
+    const skeleton = container.querySelector('.trend-chart-skeleton-container');
     if (skeleton) skeleton.style.display = 'none';
     wrapper.style.display = 'block';
 }

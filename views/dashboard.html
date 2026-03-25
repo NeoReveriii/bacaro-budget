@@ -31,7 +31,7 @@
             </div>
 
             <nav class="header-right">
-                <a href="#" class="header-nav-link">Goals</a>
+                <a href="#" class="header-nav-link" onclick="showView('goals')">Goals</a>
                 
                 <div class="reports-dropdown-container">
                     <button class="dropdown-button">Reports ▾</button>
@@ -152,6 +152,17 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Cash Flow Trend Chart -->
+                        <div class="cash-flow-chart-container" style="margin-top: 25px;">
+                            <h3 style="margin-bottom: 15px; font-family: 'Times New Roman', serif;">Cash Flow Trend</h3>
+                            <div class="trend-chart-skeleton-container" style="height: 300px; border-radius: 12px; background: rgba(255,255,255,0.05);">
+                                <div class="skeleton" style="width: 100%; height: 100%; border-radius: 12px;"></div>
+                            </div>
+                            <div id="cash-flow-chart-wrapper" class="loading-transition" style="display: none; height: 300px; position: relative;">
+                                <canvas id="cash-flow-line-chart"></canvas>
+                            </div>
+                        </div>
 					</div>
 				</main>
 		
@@ -250,6 +261,22 @@
 		
 		<div id="view-ai" class="main-view" style="display: none;">
 			<div id="kwarta-ai-interface"></div>
+		</div>
+
+		<div id="view-goals" class="main-view" style="display: none;">
+			<main id="main-goals">
+				<div class="wallet-actions-bar">
+					<button class="btn-wallet-action add" onclick="openAddGoalModal()">
+						<span class="icon">⊕</span> Add New Goal
+					</button>
+				</div>
+                <div id="goal-skeleton-grid" class="wallet-grid">
+                    <div class="wallet-skeleton skeleton"> <div class="skeleton-chip"></div> <div class="skeleton-content"><div class="skeleton skeleton-text medium" style="height: 25px; margin-bottom: 10px;"></div><div class="skeleton skeleton-text short"></div></div> </div>
+                </div>
+				<div class="wallet-grid loading-transition goal-grid-container" id="goal-grid-container" style="display: none;">
+					<!-- Goals will be rendered here dynamically -->
+				</div>
+			</main>
 		</div>
 
 		<div id="view-settings" class="main-view" style="display: none;">
@@ -532,6 +559,49 @@
                 <button id="btn-confirm-ok" class="btn btn-primary" style="margin: 0; background-color: #ff7675;">Confirm</button>
             </div>
         </div>
+	</div>
+
+	<div id="add-goal-modal" class="modal-overlay">
+		<div class="modal-card transaction-modal-card">
+			<button class="modal-close" onclick="closeAllModals()">&times;</button>
+			<div class="modal-form-container">
+				<h2 class="header login-header">Add Savings Goal</h2>
+				<form class="login-form" id="add-goal-form">
+					<div class="input-group">
+						<input type="text" class="floating-input" id="goal-title" placeholder=" " required>
+						<label class="floating-label">Goal Title (e.g., Emergency Fund)</label>
+					</div>
+					<div class="input-group">
+						<input type="number" class="floating-input" id="goal-target-amount" placeholder=" " inputmode="decimal" step="0.01" min="0.01" required>
+						<label class="floating-label">Target Amount (₱)</label>
+					</div>
+					<div class="input-group">
+						<input type="date" class="floating-input" id="goal-deadline" placeholder=" " required>
+						<label class="floating-label">Target Date</label>
+					</div>
+					<div id="add-goal-message" class="message"></div>
+					<button type="submit" class="btn btn-primary">SAVE GOAL</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div id="add-funds-modal" class="modal-overlay">
+		<div class="modal-card transaction-modal-card">
+			<button class="modal-close" onclick="closeAllModals()">&times;</button>
+			<div class="modal-form-container">
+				<h2 class="header login-header">Add Funds to Goal</h2>
+				<form class="login-form" id="add-funds-form">
+					<input type="hidden" id="fund-goal-id">
+					<div class="input-group">
+						<input type="number" class="floating-input" id="fund-amount" placeholder=" " inputmode="decimal" step="0.01" min="0.01" required>
+						<label class="floating-label">Amount to Add (₱)</label>
+					</div>
+					<div id="add-funds-message" class="message"></div>
+					<button type="submit" class="btn btn-primary">ADD FUNDS</button>
+				</form>
+			</div>
+		</div>
 	</div>
 
 	<div id="add-wallet-modal" class="modal-overlay">

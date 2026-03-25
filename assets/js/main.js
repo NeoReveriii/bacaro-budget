@@ -86,7 +86,8 @@
 					defaultDate: tomorrowStr,
 					dateFormat: "Y-m-d",
 					disableMobile: "true",
-					static: true,
+					animate: true,
+					position: "auto",
 					onChange: function(selectedDates, dateStr, instance) {
 						// Ensure label stays floated if date is selected
 						const group = document.getElementById('goal-deadline').closest('.input-group');
@@ -100,7 +101,8 @@
 			}
 			
 			// Ensure label is correct for default date
-			const group = document.getElementById('goal-deadline').closest('.input-group');
+			const deadlineInput = document.getElementById('goal-deadline');
+			const group = deadlineInput ? deadlineInput.closest('.input-group') : null;
 			if (group) group.classList.add('has-value');
 
 			// Clear any previous error messages

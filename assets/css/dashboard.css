@@ -2188,6 +2188,7 @@ body.dark-mode .transaction-modal-card .custom-select-trigger {
     background-color: #242926;
     border-color: rgba(255, 255, 255, 0.15);
     color: #ffffff;
+    color-scheme: dark;
 }
 
 body.dark-mode .transaction-modal-card .floating-input:focus,
@@ -2524,16 +2525,7 @@ body.dark-mode .trend-chart-skeleton-container {
 
 .flatpickr-input {
     padding-top: 22px !important; /* Matches floating label baseline */
-}
-
-/* Ensure floating label works with Flatpickr wrapper */
-.transaction-modal-card .input-group:focus-within .floating-label,
-.transaction-modal-card .flatpickr-wrapper + .floating-label,
-.transaction-modal-card .input-group.has-value .floating-label { 
-    transform: translateY(-20px) scale(0.75) !important;
-    color: var(--primary-green) !important; 
-    font-weight: 700;
-    opacity: 1;
+    font-weight: 600;
 }
 
 /* Flatpickr Custom Theming */
@@ -2544,6 +2536,7 @@ body.dark-mode .trend-chart-skeleton-container {
     border-radius: 16px;
     font-family: 'Inter', system-ui, sans-serif;
     padding: 8px;
+    z-index: 9999 !important;
 }
 
 .flatpickr-day.selected {
@@ -2575,6 +2568,7 @@ body.dark-mode .flatpickr-calendar {
     background: #1a1f1c !important; /* Match modal card bg */
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    color-scheme: dark; /* Force dark browser UI parts */
 }
 
 body.dark-mode .flatpickr-day {
@@ -2586,6 +2580,12 @@ body.dark-mode .flatpickr-current-month .flatpickr-monthDropdown-months,
 body.dark-mode .flatpickr-current-month input.cur-year {
     color: #edf1ee !important;
     fill: #edf1ee !important;
+}
+
+body.dark-mode .flatpickr-monthDropdown-months,
+body.dark-mode .flatpickr-monthDropdown-month {
+    background: #1a1f1c !important;
+    color: #edf1ee !important;
 }
 
 body.dark-mode .flatpickr-weekday {
@@ -2606,14 +2606,10 @@ body.dark-mode .flatpickr-day:hover {
     background: rgba(255, 255, 255, 0.08) !important;
 }
 
-/* Ensure Flatpickr stays within modal */
-.flatpickr-calendar.static {
-    top: 100% !important;
-}
-
-.flatpickr-wrapper {
-    width: 100%;
-    height: 100%;
+/* Modal breathing room */
+.transaction-modal-card {
+    padding-bottom: 60px !important;
+    overflow: visible !important;
 }
 
 /* --- Dark Mode Visibility Fixes --- */

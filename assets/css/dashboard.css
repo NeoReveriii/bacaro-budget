@@ -2423,8 +2423,8 @@ body.dark-mode .trend-chart-skeleton-container {
 
 /* --- Refactored Confirm Modal --- */
 .confirm-modal-card {
-    max-width: 360px !important;
-    padding: 32px !important;
+    max-width: 320px !important;
+    padding: 24px !important;
     text-align: center;
     border: none !important;
     background: #1a241b !important; /* Solid dark background for professional look */

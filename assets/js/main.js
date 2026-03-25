@@ -109,12 +109,28 @@
 		document.addEventListener('click', (e) => {
 			if (e.target.classList.contains('password-toggle')) {
 				const input = e.target.closest('.password-input-wrapper').querySelector('input');
-				input.type = input.type === 'password' ? 'text' : 'password';
-				e.target.innerHTML = input.type === 'text' ? '👁' : '⛉';
-				e.target.style.color = input.type === 'text' ? 'var(--primary-green)' : 'var(--text-light)';
+				const isPassword = input.type === 'password';
 				
-				e.target.style.transform = 'scale(1.4)';
-				setTimeout(() => e.target.style.transform = 'scale(1)', 150);
+				// Toggle input type
+				input.type = isPassword ? 'text' : 'password';
+				
+				// Update icon: ◯ (hidden) ↔ ⊙ (visible)
+				e.target.innerHTML = isPassword ? '⊙' : '◯';
+				
+				// Update visual state with class for styling
+				if (isPassword) {
+					// Password is now visible - add visible class
+					e.target.classList.add('password-visible');
+				} else {
+					// Password is now hidden - remove visible class
+					e.target.classList.remove('password-visible');
+				}
+				
+				// Add animation feedback
+				e.target.style.transform = 'translateY(-50%) scale(1.15)';
+				setTimeout(() => {
+					e.target.style.transform = 'translateY(-50%) scale(1)';
+				}, 150);
 			}
 		});
 		

@@ -1119,13 +1119,13 @@ input[type=number] {
 		.btn-wallet-action.add {
 			background-color: var(--primary-green);
 			color: white;
-			box-shadow: 0 4px 15px rgba(89, 133, 57, 0.3);
+			box-shadow: none;
 		}
 
 		.btn-wallet-action.transfer {
 			background-color: var(--dark-green);
 			color: white;
-			box-shadow: 0 44px 15px rgba(55, 71, 56, 0.2);
+			box-shadow: none;
 		}
 
 		.btn-wallet-action:hover {
@@ -2604,6 +2604,30 @@ body.dark-mode .flatpickr-day.nextMonthDay {
 
 body.dark-mode .flatpickr-day:hover {
     background: rgba(255, 255, 255, 0.08) !important;
+}
+
+body.dark-mode .flatpickr-months .flatpickr-prev-month,
+body.dark-mode .flatpickr-months .flatpickr-next-month {
+    color: #edf1ee !important;
+    fill: #edf1ee !important;
+}
+
+body.dark-mode .flatpickr-months .flatpickr-prev-month:hover,
+body.dark-mode .flatpickr-months .flatpickr-next-month:hover {
+    color: var(--primary-green) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+body.dark-mode .flatpickr-calendar .numInputWrapper span.arrowUp:after {
+    border-bottom-color: #edf1ee !important;
+}
+
+body.dark-mode .flatpickr-calendar .numInputWrapper span.arrowDown:after {
+    border-top-color: #edf1ee !important;
+}
+
+body.dark-mode .flatpickr-current-month .flatpickr-monthDropdown-months:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
 }
 
 /* Modal breathing room */

@@ -58,8 +58,9 @@
 .prompt-chips {
     display: flex;
     gap: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     overflow-x: auto;
+    padding: 6px 2px; /* Breathing room for hover lift */
 }
 .prompt-chips::-webkit-scrollbar { display: none; }
 

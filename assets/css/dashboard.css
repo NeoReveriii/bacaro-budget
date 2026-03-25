@@ -1658,7 +1658,7 @@ input[type=number] {
     }
 
     /* Modals - Bottom Sheet on Mobile */
-    .modal-card, .transaction-modal-card {
+    .modal-card:not(.confirm-modal-card), .transaction-modal-card {
         width: 100%;
         max-width: none;
         height: auto;
@@ -1671,6 +1671,15 @@ input[type=number] {
         padding-bottom: 50px; /* Safe area */
         box-shadow: 0 -10px 40px rgba(0,0,0,0.3);
         animation: bottomSheetSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Keep Confirm Modal Small and Centered on Mobile */
+    .confirm-modal-card {
+        width: 85% !important;
+        max-width: 300px !important;
+        margin: auto !important;
+        border-radius: 20px !important;
+        animation: fadeIn 0.3s ease-out !important;
     }
 
     @keyframes bottomSheetSlide {

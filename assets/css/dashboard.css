@@ -2494,8 +2494,29 @@ body.dark-mode .trend-chart-skeleton-container {
 }
 
 /* --- Dark Mode Visibility Fixes --- */
-body.dark-mode #income-summary-list div span:first-child {
-    color: #edf1ee !important; /* High-contrast off-white for description */
+.income-summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.income-summary-desc {
+    font-weight: 700;
+    color: var(--dark-green);
+}
+
+.income-summary-amount {
+    color: var(--income-color);
+    font-weight: 800;
+}
+
+body.dark-mode .income-summary-item {
+    border-bottom-color: rgba(255,255,255,0.08);
+}
+
+body.dark-mode .income-summary-desc {
+    color: #edf1ee !important;
 }
 
 body.dark-mode #income-summary-container h3,

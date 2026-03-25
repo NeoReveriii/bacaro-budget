@@ -500,9 +500,8 @@
 			document.body.style.setProperty('--bbm-contrast', `${contrast}%`);
 
 			// Re-render charts and lists to reflect theme changes
-			if (typeof originalTransactions !== 'undefined' && Array.isArray(originalTransactions)) {
-				if (typeof renderCashFlowChart === 'function') renderCashFlowChart(originalTransactions);
-				if (typeof renderDashboardChart === 'function') renderDashboardChart(originalTransactions);
+			if (window.currentTransactions && Array.isArray(window.currentTransactions)) {
+				updateDashboardStats(window.currentTransactions);
 			}
 		}
 
@@ -1797,13 +1796,10 @@ function renderIncomeSummary(transactions) {
     if (incomeTransactions.length === 0) {
         listEl.innerHTML = '<p style="color: #999; font-style: italic; padding: 10px;">No income records found.</p>';
     } else {
-        const isDarkMode = document.body.classList.contains('dark-mode');
-        const descColor = isDarkMode ? '#edf1ee' : 'var(--dark-green)';
-        
         listEl.innerHTML = incomeTransactions.map(t => `
-            <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid ${isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'};">
-                <span style="font-weight: 700; color: ${descColor};">${escapeHtml(t.description)}</span>
-                <span style="color: var(--income-color); font-weight: 800;">+ ${formatCurrency(t.amount)}</span>
+            <div class="income-summary-item">
+                <span class="income-summary-desc">${escapeHtml(t.description)}</span>
+                <span class="income-summary-amount">+ ${formatCurrency(t.amount)}</span>
             </div>
         `).join('');
     }

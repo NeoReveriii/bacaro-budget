@@ -133,6 +133,26 @@ h1, h2, h3, h4, h5, h6 {
     transition: border-color 0.2s ease, background 0.2s ease;
 }
 
+/* Extra padding for password inputs to accommodate toggle icon */
+.password-input-wrapper .floating-input {
+    padding-right: 50px;
+}
+
+/* Date input validation styling */
+input[type="date"] {
+    color-scheme: light; /* Ensure date picker uses light theme */
+}
+
+input[type="date"]:invalid {
+    border-color: #e74c3c;
+    background-color: rgba(231, 76, 60, 0.05);
+}
+
+input[type="date"]:invalid:focus {
+    border-color: #e74c3c;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
 .floating-input:focus {
     border-color: var(--primary-green);
     background: rgba(255, 255, 255, 0.08);
@@ -167,28 +187,81 @@ h1, h2, h3, h4, h5, h6 {
 
 .password-toggle {
     position: absolute;
-    right: 16px;
+    right: 12px;
     top: 50%;
     transform: translateY(-50%); /* Perfectly centered vertically */
     cursor: pointer;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.7);
     font-size: 1.2em;
     z-index: 10;
-    transition: color 0.2s, transform 0.1s ease;
+    transition: all 0.2s ease;
     user-select: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 24px;
-    width: 24px;
+    height: 32px;
+    width: 32px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 0;
+    /* Minimal icon - hidden state (empty circle) */
+    opacity: 0.7;
+    filter: brightness(0.9);
+    font-weight: 300;
+    letter-spacing: -0.5px;
 }
 
-/* Prevent jumping on click */
+/* Hover state - more visible */
+.password-toggle:hover {
+    color: var(--white);
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+}
+
+/* Active state on click - providing feedback */
 .password-toggle:active {
-    transform: translateY(-50%) scale(0.9);
+    transform: translateY(-50%) scale(0.95);
+    background-color: rgba(255, 255, 255, 0.15);
 }
 
-.password-toggle:hover { color: var(--white); }
+/* Minimal icon visible state (circled dot) */
+.password-toggle.password-visible {
+    color: var(--primary-green);
+    background-color: rgba(89, 133, 57, 0.2);
+    border-color: var(--primary-green);
+    opacity: 1;
+    filter: brightness(1.1);
+}
+
+.password-toggle.password-visible:hover {
+    background-color: rgba(89, 133, 57, 0.3);
+    box-shadow: 0 2px 12px rgba(89, 133, 57, 0.3);
+}
+
+/* Dark mode specific styles */
+body.dark-mode .password-toggle {
+    color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .password-toggle:hover {
+    color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+body.dark-mode .password-toggle.password-visible {
+    color: rgba(89, 133, 57, 0.9);
+    background-color: rgba(89, 133, 57, 0.15);
+    border-color: rgba(89, 133, 57, 0.4);
+}
+
+body.dark-mode .password-toggle.password-visible:hover {
+    background-color: rgba(89, 133, 57, 0.25);
+}
 
 /* Centered Button with Glow */
 .btn-primary {

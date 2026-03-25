@@ -110,6 +110,17 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Missing title or target amount.' });
       }
 
+      // Validate deadline is not in the past
+      if (deadline) {
+        const selectedDate = new Date(deadline);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Reset time to start of day
+        
+        if (selectedDate < today) {
+          return res.status(400).json({ error: 'Please select a valid future date.' });
+        }
+      }
+
       const rows = await sql`
         INSERT INTO goals (account_id, title, target_amount, deadline)
         VALUES (${account.acc_id}, ${title}, ${target_amount}, ${deadline || null})

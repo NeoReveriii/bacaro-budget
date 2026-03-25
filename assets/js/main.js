@@ -68,7 +68,51 @@
 		function openForgotModal() { closeAllModals(); toggleAccountSidebar(false); toggleMainSidebar(false); document.getElementById('forgot-modal').classList.add('active'); }
 		function openAddWalletModal() { closeAllModals(); document.getElementById('add-wallet-modal').classList.add('active'); }
 		function openTransferModal() { closeAllModals(); document.getElementById('transfer-modal').classList.add('active'); }
-		function openAddGoalModal() { closeAllModals(); document.getElementById('add-goal-modal').classList.add('active'); }
+		function openAddGoalModal() { 
+			closeAllModals(); 
+			document.getElementById('add-goal-modal').classList.add('active');
+			
+			// Set deadline to tomorrow when modal opens
+			const deadlineInput = document.getElementById('goal-deadline');
+			if (deadlineInput) {
+				const tomorrow = new Date();
+				tomorrow.setDate(tomorrow.getDate() + 1);
+				const minDate = tomorrow.toISOString().split('T')[0];
+				deadlineInput.min = minDate;
+				deadlineInput.value = minDate;
+				
+				// Add real-time validation
+				deadlineInput.addEventListener('change', validateGoalDeadline);
+			}
+			
+			// Clear any previous error messages
+			const messageDiv = document.getElementById('add-goal-message');
+			if (messageDiv) {
+				messageDiv.innerHTML = '';
+				messageDiv.className = 'message';
+			}
+		}
+
+		function validateGoalDeadline() {
+			const deadlineInput = document.getElementById('goal-deadline');
+			const messageDiv = document.getElementById('add-goal-message');
+			
+			if (!deadlineInput || !messageDiv) return;
+			
+			const selectedDate = new Date(deadlineInput.value);
+			const today = new Date();
+			today.setHours(0, 0, 0, 0);
+			
+			if (selectedDate < today) {
+				messageDiv.innerHTML = 'Please select a valid future date.';
+				messageDiv.className = 'message error';
+				deadlineInput.setCustomValidity('Please select a future date');
+			} else {
+				messageDiv.innerHTML = '';
+				messageDiv.className = 'message';
+				deadlineInput.setCustomValidity('');
+			}
+		}
 		window.openAddFundsModal = function(id) { 
 			closeAllModals(); 
 			document.getElementById('fund-goal-id').value = id;
@@ -109,12 +153,28 @@
 		document.addEventListener('click', (e) => {
 			if (e.target.classList.contains('password-toggle')) {
 				const input = e.target.closest('.password-input-wrapper').querySelector('input');
-				input.type = input.type === 'password' ? 'text' : 'password';
-				e.target.innerHTML = input.type === 'text' ? '👁' : '⛉';
-				e.target.style.color = input.type === 'text' ? 'var(--primary-green)' : 'var(--text-light)';
+				const isPassword = input.type === 'password';
 				
-				e.target.style.transform = 'scale(1.4)';
-				setTimeout(() => e.target.style.transform = 'scale(1)', 150);
+				// Toggle input type
+				input.type = isPassword ? 'text' : 'password';
+				
+				// Update icon: ◯ (hidden) ↔ ⊙ (visible)
+				e.target.innerHTML = isPassword ? '⊙' : '◯';
+				
+				// Update visual state with class for styling
+				if (isPassword) {
+					// Password is now visible - add visible class
+					e.target.classList.add('password-visible');
+				} else {
+					// Password is now hidden - remove visible class
+					e.target.classList.remove('password-visible');
+				}
+				
+				// Add animation feedback
+				e.target.style.transform = 'translateY(-50%) scale(1.15)';
+				setTimeout(() => {
+					e.target.style.transform = 'translateY(-50%) scale(1)';
+				}, 150);
 			}
 		});
 		
@@ -1032,6 +1092,17 @@ window.handleDeleteGoal = async function(goalId, title) {
 
 			const addGoalForm = document.getElementById('add-goal-form');
 			if (addGoalForm) {
+				// Set up date input validation
+				const deadlineInput = document.getElementById('goal-deadline');
+				if (deadlineInput) {
+					// Set minimum date to tomorrow
+					const tomorrow = new Date();
+					tomorrow.setDate(tomorrow.getDate() + 1);
+					const minDate = tomorrow.toISOString().split('T')[0];
+					deadlineInput.min = minDate;
+					deadlineInput.value = minDate; // Default to tomorrow
+				}
+
 				addGoalForm.addEventListener('submit', async function(e) {
 					e.preventDefault();
 					const title = document.getElementById('goal-title').value.trim();
@@ -1041,6 +1112,26 @@ window.handleDeleteGoal = async function(goalId, title) {
 					const messageDiv = document.getElementById('add-goal-message');
 					messageDiv.innerHTML = '';
 					messageDiv.className = 'message';
+
+					// Validate deadline is not in the past
+					if (deadline) {
+						const selectedDate = new Date(deadline);
+						const today = new Date();
+						today.setHours(0, 0, 0, 0); // Reset time to start of day
+						
+						if (selectedDate < today) {
+							messageDiv.innerHTML = 'Please select a valid future date.';
+							messageDiv.className = 'message error';
+							return;
+						}
+					}
+
+					// Validate required fields
+					if (!title || isNaN(target_amount) || target_amount <= 0) {
+						messageDiv.innerHTML = 'Please fill in all required fields with valid values.';
+						messageDiv.className = 'message error';
+						return;
+					}
 
 					showCoinLoader('SAVING GOAL...');
 					try {
@@ -1054,6 +1145,13 @@ window.handleDeleteGoal = async function(goalId, title) {
 						if (!res.ok) throw new Error(getErrorMessage(payload, 'Failed to create goal'));
 						
 						addGoalForm.reset();
+						// Reset deadline to tomorrow after form reset
+						const deadlineInput = document.getElementById('goal-deadline');
+						if (deadlineInput) {
+							const tomorrow = new Date();
+							tomorrow.setDate(tomorrow.getDate() + 1);
+							deadlineInput.value = tomorrow.toISOString().split('T')[0];
+						}
 						closeAllModals();
 						showToast('Goal created successfully');
 						await loadGoals();

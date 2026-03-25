@@ -30,7 +30,7 @@
 body.dark-mode {
     --card-bg: #1e1e1e;
     --skeleton-bg: #2a2a2a;
-    --skeleton-shimmer: #333333;
+    --skeleton-shimmer: rgba(255, 255, 255, 0.08); /* More visible shimmer in dark mode */
     --main-content-bg: rgba(18, 22, 20, 0.92);
     --chart-skeleton-bg: #1e1e1e;
 }

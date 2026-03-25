@@ -56,6 +56,7 @@
 			resetAddWalletForm();
 			resetTransferForm();
 			resetTransactionForm();
+			resetGoalForm();
 		}
 		
 		function openLoginModal() { 
@@ -87,6 +88,9 @@
 					disableMobile: "true",
 					static: true,
 					onChange: function(selectedDates, dateStr, instance) {
+						// Ensure label stays floated if date is selected
+						const group = document.getElementById('goal-deadline').closest('.input-group');
+						if (group) group.classList.add('has-value');
 						validateGoalDeadline();
 					}
 				});
@@ -95,12 +99,46 @@
 				goalDatePicker.set("minDate", "today");
 			}
 			
+			// Ensure label is correct for default date
+			const group = document.getElementById('goal-deadline').closest('.input-group');
+			if (group) group.classList.add('has-value');
+
 			// Clear any previous error messages
 			const messageDiv = document.getElementById('add-goal-message');
 			if (messageDiv) {
 				messageDiv.innerHTML = '';
 				messageDiv.className = 'message';
 			}
+		}
+
+		function resetGoalForm() {
+			const form = document.getElementById('add-goal-form');
+			if (!form) return;
+			form.reset();
+			
+			// Reset Flatpickr to tomorrow
+			if (goalDatePicker) {
+				const tomorrow = new Date();
+				tomorrow.setDate(tomorrow.getDate() + 1);
+				goalDatePicker.setDate(tomorrow.toISOString().split('T')[0]);
+			}
+
+			// Clear messages
+			const messageDiv = document.getElementById('add-goal-message');
+			if (messageDiv) {
+				messageDiv.innerHTML = '';
+				messageDiv.className = 'message';
+			}
+
+			// Reset Input Groups
+			form.querySelectorAll('.input-group').forEach(group => {
+				group.classList.remove('has-value');
+				// Special check for the date input since we reset it to tomorrow
+				const input = group.querySelector('#goal-deadline');
+				if (input && input.value) {
+					group.classList.add('has-value');
+				}
+			});
 		}
 
 		function validateGoalDeadline() {

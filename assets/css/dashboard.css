@@ -323,12 +323,12 @@
 
 		.stat-label {
 			font-size: 0.85em;
-			font-weight: 700;
-			color: #555555;
+			font-weight: 800;
+			color: #374738;
 			text-transform: uppercase;
 			letter-spacing: 1.2px;
 			margin-bottom: 8px;
-			opacity: 0.6;
+			opacity: 0.8;
 		}
 		
 		.stat-card.wallet-card .stat-label {
@@ -336,6 +336,12 @@
 			opacity: 0.7;
 		}
 
+		.stat-card h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin: 5px 0;
+            color: #1a241b; 
+        }
 		.stat-value {
 			font-size: 1.8em;
 			font-weight: 700;
@@ -358,13 +364,13 @@
 			font-weight: 600;
 		}
 
-		.income-card .stat-value { color: var(--income-color); }   /* Green for Income */
-		.expense-card .stat-value { color: var(--expense-color); }  /* Red for Expense */
-		.transfer-card .stat-value { color: var(--transfer-color); } /* Blue for Transfer */
+		.income-card .stat-value { color: #27ae60; font-weight: 800; }   /* Darker Green */
+		.expense-card .stat-value { color: #c0392b; font-weight: 800; }  /* Darker Red */
+		.transfer-card .stat-value { color: #2980b9; font-weight: 800; } /* Darker Blue */
 		
-		.stat-value.income { color: var(--income-color); }
-		.stat-value.expense { color: var(--expense-color); }
-		.stat-value.transfer { color: var(--transfer-color); }
+		.stat-value.income { color: #27ae60; }
+		.stat-value.expense { color: #c0392b; }
+		.stat-value.transfer { color: #2980b9; }
 		
 		.rec-stats.income { color: var(--income-color); }
 		.rec-stats.expense { color: var(--expense-color); }
@@ -1119,7 +1125,7 @@ input[type=number] {
 		.btn-wallet-action.transfer {
 			background-color: var(--dark-green);
 			color: white;
-			box-shadow: 0 4px 15px rgba(55, 71, 56, 0.2);
+			box-shadow: 0 44px 15px rgba(55, 71, 56, 0.2);
 		}
 
 		.btn-wallet-action:hover {
@@ -1710,6 +1716,13 @@ input[type=number] {
     font-size: 2.2em;
 }
 
+.settings-page-header-card .stat-card .label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    color: #4a5d4c;
+}
 .settings-page-header-card .stat-meta {
     margin-top: 8px;
     color: rgba(55, 71, 56, 0.7);
@@ -1916,11 +1929,43 @@ body.dark-mode #main-settings {
     color: #e6ece8 !important;
 }
 
+body.dark-mode .goal-card {
+    background: var(--card-bg);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+body.dark-mode .goal-card h3 {
+    color: #edf1ee;
+}
+
+body.dark-mode .goal-deadline,
+body.dark-mode .goal-target {
+    color: #abb2ad;
+}
+
+body.dark-mode .goal-current {
+    color: var(--income-color);
+}
+
+body.dark-mode .progress-bar-container {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .income-card .stat-value { color: var(--income-color) !important; }
+body.dark-mode .expense-card .stat-value { color: var(--expense-color) !important; }
+body.dark-mode .transfer-card .stat-value { color: var(--transfer-color) !important; }
+
 body.dark-mode .stat-card {
     background: var(--card-bg);
     color: #edf1ee;
     border-color: rgba(255, 255, 255, 0.08);
     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+body.dark-mode .stat-label {
+    color: #abb2ad;
+    opacity: 0.8;
 }
 
 body.dark-mode .stat-card:hover {
@@ -2240,15 +2285,19 @@ body.dark-mode .cash-flow-chart-container {
 }
 
 .goal-card {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 16px;
     padding: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     position: relative;
     overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.goal-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
 .goal-card h3 {
@@ -2259,9 +2308,10 @@ body.dark-mode .cash-flow-chart-container {
 }
 
 .goal-card .goal-deadline {
-    font-size: 0.8rem;
-    color: var(--text-light);
+    font-size: 0.85rem;
+    color: #666;
     margin-bottom: 15px;
+    font-weight: 500;
 }
 
 .goal-amounts {
@@ -2272,8 +2322,8 @@ body.dark-mode .cash-flow-chart-container {
     font-weight: 500;
 }
 
-.goal-current { color: #2ecc71; }
-.goal-target { color: var(--text-light); }
+.goal-current { color: #27ae60; font-weight: 700; }
+.goal-target { color: #555; font-weight: 600; }
 
 .progress-bar-container {
     background: rgba(0, 0, 0, 0.2);

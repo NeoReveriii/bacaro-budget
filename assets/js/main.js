@@ -1664,10 +1664,13 @@ function renderIncomeSummary(transactions) {
     if (incomeTransactions.length === 0) {
         listEl.innerHTML = '<p style="color: #999; font-style: italic; padding: 10px;">No income records found.</p>';
     } else {
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        const descColor = isDarkMode ? '#edf1ee' : 'var(--dark-green)';
+        
         listEl.innerHTML = incomeTransactions.map(t => `
-            <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.05);">
-                <span style="font-weight: 600; color: var(--dark-green);">${escapeHtml(t.description)}</span>
-                <span style="color: #2ecc71; font-weight: 700;">+ ${formatCurrency(t.amount)}</span>
+            <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid ${isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'};">
+                <span style="font-weight: 700; color: ${descColor};">${escapeHtml(t.description)}</span>
+                <span style="color: var(--income-color); font-weight: 800;">+ ${formatCurrency(t.amount)}</span>
             </div>
         `).join('');
     }
@@ -1798,8 +1801,8 @@ function renderCashFlowChart(transactions) {
                         position: 'top', 
                         labels: { 
                             boxWidth: 12, 
-                            font: { size: 11, weight: 'bold' }, 
-                            color: document.body.classList.contains('dark-mode') ? '#edf1ee' : '#374738' 
+                            font: { size: 12, weight: '700' }, 
+                            color: document.body.classList.contains('dark-mode') ? '#edf1ee' : '#1a241b' 
                         } 
                     },
                     tooltip: {
@@ -1820,8 +1823,8 @@ function renderCashFlowChart(transactions) {
                             color: document.body.classList.contains('dark-mode') ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' 
                         },
                         ticks: { 
-                            color: document.body.classList.contains('dark-mode') ? '#edf1ee' : '#374738',
-                            font: { weight: '600' }
+                            color: document.body.classList.contains('dark-mode') ? '#edf1ee' : '#1a241b',
+                            font: { weight: '700', size: 12 }
                         }
                     },
                     y: {
@@ -1829,8 +1832,8 @@ function renderCashFlowChart(transactions) {
                             color: document.body.classList.contains('dark-mode') ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)' 
                         },
                         ticks: { 
-                            color: document.body.classList.contains('dark-mode') ? '#edf1ee' : '#374738',
-                            font: { weight: '600' }
+                            color: document.body.classList.contains('dark-mode') ? '#edf1ee' : '#1a241b',
+                            font: { weight: '700', size: 12 }
                         }
                     }
                 }

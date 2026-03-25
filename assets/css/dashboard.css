@@ -2493,6 +2493,121 @@ body.dark-mode .trend-chart-skeleton-container {
     box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
 }
 
+/* --- Date Input & Flatpickr Refactor --- */
+.date-input-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.date-input-wrapper .input-icon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    pointer-events: none;
+    width: 18px;
+    height: 18px;
+    transition: color 0.2s ease;
+    z-index: 5;
+}
+
+.date-input-wrapper:focus-within .input-icon {
+    color: var(--primary-green);
+}
+
+/* Hide default browser date picker bits */
+#goal-deadline::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
+/* Vertical alignment fix for date text */
+#goal-deadline.flatpickr-input {
+    display: flex;
+    align-items: center;
+    padding-top: 22px !important; /* Balance with the floating label */
+}
+
+/* Flatpickr Custom Theming */
+.flatpickr-calendar {
+    background: #fff;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border-radius: 16px;
+    font-family: 'Inter', system-ui, sans-serif;
+    padding: 8px;
+}
+
+.flatpickr-day.selected, .flatpickr-day.startRange, 
+.flatpickr-day.endRange, .flatpickr-day.selected.prevMonthDay, 
+.flatpickr-day.selected.nextMonthDay, .flatpickr-day.startRange.prevMonthDay, 
+.flatpickr-day.startRange.nextMonthDay, .flatpickr-day.endRange.prevMonthDay, 
+.flatpickr-day.endRange.nextMonthDay {
+    background: var(--primary-green);
+    border-color: var(--primary-green);
+}
+
+.flatpickr-day.selected:hover, .flatpickr-day.startRange:hover, 
+.flatpickr-day.endRange:hover, .flatpickr-day.selected.prevMonthDay:hover, 
+.flatpickr-day.selected.nextMonthDay:hover, .flatpickr-day.startRange.prevMonthDay:hover, 
+.flatpickr-day.startRange.nextMonthDay:hover, .flatpickr-day.endRange.prevMonthDay:hover, 
+.flatpickr-day.endRange.nextMonthDay:hover {
+    background: var(--dark-green);
+    border-color: var(--dark-green);
+}
+
+.flatpickr-day:hover {
+    background: rgba(89, 133, 57, 0.1);
+}
+
+.flatpickr-months .flatpickr-month {
+    color: var(--dark-green);
+    fill: var(--dark-green);
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+    font-weight: 700;
+}
+
+.flatpickr-weekday {
+    color: #888;
+    font-weight: 600;
+}
+
+/* Dark Mode Flatpickr */
+body.dark-mode .flatpickr-calendar {
+    background: #242926;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    color: #edf1ee;
+}
+
+body.dark-mode .flatpickr-day {
+    color: #edf1ee;
+}
+
+body.dark-mode .flatpickr-months .flatpickr-month,
+body.dark-mode .flatpickr-current-month .flatpickr-monthDropdown-months,
+body.dark-mode .flatpickr-current-month input.cur-year {
+    color: #edf1ee;
+    fill: #edf1ee;
+}
+
+body.dark-mode .flatpickr-day.flatpickr-disabled, 
+body.dark-mode .flatpickr-day.flatpickr-disabled:hover {
+    color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .flatpickr-day.prevMonthDay, 
+body.dark-mode .flatpickr-day.nextMonthDay {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+body.dark-mode .flatpickr-day:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
 /* --- Dark Mode Visibility Fixes --- */
 .income-summary-item {
     display: flex;

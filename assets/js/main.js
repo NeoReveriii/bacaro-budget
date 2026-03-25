@@ -68,21 +68,31 @@
 		function openForgotModal() { closeAllModals(); toggleAccountSidebar(false); toggleMainSidebar(false); document.getElementById('forgot-modal').classList.add('active'); }
 		function openAddWalletModal() { closeAllModals(); document.getElementById('add-wallet-modal').classList.add('active'); }
 		function openTransferModal() { closeAllModals(); document.getElementById('transfer-modal').classList.add('active'); }
+		let goalDatePicker = null;
+
 		function openAddGoalModal() { 
 			closeAllModals(); 
 			document.getElementById('add-goal-modal').classList.add('active');
 			
-			// Set deadline to tomorrow when modal opens
-			const deadlineInput = document.getElementById('goal-deadline');
-			if (deadlineInput) {
-				const tomorrow = new Date();
-				tomorrow.setDate(tomorrow.getDate() + 1);
-				const minDate = tomorrow.toISOString().split('T')[0];
-				deadlineInput.min = minDate;
-				deadlineInput.value = minDate;
-				
-				// Add real-time validation
-				deadlineInput.addEventListener('change', validateGoalDeadline);
+			// Initialize or reset Flatpickr
+			const tomorrow = new Date();
+			tomorrow.setDate(tomorrow.getDate() + 1);
+			const tomorrowStr = tomorrow.toISOString().split('T')[0];
+
+			if (!goalDatePicker) {
+				goalDatePicker = flatpickr("#goal-deadline", {
+					minDate: "today",
+					defaultDate: tomorrowStr,
+					dateFormat: "Y-m-d",
+					disableMobile: "true",
+					static: true,
+					onChange: function(selectedDates, dateStr, instance) {
+						validateGoalDeadline();
+					}
+				});
+			} else {
+				goalDatePicker.setDate(tomorrowStr);
+				goalDatePicker.set("minDate", "today");
 			}
 			
 			// Clear any previous error messages
@@ -1122,6 +1132,11 @@ window.handleDeleteGoal = async function(goalId, title) {
 			loadTransactions();
 			loadWallets();
 			loadGoals();
+
+			// Initialize Lucide Icons
+			if (typeof lucide !== 'undefined') {
+				lucide.createIcons();
+			}
 
 			// Handle URL Hash for Routing
 			const hash = window.location.hash.substring(1); // remove the '#'

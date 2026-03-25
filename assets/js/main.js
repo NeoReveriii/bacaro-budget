@@ -294,6 +294,12 @@
 		}
 
 		window.handleDeleteWallet = async function(walletId, name) {
+            const btn = event?.currentTarget;
+            if (btn) {
+                btn.disabled = true;
+                btn.style.opacity = '0.5';
+            }
+
 			showConfirm('Delete Wallet', `Are you sure you want to delete "${name}"? You can only delete wallets with no transaction history.`, async () => {
 				showCoinLoader('DELETING WALLET...');
 				try {
@@ -318,10 +324,19 @@
 					}
 				} catch (err) {
 					showToast(err.message, 'error');
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.style.opacity = '1';
+                    }
 				} finally {
 					hideCoinLoader();
 				}
-			});
+			}, () => {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                }
+            });
 		};
 
 		function renderWalletDropdowns() {
@@ -483,6 +498,12 @@
 				: (legacyHighContrast ? 120 : 100);
 			document.body.classList.toggle('dark-mode', darkMode);
 			document.body.style.setProperty('--bbm-contrast', `${contrast}%`);
+
+			// Re-render charts and lists to reflect theme changes
+			if (typeof originalTransactions !== 'undefined' && Array.isArray(originalTransactions)) {
+				if (typeof renderCashFlowChart === 'function') renderCashFlowChart(originalTransactions);
+				if (typeof renderDashboardChart === 'function') renderDashboardChart(originalTransactions);
+			}
 		}
 
 		function initializeSettingsPanel() {
@@ -656,7 +677,7 @@
 			}, 2200);
 		}
 
-		function showConfirm(title, message, onConfirm) {
+		function showConfirm(title, message, onConfirm, onCancel) {
 			document.getElementById('confirm-title').textContent = title;
 			document.getElementById('confirm-message').textContent = message;
 			const modal = document.getElementById('confirm-modal');
@@ -664,19 +685,29 @@
 			
 			const btnOk = document.getElementById('btn-confirm-ok');
 			const btnCancel = document.getElementById('btn-confirm-cancel');
+			const btnClose = modal.querySelector('.modal-close');
 			
 			const newOk = btnOk.cloneNode(true);
 			btnOk.parentNode.replaceChild(newOk, btnOk);
 			const newCancel = btnCancel.cloneNode(true);
 			btnCancel.parentNode.replaceChild(newCancel, btnCancel);
 			
+			const handleCancel = () => {
+				if (modal) modal.classList.remove('active');
+				if (typeof onCancel === 'function') onCancel();
+			};
+
 			newOk.addEventListener('click', () => {
 				if (modal) modal.classList.remove('active');
 				if (typeof onConfirm === 'function') onConfirm();
 			});
-			newCancel.addEventListener('click', () => {
-				if (modal) modal.classList.remove('active');
-			});
+
+			newCancel.addEventListener('click', handleCancel);
+			if (btnClose) {
+				const newClose = btnClose.cloneNode(true);
+				btnClose.parentNode.replaceChild(newClose, btnClose);
+				newClose.addEventListener('click', handleCancel);
+			}
 		}
 
 		window.handleDeleteTransaction = async function(id) {
@@ -696,7 +727,11 @@
                 const deletedTx = originalTransactions.find(t => t.trans_id === id);
                 
                 if (!deletedTx) {
-                    if (btn) btn.disabled = false;
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.style.opacity = '1';
+                        btn.style.cursor = 'pointer';
+                    }
                     return;
                 }
 
@@ -1813,7 +1848,14 @@ function renderDashboardChart(transactions) {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } }
+                    legend: { 
+                        position: 'bottom', 
+                        labels: { 
+                            boxWidth: 12, 
+                            font: { size: 11 },
+                            color: document.body.classList.contains('dark-mode') ? '#edf1ee' : '#1a241b'
+                        } 
+                    }
                 }
             }
         });

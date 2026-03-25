@@ -693,17 +693,15 @@
 		</div>
 
 		<div id="confirm-modal" class="modal-overlay">
-			<div class="modal-card" style="min-height: auto; padding: 30px; border-top: 4px solid #ff7675;">
-				<button class="modal-close" onclick="closeAllModals()">&times;</button>
-				<h2 id="confirm-title"
-					style="color: white; margin-bottom: 15px; font-family: 'Times New Roman', serif;">Confirm Action
-				</h2>
-				<p id="confirm-message" style="color: rgba(255,255,255,0.8); margin-bottom: 25px; line-height: 1.5;">Are
-					you sure you want to proceed?</p>
-				<div style="display: flex; gap: 10px;">
-					<button id="btn-confirm-cancel" class="btn btn-secondary-cancel" style="margin: 0;">Cancel</button>
-					<button id="btn-confirm-ok" class="btn btn-primary"
-						style="margin: 0; background-color: #ff7675;">Confirm</button>
+			<div class="modal-card confirm-modal-card">
+				<button class="modal-close">&times;</button>
+				<div class="confirm-modal-content">
+					<h2 id="confirm-title">Confirm Action</h2>
+					<p id="confirm-message">Are you sure you want to proceed?</p>
+					<div class="confirm-modal-actions">
+						<button id="btn-confirm-cancel" class="btn-ghost">Cancel</button>
+						<button id="btn-confirm-ok" class="btn-danger-confirm">Confirm</button>
+					</div>
 				</div>
 			</div>
 		</div>

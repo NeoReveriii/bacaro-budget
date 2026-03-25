@@ -249,7 +249,7 @@
 
         #main-dashboard, #main-transactions, #main-wallets, #main-wallet-details, #main-settings, #main-goals {
             flex-grow: 1; 
-            background-color: rgba(255, 255, 255, 0.85);
+            background-color: var(--main-content-bg);
             backdrop-filter: blur(15px);
             padding: 30px;
             overflow-y: auto; 
@@ -1068,7 +1068,7 @@ input[type=number] {
 			flex-grow: 1;
 			position: relative;
 			overflow: hidden; /* Individual views inside handle their own scroll */
-			background-color: rgba(255, 255, 255, 0.85);
+			background-color: var(--main-content-bg);
 			backdrop-filter: blur(15px);
 			display: flex;
 			flex-direction: column;
@@ -1088,7 +1088,7 @@ input[type=number] {
 			gap: 15px;
 			margin-bottom: 30px;
 			padding: 20px;
-			background: rgba(255, 255, 255, 0.4);
+			background: var(--wallet-actions-bg, rgba(255, 255, 255, 0.4));
 			backdrop-filter: blur(10px);
 			border-radius: 15px;
 			border: 1px solid rgba(255, 255, 255, 0.5);
@@ -1466,7 +1466,7 @@ input[type=number] {
 			align-items: center;
 			justify-content: center;
 			padding: 20px;
-			background: white;
+			background: var(--chart-skeleton-bg);
 			border-radius: 15px;
 			min-height: 250px;
 			border: 1px solid rgba(0,0,0,0.05);
@@ -1488,13 +1488,13 @@ input[type=number] {
 			content: "";
 			width: 70px;
 			height: 70px;
-			background: white;
+			background: var(--chart-skeleton-bg);
 			border-radius: 50%;
 			z-index: 2;
 		}
 
 		.income-summary-skeleton {
-			background: white;
+			background: var(--chart-skeleton-bg);
 			padding: 25px;
 			border-radius: 15px;
 			border: 1px solid rgba(0,0,0,0.05);
@@ -1884,8 +1884,11 @@ body.dark-mode {
     --expense-color: #ff7675; /* Soft coral red */
     --transfer-color: #5dade2; /* Sky blue */
     --card-bg: #1e1e1e;       /* Deep charcoal gray */
-    --skeleton-bg: #2a2a2a;
-    --skeleton-shimmer: rgba(255, 255, 255, 0.05);
+    --skeleton-bg: #2a2a2a;   /* Very dark gray base */
+    --skeleton-shimmer: #333333; /* Lighter gray pulse highlight */
+    --main-content-bg: rgba(18, 22, 20, 0.92);
+    --chart-skeleton-bg: #1e1e1e;
+    --wallet-actions-bg: rgba(255, 255, 255, 0.08);
 }
 
 body.dark-mode #main-sidebar {
@@ -1907,9 +1910,10 @@ body.dark-mode #main-dashboard,
 body.dark-mode #main-transactions,
 body.dark-mode #main-wallets,
 body.dark-mode #main-wallet-details,
+body.dark-mode #main-goals,
 body.dark-mode #main-settings {
-    background-color: rgba(18, 22, 20, 0.88);
-    color: #e6ece8;
+    background-color: var(--main-content-bg) !important;
+    color: #e6ece8 !important;
 }
 
 body.dark-mode .stat-card {
@@ -1930,9 +1934,7 @@ body.dark-mode .transfer-card:hover { border-color: var(--transfer-color); box-s
 body.dark-mode .wallet-card:hover { border-color: var(--primary-green); box-shadow: 0 8px 25px rgba(107, 166, 79, 0.3); }
 
 body.dark-mode .transaction-list,
-body.dark-mode .wallet-balance-card,
-body.dark-mode .income-summary-skeleton,
-body.dark-mode .chart-skeleton-container .doughnut-skeleton::before {
+body.dark-mode .wallet-balance-card {
     background: var(--card-bg);
 }
 
@@ -2315,4 +2317,38 @@ body.dark-mode .cash-flow-chart-container {
 body.dark-mode .goal-card {
     background: rgba(42, 48, 44, 0.95);
     border: 1px solid rgba(255, 255, 255, 0.08);
-}
+}
+
+body.dark-mode .wallet-actions-bar {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .goal-card h3,
+body.dark-mode .cash-flow-chart-container h3 {
+    color: #edf1ee !important;
+}
+
+
+body.dark-mode .goal-card .goal-deadline,
+body.dark-mode .goal-card .goal-target {
+    color: rgba(237, 241, 238, 0.7);
+}
+
+body.dark-mode .doughnut-skeleton::before {
+    background: #1e1e1e !important;
+}
+
+body.dark-mode .chart-skeleton-container,
+body.dark-mode .income-summary-skeleton,
+body.dark-mode .doughnut-skeleton::before {
+    background: var(--chart-skeleton-bg) !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+
+body.dark-mode .trend-chart-skeleton-container {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+

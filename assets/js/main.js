@@ -1786,7 +1786,7 @@ function renderCashFlowChart(transactions) {
                     }
                 ]
             },
-            options: {
+                options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 interaction: {
@@ -1794,16 +1794,44 @@ function renderCashFlowChart(transactions) {
                     intersect: false,
                 },
                 plugins: {
-                    legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 }, color: document.body.classList.contains('dark-mode') ? '#edf1ee' : '#666' } }
+                    legend: { 
+                        position: 'top', 
+                        labels: { 
+                            boxWidth: 12, 
+                            font: { size: 11, weight: 'bold' }, 
+                            color: document.body.classList.contains('dark-mode') ? '#edf1ee' : '#374738' 
+                        } 
+                    },
+                    tooltip: {
+                        backgroundColor: document.body.classList.contains('dark-mode') ? '#2a302c' : '#fff',
+                        titleColor: document.body.classList.contains('dark-mode') ? '#edf1ee' : '#374738',
+                        bodyColor: document.body.classList.contains('dark-mode') ? '#edf1ee' : '#374738',
+                        borderColor: document.body.classList.contains('dark-mode') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+                        borderWidth: 1,
+                        padding: 10,
+                        cornerRadius: 8,
+                        titleFont: { weight: 'bold' }
+                    }
                 },
                 scales: {
                     x: {
-                        grid: { display: false, color: document.body.classList.contains('dark-mode') ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' },
-                        ticks: { color: document.body.classList.contains('dark-mode') ? '#aaa' : '#888' }
+                        grid: { 
+                            display: false, 
+                            color: document.body.classList.contains('dark-mode') ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' 
+                        },
+                        ticks: { 
+                            color: document.body.classList.contains('dark-mode') ? '#edf1ee' : '#374738',
+                            font: { weight: '600' }
+                        }
                     },
                     y: {
-                        grid: { color: document.body.classList.contains('dark-mode') ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' },
-                        ticks: { color: document.body.classList.contains('dark-mode') ? '#aaa' : '#888' }
+                        grid: { 
+                            color: document.body.classList.contains('dark-mode') ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)' 
+                        },
+                        ticks: { 
+                            color: document.body.classList.contains('dark-mode') ? '#edf1ee' : '#374738',
+                            font: { weight: '600' }
+                        }
                     }
                 }
             }

@@ -2433,6 +2433,7 @@ body.dark-mode .trend-chart-skeleton-container {
 /* --- Compact & Theme-Aware Confirm Modal --- */
 .confirm-modal-card {
     max-width: 300px !important;
+    min-height: auto !important; /* Override legacy 500px min-height */
     padding: 24px 20px !important;
     text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;

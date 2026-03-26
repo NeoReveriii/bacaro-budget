@@ -1914,6 +1914,8 @@ input[type=number] {
     background-size: 14px;
     box-shadow: none;
     min-height: 38px;
+    width: 100% !important;
+    box-sizing: border-box !important;
 }
 
 .custom-select-trigger.settings-trigger:hover {

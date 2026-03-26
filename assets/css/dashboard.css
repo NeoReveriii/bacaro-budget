@@ -1874,6 +1874,84 @@ input[type=number] {
     color: white;
 }
 
+/* Settings Dropdown Refinements */
+.settings-select-wrapper {
+    position: relative;
+    min-width: 140px;
+}
+
+.custom-select-trigger.settings-trigger {
+    background-color: rgba(55, 71, 56, 0.05);
+    border: 1px solid rgba(55, 71, 56, 0.15);
+    color: var(--dark-green);
+    padding: 8px 32px 8px 14px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23374738' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    box-shadow: none;
+}
+
+.custom-select-trigger.settings-trigger:hover {
+    border-color: var(--primary-green);
+    background-color: rgba(55, 71, 56, 0.08);
+}
+
+/* Ensure selected text is visible in light mode */
+.custom-select-trigger.settings-trigger span {
+    color: var(--dark-green);
+    display: block;
+    line-height: normal;
+}
+
+/* Options list refinement for settings */
+.settings-select-wrapper .custom-select-options {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 100%;
+    min-width: 120px;
+    background: var(--white);
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    z-index: 100;
+    margin-top: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+}
+
+.settings-select-wrapper .custom-select-options.open {
+    display: block;
+}
+
+.settings-select-wrapper .custom-option {
+    padding: 10px 15px;
+    font-size: 0.9em;
+    font-weight: 500;
+    color: var(--dark-green);
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.settings-select-wrapper .custom-option:hover {
+    background: rgba(89, 133, 57, 0.1);
+    color: var(--primary-green);
+}
+
+.settings-select-wrapper .custom-option.selected {
+    background: var(--primary-green);
+    color: white;
+}
+
 .contrast-option {
     align-items: flex-start;
 }
@@ -2080,6 +2158,38 @@ body.dark-mode .btn-settings-action {
 
 body.dark-mode .btn-settings-action:hover {
     background: var(--primary-green);
+}
+
+/* Dark Mode Settings Dropdown */
+body.dark-mode .custom-select-trigger.settings-trigger {
+    background-color: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #edf1ee;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23edf1ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+
+body.dark-mode .custom-select-trigger.settings-trigger:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--primary-green);
+}
+
+body.dark-mode .custom-select-trigger.settings-trigger span {
+    color: #edf1ee;
+}
+
+body.dark-mode .settings-select-wrapper .custom-select-options {
+    background: #2a2a2a;
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+body.dark-mode .settings-select-wrapper .custom-option {
+    color: #edf1ee;
+}
+
+body.dark-mode .settings-select-wrapper .custom-option:hover {
+    background: rgba(168, 216, 110, 0.15);
+    color: #a8d86e;
 }
 
 body.dark-mode .progress-bar-container {

@@ -1835,7 +1835,7 @@ function hideCoinLoader() {
 
 // --- Custom Select Dropdowns ---
 function initializeCustomSelects() {
-	const selects = document.querySelectorAll('select.floating-input');
+	const selects = document.querySelectorAll('select.floating-input, select.settings-select');
 	selects.forEach(select => {
 		if (select.closest('.custom-select-wrapper')) return;
 
@@ -1847,16 +1847,20 @@ function initializeCustomSelects() {
 		select.parentNode.insertBefore(wrapper, select);
 		wrapper.appendChild(select);
 		select.style.display = 'none';
+		const isSettings = select.classList.contains('settings-select');
+		
 		const trigger = document.createElement('div');
-		trigger.className = 'custom-select-trigger floating-input';
+		trigger.className = isSettings ? 'custom-select-trigger settings-trigger' : 'custom-select-trigger floating-input';
 		
 		const textSpan = document.createElement('span');
 		if (select.value) {
 			const opt = select.options[select.selectedIndex];
 			textSpan.innerText = opt ? opt.text : '';
 			wrapper.classList.add('has-value');
-			const group = select.closest('.input-group');
-			if (group) group.classList.add('has-value');
+			if (!isSettings) {
+				const group = select.closest('.input-group');
+				if (group) group.classList.add('has-value');
+			}
 		} else {
 			textSpan.innerText = '';
 		}
@@ -1878,8 +1882,10 @@ function initializeCustomSelects() {
 				select.value = opt.value;
 				textSpan.innerText = opt.text;
 				wrapper.classList.add('has-value');
-				const group = select.closest('.input-group');
-				if (group) group.classList.add('has-value');
+				if (!isSettings) {
+					const group = select.closest('.input-group');
+					if (group) group.classList.add('has-value');
+				}
 				optionsList.classList.remove('open');
 				wrapper.classList.remove('open');
 				

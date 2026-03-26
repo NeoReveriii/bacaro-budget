@@ -580,6 +580,7 @@
 			darkModeToggle.addEventListener('change', () => {
 				localStorage.setItem('bbm_dark_mode', darkModeToggle.checked ? 'true' : 'false');
 				applyThemeSettings();
+				showSavedToast();
 			});
 
 			contrastToggle.addEventListener('click', () => {
@@ -592,8 +593,111 @@
 				contrastToggle.textContent = newIsHighContrast ? 'High Contrast' : 'Normal Contrast';
 				contrastToggle.dataset.highContrast = newIsHighContrast ? 'true' : 'false';
 				applyThemeSettings();
+				showSavedToast();
 			});
+
+			const languageSelect = document.getElementById('settings-language');
+			if (languageSelect) {
+				const savedLang = localStorage.getItem('bbm_language') || 'en';
+				languageSelect.value = savedLang;
+				languageSelect.addEventListener('change', () => {
+					localStorage.setItem('bbm_language', languageSelect.value);
+					showSavedToast();
+				});
+			}
+
+			const currencyToggle = document.getElementById('settings-currency-toggle');
+			if (currencyToggle) {
+				const currencyEnabled = localStorage.getItem('bbm_show_currency') !== 'false';
+				currencyToggle.checked = currencyEnabled;
+				currencyToggle.addEventListener('change', () => {
+					localStorage.setItem('bbm_show_currency', currencyToggle.checked ? 'true' : 'false');
+					showSavedToast();
+					// Refresh stats to reflect currency toggle
+					if (window.currentTransactions) {
+						updateDashboardStats(window.currentTransactions);
+					}
+				});
+			}
 		}
+
+		function showSavedToast() {
+			const existing = document.getElementById('saved-toast');
+			if (existing) existing.remove();
+
+			const toast = document.createElement('div');
+			toast.id = 'saved-toast';
+			toast.style.cssText = `
+				position: fixed;
+				bottom: 30px;
+				left: 50%;
+				transform: translateX(-50%) translateY(20px);
+				background: #598539;
+				color: white;
+				padding: 10px 25px;
+				border-radius: 30px;
+				font-weight: 600;
+				font-size: 0.9em;
+				box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+				z-index: 9999;
+				opacity: 0;
+				transition: all 0.3s ease;
+				display: flex;
+				align-items: center;
+				gap: 8px;
+			`;
+			toast.innerHTML = '<i data-lucide="check-circle" style="width: 16px; height: 16px;"></i> Saved';
+			document.body.appendChild(toast);
+			
+			if (typeof lucide !== 'undefined') lucide.createIcons();
+
+			// Animate in
+			requestAnimationFrame(() => {
+				toast.style.opacity = '1';
+				toast.style.transform = 'translateX(-50%) translateY(0)';
+			});
+
+			// Remove after 1 second
+			setTimeout(() => {
+				toast.style.opacity = '0';
+				toast.style.transform = 'translateX(-50%) translateY(-10px)';
+				setTimeout(() => toast.remove(), 300);
+			}, 1000);
+		}
+
+		window.handleExportData = function() {
+			if (!window.currentTransactions || window.currentTransactions.length === 0) {
+				showToast('No transactions to export', 'error');
+				return;
+			}
+
+			const headers = ['Date', 'Description', 'Type', 'Amount', 'Wallet'];
+			const csvRows = [headers.join(',')];
+
+			window.currentTransactions.forEach(t => {
+				const row = [
+					formatDate(t.dateoftrans || t.date),
+					`"${(t.description || '').replace(/"/g, '""')}"`,
+					t.type,
+					t.amount,
+					t.wallet_type || ''
+				];
+				csvRows.push(row.join(','));
+			});
+
+			const csvContent = csvRows.join('\n');
+			const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+			const url = URL.createObjectURL(blob);
+			const link = document.createElement('a');
+			link.setAttribute('href', url);
+			link.setAttribute('download', 'bacaro_budget_export.csv');
+			link.style.visibility = 'hidden';
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+			
+			showToast('Export successful!');
+		};
 
 		async function handleDeleteAccount() {
 			if (!isAuthenticated()) {
@@ -673,8 +777,10 @@
 
 		function formatCurrency(amount) {
 			const n = Number(amount);
-			if (!Number.isFinite(n)) return '₱ 0.00';
-			return `₱ ${n.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+			const showCurrency = localStorage.getItem('bbm_show_currency') !== 'false';
+			const symbol = showCurrency ? '₱ ' : '';
+			if (!Number.isFinite(n)) return `${symbol}0.00`;
+			return `${symbol}${n.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 		}
 
 		function formatDate(value) {
@@ -1192,6 +1298,19 @@ window.handleDeleteGoal = async function(goalId, title) {
 			const hash = window.location.hash.substring(1); // remove the '#'
 			if (hash && document.getElementById('view-' + hash)) {
 				showView(hash, document.querySelector(`.nav-item[onclick*="showView('${hash}'"]`));
+			}
+
+			// Add observer for settings icons
+			const viewSettings = document.getElementById('view-settings');
+			if (viewSettings) {
+				const observer = new MutationObserver((mutations) => {
+					mutations.forEach((mutation) => {
+						if (mutation.attributeName === 'style' && viewSettings.style.display === 'block') {
+							if (typeof lucide !== 'undefined') lucide.createIcons();
+						}
+					});
+				});
+				observer.observe(viewSettings, { attributes: true });
 			}
 
 			const addGoalForm = document.getElementById('add-goal-form');

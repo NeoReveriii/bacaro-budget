@@ -1722,71 +1722,156 @@ input[type=number] {
     }
 }
 
-/* Settings Page */
-.settings-page-overview {
-    margin-top: 0;
+/* Settings Page Refactor */
+#view-settings {
+    background-color: #f8f9f8;
 }
 
-.settings-page-header-card {
-    cursor: default;
+.settings-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px 10px;
 }
 
-.settings-page-header-card .stat-value {
+.settings-page-header {
+    margin-bottom: 35px;
+    text-align: center;
+}
+
+.settings-title {
+    font-family: 'Times New Roman', serif;
     font-size: 2.2em;
+    color: var(--dark-green);
+    margin-bottom: 8px;
 }
 
-.settings-page-header-card .stat-card .label {
+.settings-subtitle {
+    color: rgba(55, 71, 56, 0.72);
+    font-size: 1em;
+}
+
+.settings-section {
+    margin-bottom: 40px;
+}
+
+.settings-section-title {
     font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 700;
-    color: #4a5d4c;
-}
-.settings-page-header-card .stat-meta {
-    margin-top: 8px;
-    color: rgba(55, 71, 56, 0.7);
-    font-size: 0.95em;
+    font-weight: 800;
+    color: var(--primary-green);
+    letter-spacing: 1.5px;
+    margin-bottom: 15px;
+    padding-left: 5px;
 }
 
-.settings-page-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
+.settings-list-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    border: 1px solid rgba(0,0,0,0.08);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.settings-page-card {
-    min-height: auto;
-    cursor: default;
-}
-
-.settings-page-card:hover {
-    transform: none;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
-
-.settings-page-card.danger {
-    border: 1px solid rgba(255, 118, 117, 0.25);
-}
-
-.settings-option {
+.settings-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    padding: 18px 25px;
     gap: 20px;
-    padding: 18px 0;
-    border-bottom: none;
+    transition: background-color 0.2s ease;
 }
 
-.settings-option h3 {
-    margin: 0 0 4px;
+.settings-row:hover {
+    background-color: rgba(89, 133, 57, 0.03);
+}
+
+.settings-icon {
+    width: 40px;
+    height: 40px;
+    background-color: rgba(89, 133, 57, 0.1);
+    color: var(--primary-green);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.settings-icon i {
+    width: 20px;
+    height: 20px;
+}
+
+.settings-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.settings-row-title {
+    font-weight: 700;
+    font-size: 1.05em;
     color: var(--dark-green);
-    font-size: 1.02em;
+    margin-bottom: 2px;
 }
 
-.settings-option p {
-    margin: 0;
-    color: rgba(55, 71, 56, 0.72);
+.settings-row-desc {
+    font-size: 0.88em;
+    color: rgba(55, 71, 56, 0.7);
+}
+
+.settings-action {
+    flex-shrink: 0;
+}
+
+.settings-separator {
+    height: 1px;
+    background: rgba(0,0,0,0.05);
+    margin: 0 25px;
+}
+
+/* Danger Zone */
+.icon-danger {
+    background-color: rgba(255, 118, 117, 0.1);
+    color: #ff7675;
+}
+
+.title-danger {
+    color: #d63031;
+}
+
+.btn-ghost-danger {
+    background: transparent;
+    border: 1.5px solid #ff7675;
+    color: #ff7675;
+    padding: 8px 18px;
+    border-radius: 10px;
+    font-weight: 700;
     font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-ghost-danger:hover {
+    background: #ff7675;
+    color: white;
+    box-shadow: 0 4px 12px rgba(255, 118, 117, 0.3);
+}
+
+.btn-settings-action {
+    background: rgba(55, 71, 56, 0.05);
+    border: 1px solid rgba(55, 71, 56, 0.15);
+    color: var(--dark-green);
+    padding: 8px 18px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-settings-action:hover {
+    background: var(--dark-green);
+    color: white;
 }
 
 .contrast-option {
@@ -1954,17 +2039,47 @@ body.dark-mode .goal-card {
     box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
-body.dark-mode .goal-card h3 {
+body.dark-mode #view-settings {
+    background-color: #121614;
+}
+
+body.dark-mode .settings-title {
     color: #edf1ee;
 }
 
-body.dark-mode .goal-deadline,
-body.dark-mode .goal-target {
+body.dark-mode .settings-list-card {
+    background: var(--card-bg);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .settings-row:hover {
+    background-color: rgba(107, 166, 79, 0.08);
+}
+
+body.dark-mode .settings-separator {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .settings-row-title {
+    color: #edf1ee;
+}
+
+body.dark-mode .settings-row-desc {
     color: #abb2ad;
 }
 
-body.dark-mode .goal-current {
-    color: var(--income-color);
+body.dark-mode .settings-section-title {
+    color: #a8d86e;
+}
+
+body.dark-mode .btn-settings-action {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #edf1ee;
+}
+
+body.dark-mode .btn-settings-action:hover {
+    background: var(--primary-green);
 }
 
 body.dark-mode .progress-bar-container {
@@ -2040,9 +2155,8 @@ body.dark-mode .settings-option p {
     color: rgba(237, 241, 238, 0.72);
 }
 
-body.dark-mode .settings-option h3,
-body.dark-mode .contrast-control span {
-    color: #edf1ee;
+body.dark-mode .settings-subtitle {
+    color: rgba(237, 241, 238, 0.72);
 }
 
 /* Transaction Table Dark Mode Styling */

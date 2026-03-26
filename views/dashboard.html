@@ -412,47 +412,115 @@
 
 					<div id="view-settings" class="main-view" style="display: none;">
 						<main id="main-settings">
-							<div class="dashboard-overview settings-page-overview">
-								<div class="stat-card settings-page-header-card">
-									<div class="stat-label">Preferences</div>
-									<div class="stat-value">Settings</div>
-									<div class="stat-meta">Personalize how Bacaro Budget Manager looks and behaves.
+							<div class="settings-container">
+								<div class="settings-page-header">
+									<h2 class="settings-title">Preferences</h2>
+									<p class="settings-subtitle">Personalize how Bacaro Budget Manager looks and behaves.</p>
+								</div>
+
+								<!-- APPEARANCE SECTION -->
+								<div class="settings-section">
+									<h4 class="settings-section-title">APPEARANCE</h4>
+									<div class="settings-list-card">
+										<div class="settings-row">
+											<div class="settings-icon">
+												<i data-lucide="moon"></i>
+											</div>
+											<div class="settings-info">
+												<span class="settings-row-title">Dark Mode</span>
+												<span class="settings-row-desc">Switch between standard and low-light interface themes.</span>
+											</div>
+											<div class="settings-action">
+												<label class="toggle-switch">
+													<input type="checkbox" id="settings-dark-mode-toggle">
+													<span class="toggle-slider"></span>
+												</label>
+											</div>
+										</div>
+										<div class="settings-separator"></div>
+										<div class="settings-row">
+											<div class="settings-icon">
+												<i data-lucide="contrast"></i>
+											</div>
+											<div class="settings-info">
+												<span class="settings-row-title">Contrast Adjustment</span>
+												<span class="settings-row-desc">Toggle between normal and high contrast modes.</span>
+											</div>
+											<div class="settings-action">
+												<button type="button" id="settings-contrast-toggle" class="btn-contrast-toggle">Normal Contrast</button>
+											</div>
+										</div>
+										<div class="settings-separator"></div>
+										<div class="settings-row">
+											<div class="settings-icon">
+												<i data-lucide="languages"></i>
+											</div>
+											<div class="settings-info">
+												<span class="settings-row-title">Language</span>
+												<span class="settings-row-desc">Select your preferred display language.</span>
+											</div>
+											<div class="settings-action">
+												<div class="input-group" style="margin-bottom: 0; height: auto;">
+													<select id="settings-language" class="floating-input" style="height: 40px; padding: 0 12px;">
+														<option value="en" selected>English</option>
+														<option value="tl">Tagalog</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="settings-separator"></div>
+										<div class="settings-row">
+											<div class="settings-icon">
+												<i data-lucide="coins"></i>
+											</div>
+											<div class="settings-info">
+												<span class="settings-row-title">Currency Display</span>
+												<span class="settings-row-desc">Show or hide the Pesos symbol (₱) in amounts.</span>
+											</div>
+											<div class="settings-action">
+												<label class="toggle-switch">
+													<input type="checkbox" id="settings-currency-toggle" checked>
+													<span class="toggle-slider"></span>
+												</label>
+											</div>
+										</div>
 									</div>
 								</div>
 
-								<div class="settings-page-grid">
-									<div class="stat-card settings-page-card">
-										<div class="settings-option">
-											<div>
-												<h3>Dark Mode</h3>
-												<p>Switch between standard and low-light interface themes.</p>
+								<!-- DATA MANAGEMENT SECTION -->
+								<div class="settings-section">
+									<h4 class="settings-section-title">DATA MANAGEMENT</h4>
+									<div class="settings-list-card">
+										<div class="settings-row">
+											<div class="settings-icon">
+												<i data-lucide="download"></i>
 											</div>
-											<label class="toggle-switch">
-												<input type="checkbox" id="settings-dark-mode-toggle">
-												<span class="toggle-slider"></span>
-											</label>
+											<div class="settings-info">
+												<span class="settings-row-title">Export Data</span>
+												<span class="settings-row-desc">Download a CSV file containing all your transaction records.</span>
+											</div>
+											<div class="settings-action">
+												<button type="button" class="btn-settings-action" onclick="handleExportData()">Download CSV</button>
+											</div>
 										</div>
 									</div>
+								</div>
 
-									<div class="stat-card settings-page-card">
-										<div class="settings-option contrast-option">
-											<div>
-												<h3>Contrast Adjustment</h3>
-												<p>Toggle between normal and high contrast modes.</p>
+								<!-- DANGER ZONE SECTION -->
+								<div class="settings-section danger-zone">
+									<h4 class="settings-section-title">DANGER ZONE</h4>
+									<div class="settings-list-card">
+										<div class="settings-row">
+											<div class="settings-icon icon-danger">
+												<i data-lucide="user-x"></i>
 											</div>
-											<button type="button" id="settings-contrast-toggle"
-												class="btn-contrast-toggle">Normal Contrast</button>
-										</div>
-									</div>
-
-									<div class="stat-card settings-page-card danger">
-										<div class="settings-option delete-account-option">
-											<div>
-												<h3>Delete Account</h3>
-												<p>Permanently remove your account and budget data.</p>
+											<div class="settings-info">
+												<span class="settings-row-title title-danger">Delete Account</span>
+												<span class="settings-row-desc">Permanently remove your account and all associated budget data.</span>
 											</div>
-											<button type="button" class="btn btn-danger"
-												onclick="handleDeleteAccount()">Delete Account</button>
+											<div class="settings-action">
+												<button type="button" class="btn-ghost-danger" onclick="handleDeleteAccount()">Delete Account</button>
+											</div>
 										</div>
 									</div>
 								</div>

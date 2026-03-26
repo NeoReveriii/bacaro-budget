@@ -1768,7 +1768,8 @@ input[type=number] {
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.06);
     border: 1px solid rgba(0,0,0,0.08);
-    overflow: hidden;
+    /* overflow: visible to allow dropdowns to pop out */
+    overflow: visible;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -1778,6 +1779,18 @@ input[type=number] {
     padding: 18px 25px;
     gap: 20px;
     transition: background-color 0.2s ease;
+    border-radius: 0; /* Default no radius */
+}
+
+/* Ensure card corners stay rounded when rows are hovered */
+.settings-row:first-child {
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.settings-row:last-child {
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
 }
 
 .settings-row:hover {
@@ -1877,26 +1890,30 @@ input[type=number] {
 /* Settings Dropdown Refinements */
 .settings-select-wrapper {
     position: relative;
-    min-width: 140px;
+    width: fit-content;
+    min-width: 130px;
+    margin-left: auto; /* Push to right */
 }
 
 .custom-select-trigger.settings-trigger {
     background-color: rgba(55, 71, 56, 0.05);
     border: 1px solid rgba(55, 71, 56, 0.15);
     color: var(--dark-green);
-    padding: 8px 32px 8px 14px;
+    padding: 8px 34px 8px 14px;
     border-radius: 10px;
     font-weight: 600;
     font-size: 0.95em;
     cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     transition: all 0.2s ease;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23374738' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 16px;
+    background-position: right 12px center;
+    background-size: 14px;
     box-shadow: none;
+    min-height: 38px;
 }
 
 .custom-select-trigger.settings-trigger:hover {
@@ -1914,16 +1931,15 @@ input[type=number] {
 /* Options list refinement for settings */
 .settings-select-wrapper .custom-select-options {
     position: absolute;
-    top: 100%;
+    top: calc(100% + 5px);
     right: 0;
-    width: 100%;
-    min-width: 120px;
+    width: max-content;
+    min-width: 100%;
     background: var(--white);
     border: 1px solid rgba(0,0,0,0.1);
     border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    z-index: 100;
-    margin-top: 5px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    z-index: 999;
     max-height: 200px;
     overflow-y: auto;
     display: none;

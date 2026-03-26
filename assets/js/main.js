@@ -1173,7 +1173,14 @@
 			const isTransfer = type === 'transfer';
 			
 			const amountValue = Number(row.amount ?? 0);
-			const amountClass = isIncome ? 'income' : (isExpense ? 'expense' : (isTransfer ? 'transfer' : ''));
+			let amountClass = isIncome ? 'income' : (isExpense ? 'expense' : '');
+			if (isTransfer) {
+				const lowerDesc = (row.description || '').toLowerCase();
+				if (lowerDesc.includes('to ')) amountClass = 'expense';
+				else if (lowerDesc.includes('from ')) amountClass = 'income';
+				else amountClass = 'transfer';
+			}
+
 			const badgeClass = isIncome ? 'badge-income' : (isExpense ? 'badge-expense' : (isTransfer ? 'badge-transfer' : ''));
 			
 			const wallet = escapeHtml(row.wallet_type ?? row.wallet ?? '');
@@ -1528,6 +1535,7 @@ window.handleDeleteGoal = async function(goalId, title) {
 						if (!res2.ok) throw new Error('Failed to process transfer (Step 2)');
 
 						resetTransferForm();
+						hideCoinLoader();
 						closeAllModals();
 						showToast('Transfer completed successfully');
 						await loadTransactions();
@@ -1971,7 +1979,10 @@ function initializeCustomSelects() {
 function updateDashboardStats(transactions) {
     const income = transactions.filter(t => t.type === 'Income').reduce((sum, t) => sum + Number(t.amount), 0);
     const expense = transactions.filter(t => t.type === 'Expense').reduce((sum, t) => sum + Number(t.amount), 0);
-    const transfer = transactions.filter(t => t.type === 'Transfer').reduce((sum, t) => sum + Number(t.amount), 0);
+    const transfer = transactions
+        .filter(t => t.type === 'Transfer' && (t.description || '').toLowerCase().includes('to '))
+        .reduce((sum, t) => sum + Number(t.amount), 0);
+
 
     const incomeEl = document.querySelector('.income-card .stat-value');
     const expenseEl = document.querySelector('.expense-card .stat-value');

@@ -433,19 +433,53 @@
 			const statusBadge = document.getElementById('detail-wallet-status');
 			statusBadge.className = 'badge-status ' + (status === 'ACTIVE' ? 'status-active' : 'status-inactive');
 
-			// Filter transactions
-			const listEl = document.querySelector('#main-wallet-details .transaction-list');
-			const filtered = (window.currentTransactions || []).filter(t => t.wallet_type === name);
+			// Filter transactions for this specific wallet
+			const walletTransactions = (window.currentTransactions || []).filter(t => t.wallet_type === name);
 			
+			// Calculate Stats
+			const totalIncome = walletTransactions.filter(t => t.type === 'Income').reduce((sum, t) => sum + Number(t.amount), 0);
+			const totalExpense = walletTransactions.filter(t => t.type === 'Expense').reduce((sum, t) => sum + Number(t.amount), 0);
+			
+			// Transfers direction check
+			const transfersIn = walletTransactions.filter(t => t.type === 'Transfer' && (t.description || '').toLowerCase().includes('in from')).reduce((sum, t) => sum + Number(t.amount), 0);
+			const transfersOut = walletTransactions.filter(t => t.type === 'Transfer' && (t.description || '').toLowerCase().includes('out to')).reduce((sum, t) => sum + Number(t.amount), 0);
+			const netTransfers = transfersIn - transfersOut;
+
+			// Update Stats UI
+			const incEl = document.getElementById('wallet-total-income');
+			const expEl = document.getElementById('wallet-total-expense');
+			const trfEl = document.getElementById('wallet-total-transfers');
+			
+			if (incEl) incEl.innerHTML = formatCurrency(totalIncome);
+			if (expEl) expEl.innerHTML = formatCurrency(totalExpense);
+			if (trfEl) trfEl.innerHTML = formatCurrency(netTransfers);
+
+			// Insights
+			const insightsContent = document.getElementById('wallet-insights-content');
+			if (insightsContent) {
+				let insightText = '';
+				if (walletTransactions.length === 0) {
+					insightText = "No activity yet. Start by adding a transaction or transfer to see insights!";
+				} else {
+					const netChange = totalIncome - totalExpense + netTransfers;
+					const healthStatus = netChange >= 0 ? 'growing' : 'decreasing';
+					insightText = `This wallet's balance is currently <strong>${healthStatus}</strong>. `;
+					insightText += `You've recorded ${formatCurrency(totalIncome + transfersIn)} in total inflows and ${formatCurrency(totalExpense + transfersOut)} in total outflows.`;
+				}
+				insightsContent.innerHTML = `<p>${insightText}</p>`;
+			}
+
+			// Render Transaction List
+			const listEl = document.querySelector('#main-wallet-details .transaction-list');
 			// Handle delete button visibility in details
-			const walletObj = window.wallets.find(w => w.name === name);
+			const walletObj = (window.wallets || []).find(w => w.name === name);
 			const btnDel = document.getElementById('btn-delete-wallet-detail');
 			if (btnDel && walletObj) {
-				btnDel.style.display = (filtered.length === 0) ? 'inline-block' : 'none';
+				btnDel.style.display = (walletTransactions.length === 0) ? 'inline-block' : 'none';
 				btnDel.onclick = () => handleDeleteWallet(walletObj.wallet_id, name);
 			}
 
-			if (filtered.length === 0) {
+			if (walletTransactions.length === 0) {
 				listEl.innerHTML = `
 					<div class="transaction-row header-row">
 						<span>#</span><span>TITLE</span><span>AMOUNT</span><span>TYPE</span><span>DATE</span><span></span> 
@@ -457,9 +491,10 @@
 					<div class="transaction-row header-row">
 						<span>#</span><span>TITLE</span><span>AMOUNT</span><span>TYPE</span><span>DATE</span><span></span> 
 					</div>
-				` + filtered.map((row, idx) => renderTransactionItem(row, idx + 1)).join('');
+				` + walletTransactions.map((row, idx) => renderTransactionItem(row, idx + 1)).join('');
+				
+				if (typeof lucide !== 'undefined') lucide.createIcons();
 			}
-
 			showView('wallet-details', document.querySelector('[onclick*="wallets"]'));
 		}
 		
@@ -1176,8 +1211,8 @@
 			let amountClass = isIncome ? 'income' : (isExpense ? 'expense' : '');
 			if (isTransfer) {
 				const lowerDesc = (row.description || '').toLowerCase();
-				if (lowerDesc.includes('to ')) amountClass = 'expense';
-				else if (lowerDesc.includes('from ')) amountClass = 'income';
+				if (lowerDesc.includes('out to ')) amountClass = 'expense';
+				else if (lowerDesc.includes('in from ')) amountClass = 'income';
 				else amountClass = 'transfer';
 			}
 
@@ -1511,7 +1546,7 @@ window.handleDeleteGoal = async function(goalId, title) {
 							method: 'POST',
 							headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
 							body: JSON.stringify({ 
-                                description: `Transfer to ${document.querySelector('#transfer-to option[value="'+to+'"]').dataset.name}`, 
+                                description: `Transfer Out to ${document.querySelector('#transfer-to option[value="'+to+'"]').dataset.name}`, 
                                 type: 'Transfer', 
                                 wallet_type: document.querySelector('#transfer-from option[value="'+from+'"]').dataset.name, 
                                 wallet_id: from,
@@ -1525,7 +1560,7 @@ window.handleDeleteGoal = async function(goalId, title) {
 							method: 'POST',
 							headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
 							body: JSON.stringify({ 
-                                description: `Transfer from ${document.querySelector('#transfer-from option[value="'+from+'"]').dataset.name}`, 
+                                description: `Transfer In from ${document.querySelector('#transfer-from option[value="'+from+'"]').dataset.name}`, 
                                 type: 'Transfer', 
                                 wallet_type: document.querySelector('#transfer-to option[value="'+to+'"]').dataset.name, 
                                 wallet_id: to,
@@ -1980,7 +2015,7 @@ function updateDashboardStats(transactions) {
     const income = transactions.filter(t => t.type === 'Income').reduce((sum, t) => sum + Number(t.amount), 0);
     const expense = transactions.filter(t => t.type === 'Expense').reduce((sum, t) => sum + Number(t.amount), 0);
     const transfer = transactions
-        .filter(t => t.type === 'Transfer' && (t.description || '').toLowerCase().includes('to '))
+        .filter(t => t.type === 'Transfer' && (t.description || '').toLowerCase().includes('out to '))
         .reduce((sum, t) => sum + Number(t.amount), 0);
 
 

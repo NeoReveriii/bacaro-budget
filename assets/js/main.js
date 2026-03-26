@@ -613,10 +613,14 @@
 				currencyToggle.addEventListener('change', () => {
 					localStorage.setItem('bbm_show_currency', currencyToggle.checked ? 'true' : 'false');
 					showSavedToast();
-					// Refresh stats to reflect currency toggle
+					
+					// Refresh all UI components to reflect currency toggle
 					if (window.currentTransactions) {
 						updateDashboardStats(window.currentTransactions);
+						renderTransactions(window.currentTransactions);
 					}
+					if (typeof renderWallets === 'function') renderWallets();
+					if (typeof renderGoals === 'function') renderGoals();
 				});
 			}
 		}
@@ -1762,7 +1766,7 @@ window.handleDeleteGoal = async function(goalId, title) {
 								Authorization: `Bearer ${getToken()}`
 							},
 							body: JSON.stringify({
-								...(transId ? { id: transId } : {}),
+								...(transId ? { trans_id: transId } : {}),
 								description,
 								type,
 								wallet_type: walletType,

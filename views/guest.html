@@ -24,200 +24,26 @@
             </div>
 
             <nav class="header-right">
-                <a href="#" class="header-nav-link" onclick="showView('goals')">Goals</a>
-                
-                <div class="reports-dropdown-container">
-                    <button class="dropdown-button">Reports ▾</button>
-                    <div class="dropdown-content">
-						<a href="#">Daily</a>
-                        <a href="#">Weekly</a>
-                        <a href="#">Monthly</a>
-                        <a href="#">Annually</a>
-                    </div>
-                </div>
-
                 <button class="header-signin-btn" onclick="openLoginModal()">Sign In</button>
             </nav>
         </header>
 
         <div id="app-content">
-            <div class="main-app-card"> 
-                <aside id="main-sidebar">
-				<div class="sidebar-section quick-add-section">
-					<button class="btn-quick-add" onclick="handleNewTransactionClick()">
-						NEW TRANSACTION
-					</button>
-				</div>
-				<div class="sidebar-section">
-					<nav class="sidebar-nav">
-						<a href="#" class="nav-item active" onclick="showView('dashboard', this)">Dashboard</a>
-						<a href="#" class="nav-item" onclick="showView('transactions', this)">Transactions</a>
-						<a href="#" class="nav-item">Wallets</a>
-						<a href="#" class="nav-item">Kwarta AI</a>
-					</nav>
-				</div>
-				<div class="sidebar-section bottom-section">
-					<a href="#" class="nav-item" onclick="showView('settings', this)"><span class="nav-icon">⛯</span>Settings</a>
-				</div>
-                </aside>
-		
-		<div id="main-content-area" style="flex-grow: 1; position: relative; overflow-y: auto; background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(15px);">
-			<div id="view-dashboard" class="main-view">
-                <main id="main-dashboard">
-					<div class="dashboard-overview">
-						<div class="dashboard-filter-container">
-							<div class="range-dropdown">
-								<button class="range-dropbtn">ALL TIME <span class="arrow-icon">▾</span></button>
-								<div class="range-dropdown-content">
-									<a href="#" onclick="updateRange('TODAY')">TODAY</a>
-									<a href="#" onclick="updateRange('THIS WEEK')">THIS WEEK</a>
-									<a href="#" onclick="updateRange('THIS MONTH')">THIS MONTH</a>
-									<a href="#" onclick="updateRange('THIS YEAR')">THIS YEAR</a>
-									<a href="#" onclick="updateRange('ALL TIME')">ALL TIME</a>
-								</div>
-							</div>
-							
-							<div class="range-dropdown" style="margin-left: 10px;">
-								<button class="range-dropbtn">ALL WALLETS <span class="arrow-icon">▾</span></button>
-								<div class="range-dropdown-content">
-									<a href="#">ALL WALLETS</a>
-									</div>
-							</div>
-						</div>
-						
-						</div>
-					
-						<div class="stat-card wallet-card">
-							<div class="stat-label">Your Balance</div>
-							<div class="stat-value">₱ 0.00</div>
-							<div class="stat-meta">Active Wallet</div>
-						</div>
-
-						<div class="stat-grid">
-							<div class="stat-card income-card">
-								<div class="stat-label">Income</div>
-								<div class="stat-value">₱ 0.00</div>
-							</div>
-							<div class="stat-card expense-card">
-								<div class="stat-label">Expense</div>
-								<div class="stat-value">₱ 0.00</div>
-							</div>
-							<div class="stat-card transfer-card">
-								<div class="stat-label">Transfer</div>
-								<div class="stat-value">₱ 0.00</div>
-							</div>
-						</div>
-					</div>
-				</main>
-			</div>
-		
-			<div id="view-transactions" class="main-view" style="display: none;">			
-				<main id="main-transactions">
-				<section id="transactions-view">
-					<div class="view-header">
-						<div class="view-actions">
-							</div>
-					</div>
-
-					<div class="transaction-list">
-						<div class="transaction-row header-row">
-							<span>#</span>
-							<span>TITLE</span>
-							<span>AMOUNT</span>
-							<span>TYPE</span>
-							<span>DATE</span>
-							<span>WALLET</span>
-							<span></span> </div>
-
-						<div class="transaction-item">
-							<div class="transaction-row" onclick="this.parentElement.classList.toggle('expanded')">
-								<span class="rec-number">1</span>
-								<span class="rec-title">Starbucks Coffee</span>
-								<span class="rec-stats expense">- ₱ 180.00</span>
-								<span class="rec-type"><span class="badge badge-expense">Expense</span></span>
-								<span class="rec-date">Oct 24, 2023</span>
-								<span class="rec-wallet">GCash</span>
-								<span class="rec-actions">
-									<button class="icon-btn edit-btn">✎</button>
-									<button class="icon-btn delete-btn">🗑</button>
-									<span class="expand-arrow">▼</span>
-								</span>
-							</div>
-							<div class="transaction-details">
-								<p><strong>Note:</strong> Afternoon break with the team. Used GCash wallet.</p>
-							</div>
-						</div>
-
-						<div class="transaction-item">
-							<div class="transaction-row" onclick="this.parentElement.classList.toggle('expanded')">
-								<span class="rec-number">2</span>
-								<span class="rec-title">Freelance Project</span>
-								<span class="rec-stats income">+ ₱ 15,000.00</span>
-								<span class="rec-type"><span class="badge badge-income">Income</span></span>
-								<span class="rec-date">Oct 22, 2023</span>
-								<span class="rec-wallet">BDO Bank</span>
-								<span class="rec-actions">
-									<button class="icon-btn edit-btn">✎</button>
-									<button class="icon-btn delete-btn">🗑</button>
-									<span class="expand-arrow">▼</span>
-								</span>
-							</div>
-							<div class="transaction-details">
-								<p><strong>Note:</strong> Website redesign for local client. Deposited to BDO.</p>
-							</div>
-						</div>
-					</div>
-				</section>
-				</main>
+            <div class="main-app-card guest-hero-card"> 
+                <div class="guest-hero-content">
+                    <div class="guest-hero-icon">
+                        <img src="/assets/images/bb_favicon.png" alt="Logo" style="width: 80px; height: 80px; opacity: 0.9;">
+                    </div>
+                    <h1>Take Control of Your Budget</h1>
+                    <p>Join Bacaro Budget Manager to track your expenses, set savings goals, and get AI-powered financial insights.</p>
+                    <div class="guest-hero-actions">
+                        <button class="btn btn-primary btn-lg" onclick="openLoginModal()">Get Started</button>
+                        <button class="btn btn-secondary-outline btn-lg" onclick="openSignupModal()">Create Account</button>
+                    </div>
+                </div>
             </div>
+        </div>
 
-			<div id="view-settings" class="main-view" style="display: none;">
-				<main id="main-settings">
-					<div class="dashboard-overview settings-page-overview">
-						<div class="stat-card settings-page-header-card">
-							<div class="stat-label">Preferences</div>
-							<div class="stat-value">Settings</div>
-							<div class="stat-meta">Personalize how Bacaro Budget Manager looks and behaves.</div>
-						</div>
-
-						<div class="settings-page-grid">
-							<div class="stat-card settings-page-card">
-								<div class="settings-option">
-									<div>
-										<h3>Dark Mode</h3>
-										<p>Switch between standard and low-light interface themes.</p>
-									</div>
-									<label class="toggle-switch">
-										<input type="checkbox" id="settings-dark-mode-toggle">
-										<span class="toggle-slider"></span>
-									</label>
-								</div>
-							</div>
-
-							<div class="stat-card settings-page-card">
-								<div class="settings-option contrast-option">
-									<div>
-										<h3>Contrast Adjustment</h3>
-									<p>Toggle between normal and high contrast modes.</p>
-								</div>
-								<button type="button" id="settings-contrast-toggle" class="btn-contrast-toggle">Normal Contrast</button>
-								</div>
-							</div>
-
-							<div class="stat-card settings-page-card danger">
-								<div class="settings-option delete-account-option">
-									<div>
-										<h3>Delete Account</h3>
-										<p>Permanently remove your account and budget data.</p>
-									</div>
-									<button type="button" class="btn btn-danger" onclick="handleDeleteAccount()">Delete Account</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</main>
-			</div>
-		</div>
 			
 		</div>
     </div>		

@@ -1932,6 +1932,7 @@ input[type=number] {
 .settings-select-wrapper .custom-select-options {
     position: absolute;
     top: calc(100% + 5px);
+    left: auto;
     right: 0;
     width: max-content;
     min-width: 100%;

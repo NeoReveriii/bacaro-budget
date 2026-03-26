@@ -1890,8 +1890,8 @@ input[type=number] {
 /* Settings Dropdown Refinements */
 .settings-select-wrapper {
     position: relative;
-    width: fit-content;
-    min-width: 130px;
+    width: 140px;
+    min-width: 140px;
     margin-left: auto; /* Push to right */
 }
 
@@ -1932,10 +1932,12 @@ input[type=number] {
 .settings-select-wrapper .custom-select-options {
     position: absolute;
     top: calc(100% + 5px);
-    left: 0;
-    right: 0;
-    width: 100%;
-    min-width: 100%;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
     background: var(--white);
     border: 1px solid rgba(0,0,0,0.1);
     border-radius: 10px;

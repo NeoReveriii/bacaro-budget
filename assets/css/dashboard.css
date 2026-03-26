@@ -1890,8 +1890,8 @@ input[type=number] {
 /* Settings Dropdown Refinements */
 .settings-select-wrapper {
     position: relative;
-    width: 140px;
-    min-width: 140px;
+    width: 200px !important;
+    min-width: 200px !important;
     margin-left: auto; /* Push to right */
 }
 

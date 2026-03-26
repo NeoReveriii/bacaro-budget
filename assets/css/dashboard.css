@@ -1945,7 +1945,7 @@ input[type=number] {
     display: none;
 }
 
-.settings-select-wrapper .custom-select-options.open {
+.settings-select-wrapper .custom-select-wrapper.open .custom-select-options {
     display: block;
 }
 

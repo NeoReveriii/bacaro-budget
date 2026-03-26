@@ -1011,6 +1011,13 @@ input[type=number] {
 			border-color: rgba(89, 133, 57, 0.3);
 		}
 
+		.icon-btn i {
+			width: 18px;
+			height: 18px;
+			vertical-align: middle;
+			stroke-width: 2px;
+		}
+
 		.edit-btn:hover { color: var(--primary-green); }
 		.delete-btn:hover { color: #ff7675; }
 
@@ -1039,7 +1046,15 @@ input[type=number] {
 			font-size: 0.7em;
 			color: #bbb;
 			transition: transform 0.3s ease;
-			display: inline-block;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+		}
+		
+		.expand-arrow i {
+			width: 16px;
+			height: 16px;
+			stroke-width: 2.5px;
 		}
 
 		.main-view {
@@ -2114,6 +2129,15 @@ body.dark-mode .icon-btn:hover {
     background-color: rgba(107, 166, 79, 0.2);
     color: #6ba64f;
     border-color: rgba(107, 166, 79, 0.5);
+}
+
+body.dark-mode .icon-btn i {
+    color: #999;
+    stroke-width: 2px;
+}
+
+body.dark-mode .icon-btn:hover i {
+    color: #6ba64f;
 }
 
 body.dark-mode .edit-btn:hover {

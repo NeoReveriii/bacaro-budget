@@ -35,6 +35,16 @@
 .chat-header h3 { font-size: 1.2em; margin: 0; }
 .chat-header p { font-size: 0.8em; margin: 2px 0 0; opacity: 0.7; }
 
+#btn-clear-chat:hover {
+    background: rgba(255,255,255,0.2) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+#btn-clear-chat i {
+    stroke-width: 2px;
+}
+
 .chat-messages {
     flex: 1; /* Takes all available middle space */
     overflow-y: auto; /* This part scrolls */
@@ -111,6 +121,21 @@
     border-radius: 50%;
     cursor: pointer;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.btn-send:hover {
+    background-color: var(--primary-green);
+    transform: scale(1.05);
+}
+
+.btn-send i {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2.5px;
 }
 
 /* Chat Bubbles */

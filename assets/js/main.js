@@ -844,6 +844,11 @@
                                 <span>#</span><span>TITLE</span><span>AMOUNT</span><span>TYPE</span><span>DATE</span><span></span> 
                             </div>
                         ` + filtered.map((row, idx) => renderTransactionItem(row, idx + 1)).join('');
+                        
+                        // Re-initialize icons for the new elements
+                        if (typeof lucide !== 'undefined') {
+                            lucide.createIcons();
+                        }
                     }
                 }
                 
@@ -1033,6 +1038,11 @@
 			listEl.innerHTML = rows
 				.map((row, idx) => renderTransactionItem(row, idx + 1))
 				.join('');
+
+			// Re-initialize icons for the new elements
+			if (typeof lucide !== 'undefined') {
+				lucide.createIcons();
+			}
 		}
 
 		function renderTransactionItem(row, recNumber) {
@@ -1059,9 +1069,9 @@
 						<span class="rec-date">${escapeHtml(date)}</span>
 						<span class="rec-wallet">${wallet}</span>
 						<span class="rec-actions">
-							<button class="icon-btn edit-btn" type="button" onclick="handleEditTransaction(${row.trans_id})">✎</button>
-							<button class="icon-btn delete-btn" type="button" onclick="handleDeleteTransaction(${row.trans_id})">🗑</button>
-							<span class="expand-arrow">▼</span>
+							<button class="icon-btn edit-btn" type="button" onclick="handleEditTransaction(${row.trans_id})" title="Edit Transaction"><i data-lucide="pencil"></i></button>
+							<button class="icon-btn delete-btn" type="button" onclick="handleDeleteTransaction(${row.trans_id})" title="Delete Transaction"><i data-lucide="trash-2"></i></button>
+							<span class="expand-arrow"><i data-lucide="chevron-down"></i></span>
 						</span>
 					</div>
 					<div class="transaction-details">

@@ -18,6 +18,11 @@ async function loadAIComponent() {
         aiContainer.innerHTML = html;
         console.log("Kwarta AI: Component HTML Loaded");
         
+        // Initialize icons for the newly loaded component
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+        
         initAIListeners();
         loadChatHistory();
         
@@ -294,7 +299,10 @@ async function handleSendMessage() {
         bubble.innerHTML = 'Network error. Please try again.';
     } finally {
         sendBtn.disabled = false;
-        sendBtn.innerHTML = '➤';
+        sendBtn.innerHTML = '<i data-lucide="send"></i>';
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
     }
 }
 

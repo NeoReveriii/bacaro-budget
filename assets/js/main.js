@@ -51,12 +51,14 @@
 			}
 		}
 		
-		function closeAllModals() {
+		function closeAllModals(options = { resetForms: true }) {
 			document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
-			resetAddWalletForm();
-			resetTransferForm();
-			resetTransactionForm();
-			resetGoalForm();
+			if (options.resetForms !== false) {
+				resetAddWalletForm();
+				resetTransferForm();
+				resetTransactionForm();
+				resetGoalForm();
+			}
 		}
 		
 		function openLoginModal() { 
@@ -753,7 +755,7 @@
 		}
 
 		function openTransactionModal(isEdit = false) {
-			closeAllModals();
+			closeAllModals({ resetForms: !isEdit });
 			const modal = document.getElementById('transaction-modal');
 			const header = modal ? modal.querySelector('.login-header') : null;
 			if (header) {
@@ -1025,6 +1027,14 @@
 			}
 			walletTypeSelect.dispatchEvent(new Event('change'));
 			document.getElementById('trans-amount').value = row.amount;
+			
+			// Manually add has-value to all input groups to float labels
+			['trans-description', 'trans-amount', 'trans-wallet-other'].forEach(id => {
+				const el = document.getElementById(id);
+				if (el && el.value) {
+					el.closest('.input-group')?.classList.add('has-value');
+				}
+			});
 
 			openTransactionModal(true);
 		};

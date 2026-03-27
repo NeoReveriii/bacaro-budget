@@ -714,9 +714,44 @@
 		.typing-dot:nth-child(2) { animation-delay: 0.2s; }
 		.typing-dot:nth-child(3) { animation-delay: 0.4s; }
 
-		@keyframes typing-bounce {
-			0%, 80%, 100% { transform: scale(0); opacity: 0.4; }
-			40% { transform: scale(1); opacity: 1; }
+		/* Financial Badges */
+		.badge-pill {
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			padding: 4px 12px;
+			border-radius: 20px;
+			font-size: 0.75em;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+		}
+
+		.badge-starter {
+			background: rgba(162, 155, 254, 0.15);
+			color: #a29bfe;
+			border: 1px solid rgba(162, 155, 254, 0.3);
+		}
+
+		.badge-saver {
+			background: rgba(116, 185, 255, 0.15);
+			color: #74b9ff;
+			border: 1px solid rgba(116, 185, 255, 0.3);
+		}
+
+		.badge-master {
+			background: rgba(85, 239, 196, 0.15);
+			color: #55efc4;
+			border: 1px solid rgba(85, 239, 196, 0.3);
+		}
+
+		.badge-pill i {
+			font-size: 1.1em;
+		}
+
+		.wallet-summary-line {
+			color: rgba(255, 255, 255, 0.6);
+			padding-left: 5px;
 		}
 
 		.error-msg {

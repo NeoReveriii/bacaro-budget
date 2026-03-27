@@ -311,6 +311,7 @@
 		}
 
 		function renderWallets() {
+			if (typeof updateSidebarStats === 'function') updateSidebarStats();
 			// Shimmer Fix: Always update total balance card first, even if no wallets
 			const totalBalance = (window.wallets || []).reduce((sum, w) => sum + Number(w.calculated_balance || 0), 0);
 			const totalEl = document.querySelector('.wallet-card .stat-value');
@@ -614,6 +615,9 @@
 			const createdEl = document.getElementById('profile-createdat') || document.getElementById('profile-createdAt');
 			if (createdEl) createdEl.textContent = formattedDate;
 
+			// Update Financial Badge and Wallet Count
+			updateSidebarStats();
+			
 			// Sync edit inputs
 			const editNickname = document.getElementById('edit-nickname');
 			const editPhone = document.getElementById('edit-phone');
@@ -630,6 +634,32 @@
 					if (group) group.classList.add('has-value');
 				}
 			});
+		}
+
+		function updateSidebarStats() {
+			const badgeContainer = document.getElementById('financial-badge-container');
+			const walletCountEl = document.getElementById('active-wallet-count');
+			if (!badgeContainer || !walletCountEl) return;
+
+			// Get Wallet Count
+			const wallets = window.wallets || [];
+			walletCountEl.textContent = wallets.length;
+
+			// Get Goals Total
+			const goals = window.goals || [];
+			const totalGoals = goals.reduce((sum, g) => sum + Number(g.target_amount || 0), 0);
+
+			let badgeHtml = '';
+			if (totalGoals >= 20000) {
+				badgeHtml = `<div class="badge-pill badge-master"><i data-lucide="crown"></i> Master Budgeter</div>`;
+			} else if (totalGoals >= 5000) {
+				badgeHtml = `<div class="badge-pill badge-saver"><i data-lucide="coins"></i> Saver</div>`;
+			} else {
+				badgeHtml = `<div class="badge-pill badge-starter"><i data-lucide="leaf"></i> Starter</div>`;
+			}
+
+			badgeContainer.innerHTML = badgeHtml;
+			if (typeof lucide !== 'undefined') lucide.createIcons();
 		}
 
 		window.toggleEditMode = function(state) {
@@ -1518,6 +1548,7 @@ async function loadGoals() {
 }
 
 function renderGoals() {
+    if (typeof updateSidebarStats === 'function') updateSidebarStats();
     const container = document.getElementById('goal-grid-container');
     if (!container) return;
 

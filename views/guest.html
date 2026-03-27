@@ -94,7 +94,7 @@
                     <button type="submit" class="btn btn-primary">LOG IN</button>
                     
                     <div class="forgot-password">
-                        <a href="/forgot-password" target="_blank">Forgot Password?</a>
+                        <a href="javascript:void(0)" onclick="openForgotModal()">Forgot Password?</a>
                     </div>
 
                     <div class="secondary-action-container">
@@ -163,10 +163,14 @@
         <div class="modal-card">
             <button class="modal-close" onclick="closeAllModals()">&times;</button>
             <div class="modal-form-container">
-                <h2 class="header">🥀✌</h2>
-                <p style="text-align: center; color: var(--text-light); margin-bottom: 20px;">Enter your EMAIL or PHONE to receive a reset link.</p>
-                <form>
-                    <div class="input-group"><input type="email" class="floating-input" placeholder=" " required></div>
+                <h2 class="header">Forgot Password</h2>
+                <p style="text-align: center; color: var(--text-light); margin-bottom: 20px;">Enter your email to receive a password reset link.</p>
+                <form id="forgot-form">
+                    <div class="input-group">
+                        <input type="email" class="floating-input" id="forgot-email" placeholder=" " required>
+                        <label class="floating-label">Email Address</label>
+                    </div>
+                    <div id="forgot-message" class="message"></div>
                     <button type="submit" class="btn btn-primary">Send Reset Link</button>
                     <div class="login-link"><a href="javascript:void(0)" onclick="openLoginModal()">Back to Log In</a></div>
                 </form>

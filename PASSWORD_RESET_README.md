@@ -6,7 +6,7 @@ This implementation provides a secure password reset system with email verificat
 
 ## 📋 Features Implemented
 
-✅ **Forgot Password Page** - Form to request password reset
+✅ **Forgot Password Popup Modal** - In-app form to request password reset
 ✅ **Email Sending** - Professional HTML emails via Gmail SMTP
 ✅ **Reset Password Page** - Secure token-based password reset
 ✅ **Security Features** - Token expiration, rate limiting, bcrypt hashing
@@ -45,14 +45,13 @@ FRONTEND_URL=https://yourdomain.com
 
 The system automatically creates the required tables when first used. The schema includes:
 
-- `password_resets` table for storing reset tokens
-- Additional columns in `accounts` table for security tracking
+- `PasswordResetTokens` table for storing hashed reset tokens and expiration
 
 ### 5. Test the System
 
 1. **Deploy to Vercel** or run locally
-2. **Visit** `/forgot-password.html`
-3. **Enter an email** and check for the reset email
+2. **Open** the Sign In modal from `/` (or `/dashboard`) and click **Forgot Password**
+3. **Enter an email** in the popup and check for the reset email
 4. **Click the reset link** and set a new password
 
 ## 🔒 Security Features
@@ -67,27 +66,15 @@ The system automatically creates the required tables when first used. The schema
 
 ## 📁 File Structure
 
-```
+```text
 api/
-├── password-reset.js      # Main API handler
-├── email-service.js       # Gmail SMTP service
-├── schema.js             # Database schema management
-└── migrate-passwords.js  # Migration script
+├── reset.js              # Main API handler
+├── mailer.js             # Gmail SMTP service
+└── schema.js             # Database schema management
 
 views/
-├── forgot-password.html   # Forgot password form
 └── reset-password.html    # Reset password form
 ```
-
-## 🔄 Migration (Optional)
-
-To upgrade existing SHA256 passwords to bcrypt:
-
-```bash
-node api/migrate-passwords.js
-```
-
-This will automatically detect and migrate SHA256 hashes to bcrypt.
 
 ## 🧪 Testing Checklist
 
@@ -111,16 +98,19 @@ This will automatically detect and migrate SHA256 hashes to bcrypt.
 ## 🐛 Troubleshooting
 
 **Email not sending?**
+
 - Check Gmail App Password is correct
 - Verify 2FA is enabled
 - Check Vercel environment variables
 
 **Database errors?**
+
 - Ensure DATABASE_URL is correct
 - Check Neon database permissions
 - Run schema creation manually if needed
 
 **Token validation fails?**
+
 - Check FRONTEND_URL matches your domain
 - Verify token hasn't expired
 - Check database connection
@@ -128,6 +118,7 @@ This will automatically detect and migrate SHA256 hashes to bcrypt.
 ## 📧 Email Template
 
 The system sends professional HTML emails with:
+
 - Company branding
 - Clear call-to-action button
 - Security warnings

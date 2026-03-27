@@ -2001,6 +2001,69 @@ window.handleDeleteGoal = async function(goalId, title) {
 				});
 			}
 
+			const forgotForm = document.getElementById('forgot-form');
+			if (forgotForm) {
+				forgotForm.addEventListener('submit', async function(e) {
+					e.preventDefault();
+
+					const email = document.getElementById('forgot-email')?.value?.trim();
+					const messageDiv = document.getElementById('forgot-message');
+					const submitBtn = forgotForm.querySelector('button[type="submit"]');
+					const originalText = submitBtn ? submitBtn.textContent : 'Send Reset Link';
+
+					if (messageDiv) {
+						messageDiv.innerHTML = '';
+						messageDiv.className = 'message';
+					}
+
+					if (!email) {
+						if (messageDiv) {
+							messageDiv.innerHTML = 'Email is required';
+							messageDiv.className = 'message error';
+						}
+						return;
+					}
+
+					if (submitBtn) {
+						submitBtn.disabled = true;
+						submitBtn.textContent = 'Sending...';
+					}
+
+					try {
+						const response = await fetch('/api/reset?action=forgot', {
+							method: 'POST',
+							headers: { 'Content-Type': 'application/json' },
+							body: JSON.stringify({ email })
+						});
+
+						const payload = await readResponsePayload(response);
+						const message = payload?.json?.message || payload?.json?.error || getErrorMessage(payload, 'Unable to send reset link');
+
+						if (!response.ok) {
+							throw new Error(message);
+						}
+
+						if (messageDiv) {
+							messageDiv.innerHTML = message;
+							messageDiv.className = 'message success';
+						}
+
+						forgotForm.reset();
+					} catch (error) {
+						if (messageDiv) {
+							messageDiv.innerHTML = error.message || 'Unable to send reset link';
+							messageDiv.className = 'message error';
+						}
+						console.error('Forgot password error:', error);
+					} finally {
+						if (submitBtn) {
+							submitBtn.disabled = false;
+							submitBtn.textContent = originalText;
+						}
+					}
+				});
+			}
+
 			const transactionForm = document.getElementById('transaction-form');
 			if (transactionForm) {
 				const walletTypeSelect = document.getElementById('trans-wallet-type');

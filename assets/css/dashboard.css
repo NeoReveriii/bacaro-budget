@@ -2580,6 +2580,18 @@ body.dark-mode .wallet-stat-card {
     justify-content: center;
 }
 
+.guest-hero-actions .btn-secondary-outline {
+    color: #000;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 2px solid var(--primary-green);
+}
+
+.guest-hero-actions .btn-secondary-outline:hover {
+    background-color: var(--primary-green);
+    color: var(--white);
+    border-color: var(--primary-green);
+}
+
 .btn-lg {
     padding: 15px 35px;
     font-size: 1em;

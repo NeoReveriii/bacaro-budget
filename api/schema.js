@@ -40,7 +40,16 @@ export async function ensureAccountsSchema() {
     await sql`
       ALTER TABLE accounts ADD COLUMN last_password_reset_at TIMESTAMPTZ,
       ADD COLUMN password_reset_attempts INT DEFAULT 0,
-      ADD COLUMN password_reset_locked_until TIMESTAMPTZ
+      ADD COLUMN password_reset_locked_until TIMESTAMPTZ,
+      ADD COLUMN bio TEXT,
+      ADD COLUMN avatar_seed TEXT,
+      ADD COLUMN avatar_url TEXT
     `;
+  } else {
+    // Check for the other new columns individually in case some exist but not others
+    const bioCheck = await sql`SELECT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'accounts' AND column_name = 'bio') AS exists`;
+    if (!bioCheck[0].exists) {
+      await sql`ALTER TABLE accounts ADD COLUMN bio TEXT, ADD COLUMN avatar_seed TEXT, ADD COLUMN avatar_url TEXT`;
+    }
   }
 }

@@ -561,21 +561,251 @@
 			const userData = getUserData();
 			if (!userData) return;
 
-			const initials = userData.username.substring(0, 2).toUpperCase();
-			document.getElementById('profile-initials').textContent = initials;
+			// Handle Avatar Display
+			const pfpEl = document.getElementById('profile-initials');
+			const headerPfpEl = document.getElementById('header-pfp');
 			const headerInitials = document.getElementById('header-initials');
+			
+			const initials = (userData.username || '??').substring(0, 2).toUpperCase();
 			if (headerInitials) headerInitials.textContent = initials;
+
+			function updateAvatarElement(el, data) {
+				if (!el) return;
+				el.innerHTML = '';
+				if (data.avatar_url) {
+					el.style.backgroundImage = `url(${data.avatar_url})`;
+					el.style.backgroundSize = 'cover';
+					el.textContent = '';
+				} else if (data.avatar_seed) {
+					const svgUrl = `https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=${encodeURIComponent(data.avatar_seed)}`;
+					el.style.backgroundImage = `url(${svgUrl})`;
+					el.style.backgroundSize = 'cover';
+					el.textContent = '';
+				} else {
+					el.style.backgroundImage = 'none';
+					el.textContent = initials;
+				}
+			}
+
+			updateAvatarElement(pfpEl, userData);
+			updateAvatarElement(headerPfpEl, userData);
+
 			document.getElementById('profile-username').textContent = userData.username;
 			document.getElementById('profile-email').textContent = userData.email;
 			document.getElementById('profile-phone').textContent = userData.pnumber || 'Not provided';
 			
-			// Use OR (||) to catch both naming styles
+			const bioEl = document.getElementById('profile-bio');
+			if (bioEl) bioEl.textContent = userData.bio || 'Not provided';
+			
 			const createdDate = new Date(userData.createdat || userData.created_at);
 			const formattedDate = createdDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 			
 			const createdEl = document.getElementById('profile-createdat') || document.getElementById('profile-createdAt');
 			if (createdEl) createdEl.textContent = formattedDate;
+
+			// Sync edit inputs
+			const editNickname = document.getElementById('edit-nickname');
+			const editPhone = document.getElementById('edit-phone');
+			const editBio = document.getElementById('edit-bio');
+			
+			if (editNickname) editNickname.value = userData.username;
+			if (editPhone) editPhone.value = userData.pnumber || '';
+			if (editBio) editBio.value = userData.bio || '';
+			
+			// If in edit mode, ensure inputs have "has-value" class
+			[editNickname, editPhone, editBio].forEach(input => {
+				if (input && input.value) {
+					const group = input.closest('.input-group');
+					if (group) group.classList.add('has-value');
+				}
+			});
 		}
+
+		window.toggleEditMode = function(state) {
+			const sidebar = document.getElementById('account-sidebar');
+			if (!sidebar) return;
+
+			if (state) {
+				sidebar.classList.add('edit-mode');
+				document.querySelectorAll('.view-mode-only').forEach(el => el.style.display = 'none');
+				document.querySelectorAll('.edit-mode-only').forEach(el => el.style.display = 'block');
+				renderDiceBearGrid();
+			} else {
+				sidebar.classList.remove('edit-mode');
+				document.querySelectorAll('.view-mode-only').forEach(el => el.style.display = 'flex');
+				document.querySelectorAll('.edit-mode-only').forEach(el => el.style.display = 'none');
+				// Reset form to latest user data
+				loadUserProfileData();
+				// Clear errors
+				document.querySelectorAll('.error-msg').forEach(el => el.textContent = '');
+			}
+			
+			if (typeof lucide !== 'undefined') lucide.createIcons();
+		};
+
+		let currentAvatarSeed = null;
+		let currentAvatarUrl = null;
+
+		function renderDiceBearGrid() {
+			const grid = document.getElementById('dicebear-grid');
+			if (!grid) return;
+
+			const userData = getUserData();
+			const selectedSeed = currentAvatarSeed || userData?.avatar_seed;
+			
+			// Define some base seeds or generate random ones
+			const baseSeeds = ['Jhun1', 'Budgeter', 'Saver', 'Aventurer', 'Explorer', 'Minter', 'Grinder', 'Hustler'];
+			
+			grid.innerHTML = baseSeeds.map(seed => {
+				const isSelected = seed === selectedSeed;
+				return `
+					<div class="avatar-item ${isSelected ? 'selected' : ''}" onclick="selectAvatarSeed('${seed}')">
+						<img src="https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=${encodeURIComponent(seed)}" alt="${seed}" loading="lazy">
+					</div>
+				`;
+			}).join('');
+		}
+
+		window.randomizeAvatarGrid = function() {
+			const grid = document.getElementById('dicebear-grid');
+			if (!grid) return;
+
+			const randomSeeds = Array.from({ length: 8 }, () => Math.random().toString(36).substring(7));
+			
+			grid.innerHTML = randomSeeds.map(seed => {
+				return `
+					<div class="avatar-item" onclick="selectAvatarSeed('${seed}')">
+						<img src="https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=${encodeURIComponent(seed)}" alt="${seed}" loading="lazy">
+					</div>
+				`;
+			}).join('');
+		};
+
+		window.selectAvatarSeed = function(seed) {
+			currentAvatarSeed = seed;
+			currentAvatarUrl = null; // Clear uploaded URL if seed is selected
+			
+			// Update UI preview
+			const pfpEl = document.getElementById('profile-initials');
+			if (pfpEl) {
+				const svgUrl = `https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=${encodeURIComponent(seed)}`;
+				pfpEl.style.backgroundImage = `url(${svgUrl})`;
+				pfpEl.style.backgroundSize = 'cover';
+				pfpEl.textContent = '';
+			}
+
+			// Update grid selection
+			document.querySelectorAll('.avatar-item').forEach(item => {
+				const img = item.querySelector('img');
+				if (img && img.alt === seed) {
+					item.classList.add('selected');
+				} else {
+					item.classList.remove('selected');
+				}
+			});
+		};
+
+		window.triggerAvatarUpload = function() {
+			const input = document.getElementById('avatar-upload-input');
+			if (input) input.click();
+		};
+
+		window.handleAvatarUpload = function(event) {
+			const file = event.target.files[0];
+			if (!file) return;
+
+			if (!file.type.startsWith('image/')) {
+				showToast('Please select an image file', 'error');
+				return;
+			}
+
+			const reader = new FileReader();
+			reader.onload = function(e) {
+				currentAvatarUrl = e.target.result;
+				currentAvatarSeed = null; // Clear seed if image is uploaded
+				
+				// Update UI preview
+				const pfpEl = document.getElementById('profile-initials');
+				if (pfpEl) {
+					pfpEl.style.backgroundImage = `url(${currentAvatarUrl})`;
+					pfpEl.style.backgroundSize = 'cover';
+					pfpEl.textContent = '';
+				}
+				
+				// Deselect grid
+				document.querySelectorAll('.avatar-item').forEach(item => item.classList.remove('selected'));
+				
+				showToast('Image uploaded and cropped!');
+			};
+			reader.readAsDataURL(file);
+		};
+
+		window.saveProfileChanges = async function() {
+			const userData = getUserData();
+			if (!userData) return;
+
+			const nickname = document.getElementById('edit-nickname').value.trim();
+			const phone = document.getElementById('edit-phone').value.trim();
+			const bio = document.getElementById('edit-bio').value.trim();
+
+			// Validation
+			let hasError = false;
+			const nickError = document.getElementById('nickname-error');
+			const phoneError = document.getElementById('phone-error');
+			
+			if (!nickname) {
+				if (nickError) nickError.textContent = 'Nickname is required';
+				hasError = true;
+			} else {
+				if (nickError) nickError.textContent = '';
+			}
+
+			if (phone && !/^\d+$/.test(phone)) {
+				if (phoneError) phoneError.textContent = 'Phone must contain only numbers';
+				hasError = true;
+			} else {
+				if (phoneError) phoneError.textContent = '';
+			}
+
+			if (hasError) return;
+
+			showCoinLoader('SAVING PROFILE...');
+			try {
+				const body = {
+					id: userData.acc_id,
+					username: nickname,
+					pnumber: phone,
+					bio: bio,
+					avatar_seed: currentAvatarSeed,
+					avatar_url: currentAvatarUrl
+				};
+
+				const res = await fetch('/api/accounts', {
+					method: 'PUT',
+					headers: { 
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${getToken()}` 
+					},
+					body: JSON.stringify(body)
+				});
+
+				const payload = await readResponsePayload(res);
+				if (!res.ok) throw new Error(getErrorMessage(payload, 'Failed to update profile'));
+
+				// Update Local Storage
+				setUserData(payload.data);
+				
+				// Apply changes to UI
+				loadUserProfileData();
+				toggleEditMode(false);
+				
+				showToast('Profile Updated successfully');
+			} catch (err) {
+				showToast(err.message, 'error');
+			} finally {
+				hideCoinLoader();
+			}
+		};
 
 		function handleLogout() {
 			removeToken();

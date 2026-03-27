@@ -575,12 +575,18 @@
 			margin-bottom: 30px;
 		}
 
+		.large-pfp-container {
+			position: relative;
+			width: 100px;
+			height: 100px;
+			margin: 0 auto 15px;
+		}
+
 		.large-pfp {
 			width: 100px;
 			height: 100px;
 			background: linear-gradient(135deg, var(--primary-green), #4a7c3f);
 			border-radius: 50%;
-			margin: 0 auto 15px;
 			border: 4px solid var(--drawer-bg);
 			box-shadow: 0 0 0 2px var(--primary-green);
 			display: flex;
@@ -589,6 +595,48 @@
 			font-size: 2.2em;
 			font-weight: 800;
 			color: white;
+			overflow: hidden;
+			background-size: cover;
+			background-position: center;
+		}
+
+		.large-pfp img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+
+		.pfp-overlay {
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			width: 32px;
+			height: 32px;
+			background: var(--primary-green);
+			border-radius: 50%;
+			display: none; /* Only show in edit mode or on hover in edit mode */
+			align-items: center;
+			justify-content: center;
+			color: white;
+			cursor: pointer;
+			border: 3px solid var(--drawer-bg);
+			box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+			transition: transform 0.2s, background 0.2s;
+			z-index: 10;
+		}
+
+		.pfp-overlay:hover {
+			transform: scale(1.1);
+			background: #4a7c3f;
+		}
+
+		.pfp-overlay i {
+			width: 16px;
+			height: 16px;
+		}
+
+		.account-drawer.edit-mode .pfp-overlay {
+			display: flex;
 		}
 
 		#profile-username {
@@ -596,6 +644,7 @@
 			font-size: 1.5em;
 			font-weight: 700;
 			color: var(--white);
+			margin-bottom: 20px;
 		}
 
 		.account-info {
@@ -629,6 +678,121 @@
 			font-size: 0.9em;
 			font-weight: 600;
 			color: var(--white);
+			max-width: 65%;
+			text-align: right;
+			word-break: break-all;
+		}
+
+		.info-value#profile-bio {
+			text-align: left;
+			width: 100%;
+			max-width: 100%;
+			display: block;
+			margin-top: 5px;
+			font-size: 0.85em;
+			font-weight: 400;
+			opacity: 0.8;
+			line-height: 1.4;
+			border-bottom: none;
+		}
+
+		.info-row#profile-bio-row {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+
+		.error-msg {
+			color: #ff7675;
+			font-size: 0.75em;
+			margin-top: 4px;
+			display: block;
+			font-weight: 600;
+		}
+
+		.avatar-grid-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 15px;
+			padding: 0 5px;
+		}
+
+		.avatar-grid-header span {
+			font-size: 0.85em;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+			color: var(--drawer-card-label);
+		}
+
+		.btn-randomize {
+			background: none;
+			border: none;
+			color: var(--primary-green);
+			cursor: pointer;
+			padding: 5px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: transform 0.3s ease;
+		}
+
+		.btn-randomize:hover {
+			transform: rotate(180deg);
+		}
+
+		.avatar-grid {
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			gap: 12px;
+			margin-bottom: 30px;
+		}
+
+		.avatar-item {
+			width: 100%;
+			aspect-ratio: 1;
+			border-radius: 50%;
+			border: 2px solid var(--drawer-border);
+			cursor: pointer;
+			transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+			overflow: hidden;
+			background: var(--drawer-card-bg);
+			position: relative;
+		}
+
+		.avatar-item img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+
+		.avatar-item:hover {
+			transform: scale(1.1);
+			border-color: var(--primary-green);
+		}
+
+		.avatar-item.selected {
+			border-color: var(--primary-green);
+			border-width: 3px;
+			box-shadow: 0 0 10px rgba(89, 133, 57, 0.4);
+		}
+
+		.avatar-item.selected::after {
+			content: '✓';
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			background: var(--primary-green);
+			color: white;
+			width: 18px;
+			height: 18px;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 10px;
+			font-weight: bold;
 		}
 
 		.drawer-nav {
@@ -650,6 +814,30 @@
 			border-radius: 10px;
 			transition: all 0.2s ease;
 			border: 1px solid transparent;
+		}
+
+		.drawer-actions {
+			display: flex;
+			flex-direction: column;
+			gap: 12px;
+			margin-top: 20px;
+		}
+
+		.btn-ghost {
+			background: transparent;
+			border: 1.5px solid rgba(255,255,255,0.2);
+			color: var(--white);
+			padding: 10px 20px;
+			border-radius: 25px;
+			font-weight: 600;
+			cursor: pointer;
+			transition: all 0.2s;
+			font-size: 0.9em;
+		}
+
+		.btn-ghost:hover {
+			background: rgba(255,255,255,0.05);
+			border-color: rgba(255,255,255,0.4);
 		}
 
 		.drawer-nav-item i {

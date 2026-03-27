@@ -31,7 +31,7 @@ export default async function handler(req, res) {
       }
 
       const account = await sql`
-        SELECT acc_id, username, email, pnumber, createdat
+        SELECT acc_id, username, email, pnumber, bio, avatar_seed, avatar_url, createdat
         FROM accounts
         WHERE email = ${email}
       `;
@@ -115,7 +115,7 @@ export default async function handler(req, res) {
       res.status(200).json(accounts);
 
     } else if (method === 'PUT') {
-      const { id, username, email, pnumber } = req.body;
+      const { id, username, email, pnumber, bio, avatar_seed, avatar_url } = req.body;
 
       if (!id) {
         return res.status(400).json({ error: 'Account ID required' });
@@ -125,9 +125,12 @@ export default async function handler(req, res) {
         UPDATE accounts
         SET username = COALESCE(${username}, username),
             email = COALESCE(${email}, email),
-            pnumber = COALESCE(${pnumber}, pnumber)
+            pnumber = COALESCE(${pnumber}, pnumber),
+            bio = COALESCE(${bio}, bio),
+            avatar_seed = COALESCE(${avatar_seed}, avatar_seed),
+            avatar_url = COALESCE(${avatar_url}, avatar_url)
         WHERE acc_id = ${id}
-        RETURNING acc_id, username, email, pnumber, createdat
+        RETURNING acc_id, username, email, pnumber, bio, avatar_seed, avatar_url, createdat
       `;
 
       if (updated.length === 0) {

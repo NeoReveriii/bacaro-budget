@@ -101,7 +101,10 @@ async function handleForgotPassword(req, res) {
 
   } catch (error) {
     console.error('Forgot password error:', error);
-    return res.status(500).json({ error: 'An error occurred. Please try again later.' });
+    return res.status(500).json({
+      error: 'Forgot password request failed',
+      details: error?.message || 'Unknown error'
+    });
   }
 }
 
@@ -157,7 +160,10 @@ async function handleResetPassword(req, res) {
 
   } catch (error) {
     console.error('Reset password error:', error);
-    return res.status(500).json({ error: 'An error occurred. Please try again later.' });
+    return res.status(500).json({
+      error: 'Reset password request failed',
+      details: error?.message || 'Unknown error'
+    });
   }
 }
 
@@ -195,7 +201,10 @@ async function handleVerifyToken(req, res) {
 
   } catch (error) {
     console.error('Token verification error:', error);
-    return res.status(500).json({ error: 'An error occurred' });
+    return res.status(500).json({
+      error: 'Token verification failed',
+      details: error?.message || 'Unknown error'
+    });
   }
 }
 

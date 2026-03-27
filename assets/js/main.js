@@ -443,8 +443,20 @@
 			const totalExpense = walletTransactions.filter(t => t.type === 'Expense').reduce((sum, t) => sum + Number(t.amount), 0);
 			
 			// Transfers direction check
-			const transfersIn = walletTransactions.filter(t => t.type === 'Transfer' && (t.description || '').toLowerCase().includes('in from')).reduce((sum, t) => sum + Number(t.amount), 0);
-			const transfersOut = walletTransactions.filter(t => t.type === 'Transfer' && (t.description || '').toLowerCase().includes('out to')).reduce((sum, t) => sum + Number(t.amount), 0);
+			const transfersIn = walletTransactions
+				.filter(t => {
+					if (t.type !== 'Transfer') return false;
+					const desc = String(t.description || '').toLowerCase();
+					return desc.includes('transfer from') || desc.includes('transfer in from');
+				})
+				.reduce((sum, t) => sum + Number(t.amount), 0);
+			const transfersOut = walletTransactions
+				.filter(t => {
+					if (t.type !== 'Transfer') return false;
+					const desc = String(t.description || '').toLowerCase();
+					return desc.includes('transfer to') || desc.includes('transfer out to');
+				})
+				.reduce((sum, t) => sum + Number(t.amount), 0);
 			const netTransfers = transfersIn - transfersOut;
 
 			// Update Stats UI
@@ -1800,6 +1812,8 @@ window.handleDeleteGoal = async function(goalId, title) {
 					e.preventDefault();
 					const from = document.getElementById('transfer-from').value;
 					const to = document.getElementById('transfer-to').value;
+					const fromId = parseInt(from, 10);
+					const toId = parseInt(to, 10);
 					const amount = parseFloat(document.getElementById('transfer-amount').value);
 					
 					const messageDiv = document.getElementById('transfer-message');
@@ -1811,40 +1825,27 @@ window.handleDeleteGoal = async function(goalId, title) {
 					if (!amount || amount <= 0) return (messageDiv.innerHTML = 'Amount must be greater than 0', messageDiv.className = 'message error');
 
 					// Check for sufficient funds
-					const sourceWallet = window.wallets.find(w => w.name === from);
+					const sourceWallet = window.wallets.find(w => Number(w.wallet_id) === fromId);
 					if (sourceWallet && Number(sourceWallet.calculated_balance) < amount) {
-						return (messageDiv.innerHTML = `Insufficient funds in "${from}" (Balance: ${formatCurrency(sourceWallet.calculated_balance)})`, messageDiv.className = 'message error');
+						return (messageDiv.innerHTML = `Insufficient funds in "${sourceWallet.name}" (Balance: ${formatCurrency(sourceWallet.calculated_balance)})`, messageDiv.className = 'message error');
 					}
 
 					showCoinLoader('TRANSFERRING FUNDS...');
 					try {
-						// Create Transfer Out from From Wallet
-						const res1 = await fetch('/api/transactions', {
+						const res = await fetch('/api/transactions?action=transfer', {
 							method: 'POST',
 							headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
 							body: JSON.stringify({ 
-                                description: `Transfer Out to ${document.querySelector('#transfer-to option[value="'+to+'"]').dataset.name}`, 
-                                type: 'Transfer', 
-                                wallet_type: document.querySelector('#transfer-from option[value="'+from+'"]').dataset.name, 
-                                wallet_id: from,
+								from_wallet_id: fromId,
+								to_wallet_id: toId,
                                 amount 
                             })
 						});
-						if (!res1.ok) throw new Error('Failed to process transfer (Step 1)');
 
-						// Create Transfer In to To Wallet
-						const res2 = await fetch('/api/transactions', {
-							method: 'POST',
-							headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
-							body: JSON.stringify({ 
-                                description: `Transfer In from ${document.querySelector('#transfer-from option[value="'+from+'"]').dataset.name}`, 
-                                type: 'Transfer', 
-                                wallet_type: document.querySelector('#transfer-to option[value="'+to+'"]').dataset.name, 
-                                wallet_id: to,
-                                amount 
-                            })
-						});
-						if (!res2.ok) throw new Error('Failed to process transfer (Step 2)');
+						const payload = await readResponsePayload(res);
+						if (!res.ok) {
+							throw new Error(getErrorMessage(payload, 'Failed to process transfer'));
+						}
 
 						resetTransferForm();
 						hideCoinLoader();

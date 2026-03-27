@@ -215,6 +215,103 @@ export default async function handler(req, res) {
       return res.status(200).json(rows);
 
     } else if (method === 'POST') {
+      const action = String(req.query?.action || '').toLowerCase();
+
+      if (action === 'transfer') {
+        const fromWalletId = req.body?.from_wallet_id ? parseInt(req.body.from_wallet_id, 10) : null;
+        const toWalletId = req.body?.to_wallet_id ? parseInt(req.body.to_wallet_id, 10) : null;
+        const amountNum = Number(req.body?.amount);
+
+        if (!fromWalletId || !toWalletId) {
+          return res.status(400).json({ error: 'from_wallet_id and to_wallet_id are required' });
+        }
+        if (fromWalletId === toWalletId) {
+          return res.status(400).json({ error: 'Cannot transfer to the same wallet' });
+        }
+        if (!Number.isFinite(amountNum) || amountNum <= 0) {
+          return res.status(400).json({ error: 'Amount must be a number greater than 0' });
+        }
+
+        if (missing.length > 0) {
+          return res.status(500).json({
+            error: 'Unsupported transactions table schema',
+            expected_columns: EXPECTED_TRANSACTION_COLUMNS,
+            actual_columns: Array.from(cols.values()).sort(),
+            missing_columns: missing
+          });
+        }
+
+        const walletRows = await sql`
+          SELECT wallet_id, name, status
+          FROM wallets
+          WHERE account_id = ${account.acc_id}
+            AND wallet_id IN (${fromWalletId}, ${toWalletId})
+        `;
+
+        if (walletRows.length !== 2) {
+          return res.status(404).json({ error: 'One or both wallets not found' });
+        }
+
+        const fromWallet = walletRows.find(w => Number(w.wallet_id) === fromWalletId);
+        const toWallet = walletRows.find(w => Number(w.wallet_id) === toWalletId);
+
+        if (!fromWallet || !toWallet) {
+          return res.status(404).json({ error: 'One or both wallets not found' });
+        }
+
+        const fromStatus = String(fromWallet.status || '').toUpperCase();
+        const toStatus = String(toWallet.status || '').toUpperCase();
+        if (fromStatus && fromStatus !== 'ACTIVE') {
+          return res.status(400).json({ error: `Source wallet \"${fromWallet.name}\" is not ACTIVE` });
+        }
+        if (toStatus && toStatus !== 'ACTIVE') {
+          return res.status(400).json({ error: `Destination wallet \"${toWallet.name}\" is not ACTIVE` });
+        }
+
+        const balanceRows = await sql`
+          SELECT
+            (
+              w.initial_balance +
+              COALESCE(SUM(CASE
+                WHEN t.type = 'Income' THEN t.amount
+                WHEN t.type = 'Transfer' AND (t.description ILIKE 'Transfer from%' OR t.description ILIKE 'Transfer In from%') THEN t.amount
+                ELSE 0 END), 0) -
+              COALESCE(SUM(CASE
+                WHEN t.type = 'Expense' THEN t.amount
+                WHEN t.type = 'Transfer' AND (t.description ILIKE 'Transfer to%' OR t.description ILIKE 'Transfer Out to%') THEN t.amount
+                ELSE 0 END), 0)
+            ) AS current_balance
+          FROM wallets w
+          LEFT JOIN transactions t
+            ON t.wallet_id = w.wallet_id AND t.account_id = w.account_id
+          WHERE w.account_id = ${account.acc_id}
+            AND w.wallet_id = ${fromWalletId}
+          GROUP BY w.wallet_id
+        `;
+
+        const currentBalance = Number(balanceRows?.[0]?.current_balance ?? 0);
+        if (currentBalance < amountNum) {
+          return res.status(400).json({
+            error: `Insufficient funds in source wallet. Available: ${currentBalance.toFixed(2)}`
+          });
+        }
+
+        const now = new Date();
+        const transferRows = await sql`
+          INSERT INTO transactions (description, type, wallet_type, wallet_id, amount, account_id, dateoftrans)
+          VALUES
+            (${`Transfer to ${toWallet.name}`}, 'Transfer', ${fromWallet.name}, ${fromWalletId}, ${amountNum}, ${account.acc_id}, ${now}),
+            (${`Transfer from ${fromWallet.name}`}, 'Transfer', ${toWallet.name}, ${toWalletId}, ${amountNum}, ${account.acc_id}, ${now})
+          RETURNING trans_id, description, type, wallet_type, wallet_id, amount, account_id, dateoftrans
+        `;
+
+        return res.status(201).json({
+          success: true,
+          message: 'Transfer completed successfully',
+          rows: transferRows
+        });
+      }
+
       const description = String(req.body?.description ?? req.body?.title ?? '').trim();
       const type = normalizeType(req.body?.type);
       const walletType = String(req.body?.wallet_type ?? req.body?.wallet ?? '').trim();
@@ -224,8 +321,8 @@ export default async function handler(req, res) {
       if (!description || !type || !walletType) {
         return res.status(400).json({ error: 'All fields are required' });
       }
-      if (!Number.isFinite(amountNum)) {
-        return res.status(400).json({ error: 'Amount must be a number' });
+      if (!Number.isFinite(amountNum) || amountNum <= 0) {
+        return res.status(400).json({ error: 'Amount must be a number greater than 0' });
       }
 
       const now = new Date();

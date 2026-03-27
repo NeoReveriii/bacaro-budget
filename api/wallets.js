@@ -101,11 +101,11 @@ export default async function handler(req, res) {
             w.initial_balance + 
             COALESCE(SUM(CASE 
               WHEN t.type = 'Income' THEN t.amount 
-              WHEN t.type = 'Transfer' AND t.description ILIKE 'Transfer from%' THEN t.amount
+              WHEN t.type = 'Transfer' AND (t.description ILIKE 'Transfer from%' OR t.description ILIKE 'Transfer In from%') THEN t.amount
               ELSE 0 END), 0) - 
             COALESCE(SUM(CASE 
               WHEN t.type = 'Expense' THEN t.amount 
-              WHEN t.type = 'Transfer' AND t.description ILIKE 'Transfer to%' THEN t.amount
+              WHEN t.type = 'Transfer' AND (t.description ILIKE 'Transfer to%' OR t.description ILIKE 'Transfer Out to%') THEN t.amount
               ELSE 0 END), 0)
           ) as calculated_balance
         FROM wallets w
@@ -180,7 +180,11 @@ export default async function handler(req, res) {
 
       const transCheck = await sql`
         SELECT COUNT(*) as count FROM transactions 
-        WHERE wallet_type = ${walletName} AND account_id = ${account.acc_id}
+        WHERE account_id = ${account.acc_id}
+          AND (
+            wallet_id = ${wallet_id}
+            OR (wallet_id IS NULL AND wallet_type = ${walletName})
+          )
       `;
       if (parseInt(transCheck[0].count) > 0) {
         return res.status(400).json({ error: 'Cannot delete a wallet that has transactions. Delete or reassign the transactions first.' });

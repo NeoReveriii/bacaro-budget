@@ -71,7 +71,12 @@
 		function openSignupModal() { closeAllModals(); toggleAccountSidebar(false); toggleMainSidebar(false); document.getElementById('signup-modal').classList.add('active'); }
 		function openForgotModal() { closeAllModals(); toggleAccountSidebar(false); toggleMainSidebar(false); document.getElementById('forgot-modal').classList.add('active'); }
 		function openAddWalletModal() { closeAllModals(); document.getElementById('add-wallet-modal').classList.add('active'); }
-		function openTransferModal() { closeAllModals(); document.getElementById('transfer-modal').classList.add('active'); }
+		function openTransferModal() { 
+			closeAllModals(); 
+			renderWalletDropdowns();
+			syncTransferWalletOptions();
+			document.getElementById('transfer-modal').classList.add('active'); 
+		}
 		let goalDatePicker = null;
 
 		function openAddGoalModal() { 
@@ -408,14 +413,56 @@
 
 			const transferFrom = document.getElementById('transfer-from');
 			const transferTo = document.getElementById('transfer-to');
-			if (transferFrom) transferFrom.innerHTML = `<option value="" selected disabled hidden></option>${options}`;
-			if (transferTo) transferTo.innerHTML = `<option value="" selected disabled hidden></option>${options}`;
+			if (transferFrom && !transferFrom.dataset.boundSync) {
+				transferFrom.addEventListener('change', syncTransferWalletOptions);
+				transferFrom.dataset.boundSync = '1';
+			}
+			if (transferTo && !transferTo.dataset.boundSync) {
+				transferTo.addEventListener('change', syncTransferWalletOptions);
+				transferTo.dataset.boundSync = '1';
+			}
+			syncTransferWalletOptions();
 			
 			// Custom selects have to be updated. Since initializeCustomSelects wraps them,
 			// we need to remove the wrappers and re-initialize.
 			document.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
 				const select = wrapper.querySelector('select');
-				if (select && ['trans-wallet-type', 'transfer-from', 'transfer-to'].includes(select.id)) {
+				if (select && ['trans-wallet-type'].includes(select.id)) {
+					wrapper.parentNode.insertBefore(select, wrapper);
+					select.style.display = '';
+					wrapper.remove();
+				}
+			});
+			initializeCustomSelects();
+		}
+
+		function syncTransferWalletOptions() {
+			const transferFrom = document.getElementById('transfer-from');
+			const transferTo = document.getElementById('transfer-to');
+			if (!transferFrom || !transferTo) return;
+
+			const selectedFrom = transferFrom.value;
+			const selectedTo = transferTo.value;
+
+			const fromOptions = (window.wallets || [])
+				.filter(w => String(w.wallet_id) !== String(selectedTo))
+				.map(w => `<option value="${w.wallet_id}" data-name="${escapeHtml(w.name)}">${escapeHtml(w.name)}</option>`)
+				.join('');
+
+			const toOptions = (window.wallets || [])
+				.filter(w => String(w.wallet_id) !== String(selectedFrom))
+				.map(w => `<option value="${w.wallet_id}" data-name="${escapeHtml(w.name)}">${escapeHtml(w.name)}</option>`)
+				.join('');
+
+			transferFrom.innerHTML = `<option value="" selected disabled hidden></option>${fromOptions}`;
+			transferTo.innerHTML = `<option value="" selected disabled hidden></option>${toOptions}`;
+
+			if (selectedFrom && selectedFrom !== selectedTo) transferFrom.value = selectedFrom;
+			if (selectedTo && selectedTo !== selectedFrom) transferTo.value = selectedTo;
+
+			document.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
+				const select = wrapper.querySelector('select');
+				if (select && ['transfer-from', 'transfer-to'].includes(select.id)) {
 					wrapper.parentNode.insertBefore(select, wrapper);
 					select.style.display = '';
 					wrapper.remove();
@@ -435,8 +482,21 @@
 			const statusBadge = document.getElementById('detail-wallet-status');
 			statusBadge.className = 'badge-status ' + (status === 'ACTIVE' ? 'status-active' : 'status-inactive');
 
-			// Filter transactions for this specific wallet
-			const walletTransactions = (window.currentTransactions || []).filter(t => t.wallet_type === name);
+			const walletObj = (window.wallets || []).find(w => w.name === name);
+			const walletId = Number(walletObj?.wallet_id);
+
+			// Filter transactions for this specific wallet (supports single-row transfer model)
+			const walletTransactions = (window.currentTransactions || []).filter(t => {
+				const directId = Number(t.wallet_id);
+				const fromId = Number(t.transfer_from_wallet_id);
+				const toId = Number(t.transfer_to_wallet_id);
+				return (
+					directId === walletId ||
+					fromId === walletId ||
+					toId === walletId ||
+					String(t.wallet_type || '') === name
+				);
+			});
 			
 			// Calculate Stats
 			const totalIncome = walletTransactions.filter(t => t.type === 'Income').reduce((sum, t) => sum + Number(t.amount), 0);
@@ -446,6 +506,8 @@
 			const transfersIn = walletTransactions
 				.filter(t => {
 					if (t.type !== 'Transfer') return false;
+					const toId = Number(t.transfer_to_wallet_id);
+					if (toId) return toId === walletId;
 					const desc = String(t.description || '').toLowerCase();
 					return desc.includes('transfer from') || desc.includes('transfer in from');
 				})
@@ -453,6 +515,8 @@
 			const transfersOut = walletTransactions
 				.filter(t => {
 					if (t.type !== 'Transfer') return false;
+					const fromId = Number(t.transfer_from_wallet_id);
+					if (fromId) return fromId === walletId;
 					const desc = String(t.description || '').toLowerCase();
 					return desc.includes('transfer to') || desc.includes('transfer out to');
 				})
@@ -486,7 +550,6 @@
 			// Render Transaction List
 			const listEl = document.querySelector('#main-wallet-details .transaction-list');
 			// Handle delete button visibility in details
-			const walletObj = (window.wallets || []).find(w => w.name === name);
 			const btnDel = document.getElementById('btn-delete-wallet-detail');
 			if (btnDel && walletObj) {
 				btnDel.style.display = (walletTransactions.length === 0) ? 'inline-block' : 'none';
@@ -1498,10 +1561,15 @@
 			const amountValue = Number(row.amount ?? 0);
 			let amountClass = isIncome ? 'income' : (isExpense ? 'expense' : '');
 			if (isTransfer) {
-				const lowerDesc = (row.description || '').toLowerCase();
-				if (lowerDesc.includes('out to ')) amountClass = 'expense';
-				else if (lowerDesc.includes('in from ')) amountClass = 'income';
-				else amountClass = 'transfer';
+				const hasFrom = Number(row.transfer_from_wallet_id) > 0;
+				const hasTo = Number(row.transfer_to_wallet_id) > 0;
+				if (hasFrom && hasTo) amountClass = 'transfer';
+				else {
+					const lowerDesc = (row.description || '').toLowerCase();
+					if (lowerDesc.includes('out to ') || lowerDesc.includes('transfer to ')) amountClass = 'expense';
+					else if (lowerDesc.includes('in from ') || lowerDesc.includes('transfer from ')) amountClass = 'income';
+					else amountClass = 'transfer';
+				}
 			}
 
 			const badgeClass = isIncome ? 'badge-income' : (isExpense ? 'badge-expense' : (isTransfer ? 'badge-transfer' : ''));
@@ -2356,7 +2424,13 @@ function updateDashboardStats(transactions) {
     const income = transactions.filter(t => t.type === 'Income').reduce((sum, t) => sum + Number(t.amount), 0);
     const expense = transactions.filter(t => t.type === 'Expense').reduce((sum, t) => sum + Number(t.amount), 0);
     const transfer = transactions
-        .filter(t => t.type === 'Transfer' && (t.description || '').toLowerCase().includes('out to '))
+		.filter(t => {
+			if (t.type !== 'Transfer') return false;
+			const hasStructuredPair = Number(t.transfer_from_wallet_id) > 0 && Number(t.transfer_to_wallet_id) > 0;
+			if (hasStructuredPair) return true;
+			const desc = String(t.description || '').toLowerCase();
+			return desc.includes('out to ') || desc.includes('transfer to ');
+		})
         .reduce((sum, t) => sum + Number(t.amount), 0);
 
 

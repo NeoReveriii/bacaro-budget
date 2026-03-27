@@ -10,6 +10,8 @@ const EXPECTED_TRANSACTION_COLUMNS = [
   'type',
   'wallet_type',
   'wallet_id',
+  'transfer_from_wallet_id',
+  'transfer_to_wallet_id',
   'amount',
   'account_id',
   'dateoftrans'
@@ -96,6 +98,9 @@ async function ensureTransactionsSchema() {
         description TEXT NOT NULL,
         type TEXT NOT NULL,
         wallet_type TEXT NOT NULL,
+        wallet_id INTEGER REFERENCES wallets(wallet_id),
+        transfer_from_wallet_id INTEGER REFERENCES wallets(wallet_id),
+        transfer_to_wallet_id INTEGER REFERENCES wallets(wallet_id),
         amount NUMERIC(12,2) NOT NULL,
         account_id INTEGER NOT NULL REFERENCES accounts(acc_id),
         dateoftrans TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -159,6 +164,12 @@ async function ensureTransactionsSchema() {
       WHERE t.wallet_type = w.name AND t.account_id = w.account_id AND t.wallet_id IS NULL
     `);
   }
+  if (!cols2.has('transfer_from_wallet_id')) {
+    await tryExec(sql`ALTER TABLE transactions ADD COLUMN transfer_from_wallet_id INTEGER REFERENCES wallets(wallet_id)`);
+  }
+  if (!cols2.has('transfer_to_wallet_id')) {
+    await tryExec(sql`ALTER TABLE transactions ADD COLUMN transfer_to_wallet_id INTEGER REFERENCES wallets(wallet_id)`);
+  }
 
   // 4) Ensure primary key exists on trans_id (if possible)
   await tryExec(sql`ALTER TABLE transactions ADD PRIMARY KEY (trans_id)`);
@@ -174,6 +185,8 @@ async function ensureTransactionsSchema() {
   // 7) Performance Indexes
   await tryExec(sql`CREATE INDEX IF NOT EXISTS idx_transactions_account_id ON transactions(account_id)`);
   await tryExec(sql`CREATE INDEX IF NOT EXISTS idx_transactions_wallet_id ON transactions(wallet_id)`);
+  await tryExec(sql`CREATE INDEX IF NOT EXISTS idx_transactions_transfer_from_wallet_id ON transactions(transfer_from_wallet_id)`);
+  await tryExec(sql`CREATE INDEX IF NOT EXISTS idx_transactions_transfer_to_wallet_id ON transactions(transfer_to_wallet_id)`);
 }
 
 function normalizeType(value) {
@@ -206,7 +219,7 @@ export default async function handler(req, res) {
       }
 
       const rows = await sql`
-        SELECT trans_id, description, type, wallet_type, wallet_id, amount, account_id, dateoftrans
+        SELECT trans_id, description, type, wallet_type, wallet_id, transfer_from_wallet_id, transfer_to_wallet_id, amount, account_id, dateoftrans
         FROM transactions
         WHERE account_id = ${account.acc_id}
         ORDER BY dateoftrans DESC
@@ -273,17 +286,27 @@ export default async function handler(req, res) {
             (
               w.initial_balance +
               COALESCE(SUM(CASE
-                WHEN t.type = 'Income' THEN t.amount
-                WHEN t.type = 'Transfer' AND (t.description ILIKE 'Transfer from%' OR t.description ILIKE 'Transfer In from%') THEN t.amount
+                WHEN t.type = 'Income' AND t.wallet_id = w.wallet_id THEN t.amount
+                WHEN t.type = 'Transfer' AND t.transfer_to_wallet_id = w.wallet_id THEN t.amount
+                WHEN t.type = 'Transfer'
+                  AND t.transfer_to_wallet_id IS NULL
+                  AND t.wallet_id = w.wallet_id
+                  AND (t.description ILIKE 'Transfer from%' OR t.description ILIKE 'Transfer In from%')
+                THEN t.amount
                 ELSE 0 END), 0) -
               COALESCE(SUM(CASE
-                WHEN t.type = 'Expense' THEN t.amount
-                WHEN t.type = 'Transfer' AND (t.description ILIKE 'Transfer to%' OR t.description ILIKE 'Transfer Out to%') THEN t.amount
+                WHEN t.type = 'Expense' AND t.wallet_id = w.wallet_id THEN t.amount
+                WHEN t.type = 'Transfer' AND t.transfer_from_wallet_id = w.wallet_id THEN t.amount
+                WHEN t.type = 'Transfer'
+                  AND t.transfer_from_wallet_id IS NULL
+                  AND t.wallet_id = w.wallet_id
+                  AND (t.description ILIKE 'Transfer to%' OR t.description ILIKE 'Transfer Out to%')
+                THEN t.amount
                 ELSE 0 END), 0)
             ) AS current_balance
           FROM wallets w
           LEFT JOIN transactions t
-            ON t.wallet_id = w.wallet_id AND t.account_id = w.account_id
+            ON t.account_id = w.account_id
           WHERE w.account_id = ${account.acc_id}
             AND w.wallet_id = ${fromWalletId}
           GROUP BY w.wallet_id
@@ -298,17 +321,35 @@ export default async function handler(req, res) {
 
         const now = new Date();
         const transferRows = await sql`
-          INSERT INTO transactions (description, type, wallet_type, wallet_id, amount, account_id, dateoftrans)
-          VALUES
-            (${`Transfer to ${toWallet.name}`}, 'Transfer', ${fromWallet.name}, ${fromWalletId}, ${amountNum}, ${account.acc_id}, ${now}),
-            (${`Transfer from ${fromWallet.name}`}, 'Transfer', ${toWallet.name}, ${toWalletId}, ${amountNum}, ${account.acc_id}, ${now})
-          RETURNING trans_id, description, type, wallet_type, wallet_id, amount, account_id, dateoftrans
+          INSERT INTO transactions (
+            description,
+            type,
+            wallet_type,
+            wallet_id,
+            transfer_from_wallet_id,
+            transfer_to_wallet_id,
+            amount,
+            account_id,
+            dateoftrans
+          )
+          VALUES (
+            ${`Transfer ${fromWallet.name} to ${toWallet.name}`},
+            'Transfer',
+            ${fromWallet.name},
+            ${fromWalletId},
+            ${fromWalletId},
+            ${toWalletId},
+            ${amountNum},
+            ${account.acc_id},
+            ${now}
+          )
+          RETURNING trans_id, description, type, wallet_type, wallet_id, transfer_from_wallet_id, transfer_to_wallet_id, amount, account_id, dateoftrans
         `;
 
         return res.status(201).json({
           success: true,
           message: 'Transfer completed successfully',
-          rows: transferRows
+          row: transferRows[0]
         });
       }
 
@@ -337,9 +378,9 @@ export default async function handler(req, res) {
       }
 
       const inserted = await sql`
-        INSERT INTO transactions (description, type, wallet_type, wallet_id, amount, account_id, dateoftrans)
-        VALUES (${description}, ${type}, ${walletType}, ${walletId}, ${amountNum}, ${account.acc_id}, ${now})
-        RETURNING trans_id, description, type, wallet_type, wallet_id, amount, account_id, dateoftrans
+        INSERT INTO transactions (description, type, wallet_type, wallet_id, transfer_from_wallet_id, transfer_to_wallet_id, amount, account_id, dateoftrans)
+        VALUES (${description}, ${type}, ${walletType}, ${walletId}, NULL, NULL, ${amountNum}, ${account.acc_id}, ${now})
+        RETURNING trans_id, description, type, wallet_type, wallet_id, transfer_from_wallet_id, transfer_to_wallet_id, amount, account_id, dateoftrans
       `;
       return res.status(201).json(inserted[0]);
 
@@ -371,7 +412,7 @@ export default async function handler(req, res) {
             wallet_id = COALESCE(${patchWalletId}, wallet_id),
             amount = COALESCE(${patchAmount}, amount)
         WHERE trans_id = ${id} AND account_id = ${account.acc_id}
-        RETURNING trans_id, description, type, wallet_type, wallet_id, amount, account_id, dateoftrans
+        RETURNING trans_id, description, type, wallet_type, wallet_id, transfer_from_wallet_id, transfer_to_wallet_id, amount, account_id, dateoftrans
       `;
       return res.status(200).json(updated[0] || null);
 
@@ -391,7 +432,7 @@ export default async function handler(req, res) {
       const deleted = await sql`
         DELETE FROM transactions
         WHERE trans_id = ${id} AND account_id = ${account.acc_id}
-        RETURNING trans_id, description, type, wallet_type, amount, account_id, dateoftrans
+        RETURNING trans_id, description, type, wallet_type, wallet_id, transfer_from_wallet_id, transfer_to_wallet_id, amount, account_id, dateoftrans
       `;
       return res.status(200).json(deleted[0] || null);
 

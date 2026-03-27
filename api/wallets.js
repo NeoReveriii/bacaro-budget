@@ -81,12 +81,24 @@ async function ensureWalletsSchema() {
   }
 }
 
+async function ensureTransactionTransferColumns() {
+  const reg = await sql`SELECT to_regclass('public.transactions') AS reg`;
+  const exists = Boolean(reg?.[0]?.reg);
+  if (!exists) return;
+
+  await sql`ALTER TABLE transactions ADD COLUMN IF NOT EXISTS transfer_from_wallet_id INTEGER REFERENCES wallets(wallet_id)`;
+  await sql`ALTER TABLE transactions ADD COLUMN IF NOT EXISTS transfer_to_wallet_id INTEGER REFERENCES wallets(wallet_id)`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_transactions_transfer_from_wallet_id ON transactions(transfer_from_wallet_id)`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_transactions_transfer_to_wallet_id ON transactions(transfer_to_wallet_id)`;
+}
+
 export default async function handler(req, res) {
   try {
     const account = await requireAccount(req, res);
     if (!account) return;
 
     await ensureWalletsSchema();
+    await ensureTransactionTransferColumns();
 
     if (req.method === 'GET') {
       const rows = await sql`
@@ -100,17 +112,27 @@ export default async function handler(req, res) {
           (
             w.initial_balance + 
             COALESCE(SUM(CASE 
-              WHEN t.type = 'Income' THEN t.amount 
-              WHEN t.type = 'Transfer' AND (t.description ILIKE 'Transfer from%' OR t.description ILIKE 'Transfer In from%') THEN t.amount
+              WHEN t.type = 'Income' AND t.wallet_id = w.wallet_id THEN t.amount 
+              WHEN t.type = 'Transfer' AND t.transfer_to_wallet_id = w.wallet_id THEN t.amount
+              WHEN t.type = 'Transfer'
+                AND t.transfer_to_wallet_id IS NULL
+                AND t.wallet_id = w.wallet_id
+                AND (t.description ILIKE 'Transfer from%' OR t.description ILIKE 'Transfer In from%')
+              THEN t.amount
               ELSE 0 END), 0) - 
             COALESCE(SUM(CASE 
-              WHEN t.type = 'Expense' THEN t.amount 
-              WHEN t.type = 'Transfer' AND (t.description ILIKE 'Transfer to%' OR t.description ILIKE 'Transfer Out to%') THEN t.amount
+              WHEN t.type = 'Expense' AND t.wallet_id = w.wallet_id THEN t.amount 
+              WHEN t.type = 'Transfer' AND t.transfer_from_wallet_id = w.wallet_id THEN t.amount
+              WHEN t.type = 'Transfer'
+                AND t.transfer_from_wallet_id IS NULL
+                AND t.wallet_id = w.wallet_id
+                AND (t.description ILIKE 'Transfer to%' OR t.description ILIKE 'Transfer Out to%')
+              THEN t.amount
               ELSE 0 END), 0)
           ) as calculated_balance
         FROM wallets w
         LEFT JOIN transactions t 
-          ON t.wallet_id = w.wallet_id AND t.account_id = w.account_id
+          ON t.account_id = w.account_id
         WHERE w.account_id = ${account.acc_id}
         GROUP BY w.wallet_id
         ORDER BY w.created_at ASC
@@ -183,6 +205,8 @@ export default async function handler(req, res) {
         WHERE account_id = ${account.acc_id}
           AND (
             wallet_id = ${wallet_id}
+            OR transfer_from_wallet_id = ${wallet_id}
+            OR transfer_to_wallet_id = ${wallet_id}
             OR (wallet_id IS NULL AND wallet_type = ${walletName})
           )
       `;

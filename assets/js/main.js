@@ -531,11 +531,22 @@
 		}
 
 		function getUserData() {
-			const userStr = localStorage.getItem('bbm_user');
-			return userStr ? JSON.parse(userStr) : null;
+			try {
+				const userStr = localStorage.getItem('bbm_user');
+				if (!userStr || userStr === 'undefined') return null;
+				return JSON.parse(userStr);
+			} catch (e) {
+				console.error('Error parsing user data:', e);
+				localStorage.removeItem('bbm_user');
+				return null;
+			}
 		}
 
 		function setUserData(userData) {
+			if (!userData) {
+				localStorage.removeItem('bbm_user');
+				return;
+			}
 			localStorage.setItem('bbm_user', JSON.stringify(userData));
 		}
 
@@ -792,8 +803,11 @@
 				const payload = await readResponsePayload(res);
 				if (!res.ok) throw new Error(getErrorMessage(payload, 'Failed to update profile'));
 
+				const updatedData = payload.json?.data;
+				if (!updatedData) throw new Error('Update successful but no data returned');
+
 				// Update Local Storage
-				setUserData(payload.data);
+				setUserData(updatedData);
 				
 				// Apply changes to UI
 				loadUserProfileData();
@@ -801,6 +815,7 @@
 				
 				showToast('Profile Updated successfully');
 			} catch (err) {
+				console.error('Save Profile Error:', err);
 				showToast(err.message, 'error');
 			} finally {
 				hideCoinLoader();

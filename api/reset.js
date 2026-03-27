@@ -1,6 +1,7 @@
 import { neon } from '@neondatabase/serverless';
 import crypto from 'crypto';
 import { sendPasswordResetEmail } from './mailer.js';
+import { ensurePasswordResetSchema } from './schema.js';
 
 const sql = neon(process.env.DATABASE_URL);
 
@@ -24,6 +25,8 @@ async function handleForgotPassword(req, res) {
   }
 
   try {
+    await ensurePasswordResetSchema();
+
     const accounts = await sql`
       SELECT acc_id, username, email
       FROM accounts
@@ -43,13 +46,18 @@ async function handleForgotPassword(req, res) {
     const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
 
     // Remove any existing tokens for this user, then insert new one
-    await sql`DELETE FROM "PasswordResetTokens" WHERE "userId" = ${user.acc_id}`;
+    await sql`DELETE FROM password_resets WHERE account_id = ${user.acc_id}`;
     await sql`
-      INSERT INTO "PasswordResetTokens" ("userId", "tokenHash", "expiresAt")
-      VALUES (${user.acc_id}, ${tokenHash}, ${expiresAt})
+      INSERT INTO password_resets (account_id, reset_token, token_hash, expires_at)
+      VALUES (${user.acc_id}, ${resetToken}, ${tokenHash}, ${expiresAt})
     `;
 
-    await sendPasswordResetEmail(user.email, resetToken, user.username);
+    try {
+      await sendPasswordResetEmail(user.email, resetToken, user.username);
+    } catch (mailError) {
+      // Keep response generic to avoid account enumeration and prevent UX-breaking 500s.
+      console.error('Password reset email delivery failed:', mailError);
+    }
 
     return res.status(200).json({
       message: 'If an account exists, a password reset link has been sent to your email'
@@ -77,14 +85,17 @@ async function handleResetPassword(req, res) {
   }
 
   try {
+    await ensurePasswordResetSchema();
+
     const tokenHash = hashToken(token);
 
     const records = await sql`
-      SELECT t.id, t."userId", a.email, a.username
-      FROM "PasswordResetTokens" t
-      JOIN accounts a ON t."userId" = a.acc_id
-      WHERE t."tokenHash" = ${tokenHash}
-        AND t."expiresAt" > NOW()
+      SELECT t.reset_id, t.account_id, a.email, a.username
+      FROM password_resets t
+      JOIN accounts a ON t.account_id = a.acc_id
+      WHERE t.token_hash = ${tokenHash}
+        AND t.expires_at > NOW()
+        AND t.used_at IS NULL
     `;
 
     if (records.length === 0) {
@@ -93,11 +104,11 @@ async function handleResetPassword(req, res) {
       });
     }
 
-    const { id, userId } = records[0];
+    const { reset_id: resetId, account_id: accountId } = records[0];
     const hashedPassword = hashPassword(newPassword);
 
-    await sql`UPDATE accounts SET password = ${hashedPassword} WHERE acc_id = ${userId}`;
-    await sql`DELETE FROM "PasswordResetTokens" WHERE id = ${id}`;
+    await sql`UPDATE accounts SET password = ${hashedPassword} WHERE acc_id = ${accountId}`;
+    await sql`UPDATE password_resets SET used_at = NOW() WHERE reset_id = ${resetId}`;
 
     return res.status(200).json({
       success: true,
@@ -118,14 +129,17 @@ async function handleVerifyToken(req, res) {
   }
 
   try {
+    await ensurePasswordResetSchema();
+
     const tokenHash = hashToken(token);
 
     const records = await sql`
       SELECT a.email, a.username
-      FROM "PasswordResetTokens" t
-      JOIN accounts a ON t."userId" = a.acc_id
-      WHERE t."tokenHash" = ${tokenHash}
-        AND t."expiresAt" > NOW()
+      FROM password_resets t
+      JOIN accounts a ON t.account_id = a.acc_id
+      WHERE t.token_hash = ${tokenHash}
+        AND t.expires_at > NOW()
+        AND t.used_at IS NULL
     `;
 
     if (records.length === 0) {

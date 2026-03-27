@@ -10,6 +10,40 @@ function getSql() {
   return neon(dbUrl);
 }
 
+async function ensurePasswordResetTokensSchema(sql) {
+  await sql`
+    CREATE TABLE IF NOT EXISTS "PasswordResetTokens" (
+      id SERIAL PRIMARY KEY,
+      "userId" INTEGER NOT NULL REFERENCES accounts(acc_id) ON DELETE CASCADE,
+      "tokenHash" TEXT NOT NULL UNIQUE,
+      "expiresAt" TIMESTAMPTZ NOT NULL,
+      "createdAt" TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `;
+
+  await sql`CREATE INDEX IF NOT EXISTS idx_prt_user_id ON "PasswordResetTokens"("userId")`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_prt_expires_at ON "PasswordResetTokens"("expiresAt")`;
+
+  const expiresAtMeta = await sql`
+    SELECT data_type
+    FROM information_schema.columns
+    WHERE table_schema = 'public'
+      AND table_name = 'PasswordResetTokens'
+      AND column_name = 'expiresAt'
+    LIMIT 1
+  `;
+
+  // If legacy schema used DATE, convert to TIMESTAMPTZ to preserve hourly expiration logic.
+  if (expiresAtMeta[0]?.data_type === 'date') {
+    await sql`
+      ALTER TABLE "PasswordResetTokens"
+      ALTER COLUMN "expiresAt"
+      TYPE TIMESTAMPTZ
+      USING ("expiresAt"::timestamptz + INTERVAL '1 day' - INTERVAL '1 second')
+    `;
+  }
+}
+
 async function parseRequestBody(req) {
   if (req.body && typeof req.body === 'object') {
     return req.body;
@@ -60,6 +94,7 @@ async function handleForgotPassword(req, res) {
 
   try {
     const sql = getSql();
+    await ensurePasswordResetTokensSchema(sql);
 
     const accounts = await sql`
       SELECT acc_id, username, email
@@ -125,6 +160,7 @@ async function handleResetPassword(req, res) {
 
   try {
     const sql = getSql();
+    await ensurePasswordResetTokensSchema(sql);
 
     const tokenHash = hashToken(token);
 
@@ -182,6 +218,7 @@ async function handleVerifyToken(req, res) {
 
   try {
     const sql = getSql();
+    await ensurePasswordResetTokensSchema(sql);
 
     const tokenHash = hashToken(token);
 

@@ -2580,10 +2580,25 @@ body.dark-mode .wallet-stat-card {
     justify-content: center;
 }
 
+.guest-hero-actions .btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	min-width: 180px;
+	height: 54px;
+}
+
+.guest-hero-actions .btn-primary {
+	margin-top: 0;
+	width: auto;
+}
+
 .guest-hero-actions .btn-secondary-outline {
     color: #000;
     background-color: rgba(255, 255, 255, 0.9);
     border: 2px solid var(--primary-green);
+	width: auto;
 }
 
 .guest-hero-actions .btn-secondary-outline:hover {

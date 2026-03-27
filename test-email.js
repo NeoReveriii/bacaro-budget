@@ -1,5 +1,5 @@
 // Test email service connection
-import { verifyEmailConnection } from './email-service.js';
+import { verifyEmailConnection } from './api/mailer.js';
 
 async function testEmailService() {
   console.log('Testing email service connection...');

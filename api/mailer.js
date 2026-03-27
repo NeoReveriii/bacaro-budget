@@ -3,8 +3,8 @@ import nodemailer from 'nodemailer';
 function getTransportConfig() {
   const smtpHost = process.env.SMTP_HOST;
   const smtpPort = parseInt(process.env.SMTP_PORT || '', 10);
-  const smtpUser = process.env.SMTP_USER || process.env.GMAIL_USER;
-  const smtpPass = process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD;
+  const smtpUser = process.env.SMTP_USER || process.env.GMAIL_USER || process.env.EMAIL_USER;
+  const smtpPass = process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD || process.env.EMAIL_PASS;
 
   if (smtpHost) {
     return {
@@ -18,8 +18,8 @@ function getTransportConfig() {
   return {
     service: 'gmail',
     auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_APP_PASSWORD
+      user: process.env.GMAIL_USER || process.env.EMAIL_USER,
+      pass: (process.env.GMAIL_APP_PASSWORD || process.env.EMAIL_PASS || '').replace(/\s+/g, '')
     }
   };
 }
@@ -27,7 +27,7 @@ function getTransportConfig() {
 const transporter = nodemailer.createTransport(getTransportConfig());
 
 function getFrontendUrl() {
-  const configured = process.env.FRONTEND_URL;
+  const configured = process.env.FRONTEND_URL || process.env.BASE_URL;
   if (configured) return configured.replace(/\/$/, '');
 
   const vercelUrl = process.env.VERCEL_URL;
@@ -42,17 +42,17 @@ export async function sendPasswordResetEmail(email, resetToken, username) {
     throw new Error('FRONTEND_URL or VERCEL_URL must be configured');
   }
 
-  if (!process.env.GMAIL_USER && !process.env.SMTP_USER) {
-    throw new Error('Missing sender credentials: set GMAIL_USER or SMTP_USER');
+  if (!process.env.GMAIL_USER && !process.env.SMTP_USER && !process.env.EMAIL_USER) {
+    throw new Error('Missing sender credentials: set GMAIL_USER, EMAIL_USER, or SMTP_USER');
   }
 
-  if (!process.env.GMAIL_APP_PASSWORD && !process.env.SMTP_PASS) {
-    throw new Error('Missing sender password: set GMAIL_APP_PASSWORD or SMTP_PASS');
+  if (!process.env.GMAIL_APP_PASSWORD && !process.env.SMTP_PASS && !process.env.EMAIL_PASS) {
+    throw new Error('Missing sender password: set GMAIL_APP_PASSWORD, EMAIL_PASS, or SMTP_PASS');
   }
 
   const resetLink = `${frontendUrl}/reset-password?token=${resetToken}`;
 
-  const sender = process.env.SMTP_USER || process.env.GMAIL_USER;
+  const sender = process.env.SMTP_USER || process.env.GMAIL_USER || process.env.EMAIL_USER;
 
   const info = await transporter.sendMail({
     from: `"Bacaro Budget" <${sender}>`,

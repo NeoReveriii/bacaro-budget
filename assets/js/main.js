@@ -23,6 +23,7 @@
 				    const isOpen = accountSidebar.classList.toggle('open');
                     if (isOpen) {
                         overlay.classList.add('active');
+						if (typeof lucide !== 'undefined') lucide.createIcons();
                     } else if (!document.getElementById('main-sidebar')?.classList.contains('open')) {
                         overlay.classList.remove('active');
                     }

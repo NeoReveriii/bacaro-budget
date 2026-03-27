@@ -561,48 +561,43 @@
 		<div id="account-sidebar" class="account-drawer">
 			<div class="drawer-header">
 				<h3>Account Details</h3>
-				<button class="close-drawer" onclick="toggleAccountSidebar()">&times;</button>
+				<button class="close-drawer" onclick="toggleAccountSidebar()" title="Close">&times;</button>
 			</div>
-
+	
 			<div class="drawer-content">
 				<div class="profile-section">
-					<div class="large-pfp"
-						style="background-color: var(--primary-green); display: flex; align-items: center; justify-content: center; font-size: 2em; color: white; font-weight: bold;"
-						id="profile-initials">
-						--
-					</div>
-					<h3 style="margin-top: 15px; color: var(--white);" id="profile-username">Loading...</h3>
+					<div class="large-pfp" id="profile-initials">--</div>
+					<h3 id="profile-username">Loading...</h3>
 				</div>
-
-				<div class="account-info"
-					style="margin-top: 20px; text-align: left; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px;">
-					<div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9em;">
-						<span style="opacity: 0.6;">Email:</span>
-						<span id="profile-email">--</span>
+	
+				<div class="account-info">
+					<div class="info-row">
+						<span class="info-label">Email:</span>
+						<span class="info-value" id="profile-email">--</span>
 					</div>
-					<div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9em;">
-						<span style="opacity: 0.6;">Phone:</span>
-						<span id="profile-phone">--</span>
+					<div class="info-row">
+						<span class="info-label">Phone:</span>
+						<span class="info-value" id="profile-phone">--</span>
 					</div>
-					<div style="display: flex; justify-content: space-between; font-size: 0.9em;">
-						<span style="opacity: 0.6;">Member Since:</span>
-						<span id="profile-createdat">--</span>
+					<div class="info-row">
+						<span class="info-label">Member Since:</span>
+						<span class="info-value" id="profile-createdat">--</span>
 					</div>
 				</div>
-
-				<div class="drawer-nav"
-					style="margin-top: 30px; display: flex; flex-direction: column; gap: 15px; text-align: left;">
-					<a href="#" style="color: white; text-decoration: none; font-size: 0.9em; font-weight: 600;">Edit
-						Profile</a>
-					<a href="#"
-						style="color: white; text-decoration: none; font-size: 0.9em; font-weight: 600;">Security &
-						Privacy</a>
+	
+				<div class="drawer-nav">
+					<a href="#" class="drawer-nav-item">
+						<i data-lucide="user"></i> Edit Profile
+					</a>
+					<a href="#" class="drawer-nav-item">
+						<i data-lucide="shield"></i> Security & Privacy
+					</a>
 				</div>
 			</div>
-
+	
 			<div class="drawer-footer">
-				<button class="btn btn-primary" style="background-color: #ff7675" onclick="handleLogout()">
-					LOG OUT
+				<button class="btn-logout" onclick="handleLogout()">
+					<i data-lucide="log-out"></i> LOG OUT
 				</button>
 			</div>
 		</div>

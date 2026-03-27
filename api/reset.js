@@ -3,7 +3,41 @@ import crypto from 'crypto';
 import { sendPasswordResetEmail } from './mailer.js';
 import { ensurePasswordResetSchema } from './schema.js';
 
-const sql = neon(process.env.DATABASE_URL);
+function getSql() {
+  const dbUrl = process.env.DATABASE_URL;
+  if (!dbUrl) {
+    throw new Error('DATABASE_URL is not configured');
+  }
+  return neon(dbUrl);
+}
+
+async function parseRequestBody(req) {
+  if (req.body && typeof req.body === 'object') {
+    return req.body;
+  }
+
+  if (typeof req.body === 'string' && req.body.trim()) {
+    try {
+      return JSON.parse(req.body);
+    } catch {
+      return {};
+    }
+  }
+
+  const chunks = [];
+  for await (const chunk of req) {
+    chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk);
+  }
+
+  const raw = Buffer.concat(chunks).toString('utf8').trim();
+  if (!raw) return {};
+
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return {};
+  }
+}
 
 function generateResetToken() {
   return crypto.randomBytes(32).toString('hex');
@@ -18,13 +52,15 @@ function hashPassword(password) {
 }
 
 async function handleForgotPassword(req, res) {
-  const { email } = req.body;
+  const body = await parseRequestBody(req);
+  const email = String(body?.email || '').trim();
 
   if (!email) {
     return res.status(400).json({ error: 'Email is required' });
   }
 
   try {
+    const sql = getSql();
     await ensurePasswordResetSchema();
 
     const accounts = await sql`
@@ -70,7 +106,10 @@ async function handleForgotPassword(req, res) {
 }
 
 async function handleResetPassword(req, res) {
-  const { token, newPassword, confirmPassword } = req.body;
+  const body = await parseRequestBody(req);
+  const token = String(body?.token || '').trim();
+  const newPassword = String(body?.newPassword || '');
+  const confirmPassword = String(body?.confirmPassword || '');
 
   if (!token || !newPassword || !confirmPassword) {
     return res.status(400).json({ error: 'Token and passwords are required' });
@@ -85,6 +124,7 @@ async function handleResetPassword(req, res) {
   }
 
   try {
+    const sql = getSql();
     await ensurePasswordResetSchema();
 
     const tokenHash = hashToken(token);
@@ -129,6 +169,7 @@ async function handleVerifyToken(req, res) {
   }
 
   try {
+    const sql = getSql();
     await ensurePasswordResetSchema();
 
     const tokenHash = hashToken(token);
@@ -161,13 +202,22 @@ async function handleVerifyToken(req, res) {
 export default async function handler(req, res) {
   const { method, query } = req;
 
-  if (method === 'POST' && query.action === 'forgot') {
-    return handleForgotPassword(req, res);
-  } else if (method === 'POST' && query.action === 'reset') {
-    return handleResetPassword(req, res);
-  } else if (method === 'GET' && query.action === 'verify') {
-    return handleVerifyToken(req, res);
-  } else {
+  try {
+    if (!process.env.DATABASE_URL) {
+      return res.status(500).json({ error: 'Server is missing DATABASE_URL configuration' });
+    }
+
+    if (method === 'POST' && query.action === 'forgot') {
+      return handleForgotPassword(req, res);
+    } else if (method === 'POST' && query.action === 'reset') {
+      return handleResetPassword(req, res);
+    } else if (method === 'GET' && query.action === 'verify') {
+      return handleVerifyToken(req, res);
+    }
+
     return res.status(405).json({ error: 'Method not allowed' });
+  } catch (error) {
+    console.error('Reset API unhandled error:', error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }

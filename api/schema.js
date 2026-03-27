@@ -1,8 +1,15 @@
 import { neon } from '@neondatabase/serverless';
 
-const sql = neon(process.env.DATABASE_URL);
+function getSql() {
+  const dbUrl = process.env.DATABASE_URL;
+  if (!dbUrl) {
+    throw new Error('DATABASE_URL is not configured');
+  }
+  return neon(dbUrl);
+}
 
 export async function ensurePasswordResetSchema() {
+  const sql = getSql();
   const reg = await sql`SELECT to_regclass('public.password_resets') AS reg`;
   const exists = Boolean(reg?.[0]?.reg);
 
@@ -28,6 +35,7 @@ export async function ensurePasswordResetSchema() {
 }
 
 export async function ensureAccountsSchema() {
+  const sql = getSql();
   // Check if password reset attempt tracking column exists
   const columnCheck = await sql`
     SELECT EXISTS (

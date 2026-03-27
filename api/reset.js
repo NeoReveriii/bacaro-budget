@@ -66,7 +66,7 @@ async function handleForgotPassword(req, res) {
     const accounts = await sql`
       SELECT acc_id, username, email
       FROM accounts
-      WHERE email = ${email.toLowerCase()}
+      WHERE LOWER(email) = LOWER(${email})
     `;
 
     // Security: don't reveal whether the email exists
@@ -88,15 +88,14 @@ async function handleForgotPassword(req, res) {
       VALUES (${user.acc_id}, ${resetToken}, ${tokenHash}, ${expiresAt})
     `;
 
-    try {
-      await sendPasswordResetEmail(user.email, resetToken, user.username);
-    } catch (mailError) {
-      // Keep response generic to avoid account enumeration and prevent UX-breaking 500s.
-      console.error('Password reset email delivery failed:', mailError);
-    }
+    const delivery = await sendPasswordResetEmail(user.email, resetToken, user.username);
 
     return res.status(200).json({
-      message: 'If an account exists, a password reset link has been sent to your email'
+      message: 'If an account exists, a password reset link has been sent to your email',
+      delivery: {
+        acceptedCount: Array.isArray(delivery?.accepted) ? delivery.accepted.length : 0,
+        messageId: delivery?.messageId || null
+      }
     });
 
   } catch (error) {

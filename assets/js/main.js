@@ -411,6 +411,15 @@
 				transWallet.innerHTML = `<option value="" selected disabled hidden></option>${options}<option value="Other">Other</option>`;
 			}
 
+			const filterWallet = document.getElementById('tx-filter-wallet');
+			if (filterWallet) {
+				const currentVal = filterWallet.value;
+				filterWallet.innerHTML = `<option value="all">All Wallets</option>${options}`;
+				if (currentVal && currentVal !== 'all') {
+					filterWallet.value = currentVal;
+				}
+			}
+
 			const transferFrom = document.getElementById('transfer-from');
 			const transferTo = document.getElementById('transfer-to');
 			if (transferFrom && !transferFrom.dataset.boundSync) {
@@ -1297,16 +1306,29 @@
                 const amount = Number(deletedTx.amount);
                 const type = String(deletedTx.type).toLowerCase();
 
-                if (type === 'income' || (type === 'transfer' && deletedTx.description.toLowerCase().includes('from'))) {
-                    balanceChange = -amount;
-                } else if (type === 'expense' || (type === 'transfer' && deletedTx.description.toLowerCase().includes('to'))) {
-                    balanceChange = +amount;
-                }
+                if (type === 'transfer' && deletedTx.transfer_from_wallet_id && deletedTx.transfer_to_wallet_id) {
+                    if (window.wallets) {
+                        const fromIdx = window.wallets.findIndex(w => w.wallet_id === deletedTx.transfer_from_wallet_id);
+                        if (fromIdx !== -1) {
+                            window.wallets[fromIdx].calculated_balance = Number(window.wallets[fromIdx].calculated_balance) + amount;
+                        }
+                        const toIdx = window.wallets.findIndex(w => w.wallet_id === deletedTx.transfer_to_wallet_id);
+                        if (toIdx !== -1) {
+                            window.wallets[toIdx].calculated_balance = Number(window.wallets[toIdx].calculated_balance) - amount;
+                        }
+                    }
+                } else {
+                    if (type === 'income' || (type === 'transfer' && deletedTx.description.toLowerCase().includes('from'))) {
+                        balanceChange = -amount;
+                    } else if (type === 'expense' || (type === 'transfer' && deletedTx.description.toLowerCase().includes('to'))) {
+                        balanceChange = +amount;
+                    }
 
-                if (walletId && window.wallets) {
-                    const walletIndex = window.wallets.findIndex(w => w.wallet_id === walletId);
-                    if (walletIndex !== -1) {
-                        window.wallets[walletIndex].calculated_balance = Number(window.wallets[walletIndex].calculated_balance) + balanceChange;
+                    if (walletId && window.wallets) {
+                        const walletIndex = window.wallets.findIndex(w => w.wallet_id === walletId);
+                        if (walletIndex !== -1) {
+                            window.wallets[walletIndex].calculated_balance = Number(window.wallets[walletIndex].calculated_balance) + balanceChange;
+                        }
                     }
                 }
 
@@ -1362,6 +1384,9 @@
 						body: JSON.stringify({ id })
 					});
 					if (!res.ok) throw new Error('Delete failed');
+
+					// Refresh wallets to ensure backend consistency
+					await loadWallets();
 				} catch (err) {
                     // 5. Rollback on failure
 					showToast('Error deleting transaction. Rolling back...', 'error');
@@ -1531,23 +1556,25 @@
                     });
                 }
 
-                function renderTransactions(rows) {			const listEl = document.getElementById('transaction-list-items');
+           		function renderTransactions(rows) {			const listEl = document.getElementById('transaction-list-items');
 			if (!listEl) return;
-
-			if (!rows || rows.length === 0) {
-				listEl.innerHTML = `<div class="empty-history"><p>No transactions found.</p></div>`;
-				return;
-			}
 			
-			window.currentTransactions = rows;
+			window.currentTransactions = rows || [];
 
-			listEl.innerHTML = rows
-				.map((row, idx) => renderTransactionItem(row, idx + 1))
-				.join('');
+			if (typeof window.applyTransactionFilters === 'function' && document.getElementById('tx-filter-type')) {
+				window.applyTransactionFilters();
+			} else {
+				if (!rows || rows.length === 0) {
+					listEl.innerHTML = `<div class="empty-history"><p>No transactions found.</p></div>`;
+					return;
+				}
+				listEl.innerHTML = rows
+					.map((row, idx) => renderTransactionItem(row, idx + 1))
+					.join('');
 
-			// Re-initialize icons for the new elements
-			if (typeof lucide !== 'undefined') {
-				lucide.createIcons();
+				if (typeof lucide !== 'undefined') {
+					lucide.createIcons();
+				}
 			}
 		}
 
@@ -1598,6 +1625,85 @@
 				</div>
 			`;
 		}
+
+		window.applyTransactionFilters = function() {
+			if (!window.currentTransactions) return;
+			
+			const searchStr = (document.getElementById('tx-search')?.value || '').toLowerCase();
+			const typeFilter = document.getElementById('tx-filter-type')?.value || 'all';
+			const walletFilter = document.getElementById('tx-filter-wallet')?.value || 'all';
+			const dateFilter = document.getElementById('tx-filter-date')?.value || 'all';
+			
+			let filtered = window.currentTransactions;
+			
+			if (searchStr) {
+				filtered = filtered.filter(t => 
+					(t.description || t.title || '').toLowerCase().includes(searchStr) ||
+					(t.amount || '').toString().includes(searchStr) ||
+					(t.wallet_type || '').toLowerCase().includes(searchStr)
+				);
+			}
+			
+			if (typeFilter !== 'all') {
+				filtered = filtered.filter(t => String(t.type || '').toLowerCase() === typeFilter);
+			}
+			
+			if (walletFilter !== 'all') {
+				const filterOpt = document.querySelector(`#tx-filter-wallet option[value="${walletFilter}"]`);
+				const walletName = filterOpt ? filterOpt.dataset.name : null;
+				filtered = filtered.filter(t => {
+					if (walletName && t.wallet_type === walletName) return true;
+					if (String(t.wallet_id) === walletFilter) return true;
+					return false;
+				});
+			}
+			
+			if (dateFilter !== 'all') {
+				const now = new Date();
+				now.setHours(0,0,0,0);
+				
+				filtered = filtered.filter(t => {
+					const d = new Date(t.dateoftrans || t.date);
+					if (isNaN(d.getTime())) return false;
+					d.setHours(0,0,0,0);
+					
+					if (dateFilter === 'today') return d.getTime() === now.getTime();
+					if (dateFilter === 'yesterday') {
+						const yest = new Date(now);
+						yest.setDate(yest.getDate() - 1);
+						return d.getTime() === yest.getTime();
+					}
+					if (dateFilter === 'this_week') {
+						const diff = now.getDate() - now.getDay();
+						const startOfWeek = new Date(now);
+						startOfWeek.setDate(diff);
+						return d >= startOfWeek;
+					}
+					if (dateFilter === 'this_month') {
+						return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+					}
+					if (dateFilter === 'last_6_months') {
+						const sixMonthsAgo = new Date(now);
+						sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+						return d >= sixMonthsAgo;
+					}
+					if (dateFilter === 'this_year') {
+						return d.getFullYear() === now.getFullYear();
+					}
+					return true;
+				});
+			}
+			
+			const listEl = document.getElementById('transaction-list-items');
+			if (!listEl) return;
+			
+			if (filtered.length === 0) {
+				listEl.innerHTML = `<div class="empty-history"><p>No transactions match your filters.</p></div>`;
+			} else {
+				listEl.innerHTML = filtered.map((row, idx) => renderTransactionItem(row, idx + 1)).join('');
+				if (typeof lucide !== 'undefined') lucide.createIcons();
+			}
+		};
 
 window.goals = [];
 

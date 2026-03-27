@@ -2,6 +2,13 @@
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/", "destination": "/views/guest.html" },
-    { "source": "/dashboard", "destination": "/views/dashboard.html" }
+    { "source": "/dashboard", "destination": "/views/dashboard.html" },
+    { "source": "/dashboard.html", "destination": "/views/dashboard.html" },
+    { "source": "/guest", "destination": "/views/guest.html" },
+    { "source": "/guest.html", "destination": "/views/guest.html" },
+    { "source": "/forgot-password", "destination": "/views/forgot-password.html" },
+    { "source": "/forgot-password.html", "destination": "/views/forgot-password.html" },
+    { "source": "/reset-password", "destination": "/views/reset-password.html" },
+    { "source": "/reset-password.html", "destination": "/views/reset-password.html" }
   ]
 }

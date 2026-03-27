@@ -1919,8 +1919,7 @@ window.handleDeleteGoal = async function(goalId, title) {
 						hideCoinLoader();
 						closeAllModals();
 						showToast('Transfer completed successfully');
-						await loadTransactions();
-						await loadWallets();
+						await Promise.all([loadTransactions(), loadWallets()]);
 					} catch (err) {
 						messageDiv.innerHTML = escapeHtml(err.message);
 						messageDiv.className = 'message error';
@@ -2250,8 +2249,7 @@ window.handleDeleteGoal = async function(goalId, title) {
 						resetTransactionForm();
 						hideCoinLoader();
 						closeTransactionModal();
-						await loadTransactions();
-						await loadWallets(); // Refresh wallet balances
+						await Promise.all([loadTransactions(), loadWallets()]); // Refresh wallet balances
 						showToast(transId ? 'Transaction updated' : 'Transaction saved', 'success');
 					} catch (err) {
 						hideCoinLoader();

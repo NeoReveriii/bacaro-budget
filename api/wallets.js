@@ -3,6 +3,10 @@ import crypto from 'crypto';
 
 const sql = neon(process.env.DATABASE_URL);
 const AUTH_SECRET = process.env.AUTH_SECRET;
+const SCHEMA_CACHE_TTL_MS = 5 * 60 * 1000;
+
+let walletsSchemaValidatedAt = 0;
+let walletsSchemaValidationPromise = null;
 
 function getBearerToken(req) {
   const header = req.headers?.authorization || req.headers?.Authorization;
@@ -92,13 +96,31 @@ async function ensureTransactionTransferColumns() {
   await sql`CREATE INDEX IF NOT EXISTS idx_transactions_transfer_to_wallet_id ON transactions(transfer_to_wallet_id)`;
 }
 
+async function ensureWalletSchemasCached() {
+  const now = Date.now();
+  if (now - walletsSchemaValidatedAt < SCHEMA_CACHE_TTL_MS) return;
+
+  if (!walletsSchemaValidationPromise) {
+    walletsSchemaValidationPromise = (async () => {
+      await ensureWalletsSchema();
+      await ensureTransactionTransferColumns();
+      walletsSchemaValidatedAt = Date.now();
+    })();
+  }
+
+  try {
+    await walletsSchemaValidationPromise;
+  } finally {
+    walletsSchemaValidationPromise = null;
+  }
+}
+
 export default async function handler(req, res) {
   try {
     const account = await requireAccount(req, res);
     if (!account) return;
 
-    await ensureWalletsSchema();
-    await ensureTransactionTransferColumns();
+    await ensureWalletSchemasCached();
 
     if (req.method === 'GET') {
       const rows = await sql`

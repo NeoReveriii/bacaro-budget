@@ -3,6 +3,10 @@ import crypto from 'crypto';
 
 const sql = neon(process.env.DATABASE_URL);
 const AUTH_SECRET = process.env.AUTH_SECRET;
+const SCHEMA_CACHE_TTL_MS = 5 * 60 * 1000;
+
+let txSchemaValidatedAt = 0;
+let txSchemaValidationPromise = null;
 
 const EXPECTED_TRANSACTION_COLUMNS = [
   'trans_id',
@@ -197,6 +201,29 @@ function normalizeType(value) {
   return t;
 }
 
+async function ensureTransactionsSchemaCached() {
+  const now = Date.now();
+  if (now - txSchemaValidatedAt < SCHEMA_CACHE_TTL_MS) return;
+
+  if (!txSchemaValidationPromise) {
+    txSchemaValidationPromise = (async () => {
+      await ensureTransactionsSchema();
+      const cols = await getTransactionColumns();
+      const missing = EXPECTED_TRANSACTION_COLUMNS.filter(c => !cols.has(c));
+      if (missing.length > 0) {
+        throw new Error(`Unsupported transactions schema. Missing: ${missing.join(', ')}`);
+      }
+      txSchemaValidatedAt = Date.now();
+    })();
+  }
+
+  try {
+    await txSchemaValidationPromise;
+  } finally {
+    txSchemaValidationPromise = null;
+  }
+}
+
 export default async function handler(req, res) {
   const { method } = req;
 
@@ -204,20 +231,9 @@ export default async function handler(req, res) {
     const account = await requireAccount(req, res);
     if (!account) return;
 
-    await ensureTransactionsSchema();
-    const cols = await getTransactionColumns();
-    const missing = EXPECTED_TRANSACTION_COLUMNS.filter(c => !cols.has(c));
+    await ensureTransactionsSchemaCached();
 
     if (method === 'GET') {
-      if (missing.length > 0) {
-        return res.status(500).json({
-          error: 'Unsupported transactions table schema',
-          expected_columns: EXPECTED_TRANSACTION_COLUMNS,
-          actual_columns: Array.from(cols.values()).sort(),
-          missing_columns: missing
-        });
-      }
-
       const rows = await sql`
         SELECT trans_id, description, type, wallet_type, wallet_id, transfer_from_wallet_id, transfer_to_wallet_id, amount, account_id, dateoftrans
         FROM transactions
@@ -243,15 +259,6 @@ export default async function handler(req, res) {
         }
         if (!Number.isFinite(amountNum) || amountNum <= 0) {
           return res.status(400).json({ error: 'Amount must be a number greater than 0' });
-        }
-
-        if (missing.length > 0) {
-          return res.status(500).json({
-            error: 'Unsupported transactions table schema',
-            expected_columns: EXPECTED_TRANSACTION_COLUMNS,
-            actual_columns: Array.from(cols.values()).sort(),
-            missing_columns: missing
-          });
         }
 
         const walletRows = await sql`
@@ -368,15 +375,6 @@ export default async function handler(req, res) {
 
       const now = new Date();
 
-      if (missing.length > 0) {
-        return res.status(500).json({
-          error: 'Unsupported transactions table schema',
-          expected_columns: EXPECTED_TRANSACTION_COLUMNS,
-          actual_columns: Array.from(cols.values()).sort(),
-          missing_columns: missing
-        });
-      }
-
       const inserted = await sql`
         INSERT INTO transactions (description, type, wallet_type, wallet_id, transfer_from_wallet_id, transfer_to_wallet_id, amount, account_id, dateoftrans)
         VALUES (${description}, ${type}, ${walletType}, ${walletId}, NULL, NULL, ${amountNum}, ${account.acc_id}, ${now})
@@ -395,15 +393,6 @@ export default async function handler(req, res) {
       const patchWalletId = req.body?.wallet_id ? parseInt(req.body.wallet_id) : null;
       const patchAmount = req.body?.amount ?? null;
 
-      if (missing.length > 0) {
-        return res.status(500).json({
-          error: 'Unsupported transactions table schema',
-          expected_columns: EXPECTED_TRANSACTION_COLUMNS,
-          actual_columns: Array.from(cols.values()).sort(),
-          missing_columns: missing
-        });
-      }
-
       const updated = await sql`
         UPDATE transactions
         SET description = COALESCE(${patchDescription}, description),
@@ -419,15 +408,6 @@ export default async function handler(req, res) {
     } else if (method === 'DELETE') {
       const id = req.body?.trans_id ?? req.body?.id;
       if (!id) return res.status(400).json({ error: 'Transaction ID required' });
-
-      if (missing.length > 0) {
-        return res.status(500).json({
-          error: 'Unsupported transactions table schema',
-          expected_columns: EXPECTED_TRANSACTION_COLUMNS,
-          actual_columns: Array.from(cols.values()).sort(),
-          missing_columns: missing
-        });
-      }
 
       const deleted = await sql`
         DELETE FROM transactions

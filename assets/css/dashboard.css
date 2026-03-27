@@ -3489,3 +3489,90 @@ body.dark-mode .cash-flow-chart-container h3 {
     color: #edf1ee !important;
 }
 
+/* --- Transaction Filters --- */
+.transaction-filters {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+}
+
+.tx-search-box {
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+    display: flex; /* Keep icon aligned properly */
+}
+
+.tx-search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    color: rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    z-index: 1;
+}
+
+body.dark-mode .tx-search-icon {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.tx-filter-input, .tx-filter-select {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background: var(--card-bg);
+    color: var(--dark-green);
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s ease;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.tx-filter-input {
+    width: 100%;
+    padding-left: 36px; /* Space for the search icon */
+}
+
+.tx-filter-select {
+    min-width: 140px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='3 5 6 8 9 5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+}
+
+body.dark-mode .tx-filter-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23edf1ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='3 5 6 8 9 5'/%3E%3C/svg%3E");
+}
+
+.tx-filter-input:focus, .tx-filter-select:focus {
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 2px rgba(89, 133, 57, 0.2);
+}
+
+body.dark-mode .tx-filter-input, 
+body.dark-mode .tx-filter-select {
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #edf1ee;
+}
+
+@media (max-width: 768px) {
+    .transaction-filters {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    .tx-filter-select {
+        width: 100%;
+    }
+}
+

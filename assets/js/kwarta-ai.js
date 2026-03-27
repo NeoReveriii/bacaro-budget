@@ -267,8 +267,8 @@ async function handleSendMessage() {
         const reader = res.body.getReader();
         const decoder = new TextDecoder("utf-8");
         
-        bubble.innerHTML = ''; // remove "thinking..."
-        bubble.classList.remove('loading-indicator');
+        bubble.innerHTML = ''; // remove initial skeletons
+        bubble.className = 'msg-bubble stream-target'; // Reset classes to remove skeleton/loading
         
         while (true) {
             const { done, value } = await reader.read();

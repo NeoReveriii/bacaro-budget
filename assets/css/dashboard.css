@@ -660,7 +660,7 @@
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			padding: 8px 0;
+			padding: 10px 0;
 			border-bottom: 1px solid var(--drawer-border);
 		}
 
@@ -670,13 +670,15 @@
 
 		.info-label {
 			color: var(--drawer-card-label);
-			font-size: 0.85em;
-			font-weight: 600;
+			font-size: 0.8em;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
 		}
 
 		.info-value {
-			font-size: 0.9em;
-			font-weight: 600;
+			font-size: 0.95em;
+			font-weight: 500;
 			color: var(--white);
 			max-width: 65%;
 			text-align: right;
@@ -688,17 +690,18 @@
 			width: 100%;
 			max-width: 100%;
 			display: block;
-			margin-top: 5px;
-			font-size: 0.85em;
+			margin-top: 4px;
+			font-size: 0.9em;
 			font-weight: 400;
-			opacity: 0.8;
-			line-height: 1.4;
+			opacity: 0.85;
+			line-height: 1.5;
 			border-bottom: none;
 		}
 
 		.info-row#profile-bio-row {
 			flex-direction: column;
 			align-items: flex-start;
+			padding: 12px 0;
 		}
 
 		.error-msg {
@@ -819,25 +822,34 @@
 		.drawer-actions {
 			display: flex;
 			flex-direction: column;
-			gap: 12px;
-			margin-top: 20px;
+			gap: 15px;
+			margin-top: 25px;
+		}
+
+		.drawer-actions .btn-primary {
+			padding: 10px 20px;
+			font-size: 0.9em;
+			font-weight: 600;
+			letter-spacing: 0.5px;
+			margin-bottom: 5px;
 		}
 
 		.btn-ghost {
 			background: transparent;
-			border: 1.5px solid rgba(255,255,255,0.2);
-			color: var(--white);
-			padding: 10px 20px;
+			border: 1.5px solid rgba(255,255,255,0.15);
+			color: rgba(255,255,255,0.7);
+			padding: 8px 20px;
 			border-radius: 25px;
-			font-weight: 600;
+			font-weight: 500;
 			cursor: pointer;
 			transition: all 0.2s;
-			font-size: 0.9em;
+			font-size: 0.85em;
 		}
 
 		.btn-ghost:hover {
 			background: rgba(255,255,255,0.05);
-			border-color: rgba(255,255,255,0.4);
+			border-color: rgba(255,255,255,0.3);
+			color: var(--white);
 		}
 
 		.drawer-nav-item i {

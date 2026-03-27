@@ -123,14 +123,26 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Account ID required' });
       }
 
+      // Logic for exclusive avatars: 
+      // If avatar_seed is provided and not null, we want to use it and clear url.
+      // If avatar_url is provided and not null, we want to use it and clear seed.
+      let finalSeed = avatar_seed;
+      let finalUrl = avatar_url;
+
+      if (avatar_seed !== undefined && avatar_seed !== null) {
+          finalUrl = null;
+      } else if (avatar_url !== undefined && avatar_url !== null) {
+          finalSeed = null;
+      }
+
       const updated = await sql`
         UPDATE accounts
         SET username = COALESCE(${username}, username),
             email = COALESCE(${email}, email),
             pnumber = COALESCE(${pnumber}, pnumber),
             bio = COALESCE(${bio}, bio),
-            avatar_seed = COALESCE(${avatar_seed}, avatar_seed),
-            avatar_url = COALESCE(${avatar_url}, avatar_url)
+            avatar_seed = ${finalSeed === undefined ? sql`avatar_seed` : finalSeed},
+            avatar_url = ${finalUrl === undefined ? sql`avatar_url` : finalUrl}
         WHERE acc_id = ${id}
         RETURNING acc_id, username, email, pnumber, bio, avatar_seed, avatar_url, createdat
       `;

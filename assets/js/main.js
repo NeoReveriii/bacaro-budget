@@ -2298,11 +2298,40 @@ window.handleDeleteGoal = async function(goalId, title) {
 					if (!amountStr) errors.push('Amount is required');
 					else if (!Number.isFinite(amount)) errors.push('Amount must be a number');
 
-					// Check for sufficient funds if it's an Expense
-					if (type === 'Expense') {
-						const selectedWallet = window.wallets.find(w => w.name === walletType);
-						if (selectedWallet && Number(selectedWallet.calculated_balance) < amount) {
-							errors.push(`Insufficient funds in "${walletType}" (Available: ${formatCurrency(selectedWallet.calculated_balance)})`);
+					// Check for sufficient funds if it's an Expense.
+					// In edit mode, add back the original transaction impact first so validation uses net change.
+					if (type === 'Expense' && walletId) {
+						const targetWalletId = Number(walletId);
+						const selectedWallet = (window.wallets || []).find(w => Number(w.wallet_id) === targetWalletId);
+
+						if (selectedWallet) {
+							let available = Number(selectedWallet.calculated_balance || 0);
+
+							if (isEdit && transId) {
+								const originalTx = (window.currentTransactions || []).find(t => String(t.trans_id) === String(transId));
+								if (originalTx) {
+									const originalType = String(originalTx.type || '');
+									const originalAmount = Number(originalTx.amount || 0);
+									const originalWalletId = Number(originalTx.wallet_id || 0);
+
+									if (originalWalletId === targetWalletId) {
+										if (originalType === 'Expense') {
+											available += originalAmount;
+										} else if (originalType === 'Income') {
+											available -= originalAmount;
+										} else if (originalType === 'Transfer') {
+											const fromId = Number(originalTx.transfer_from_wallet_id || 0);
+											const toId = Number(originalTx.transfer_to_wallet_id || 0);
+											if (fromId === targetWalletId) available += originalAmount;
+											if (toId === targetWalletId) available -= originalAmount;
+										}
+									}
+								}
+							}
+
+							if (available < amount) {
+								errors.push(`Insufficient funds in "${selectedWallet.name}" (Available: ${formatCurrency(available)})`);
+							}
 						}
 					}
 

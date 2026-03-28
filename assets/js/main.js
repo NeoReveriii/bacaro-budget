@@ -2674,55 +2674,149 @@ function renderDashboardChart(transactions) {
 }
 
 let cashFlowChartInstance = null;
+let currentCashFlowRange = 'monthly';
+
+function updateCashFlowRange(range) {
+	currentCashFlowRange = range || 'monthly';
+	renderCashFlowChart(window.currentTransactions || []);
+}
+
+function startOfDay(date) {
+	const value = new Date(date);
+	value.setHours(0, 0, 0, 0);
+	return value;
+}
+
+function startOfMonth(date) {
+	return new Date(date.getFullYear(), date.getMonth(), 1);
+}
+
+function addDays(date, days) {
+	const value = new Date(date);
+	value.setDate(value.getDate() + days);
+	return value;
+}
+
+function addMonths(date, months) {
+	return new Date(date.getFullYear(), date.getMonth() + months, 1);
+}
+
+function formatCashFlowLabel(date, mode) {
+	if (mode === 'month') {
+		return date.toLocaleDateString(undefined, { month: 'short', year: 'numeric' });
+	}
+	return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+}
+
+function buildCashFlowBuckets(transactions, range) {
+	const nonTransfer = (transactions || []).filter(t => t.type === 'Income' || t.type === 'Expense');
+	const dated = nonTransfer
+		.map(t => ({ ...t, parsedDate: new Date(t.dateoftrans ?? t.date) }))
+		.filter(t => !Number.isNaN(t.parsedDate.getTime()));
+
+	const today = startOfDay(new Date());
+	const latestDate = dated.length > 0
+		? startOfDay(new Date(Math.max(...dated.map(t => t.parsedDate.getTime()))))
+		: today;
+
+	let mode = 'day';
+	let rangeStart = startOfDay(latestDate);
+	let rangeEnd = startOfDay(latestDate);
+
+	if (range === 'weekly') {
+		rangeStart = addDays(latestDate, -6);
+		rangeEnd = latestDate;
+	} else if (range === 'monthly') {
+		rangeStart = startOfMonth(latestDate);
+		rangeEnd = latestDate;
+	} else if (range === 'last6months') {
+		mode = 'month';
+		rangeStart = startOfMonth(addMonths(latestDate, -5));
+		rangeEnd = startOfMonth(latestDate);
+	} else if (range === 'yearly') {
+		mode = 'month';
+		rangeStart = startOfMonth(addMonths(latestDate, -11));
+		rangeEnd = startOfMonth(latestDate);
+	} else if (range === 'all') {
+		mode = 'month';
+		const minDate = dated.length > 0 ? new Date(Math.min(...dated.map(t => t.parsedDate.getTime()))) : latestDate;
+		rangeStart = startOfMonth(minDate);
+		rangeEnd = startOfMonth(latestDate);
+	}
+
+	if (mode === 'day') {
+		const minVisibleDays = 5;
+		const actualSpanDays = Math.floor((rangeEnd - rangeStart) / 86400000) + 1;
+		if (actualSpanDays < minVisibleDays) {
+			rangeStart = addDays(rangeEnd, -(minVisibleDays - 1));
+		}
+	}
+
+	const buckets = [];
+	if (mode === 'month') {
+		let cursor = startOfMonth(rangeStart);
+		while (cursor <= rangeEnd) {
+			buckets.push({ key: cursor.toISOString(), date: new Date(cursor), label: formatCashFlowLabel(cursor, mode), delta: 0 });
+			cursor = addMonths(cursor, 1);
+		}
+	} else {
+		let cursor = startOfDay(rangeStart);
+		while (cursor <= rangeEnd) {
+			buckets.push({ key: cursor.toISOString(), date: new Date(cursor), label: formatCashFlowLabel(cursor, mode), delta: 0 });
+			cursor = addDays(cursor, 1);
+		}
+	}
+
+	const bucketMap = new Map(buckets.map(bucket => [bucket.key, bucket]));
+
+	for (const transaction of dated) {
+		const txDate = mode === 'month' ? startOfMonth(transaction.parsedDate) : startOfDay(transaction.parsedDate);
+		if (txDate < rangeStart || txDate > rangeEnd) continue;
+		const key = txDate.toISOString();
+		const bucket = bucketMap.get(key);
+		if (!bucket) continue;
+		const signedAmount = transaction.type === 'Income' ? Number(transaction.amount) : -Number(transaction.amount);
+		bucket.delta += signedAmount;
+	}
+
+	let runningBalance = 0;
+	const labels = [];
+	const values = [];
+	for (const bucket of buckets) {
+		runningBalance += bucket.delta;
+		labels.push(bucket.label);
+		values.push(Number(runningBalance.toFixed(2)));
+	}
+
+	return { labels, values };
+}
+
 function renderCashFlowChart(transactions) {
     const container = document.querySelector('.cash-flow-chart-container');
     const wrapper = document.getElementById('cash-flow-chart-wrapper');
     const canvas = document.getElementById('cash-flow-line-chart');
     if (!container || !wrapper || !canvas) return;
 
-    // Group transactions by date
-    const dateMap = {};
-    transactions.forEach(t => {
-        if (t.type === 'Transfer') return; // Skip transfers for cash flow
-        const dateStr = t.dateoftrans ?? t.date;
-        if (!dateStr) return;
-        const rawDate = new Date(dateStr);
-        const dateLabel = rawDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
-        
-        if (!dateMap[dateLabel]) dateMap[dateLabel] = { income: 0, expense: 0, rawDate: rawDate };
-        
-        if (t.type === 'Income') dateMap[dateLabel].income += Number(t.amount);
-        if (t.type === 'Expense') dateMap[dateLabel].expense += Number(t.amount);
-    });
-
-    // Sort dates
-    const sortedDates = Object.keys(dateMap).sort((a, b) => dateMap[a].rawDate - dateMap[b].rawDate);
-    const incomeData = sortedDates.map(d => dateMap[d].income);
-    const expenseData = sortedDates.map(d => dateMap[d].expense);
+    const trend = buildCashFlowBuckets(transactions, currentCashFlowRange);
 
     if (cashFlowChartInstance) cashFlowChartInstance.destroy();
 
-    if (sortedDates.length > 0) {
+    if (trend.labels.length > 0) {
         cashFlowChartInstance = new Chart(canvas, {
             type: 'line',
             data: {
-                labels: sortedDates,
+                labels: trend.labels,
                 datasets: [
                     {
-                        label: 'Income',
-                        data: incomeData,
+                        label: 'Net Cash Flow',
+                        data: trend.values,
                         borderColor: '#2ecc71',
-                        backgroundColor: 'rgba(46, 204, 113, 0.1)',
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.4
-                    },
-                    {
-                        label: 'Expense',
-                        data: expenseData,
-                        borderColor: '#ff7675',
-                        backgroundColor: 'rgba(255, 118, 117, 0.1)',
-                        borderWidth: 2,
+                        backgroundColor: 'rgba(46, 204, 113, 0.14)',
+                        pointBackgroundColor: '#2ecc71',
+                        pointBorderColor: '#ffffff',
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        borderWidth: 3,
                         fill: true,
                         tension: 0.4
                     }
@@ -2752,7 +2846,12 @@ function renderCashFlowChart(transactions) {
                         borderWidth: 1,
                         padding: 10,
                         cornerRadius: 8,
-                        titleFont: { weight: 'bold' }
+						titleFont: { weight: 'bold' },
+						callbacks: {
+							label(context) {
+								return `Net: ${formatCurrency(context.parsed.y || 0)}`;
+							}
+						}
                     }
                 },
                 scales: {
@@ -2763,7 +2862,10 @@ function renderCashFlowChart(transactions) {
                         },
                         ticks: { 
                             color: document.body.classList.contains('dark-mode') ? '#edf1ee' : '#1a241b',
-                            font: { weight: '700', size: 12 }
+							font: { weight: '700', size: window.innerWidth < 640 ? 10 : 12 },
+							maxRotation: 0,
+							autoSkip: true,
+							maxTicksLimit: window.innerWidth < 640 ? 6 : 10
                         }
                     },
                     y: {
@@ -2772,7 +2874,10 @@ function renderCashFlowChart(transactions) {
                         },
                         ticks: { 
                             color: document.body.classList.contains('dark-mode') ? '#edf1ee' : '#1a241b',
-                            font: { weight: '700', size: 12 }
+							font: { weight: '700', size: window.innerWidth < 640 ? 10 : 12 },
+							callback(value) {
+								return formatCurrency(value);
+							}
                         }
                     }
                 }
@@ -2784,7 +2889,7 @@ function renderCashFlowChart(transactions) {
         ctx.font = '14px Inter';
         ctx.fillStyle = '#999';
         ctx.textAlign = 'center';
-        ctx.fillText('No transaction data to display', canvas.width / 2, canvas.height / 2);
+		ctx.fillText('No transaction data to display', canvas.width / 2, canvas.height / 2);
     }
 
     const skeleton = container.querySelector('.trend-chart-skeleton-container');

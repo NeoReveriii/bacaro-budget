@@ -3086,9 +3086,46 @@ body.dark-mode .transaction-modal-card .message.success {
     font-family: 'Times New Roman', serif;
 }
 
+.cash-flow-chart-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	margin-bottom: 15px;
+}
+
+.cash-flow-chart-header h3 {
+	margin: 0;
+}
+
+.cash-flow-range-select {
+	min-width: 170px;
+	max-width: 100%;
+	padding: 10px 14px;
+	border-radius: 10px;
+	border: 1px solid rgba(55, 71, 56, 0.15);
+	background: rgba(255, 255, 255, 0.9);
+	color: var(--dark-green);
+	font-weight: 700;
+	font-size: 0.92rem;
+	outline: none;
+	box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+}
+
+.cash-flow-range-select:focus {
+	border-color: var(--primary-green);
+	box-shadow: 0 0 0 3px rgba(89, 133, 57, 0.12);
+}
+
 body.dark-mode .cash-flow-chart-container {
     background: rgba(42, 48, 44, 0.95);
     border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .cash-flow-range-select {
+	background: rgba(255, 255, 255, 0.06);
+	color: #edf1ee;
+	border-color: rgba(255, 255, 255, 0.1);
 }
 
 /* --- Savings Goals --- */
@@ -3214,6 +3251,34 @@ body.dark-mode .doughnut-skeleton::before {
 
 body.dark-mode .trend-chart-skeleton-container {
     background: rgba(255, 255, 255, 0.05) !important;
+}
+
+@media (max-width: 768px) {
+	.cash-flow-chart-header {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.cash-flow-range-select {
+		width: 100%;
+		min-width: 0;
+	}
+
+	.cash-flow-chart-container,
+	.dashboard-details-grid {
+		overflow: hidden;
+	}
+}
+
+@media (max-width: 640px) {
+	.dashboard-details-grid {
+		grid-template-columns: 1fr !important;
+	}
+
+	#cash-flow-chart-wrapper,
+	.trend-chart-skeleton-container {
+		height: 260px !important;
+	}
 }
 
 /* --- Uniform Modal Animation --- */

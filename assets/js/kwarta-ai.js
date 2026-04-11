@@ -267,17 +267,20 @@ async function handleSendMessage() {
         if (!res.ok) throw new Error("API Error");
         
         // Read SSE stream
-        const reader = res.body.getReader();
-        const decoder = new TextDecoder("utf-8");
-        
         bubble.innerHTML = ''; // remove initial skeletons
-        bubble.className = 'msg-bubble stream-target'; // Reset classes to remove skeleton/loading
         
         while (true) {
             const { done, value } = await reader.read();
             if (done) break;
             
             const chunk = decoder.decode(value, { stream: true });
+            
+            // On the very first chunk of actual text, we clean the bubble state
+            if (chunk && !accumulatedText) {
+                bubble.className = 'msg-bubble'; // Remove 'stream-target' to allow proper text layout
+                bubble.innerHTML = '';
+            }
+            
             const lines = chunk.split('\n');
             
             for (const line of lines) {

@@ -145,7 +145,7 @@
 .user-msg { justify-content: flex-end; }
 .msg-bubble {
     max-width: 85%;
-    padding: 10px 18px; /* Slightly reduced top/bottom padding */
+    padding: 12px 18px;
     font-size: 0.95em;
     line-height: 1.5;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
@@ -179,7 +179,8 @@
 }
 
 .msg-bubble.stream-target {
-    display: inline-flex;
+    width: fit-content;
+    display: flex; /* Changed from inline-flex to fix overlapping */
     padding: 8px 14px;
     background: #f0f2f5;
     border-radius: 15px;

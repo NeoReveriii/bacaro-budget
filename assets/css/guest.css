@@ -8,6 +8,11 @@ body.guest-page {
     overflow-y: auto;
     align-items: unset;
     justify-content: unset;
+    scroll-behavior: smooth;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 /* Fix animated background to always cover the viewport */
@@ -23,47 +28,109 @@ body.guest-page .animated-background {
 }
 
 /* ===================================================================
-   Guest Header
+   Header — restored original dark-green header
    =================================================================== */
-.guest-header {
+.guest-main-header {
+    background-color: var(--dark-green);
+    min-height: 70px;
+    color: var(--white);
+    padding: 10px 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 40px;
     position: relative;
-    z-index: 10;
+    z-index: 100;
 }
 
-.guest-logo img {
-    height: 48px;
-    display: block;
-}
-
-.guest-header-actions {
+.header-left {
     display: flex;
-    gap: 12px;
     align-items: center;
+    gap: 15px;
+}
+
+.header-logo-container {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.header-logo-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+.header-title {
+    font-family: 'Times New Roman', serif;
+    font-size: 1.8em;
+    color: white;
+    font-weight: bold;
+    text-rendering: optimizeLegibility;
+    letter-spacing: 0.01em;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-signin-btn {
+    background: transparent;
+    color: var(--white);
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    padding: 7px 20px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    letter-spacing: 0.5px;
+}
+
+.header-signin-btn:hover {
+    background: var(--primary-green);
+    border-color: var(--primary-green);
+    box-shadow: 0 0 15px rgba(89, 133, 57, 0.4);
+    transform: translateY(-1px);
 }
 
 /* ===================================================================
    Button variants for the landing page
    =================================================================== */
 
-/* .btn modifier — makes btn-primary auto-width inside the landing page only.
-   Scoped to .guest-container so modal submit buttons keep their full width. */
-.guest-container .btn {
+/* .btn modifier — makes btn-primary auto-width inside the hero actions only.
+   Modals stay full-width since they are outside .hero-actions. */
+.hero-actions .btn {
     width: auto !important;
     height: auto !important;
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
-    padding: 10px 24px;
+    padding: 14px 32px;
+    font-size: 1rem;
+    border-radius: 12px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    border: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.guest-container .btn-lg,
-.hero-actions .btn-ghost.btn-lg {
-    padding: 14px 32px !important;
-    font-size: 1rem !important;
+.hero-actions .btn.btn-primary {
+    background-color: var(--primary-green);
+    color: var(--white);
+    box-shadow: 0 4px 15px rgba(89, 133, 57, 0.3);
+}
+
+.hero-actions .btn.btn-primary:hover {
+    background-color: #6a9e45;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 25px rgba(89, 133, 57, 0.45);
 }
 
 /* Ghost Button */
@@ -85,9 +152,10 @@ body.guest-page .animated-background {
     border-color: rgba(255, 255, 255, 0.4);
 }
 
-.btn-ghost.btn-lg {
-    padding: 14px 32px !important;
-    font-size: 1rem !important;
+.hero-actions .btn-ghost {
+    padding: 14px 32px;
+    font-size: 1rem;
+    border-radius: 12px;
 }
 
 /* ===================================================================
@@ -135,7 +203,8 @@ body.guest-page .animated-background {
 }
 
 .hero-highlight {
-    color: var(--income-color);
+    color: #ffffff;
+    text-shadow: 0 0 40px rgba(89, 133, 57, 0.6), 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 .hero-subtitle {
@@ -272,11 +341,41 @@ body.guest-page .animated-background {
 }
 
 /* ===================================================================
+   Modal Close Button (dashboard.css not loaded on guest page)
+   =================================================================== */
+.modal-close {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    background: none;
+    border: none;
+    color: var(--white);
+    font-size: 2rem;
+    cursor: pointer;
+    opacity: 0.55;
+    z-index: 10;
+    line-height: 1;
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+.modal-close:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* ===================================================================
    Responsive
    =================================================================== */
 @media (max-width: 768px) {
-    .guest-header {
-        padding: 16px 20px;
+    .guest-main-header {
+        padding: 10px 16px;
+    }
+
+    .header-title {
+        font-size: 1.2em;
     }
 
     .hero-section {

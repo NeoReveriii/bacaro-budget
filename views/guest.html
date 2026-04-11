@@ -15,14 +15,16 @@
     </div>
 
     <div class="guest-container" id="guest-page">
-        <header class="guest-header">
-            <div class="guest-logo">
-                <img src="/assets/images/bb_logo_db.png" alt="Bacaro Budget Logo">
+        <header id="main-header" class="guest-main-header">
+            <div class="header-left">
+                <div class="header-logo-container">
+                    <img src="/assets/images/bb_logo_db.png" alt="App Logo">
+                </div>
+                <div class="header-title">Bacaro Budget Manager</div>
             </div>
-            <div class="guest-header-actions">
-                <button class="btn-ghost" onclick="openLoginModal()">Log In</button>
-                <button class="btn btn-primary" onclick="openSignupModal()">Get Started</button>
-            </div>
+            <nav class="header-right">
+                <button class="header-signin-btn" onclick="openLoginModal()">Sign In</button>
+            </nav>
         </header>
 
         <main class="guest-main">

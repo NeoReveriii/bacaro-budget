@@ -3491,13 +3491,18 @@ body.dark-mode .cash-flow-chart-container h3 {
     color: #edf1ee !important;
 }
 
-/* --- Transaction Filters --- */
 .transaction-filters {
     display: flex;
+    flex-direction: row;
     gap: 15px;
-    flex-wrap: wrap;
     align-items: center;
     width: 100%;
+}
+
+.transaction-filters .custom-select-wrapper {
+    position: relative;
+    width: auto;
+    flex-shrink: 0;
 }
 
 .tx-search-box {

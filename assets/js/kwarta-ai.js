@@ -267,6 +267,9 @@ async function handleSendMessage() {
         if (!res.ok) throw new Error("API Error");
         
         // Read SSE stream
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder("utf-8");
+        
         bubble.innerHTML = ''; // remove initial skeletons
         
         while (true) {

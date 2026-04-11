@@ -125,8 +125,6 @@
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
-    padding-right: 3px; /* Optically center asymmetrical send icon leftwards */
-    padding-top: 1px;
 }
 
 .btn-send:hover {
@@ -139,6 +137,11 @@
     height: 20px;
     stroke-width: 2.5px;
     display: block; /* Helps with alignment */
+}
+
+/* Explicitly offset ONLY the paper airplane icon to optical center */
+.btn-send i[data-lucide="send"] {
+    transform: translate(-1px, 1px);
 }
 
 /* Chat Bubbles */

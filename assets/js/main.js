@@ -2128,6 +2128,14 @@ window.handleDeleteGoal = async function(goalId, title) {
 						return;
 					}
 
+					// Catch common Gmail typos (e.g. @gmail.co, @gmail.cm, @gmail.con)
+					const emailDomain = email.split('@')[1].toLowerCase();
+					if (emailDomain.startsWith('gmail.') && emailDomain !== 'gmail.com') {
+						messageDiv.innerHTML = 'Did you mean <strong>@gmail.com</strong>? Please check your email address.';
+						messageDiv.className = 'message error';
+						return;
+					}
+
 					if (password !== confirmPassword) {
 						messageDiv.innerHTML = 'Passwords do not match';
 						messageDiv.className = 'message error';

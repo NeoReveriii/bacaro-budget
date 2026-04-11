@@ -1024,6 +1024,7 @@
 				languageSelect.value = savedLang;
 				languageSelect.addEventListener('change', () => {
 					localStorage.setItem('bbm_language', languageSelect.value);
+					if(window.applyTranslations) window.applyTranslations();
 					showSavedToast();
 				});
 			}
@@ -1072,7 +1073,7 @@
 				align-items: center;
 				gap: 8px;
 			`;
-			toast.innerHTML = '<i data-lucide="check-circle" style="width: 16px; height: 16px;"></i> Saved';
+			toast.innerHTML = '<i data-lucide="check-circle" style="width: 16px; height: 16px;"></i> ' + (window.getTranslation ? window.getTranslation('toast_saved') : 'Saved');
 			document.body.appendChild(toast);
 			
 			if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -1252,7 +1253,8 @@
 			return String(msg || fallback || 'Request failed').trim();
 		}
 
-		function showToast(message, type = 'success') {
+		function showToast(keyOrMessage, type = 'success') {
+			const message = window.getTranslation ? window.getTranslation(keyOrMessage) : keyOrMessage;
 			const existing = document.getElementById('bbm-toast');
 			if (existing) existing.remove();
 			const el = document.createElement('div');
@@ -1837,6 +1839,7 @@ window.handleDeleteGoal = async function(goalId, title) {
 };
 
 		document.addEventListener('DOMContentLoaded', function() {
+			if(window.applyTranslations) window.applyTranslations();
 			applyThemeSettings();
 			initializeSettingsPanel();
 			checkAuthenticationForUserPage();

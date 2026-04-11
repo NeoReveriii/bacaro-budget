@@ -474,7 +474,7 @@
 			// we need to remove the wrappers and re-initialize.
 			document.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
 				const select = wrapper.querySelector('select');
-				if (select && ['trans-wallet-type'].includes(select.id)) {
+				if (select && ['trans-wallet-type', 'tx-filter-wallet'].includes(select.id)) {
 					wrapper.parentNode.insertBefore(select, wrapper);
 					select.style.display = '';
 					wrapper.remove();

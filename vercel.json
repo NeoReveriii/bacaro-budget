@@ -1,12 +1,8 @@
 {
+  "buildCommand": "cd client && npm install && npm run build",
+  "outputDirectory": "client/dist",
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/", "destination": "/views/guest.html" },
-    { "source": "/dashboard", "destination": "/views/dashboard.html" },
-    { "source": "/dashboard.html", "destination": "/views/dashboard.html" },
-    { "source": "/guest", "destination": "/views/guest.html" },
-    { "source": "/guest.html", "destination": "/views/guest.html" },
-    { "source": "/reset-password", "destination": "/views/reset-password.html" },
-    { "source": "/reset-password.html", "destination": "/views/reset-password.html" }
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

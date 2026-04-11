@@ -1298,6 +1298,9 @@
 
                 // 2. Remove immediately from UI state
                 window.currentTransactions = originalTransactions.filter(t => t.trans_id !== id);
+                window.allTransactions = window.allTransactions
+                    ? originalTransactions.filter(t => t.trans_id !== id)
+                    : window.currentTransactions;
                 
                 // 3. Update local wallet balance optimistically
                 const walletId = deletedTx.wallet_id;
@@ -1391,8 +1394,7 @@
                     // 5. Rollback on failure
 					showToast('Error deleting transaction. Rolling back...', 'error');
                     window.currentTransactions = originalTransactions;
-                    window.wallets = originalWallets;
-                    renderTransactions(window.currentTransactions);
+                    window.allTransactions = originalTransactions;
                     updateDashboardStats(window.currentTransactions);
                     renderWallets();
                     
@@ -1475,12 +1477,14 @@
 
 				const data = payload?.json;
 				const transactions = Array.isArray(data) ? data : data?.data || [];
+				window.allTransactions = transactions;
+				window.currentTransactions = transactions;
 				renderTransactions(transactions);
                 updateDashboardStats(transactions);
 
                 if (skeleton) skeleton.style.display = 'none';
                 listEl.style.display = 'block';
-                } catch (e) {
+            } catch (e) {
                 console.error('Load transactions error:', e);
                 listEl.innerHTML = `<div class="empty-history"><p>${escapeHtml(e.message)}</p></div>`;
                 // Shimmer Fix: Update stats to 0 even on error to clear skeleton
@@ -2647,7 +2651,8 @@ function updateRange(range) {
     if (!range) return false;
     window.dashboardDateRange = range;
 
-    const filteredTransactions = filterTransactionsByRange(range, window.currentTransactions || []);
+    const sourceTransactions = window.allTransactions || window.currentTransactions || [];
+    const filteredTransactions = filterTransactionsByRange(range, sourceTransactions);
     updateDashboardStats(filteredTransactions);
 
     const rangeButton = document.querySelector('.dashboard-filter-container .range-dropdown .range-dropbtn');

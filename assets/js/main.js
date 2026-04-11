@@ -595,19 +595,6 @@
 			showView('wallet-details', document.querySelector('[onclick*="wallets"]'));
 		}
 		
-		function openAdminModal() {
-			toggleMainSidebar(false);
-			document.getElementById('admin-modal').style.display = 'flex';
-		}
-
-		function closeAdminModal() {
-			document.getElementById('admin-modal').style.display = 'none';
-		}
-
-		function handleAdminLogin(event) {
-			event.preventDefault();
-			alert("Authenticating with server...");
-		}
 
 		function togglePasswordVisibility(element) {
 			// Deprecated - handled by global click listener

@@ -457,6 +457,33 @@
 			font-size: 0.9em;
 		}
 
+		/* Dark Mode Dropdown Refinements */
+		body.dark-mode .range-dropbtn {
+			background: rgba(255, 255, 255, 0.08);
+			color: #edf1ee;
+			border-color: rgba(255, 255, 255, 0.12);
+		}
+
+		body.dark-mode .range-dropbtn:hover {
+			background: rgba(255, 255, 255, 0.15);
+			border-color: var(--primary-green);
+		}
+
+		body.dark-mode .range-dropdown-content {
+			background-color: #2a302c; /* Muted dark forest */
+			border-color: rgba(255, 255, 255, 0.1);
+			box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+		}
+
+		body.dark-mode .range-dropdown-content a {
+			color: #edf1ee;
+		}
+
+		body.dark-mode .range-dropdown-content a:hover {
+			background-color: rgba(107, 166, 79, 0.2);
+			color: #b0e0a0;
+		}
+
         /* --- Sidebar Navigation Styling --- */
         .sidebar-label {
             font-size: 0.75em;
@@ -1799,96 +1826,6 @@ input[type=number] {
 			line-height: 1.4;
 		}
 
-		/* Specific Admin Modal Styling */
-
-		.admin-box {
-			background-color: white; /* or a very light grey */
-			padding: 40px;
-			border-radius: 15px;
-		}
-		
-		.admin-box .form-group {
-			display: flex;
-			flex-direction: column; /* Stacks label above input */
-			align-items: flex-start; /* Aligns text to the left */
-			margin-bottom: 20px;
-			width: 100%;
-		}
-		
-		.admin-box label {
-			font-weight: 600;
-			margin-bottom: 8px;
-			color: var(--dark-green);
-			font-size: 0.9rem;
-		}
-		
-		.admin-box input {
-			width: 100%; /* Ensures input fills the box */
-			padding: 12px;
-			border: 1px solid #ccc;
-			border-radius: 8px;
-			box-sizing: border-box; /* Crucial: includes padding in width calculation */
-		}
-
-		.lock-icon {
-			font-size: 4rem; /* Make it big since it's the center of attention */
-			display: block;
-			margin-bottom: 40px;
-			filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
-			animation: suspiciousLook 0.4s ease-in-out;
-			text-align: center;
-		}
-
-		@keyframes suspiciousLook {
-			0%, 100% { transform: scale(1); }
-			50% { transform: scale(1.1); } /* Subtle zoom in to look closer */
-		}
-
-		.admin-box h2 {
-			color: var(--dark-green);
-			margin-bottom: 5px;
-		}
-
-		.admin-box p {
-			font-size: 0.85rem;
-			color: var(--dark-green);
-			margin-bottom: 25px;
-		}
-
-		.admin-actions {
-			display: flex;
-			gap: 10px;
-			margin-top: 20px;
-		}
-
-		.btn-auth {
-			flex: 2;
-			background-color: var(--dark-green);
-			color: white;
-			border: none;
-			padding: 12px;
-			border-radius: 8px;
-			font-weight: 600;
-			cursor: pointer;
-			transition: background 0.3s;
-		}
-
-		.btn-auth:hover {
-			background-color: var(--primary-green);;
-		}
-
-		.btn-cancel {
-			flex: 1;
-			background: #eee;
-			border: none;
-			padding: 12px;
-			border-radius: 8px;
-			cursor: pointer;
-		}
-		
-		.admin-box .auth-desc {
-			color: var(--primary-green);
-		}
 
 		/* --- Dashboard Skeleton Specifics --- */
 		.chart-skeleton-container {

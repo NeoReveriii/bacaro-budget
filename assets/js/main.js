@@ -2423,6 +2423,40 @@ window.handleDeleteGoal = async function(goalId, title) {
 			
 			// Initialize Custom Selects
 			initializeCustomSelects();
+
+			// Dashboard Dropdown Interaction (Click to Toggle)
+			document.addEventListener('click', function(e) {
+				const dropdown = e.target.closest('.range-dropdown');
+				const isButton = e.target.closest('.range-dropbtn');
+				
+				if (dropdown && isButton) {
+					// Toggle current dropdown
+					const wasActive = dropdown.classList.contains('active');
+					
+					// Close all other dropdowns first
+					document.querySelectorAll('.range-dropdown.active').forEach(d => {
+						d.classList.remove('active');
+					});
+					
+					if (!wasActive) {
+						dropdown.classList.add('active');
+					}
+				} else {
+					// Clicked elsewhere - close all
+					document.querySelectorAll('.range-dropdown.active').forEach(d => {
+						d.classList.remove('active');
+					});
+				}
+			});
+
+			// Close dropdown when a child link is clicked
+			document.addEventListener('click', function(e) {
+				const link = e.target.closest('.range-dropdown-content a');
+				if (link) {
+					const dropdown = link.closest('.range-dropdown');
+					if (dropdown) dropdown.classList.remove('active');
+				}
+			});
 		});
 
 // --- Coin Loader UI ---
@@ -2795,8 +2829,14 @@ function renderDashboardChart(transactions) {
 let cashFlowChartInstance = null;
 let currentCashFlowRange = 'monthly';
 
-function updateCashFlowRange(range) {
+function updateCashFlowRange(range, label) {
 	currentCashFlowRange = range || 'monthly';
+	
+	const btn = document.getElementById('cash-flow-dropbtn');
+	if (btn && label) {
+		btn.innerHTML = `${label.toUpperCase()} <span class="arrow-icon">▾</span>`;
+	}
+	
 	renderCashFlowChart(window.currentTransactions || []);
 }
 

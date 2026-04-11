@@ -222,13 +222,16 @@
 							<div class="cash-flow-chart-container" style="margin-top: 25px;">
 								<div class="cash-flow-chart-header">
 									<h3>Cash Flow Trend</h3>
-									<select id="cash-flow-range" class="cash-flow-range-select" onchange="updateCashFlowRange(this.value)">
-										<option value="weekly">Weekly</option>
-										<option value="monthly" selected>Monthly</option>
-										<option value="last6months">Last 6 Months</option>
-										<option value="yearly">Yearly</option>
-										<option value="all">All Time</option>
-									</select>
+									<div class="range-dropdown">
+										<button class="range-dropbtn" id="cash-flow-dropbtn">MONTHLY <span class="arrow-icon">▾</span></button>
+										<div class="range-dropdown-content">
+											<a href="#" onclick="event.preventDefault(); return updateCashFlowRange('weekly', 'Weekly')">WEEKLY</a>
+											<a href="#" onclick="event.preventDefault(); return updateCashFlowRange('monthly', 'Monthly')">MONTHLY</a>
+											<a href="#" onclick="event.preventDefault(); return updateCashFlowRange('last6months', 'Last 6 Months')">LAST 6 MONTHS</a>
+											<a href="#" onclick="event.preventDefault(); return updateCashFlowRange('yearly', 'Yearly')">YEARLY</a>
+											<a href="#" onclick="event.preventDefault(); return updateCashFlowRange('all', 'All Time')">ALL TIME</a>
+										</div>
+									</div>
 								</div>
 								<div class="trend-chart-skeleton-container"
 									style="height: 300px; border-radius: 12px; background: rgba(255,255,255,0.05);">

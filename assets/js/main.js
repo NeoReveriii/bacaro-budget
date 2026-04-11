@@ -1070,16 +1070,20 @@
 				return;
 			}
 
-			const headers = ['Date', 'Description', 'Type', 'Amount', 'Wallet'];
+			const headers = ['"Date"', '"Description"', '"Type"', '"Amount"', '"Wallet"'];
 			const csvRows = [headers.join(',')];
+			const escapeCSV = (val) => {
+				const str = String(val ?? '').replace(/"/g, '""');
+				return `"${str}"`;
+			};
 
 			window.currentTransactions.forEach(t => {
 				const row = [
-					formatDate(t.dateoftrans || t.date),
-					`"${(t.description || '').replace(/"/g, '""')}"`,
-					t.type,
-					t.amount,
-					t.wallet_type || ''
+					escapeCSV(formatDate(t.dateoftrans || t.date)),
+					escapeCSV(t.description),
+					escapeCSV(t.type),
+					escapeCSV(t.amount),
+					escapeCSV(t.wallet_type || t.wallet || '')
 				];
 				csvRows.push(row.join(','));
 			});

@@ -136,6 +136,7 @@
     width: 20px;
     height: 20px;
     stroke-width: 2.5px;
+    display: block; /* Helps with alignment */
 }
 
 /* Chat Bubbles */
@@ -144,14 +145,55 @@
 .user-msg { justify-content: flex-end; }
 .msg-bubble {
     max-width: 85%;
-    padding: 12px 18px;
+    padding: 10px 18px; /* Slightly reduced top/bottom padding */
     font-size: 0.95em;
     line-height: 1.5;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    border-radius: 20px;
+    border-radius: 18px;
 }
 .ai-msg .msg-bubble { background: #f0f2f5; color: #333; }
 .user-msg .msg-bubble { background: var(--primary-green); color: white; }
+
+/* --- Typing Indicator --- */
+.typing-indicator {
+    display: flex;
+    gap: 4px;
+    padding: 4px 0;
+    align-items: center;
+}
+
+.typing-dot {
+    width: 6px;
+    height: 6px;
+    background: #aaa;
+    border-radius: 50%;
+    animation: typingBounce 1.4s infinite ease-in-out both;
+}
+
+.typing-dot:nth-child(1) { animation-delay: -0.32s; }
+.typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes typingBounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1.0); }
+}
+
+.msg-bubble.stream-target {
+    display: inline-flex;
+    padding: 8px 14px;
+    background: #f0f2f5;
+    border-radius: 15px;
+    min-width: 45px;
+    justify-content: center;
+}
+
+body.dark-mode .msg-bubble.stream-target {
+    background: #1e2421;
+}
+
+body.dark-mode .typing-dot {
+    background: #666;
+}
 
 /* --- AI Skeleton --- */
 .ai-bubble-skeleton {

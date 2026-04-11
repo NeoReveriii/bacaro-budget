@@ -1,4 +1,14 @@
 {
+  "name": "bacaro-budget",
+  "version": "1.0.0",
+  "description": "Bacaro Budget Manager - React SPA with Serverless API",
+  "private": true,
+  "scripts": {
+    "start": "node index.js",
+    "dev": "npm run dev --prefix client",
+    "build": "npm run build --prefix client",
+    "install:all": "npm install && npm install --prefix client"
+  },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
     "bcrypt": "^5.1.1",

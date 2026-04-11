@@ -104,10 +104,10 @@
 									</div>
 
 									<div class="range-dropdown" style="margin-left: 10px;">
-										<button class="range-dropbtn">ALL WALLETS <span
+										<button class="range-dropbtn" id="dashboard-wallet-dropbtn">ALL WALLETS <span
 												class="arrow-icon">▾</span></button>
-										<div class="range-dropdown-content">
-											<a href="#">ALL WALLETS</a>
+										<div class="range-dropdown-content" id="dashboard-wallet-dropdown-content">
+											<a href="#" onclick="event.preventDefault(); return updateWalletFilter(null, 'ALL WALLETS')">ALL WALLETS</a>
 										</div>
 									</div>
 								</div>

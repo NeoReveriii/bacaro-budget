@@ -286,6 +286,8 @@
 		}
 		
 		window.wallets = [];
+		window.dashboardWalletFilter = null;
+		window.dashboardDateRange = 'ALL TIME';
 
 		async function loadWallets() {
 			if (!isAuthenticated()) return;
@@ -409,6 +411,15 @@
 			const transWallet = document.getElementById('trans-wallet-type');
 			if (transWallet) {
 				transWallet.innerHTML = `<option value="" selected disabled hidden></option>${options}<option value="Other">Other</option>`;
+			}
+
+			// Dashboard wallet filter dropdown
+			const dashWalletContent = document.getElementById('dashboard-wallet-dropdown-content');
+			if (dashWalletContent) {
+				const walletLinks = window.wallets.map(w =>
+					`<a href="#" onclick="event.preventDefault(); return updateWalletFilter(${w.wallet_id}, '${escapeHtml(w.name)}')">${escapeHtml(w.name)}</a>`
+				).join('');
+				dashWalletContent.innerHTML = `<a href="#" onclick="event.preventDefault(); return updateWalletFilter(null, 'ALL WALLETS')">ALL WALLETS</a>${walletLinks}`;
 			}
 
 			const filterWallet = document.getElementById('tx-filter-wallet');
@@ -2558,7 +2569,12 @@ function initializeCustomSelects() {
 }
 
 function updateDashboardStats(transactions) {
-    const normalizedTransactions = transactions.map(t => ({
+    // Apply wallet filter if one is active
+    const displayTransactions = window.dashboardWalletFilter
+        ? filterTransactionsByWallet(window.dashboardWalletFilter, transactions)
+        : transactions;
+
+    const normalizedTransactions = displayTransactions.map(t => ({
         ...t,
         normalizedType: String(t.type || '').toLowerCase()
     }));
@@ -2577,7 +2593,13 @@ function updateDashboardStats(transactions) {
 
 
     const walletTotal = (window.wallets || []).reduce((sum, w) => sum + Number(w.calculated_balance || 0), 0);
-    const balance = window.wallets && window.wallets.length > 0 ? walletTotal : income - expense;
+    let balance;
+    if (window.dashboardWalletFilter) {
+        const activeWallet = (window.wallets || []).find(w => Number(w.wallet_id) === Number(window.dashboardWalletFilter));
+        balance = activeWallet ? Number(activeWallet.calculated_balance || 0) : income - expense;
+    } else {
+        balance = window.wallets && window.wallets.length > 0 ? walletTotal : income - expense;
+    }
     const balanceEl = document.querySelector('.wallet-card .stat-value');
     const incomeEl = document.querySelector('.income-card .stat-value');
     const expenseEl = document.querySelector('.expense-card .stat-value');
@@ -2600,9 +2622,9 @@ function updateDashboardStats(transactions) {
         transferEl.classList.add('loading-transition');
     }
 
-    renderIncomeSummary(transactions);
-    renderDashboardChart(transactions);
-    renderCashFlowChart(transactions);
+    renderIncomeSummary(displayTransactions);
+    renderDashboardChart(displayTransactions);
+    renderCashFlowChart(displayTransactions);
 }
 
 function parseTransactionDate(transaction) {
@@ -2645,6 +2667,30 @@ function filterTransactionsByRange(range, transactions) {
 
         return true;
     });
+}
+
+function filterTransactionsByWallet(walletId, transactions) {
+    if (!walletId) return transactions;
+    const id = Number(walletId);
+    return transactions.filter(t => {
+        const directId = Number(t.wallet_id);
+        const fromId = Number(t.transfer_from_wallet_id);
+        const toId = Number(t.transfer_to_wallet_id);
+        return directId === id || fromId === id || toId === id;
+    });
+}
+
+function updateWalletFilter(walletId, walletName) {
+    window.dashboardWalletFilter = walletId ? Number(walletId) : null;
+
+    const btn = document.getElementById('dashboard-wallet-dropbtn');
+    if (btn) btn.innerHTML = `${walletName} <span class="arrow-icon">▾</span>`;
+
+    const sourceTransactions = window.allTransactions || window.currentTransactions || [];
+    const dateFiltered = filterTransactionsByRange(window.dashboardDateRange || 'ALL TIME', sourceTransactions);
+    updateDashboardStats(dateFiltered);
+
+    return false;
 }
 
 function updateRange(range) {

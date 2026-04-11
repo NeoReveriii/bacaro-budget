@@ -2572,7 +2572,8 @@ function updateDashboardStats(transactions) {
         .reduce((sum, t) => sum + Number(t.amount), 0);
 
 
-    const balance = income - expense;
+    const walletTotal = (window.wallets || []).reduce((sum, w) => sum + Number(w.calculated_balance || 0), 0);
+    const balance = window.wallets && window.wallets.length > 0 ? walletTotal : income - expense;
     const balanceEl = document.querySelector('.wallet-card .stat-value');
     const incomeEl = document.querySelector('.income-card .stat-value');
     const expenseEl = document.querySelector('.expense-card .stat-value');

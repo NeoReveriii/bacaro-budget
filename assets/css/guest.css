@@ -110,15 +110,17 @@ body.guest-page .animated-background {
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
-    padding: 14px 32px;
+    padding: 13px 32px;
     font-size: 1rem;
     border-radius: 12px;
     font-weight: 700;
     font-family: 'Inter', sans-serif;
     cursor: pointer;
     letter-spacing: 0.5px;
-    border: none;
+    border: 1.5px solid transparent;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin: 0;
+    line-height: 1.4;
 }
 
 .hero-actions .btn.btn-primary {
@@ -153,9 +155,11 @@ body.guest-page .animated-background {
 }
 
 .hero-actions .btn-ghost {
-    padding: 14px 32px;
+    padding: 13px 32px;
     font-size: 1rem;
     border-radius: 12px;
+    line-height: 1.4;
+    margin: 0;
 }
 
 /* ===================================================================
@@ -185,9 +189,9 @@ body.guest-page .animated-background {
     display: inline-block;
     padding: 6px 16px;
     border-radius: 30px;
-    background: rgba(46, 204, 113, 0.15);
-    border: 1px solid rgba(46, 204, 113, 0.3);
-    color: #2ecc71;
+    background: rgba(20, 30, 22, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #c8ffb0;
     font-size: 0.85rem;
     font-weight: 600;
     margin-bottom: 20px;
@@ -220,6 +224,7 @@ body.guest-page .animated-background {
     gap: 16px;
     flex-wrap: wrap;
     align-items: center;
+    flex-direction: row;
 }
 
 /* ===================================================================
@@ -232,18 +237,19 @@ body.guest-page .animated-background {
 }
 
 .hero-card {
-    background: rgba(255, 255, 255, 0.07);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(20, 30, 22, 0.72);
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 24px;
     padding: 32px;
     min-width: 280px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .hero-card-label {
     font-size: 0.8rem;
-    opacity: 0.6;
+    opacity: 0.85;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 8px;
@@ -253,7 +259,8 @@ body.guest-page .animated-background {
 .hero-card-value {
     font-size: 2rem;
     font-weight: 800;
-    color: var(--income-color);
+    color: #7fd962;
+    text-shadow: 0 0 20px rgba(89, 133, 57, 0.4);
 }
 
 .hero-card-stats {
@@ -266,9 +273,9 @@ body.guest-page .animated-background {
 .badge-income {
     padding: 4px 12px;
     border-radius: 20px;
-    background: rgba(46, 204, 113, 0.2);
-    border: 1px solid rgba(46, 204, 113, 0.4);
-    color: #2ecc71;
+    background: rgba(46, 204, 113, 0.25);
+    border: 1px solid rgba(46, 204, 113, 0.5);
+    color: #9fffcc;
     font-size: 0.8rem;
     font-weight: 600;
 }
@@ -276,9 +283,9 @@ body.guest-page .animated-background {
 .badge-expense {
     padding: 4px 12px;
     border-radius: 20px;
-    background: rgba(231, 76, 60, 0.2);
-    border: 1px solid rgba(231, 76, 60, 0.4);
-    color: #e74c3c;
+    background: rgba(231, 76, 60, 0.25);
+    border: 1px solid rgba(231, 76, 60, 0.5);
+    color: #ffb3ab;
     font-size: 0.8rem;
     font-weight: 600;
 }

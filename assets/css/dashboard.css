@@ -3103,18 +3103,19 @@ body.dark-mode .transaction-modal-card .message.success {
 	max-width: 100%;
 	padding: 10px 14px;
 	border-radius: 10px;
-	border: 1px solid rgba(55, 71, 56, 0.15);
-		background: #f2f7ea;
-		color: var(--dark-green);
-		font-weight: 700;
-		font-size: 0.92rem;
-		outline: none;
-		box-shadow: 0 4px 16px rgba(0,0,0,0.05);
-	}
+	border: 1px solid rgba(255, 255, 255, 0.16);
+	background: #5d6f5c;
+	color: #ffffff;
+	font-weight: 700;
+	font-size: 0.92rem;
+	outline: none;
+	box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+}
 
-	.cash-flow-range-select option {
-		background: #f2f7ea;
-		color: var(--dark-green);
+.cash-flow-range-select option {
+	background: #5d6f5c;
+	color: #ffffff;
+}
 
 body.dark-mode .cash-flow-chart-container {
     background: rgba(42, 48, 44, 0.95);

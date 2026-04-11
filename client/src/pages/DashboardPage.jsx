@@ -17,6 +17,7 @@ import KwartaAI from '../components/ai/KwartaAI';
 import SettingsView from '../components/settings/SettingsView';
 import { apiGetTransactions, apiGetWallets, apiGetGoals } from '../lib/api';
 import { filterTransactionsByRange } from '../lib/utils';
+import AnimatedBackground from '../components/layout/AnimatedBackground';
 
 export default function DashboardPage() {
   const { transactions, setTransactions, wallets, setWallets, goals, setGoals, openModal, setEditingTransaction, dashRange } = useApp();
@@ -68,10 +69,11 @@ export default function DashboardPage() {
   const dashFiltered = filterTransactionsByRange(dashRange, transactions);
 
   return (
-    <div className="app-container">
+    <div className="dashboard-container">
+      <AnimatedBackground />
       <Header onMenuClick={() => setSidebarOpen(o => !o)} onProfileClick={() => setDrawerOpen(true)} />
 
-      <div className="main-layout">
+      <div id="app-content">
         <Sidebar
           currentView={currentView}
           onNavigate={handleNavigate}
@@ -79,9 +81,9 @@ export default function DashboardPage() {
           isOpen={sidebarOpen}
         />
 
-        <div className="content-area" id="main-content">
+        <div id="main-content-area" className="main-app-card" style={{ flexGrow: 1, display: 'flex', overflow: 'hidden' }}>
           {currentView === 'dashboard' && (
-            <div id="view-dashboard">
+            <main id="main-dashboard">
               {loading ? (
                 <div style={{ textAlign: 'center', paddingTop: 60, color: '#666' }}>Loading...</div>
               ) : (
@@ -94,18 +96,18 @@ export default function DashboardPage() {
                   <CashFlowChart transactions={transactions} />
                 </>
               )}
-            </div>
+            </main>
           )}
 
           {currentView === 'transactions' && (
-            <div id="view-transactions">
+            <main id="main-transactions">
               <div className="view-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
                 <h2>Transactions</h2>
                 <button className="btn btn-primary" onClick={handleNewTransaction}>+ New</button>
               </div>
               <TransactionFilters filters={txFilters} onFilterChange={setTxFilters} />
               <TransactionList transactions={transactions} filters={txFilters} onEdit={handleEditTransaction} />
-            </div>
+            </main>
           )}
 
           {currentView === 'wallets' && <WalletGrid onWalletClick={handleWalletClick} />}

@@ -125,6 +125,8 @@
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
+    padding-right: 3px; /* Optically center asymmetrical send icon leftwards */
+    padding-top: 1px;
 }
 
 .btn-send:hover {
@@ -137,7 +139,6 @@
     height: 20px;
     stroke-width: 2.5px;
     display: block; /* Helps with alignment */
-    transform: translateX(-1px); /* Visually center the asymmetrical 'send' arrow */
 }
 
 /* Chat Bubbles */
@@ -170,15 +171,15 @@
     height: 6px;
     background: #aaa;
     border-radius: 50%;
-    animation: typingBounce 1.4s infinite ease-in-out both;
+    animation: typingWave 1.2s infinite ease-in-out both;
 }
 
 .typing-dot:nth-child(1) { animation-delay: -0.32s; }
 .typing-dot:nth-child(2) { animation-delay: -0.16s; }
 
-@keyframes typingBounce {
-    0%, 80%, 100% { transform: scale(0); }
-    40% { transform: scale(1.0); }
+@keyframes typingWave {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-4px); }
 }
 
 .msg-bubble.stream-target {

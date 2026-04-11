@@ -3564,7 +3564,7 @@ body.dark-mode .tx-filter-trigger {
 }
 
 .tx-filter-input:focus, .tx-filter-trigger:focus, .custom-select-wrapper.open .tx-filter-trigger {
-    border-color: var(--primary-green);
+    border-color: var(--primary-green) !important;
     box-shadow: 0 0 0 2px rgba(89, 133, 57, 0.2);
 }
 

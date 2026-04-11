@@ -247,7 +247,8 @@ async function handleSendMessage() {
     
     // Disable send btn
     sendBtn.disabled = true;
-    sendBtn.innerHTML = '...';
+    sendBtn.innerHTML = '<i data-lucide="square" fill="currentColor" stroke="none"></i>';
+    if (typeof lucide !== 'undefined') lucide.createIcons();
     
     // Placeholder stream target
     const targetMsg = appendMessage('assistant', '', true);
@@ -270,20 +271,11 @@ async function handleSendMessage() {
         const reader = res.body.getReader();
         const decoder = new TextDecoder("utf-8");
         
-        bubble.innerHTML = ''; // remove initial skeletons
-        
         while (true) {
             const { done, value } = await reader.read();
             if (done) break;
             
             const chunk = decoder.decode(value, { stream: true });
-            
-            // On the very first chunk of actual text, we clean the bubble state
-            if (chunk && !accumulatedText) {
-                bubble.className = 'msg-bubble'; // Remove 'stream-target' to allow proper text layout
-                bubble.innerHTML = '';
-            }
-            
             const lines = chunk.split('\n');
             
             for (const line of lines) {
@@ -291,6 +283,12 @@ async function handleSendMessage() {
                     try {
                         const parsed = JSON.parse(line.slice(6));
                         if (parsed.choices[0].delta.content) {
+                            // On the very first actual text content, clean the bubble state from the typing indicator
+                            if (!accumulatedText) {
+                                bubble.className = 'msg-bubble'; // Remove 'stream-target'
+                                bubble.innerHTML = '';
+                            }
+                            
                             accumulatedText += parsed.choices[0].delta.content;
                             // Re-render parsed markdown continuously
                             bubble.innerHTML = processAndRenderContent(accumulatedText);
@@ -305,13 +303,12 @@ async function handleSendMessage() {
         }
     } catch (err) {
         console.error("Kwarta AI: Stream message error:", err);
+        bubble.className = 'msg-bubble';
         bubble.innerHTML = 'Network error. Please try again.';
     } finally {
         sendBtn.disabled = false;
         sendBtn.innerHTML = '<i data-lucide="send"></i>';
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
+        if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 }
 

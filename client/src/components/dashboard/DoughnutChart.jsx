@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
-Chart.register(ArcElement, Tooltip, Legend);
+import { Chart, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js';
+Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
 
 const COLORS = ['#ff7675', '#74b9ff', '#55efc4', '#ffeaa7', '#a29bfe', '#fab1a0'];
 

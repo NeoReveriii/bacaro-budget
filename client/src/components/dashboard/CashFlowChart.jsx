@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { Chart, LineElement, PointElement, LinearScale, CategoryScale, Filler, Tooltip, Legend } from 'chart.js';
-Chart.register(LineElement, PointElement, LinearScale, CategoryScale, Filler, Tooltip, Legend);
+import { Chart, LineController, LineElement, PointElement, LinearScale, CategoryScale, Filler, Tooltip, Legend } from 'chart.js';
+Chart.register(LineController, LineElement, PointElement, LinearScale, CategoryScale, Filler, Tooltip, Legend);
 
 function startOfDay(d) { const v = new Date(d); v.setHours(0, 0, 0, 0); return v; }
 function startOfMonth(d) { return new Date(d.getFullYear(), d.getMonth(), 1); }

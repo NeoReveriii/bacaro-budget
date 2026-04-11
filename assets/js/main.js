@@ -2643,7 +2643,7 @@ function filterTransactionsByRange(range, transactions) {
 }
 
 function updateRange(range) {
-    if (!range) return;
+    if (!range) return false;
     window.dashboardDateRange = range;
 
     const filteredTransactions = filterTransactionsByRange(range, window.currentTransactions || []);
@@ -2653,6 +2653,7 @@ function updateRange(range) {
     if (rangeButton) {
         rangeButton.innerHTML = `${range} <span class="arrow-icon">▾</span>`;
     }
+    return false;
 }
 
 function renderIncomeSummary(transactions) {

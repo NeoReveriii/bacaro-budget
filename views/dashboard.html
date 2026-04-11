@@ -95,11 +95,11 @@
 										<button class="range-dropbtn">ALL TIME <span
 												class="arrow-icon">▾</span></button>
 										<div class="range-dropdown-content">
-											<a href="#" onclick="updateRange('TODAY')">TODAY</a>
-											<a href="#" onclick="updateRange('THIS WEEK')">THIS WEEK</a>
-											<a href="#" onclick="updateRange('THIS MONTH')">THIS MONTH</a>
-											<a href="#" onclick="updateRange('THIS YEAR')">THIS YEAR</a>
-											<a href="#" onclick="updateRange('ALL TIME')">ALL TIME</a>
+											<a href="#" onclick="event.preventDefault(); return updateRange('TODAY')">TODAY</a>
+											<a href="#" onclick="event.preventDefault(); return updateRange('THIS WEEK')">THIS WEEK</a>
+											<a href="#" onclick="event.preventDefault(); return updateRange('THIS MONTH')">THIS MONTH</a>
+											<a href="#" onclick="event.preventDefault(); return updateRange('THIS YEAR')">THIS YEAR</a>
+											<a href="#" onclick="event.preventDefault(); return updateRange('ALL TIME')">ALL TIME</a>
 										</div>
 									</div>
 

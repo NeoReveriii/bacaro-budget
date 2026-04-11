@@ -1518,7 +1518,8 @@ input[type=number] {
 		.btn-wallet-action {
 			display: flex;
 			align-items: center;
-			gap: 10px;
+			justify-content: center;
+			gap: 8px;
 			padding: 12px 24px;
 			border-radius: 12px;
 			font-weight: 700;
@@ -1528,6 +1529,7 @@ input[type=number] {
 			border: none;
 			letter-spacing: 0.5px;
 			text-transform: uppercase;
+			line-height: 1;
 		}
 
 		.btn-wallet-action.add {
@@ -1552,7 +1554,15 @@ input[type=number] {
 		}
 
 		.btn-wallet-action .icon {
-			font-size: 1.2em;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		
+		.btn-wallet-action .icon i {
+			width: 18px;
+			height: 18px;
+			display: block;
 		}
 
 		/* Card Silhouette & Base */
@@ -3513,7 +3523,7 @@ body.dark-mode .tx-search-icon {
     color: rgba(255, 255, 255, 0.5);
 }
 
-.tx-filter-input, .tx-filter-select {
+.tx-filter-input, .tx-filter-trigger {
     padding: 10px 15px;
     border-radius: 8px;
     border: 1px solid rgba(0, 0, 0, 0.15);
@@ -3524,6 +3534,8 @@ body.dark-mode .tx-search-icon {
     transition: all 0.2s ease;
     outline: none;
     box-sizing: border-box;
+    display: flex;
+    align-items: center;
 }
 
 .tx-filter-input {
@@ -3531,30 +3543,35 @@ body.dark-mode .tx-search-icon {
     padding-left: 36px; /* Space for the search icon */
 }
 
-.tx-filter-select {
+.tx-filter-trigger {
     min-width: 140px;
     cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
+    background-color: rgba(255, 255, 255, 0.5); /* Match dashboard filter color */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='3 5 6 8 9 5'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 12px center;
     padding-right: 32px;
 }
 
-body.dark-mode .tx-filter-select {
+body.dark-mode .tx-filter-trigger {
+    background-color: rgba(255, 255, 255, 0.08); /* Match dashboard filter dark mode color */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23edf1ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='3 5 6 8 9 5'/%3E%3C/svg%3E");
 }
 
-.tx-filter-input:focus, .tx-filter-select:focus {
+.tx-filter-input:focus, .tx-filter-trigger:focus, .custom-select-wrapper.open .tx-filter-trigger {
     border-color: var(--primary-green);
     box-shadow: 0 0 0 2px rgba(89, 133, 57, 0.2);
 }
 
 body.dark-mode .tx-filter-input, 
-body.dark-mode .tx-filter-select {
+body.dark-mode .tx-filter-trigger {
     border-color: rgba(255, 255, 255, 0.15);
     color: #edf1ee;
+}
+
+/* Let the general custom-select-options handle the dropdown box */
+.custom-select-wrapper:has(.tx-filter-trigger) .custom-select-options {
+    margin-top: 5px;
 }
 
 @media (max-width: 768px) {
@@ -3563,8 +3580,9 @@ body.dark-mode .tx-filter-select {
         align-items: stretch;
         gap: 10px;
     }
-    .tx-filter-select {
+    .tx-filter-trigger {
         width: 100%;
     }
 }
+
 

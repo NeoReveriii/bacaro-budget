@@ -2474,7 +2474,7 @@ function hideCoinLoader() {
 
 // --- Custom Select Dropdowns ---
 function initializeCustomSelects() {
-	const selects = document.querySelectorAll('select.floating-input, select.settings-select');
+	const selects = document.querySelectorAll('select.floating-input, select.settings-select, select.tx-filter-select');
 	selects.forEach(select => {
 		if (select.closest('.custom-select-wrapper')) return;
 
@@ -2487,16 +2487,19 @@ function initializeCustomSelects() {
 		wrapper.appendChild(select);
 		select.style.display = 'none';
 		const isSettings = select.classList.contains('settings-select');
+		const isTx = select.classList.contains('tx-filter-select');
 		
 		const trigger = document.createElement('div');
-		trigger.className = isSettings ? 'custom-select-trigger settings-trigger' : 'custom-select-trigger floating-input';
+		if (isSettings) trigger.className = 'custom-select-trigger settings-trigger';
+		else if (isTx) trigger.className = 'custom-select-trigger tx-filter-trigger';
+		else trigger.className = 'custom-select-trigger floating-input';
 		
 		const textSpan = document.createElement('span');
 		if (select.value) {
 			const opt = select.options[select.selectedIndex];
 			textSpan.innerText = opt ? opt.text : '';
 			wrapper.classList.add('has-value');
-			if (!isSettings) {
+			if (!isSettings && !isTx) {
 				const group = select.closest('.input-group');
 				if (group) group.classList.add('has-value');
 			}
@@ -2521,17 +2524,20 @@ function initializeCustomSelects() {
 				select.value = opt.value;
 				textSpan.innerText = opt.text;
 				wrapper.classList.add('has-value');
-				if (!isSettings) {
+				if (!isSettings && !isTx) {
 					const group = select.closest('.input-group');
 					if (group) group.classList.add('has-value');
 				}
-				optionsList.classList.remove('open');
-				wrapper.classList.remove('open');
 				
-				select.dispatchEvent(new Event('change'));
-				
+				// Update generic custom options list state
 				Array.from(optionsList.children).forEach(c => c.classList.remove('selected'));
 				optionDiv.classList.add('selected');
+				
+				wrapper.classList.remove('open');
+				
+				// Trigger change event so any listeners on the original select still fire
+				const event = new Event('change');
+				select.dispatchEvent(event);
 			});
 			optionsList.appendChild(optionDiv);
 		});

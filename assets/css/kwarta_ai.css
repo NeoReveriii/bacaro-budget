@@ -137,6 +137,7 @@
     height: 20px;
     stroke-width: 2.5px;
     display: block; /* Helps with alignment */
+    transform: translateX(-1px); /* Visually center the asymmetrical 'send' arrow */
 }
 
 /* Chat Bubbles */
@@ -145,7 +146,7 @@
 .user-msg { justify-content: flex-end; }
 .msg-bubble {
     max-width: 85%;
-    padding: 12px 18px;
+    padding: 8px 22px; /* Adjusted to ~3:1 ratio for compact vertical look */
     font-size: 0.95em;
     line-height: 1.5;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);

@@ -2554,23 +2554,34 @@ function initializeCustomSelects() {
 }
 
 function updateDashboardStats(transactions) {
-    const income = transactions.filter(t => t.type === 'Income').reduce((sum, t) => sum + Number(t.amount), 0);
-    const expense = transactions.filter(t => t.type === 'Expense').reduce((sum, t) => sum + Number(t.amount), 0);
-    const transfer = transactions
-		.filter(t => {
-			if (t.type !== 'Transfer') return false;
-			const hasStructuredPair = Number(t.transfer_from_wallet_id) > 0 && Number(t.transfer_to_wallet_id) > 0;
-			if (hasStructuredPair) return true;
-			const desc = String(t.description || '').toLowerCase();
-			return desc.includes('out to ') || desc.includes('transfer to ');
-		})
+    const normalizedTransactions = transactions.map(t => ({
+        ...t,
+        normalizedType: String(t.type || '').toLowerCase()
+    }));
+
+    const income = normalizedTransactions.filter(t => t.normalizedType === 'income').reduce((sum, t) => sum + Number(t.amount), 0);
+    const expense = normalizedTransactions.filter(t => t.normalizedType === 'expense').reduce((sum, t) => sum + Number(t.amount), 0);
+    const transfer = normalizedTransactions
+        .filter(t => {
+            if (t.normalizedType !== 'transfer') return false;
+            const hasStructuredPair = Number(t.transfer_from_wallet_id) > 0 && Number(t.transfer_to_wallet_id) > 0;
+            if (hasStructuredPair) return true;
+            const desc = String(t.description || '').toLowerCase();
+            return desc.includes('out to ') || desc.includes('transfer to ');
+        })
         .reduce((sum, t) => sum + Number(t.amount), 0);
 
 
+    const balance = income - expense;
+    const balanceEl = document.querySelector('.wallet-card .stat-value');
     const incomeEl = document.querySelector('.income-card .stat-value');
     const expenseEl = document.querySelector('.expense-card .stat-value');
     const transferEl = document.querySelector('.transfer-card .stat-value');
 
+    if (balanceEl) {
+        balanceEl.innerHTML = formatCurrency(balance);
+        balanceEl.classList.add('loading-transition');
+    }
     if (incomeEl) {
         incomeEl.innerHTML = formatCurrency(income);
         incomeEl.classList.add('loading-transition');
@@ -2589,12 +2600,67 @@ function updateDashboardStats(transactions) {
     renderCashFlowChart(transactions);
 }
 
+function parseTransactionDate(transaction) {
+    const dateValue = transaction.dateoftrans || transaction.date;
+    const parsed = new Date(dateValue);
+    if (Number.isNaN(parsed.getTime())) return null;
+    parsed.setHours(0, 0, 0, 0);
+    return parsed;
+}
+
+function filterTransactionsByRange(range, transactions) {
+    if (!Array.isArray(transactions)) return [];
+    if (!range || range === 'ALL TIME') return transactions;
+
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+
+    return transactions.filter(tx => {
+        const txDate = parseTransactionDate(tx);
+        if (!txDate) return false;
+
+        if (range === 'TODAY') {
+            return txDate.getTime() === now.getTime();
+        }
+
+        if (range === 'THIS WEEK') {
+            const dayOfWeek = now.getDay();
+            const startOfWeek = new Date(now);
+            startOfWeek.setDate(now.getDate() - dayOfWeek);
+            return txDate >= startOfWeek && txDate <= now;
+        }
+
+        if (range === 'THIS MONTH') {
+            return txDate.getMonth() === now.getMonth() && txDate.getFullYear() === now.getFullYear();
+        }
+
+        if (range === 'THIS YEAR') {
+            return txDate.getFullYear() === now.getFullYear();
+        }
+
+        return true;
+    });
+}
+
+function updateRange(range) {
+    if (!range) return;
+    window.dashboardDateRange = range;
+
+    const filteredTransactions = filterTransactionsByRange(range, window.currentTransactions || []);
+    updateDashboardStats(filteredTransactions);
+
+    const rangeButton = document.querySelector('.dashboard-filter-container .range-dropdown .range-dropbtn');
+    if (rangeButton) {
+        rangeButton.innerHTML = `${range} <span class="arrow-icon">▾</span>`;
+    }
+}
+
 function renderIncomeSummary(transactions) {
     const container = document.getElementById('income-summary-container');
     const listEl = document.getElementById('income-summary-list');
     if (!container || !listEl) return;
 
-    const incomeTransactions = transactions.filter(t => t.type === 'Income').slice(0, 5);
+    const incomeTransactions = transactions.filter(t => String(t.type || '').toLowerCase() === 'income').slice(0, 5);
     
     if (incomeTransactions.length === 0) {
         listEl.innerHTML = '<p style="color: #999; font-style: italic; padding: 10px;">No income records found.</p>';

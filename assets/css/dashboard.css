@@ -3577,6 +3577,57 @@ body.dark-mode .tx-filter-trigger {
 /* Let the general custom-select-options handle the dropdown box */
 .custom-select-wrapper:has(.tx-filter-trigger) .custom-select-options {
     margin-top: 5px;
+    background-color: white;
+    min-width: 140px;
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.15);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid rgba(0,0,0,0.05);
+    padding: 0;
+}
+
+body.dark-mode .custom-select-wrapper:has(.tx-filter-trigger) .custom-select-options {
+    background-color: #2a302c; /* Muted dark forest */
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+.custom-select-wrapper:has(.tx-filter-trigger) .custom-option {
+    border-bottom: none;
+    border-left: none; /* Removed the strong green line completely */
+    padding: 10px 15px;
+    font-size: 0.75em;
+    font-weight: 700;
+    color: var(--dark-green);
+    background: transparent;
+}
+
+body.dark-mode .custom-select-wrapper:has(.tx-filter-trigger) .custom-option {
+    color: #edf1ee;
+}
+
+.custom-select-wrapper:has(.tx-filter-trigger) .custom-option:hover {
+    background-color: var(--new-light-blob);
+    color: var(--primary-green);
+    border-left: none; /* Ensure it stays removed on hover */
+    padding-left: 15px; /* Prevent shifting from generic hover rules */
+}
+
+body.dark-mode .custom-select-wrapper:has(.tx-filter-trigger) .custom-option:hover {
+    background-color: rgba(107, 166, 79, 0.2);
+    color: #b0e0a0;
+}
+
+.custom-select-wrapper:has(.tx-filter-trigger) .custom-option.selected {
+    background-color: rgba(89, 133, 57, 0.1);
+    color: var(--primary-green);
+    border-left: none; /* Keep the green line removed */
+    padding-left: 15px;
+}
+
+body.dark-mode .custom-select-wrapper:has(.tx-filter-trigger) .custom-option.selected {
+    background-color: rgba(107, 166, 79, 0.3);
+    color: #a8d86e;
 }
 
 @media (max-width: 768px) {

@@ -62,14 +62,36 @@
 			}
 		}
 		
-		function openLoginModal() { 
-            closeAllModals(); 
-            toggleAccountSidebar(false); 
+		function openLoginModal() {
+            closeAllModals();
+            toggleAccountSidebar(false);
             toggleMainSidebar(false);
-            document.getElementById('login-modal').classList.add('active'); 
+            const form = document.getElementById('login-form');
+            if (form) form.reset();
+            const msg = document.getElementById('login-message');
+            if (msg) { msg.innerHTML = ''; msg.className = 'message'; }
+            document.getElementById('login-modal').classList.add('active');
         }
-		function openSignupModal() { closeAllModals(); toggleAccountSidebar(false); toggleMainSidebar(false); document.getElementById('signup-modal').classList.add('active'); }
-		function openForgotModal() { closeAllModals(); toggleAccountSidebar(false); toggleMainSidebar(false); document.getElementById('forgot-modal').classList.add('active'); }
+		function openSignupModal() {
+            closeAllModals();
+            toggleAccountSidebar(false);
+            toggleMainSidebar(false);
+            const form = document.getElementById('signup-form');
+            if (form) form.reset();
+            const msg = document.getElementById('signup-message');
+            if (msg) { msg.innerHTML = ''; msg.className = 'message'; }
+            document.getElementById('signup-modal').classList.add('active');
+        }
+		function openForgotModal() {
+            closeAllModals();
+            toggleAccountSidebar(false);
+            toggleMainSidebar(false);
+            const form = document.getElementById('forgot-form');
+            if (form) form.reset();
+            const msg = document.getElementById('forgot-message');
+            if (msg) { msg.innerHTML = ''; msg.className = 'message'; }
+            document.getElementById('forgot-modal').classList.add('active');
+        }
 		function openAddWalletModal() { closeAllModals(); document.getElementById('add-wallet-modal').classList.add('active'); }
 		function openTransferModal() { 
 			closeAllModals(); 
@@ -1655,11 +1677,14 @@
 			}
 			
 			if (walletFilter !== 'all') {
-				const filterOpt = document.querySelector(`#tx-filter-wallet option[value="${walletFilter}"]`);
-				const walletName = filterOpt ? filterOpt.dataset.name : null;
 				filtered = filtered.filter(t => {
-					if (walletName && t.wallet_type === walletName) return true;
 					if (String(t.wallet_id) === walletFilter) return true;
+					if (String(t.transfer_from_wallet_id) === walletFilter) return true;
+					if (String(t.transfer_to_wallet_id) === walletFilter) return true;
+					// fallback: some older records store wallet name in wallet_type
+					const filterOpt = document.querySelector(`#tx-filter-wallet option[value="${walletFilter}"]`);
+					const walletName = filterOpt ? filterOpt.dataset.name : null;
+					if (walletName && String(t.wallet_type || '') === walletName) return true;
 					return false;
 				});
 			}

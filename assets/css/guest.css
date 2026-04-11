@@ -1,0 +1,313 @@
+/* ===================================================================
+   Guest / Landing Page Specific Styles
+   =================================================================== */
+
+/* Body override — landing page scrolls, not a centered flex layout */
+body.guest-page {
+    display: block;
+    overflow-y: auto;
+    align-items: unset;
+    justify-content: unset;
+}
+
+/* Fix animated background to always cover the viewport */
+body.guest-page .animated-background {
+    position: fixed;
+}
+
+/* Guest Container */
+.guest-container {
+    min-height: 100vh;
+    position: relative;
+    color: var(--white);
+}
+
+/* ===================================================================
+   Guest Header
+   =================================================================== */
+.guest-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    position: relative;
+    z-index: 10;
+}
+
+.guest-logo img {
+    height: 48px;
+    display: block;
+}
+
+.guest-header-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* ===================================================================
+   Button variants for the landing page
+   =================================================================== */
+
+/* .btn modifier — makes btn-primary auto-width inside the landing page only.
+   Scoped to .guest-container so modal submit buttons keep their full width. */
+.guest-container .btn {
+    width: auto !important;
+    height: auto !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 24px;
+}
+
+.guest-container .btn-lg,
+.hero-actions .btn-ghost.btn-lg {
+    padding: 14px 32px !important;
+    font-size: 1rem !important;
+}
+
+/* Ghost Button */
+.btn-ghost {
+    padding: 10px 24px;
+    border-radius: 10px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s ease;
+}
+
+.btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.btn-ghost.btn-lg {
+    padding: 14px 32px !important;
+    font-size: 1rem !important;
+}
+
+/* ===================================================================
+   Guest Main & Hero Section
+   =================================================================== */
+.guest-main {
+    position: relative;
+    z-index: 10;
+}
+
+.hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 60px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hero-content {
+    flex: 1;
+    max-width: 600px;
+}
+
+.hero-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 30px;
+    background: rgba(46, 204, 113, 0.15);
+    border: 1px solid rgba(46, 204, 113, 0.3);
+    color: #2ecc71;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.hero-title {
+    font-size: 3.2rem;
+    font-weight: 800;
+    line-height: 1.15;
+    margin: 0 0 20px;
+    font-family: 'Inter', sans-serif;
+    color: var(--white);
+}
+
+.hero-highlight {
+    color: var(--income-color);
+}
+
+.hero-subtitle {
+    font-size: 1.15rem;
+    opacity: 0.75;
+    line-height: 1.7;
+    margin-bottom: 32px;
+    color: var(--white);
+}
+
+.hero-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* ===================================================================
+   Hero Visual Card
+   =================================================================== */
+.hero-visual {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.hero-card {
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 24px;
+    padding: 32px;
+    min-width: 280px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.hero-card-label {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    color: var(--white);
+}
+
+.hero-card-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--income-color);
+}
+
+.hero-card-stats {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.badge-income {
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(46, 204, 113, 0.2);
+    border: 1px solid rgba(46, 204, 113, 0.4);
+    color: #2ecc71;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.badge-expense {
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(231, 76, 60, 0.2);
+    border: 1px solid rgba(231, 76, 60, 0.4);
+    color: #e74c3c;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* ===================================================================
+   Features Section
+   =================================================================== */
+.features-section {
+    padding: 60px 40px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.features-section h2 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 40px;
+    color: var(--white);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 28px;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+}
+
+.feature-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: var(--white);
+}
+
+.feature-card p {
+    font-size: 0.88rem;
+    opacity: 0.7;
+    line-height: 1.6;
+    color: var(--white);
+    margin: 0;
+}
+
+/* ===================================================================
+   Responsive
+   =================================================================== */
+@media (max-width: 768px) {
+    .guest-header {
+        padding: 16px 20px;
+    }
+
+    .hero-section {
+        flex-direction: column;
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .hero-content {
+        max-width: 100%;
+    }
+
+    .hero-title {
+        font-size: 2.2rem;
+    }
+
+    .hero-actions {
+        justify-content: center;
+    }
+
+    .hero-visual {
+        width: 100%;
+    }
+
+    .hero-card {
+        width: 100%;
+        box-sizing: border-box;
+        min-width: unset;
+    }
+
+    .features-section {
+        padding: 40px 20px 60px;
+    }
+}

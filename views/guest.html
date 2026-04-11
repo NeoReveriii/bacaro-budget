@@ -3,70 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guest Dashboard | Bacaro Budget Manager</title>
-		<link rel="icon" type="image/png" href="/assets/images/bb_favicon.png">
-		<link rel="stylesheet" href="/assets/css/dashboard.css"> 
-		<link rel="stylesheet" href="/assets/css/global.css">
-		<script src="/assets/js/main.js"></script>
+    <title>Bacaro Budget Manager</title>
+    <link rel="icon" type="image/png" href="/assets/images/bb_favicon.png">
+    <link rel="stylesheet" href="/assets/css/global.css">
+    <link rel="stylesheet" href="/assets/css/guest.css">
 </head>
-<body>
-    
+<body class="guest-page">
+
     <div class="animated-background">
-        <div class="blob"></div><div class="blob"></div><div class="blob"></div><div class="blob"></div><div class="blob"></div> 
+        <div class="blob"></div><div class="blob"></div><div class="blob"></div><div class="blob"></div><div class="blob"></div>
     </div>
 
-    <div class="dashboard-container">
-        <header id="main-header">
-            <div class="header-left">
-                <button class="mobile-menu-btn" onclick="toggleMainSidebar()">☰</button>
-                <div class="header-logo-container"> <img src="/assets/images/bb_logo_db.png" alt="App Logo"> </div>
-                <div class="header-title">Bacaro Budget Manager</div>
+    <div class="guest-container" id="guest-page">
+        <header class="guest-header">
+            <div class="guest-logo">
+                <img src="/assets/images/bb_logo_db.png" alt="Bacaro Budget Logo">
             </div>
-
-            <nav class="header-right">
-                <button class="header-signin-btn" onclick="openLoginModal()">Sign In</button>
-            </nav>
+            <div class="guest-header-actions">
+                <button class="btn-ghost" onclick="openLoginModal()">Log In</button>
+                <button class="btn btn-primary" onclick="openSignupModal()">Get Started</button>
+            </div>
         </header>
 
-        <div id="app-content">
-            <div class="main-app-card guest-hero-card"> 
-                <div class="guest-hero-content">
-                    <div class="guest-hero-icon">
-                        <img src="/assets/images/bb_favicon.png" alt="Logo" style="width: 80px; height: 80px; opacity: 0.9;">
-                    </div>
-                    <h1>Take Control of Your Budget</h1>
-                    <p>Join Bacaro Budget Manager to track your expenses, set savings goals, and get AI-powered financial insights.</p>
-                    <div class="guest-hero-actions">
-                        <button class="btn btn-primary btn-lg" onclick="openLoginModal()">Get Started</button>
-                        <button class="btn btn-secondary-outline btn-lg" onclick="openSignupModal()">Create Account</button>
+        <main class="guest-main">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-content">
+                    <div class="hero-badge">💰 Smart Personal Finance</div>
+                    <h1 class="hero-title">
+                        Take Control of Your<br>
+                        <span class="hero-highlight">Financial Future</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Track income, expenses, and savings goals with Bacaro Budget Manager — your all-in-one AI-powered finance companion.
+                    </p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary btn-lg" onclick="openSignupModal()">Start For Free</button>
+                        <button class="btn-ghost btn-lg" onclick="openLoginModal()">Sign In →</button>
                     </div>
                 </div>
-            </div>
-        </div>
+                <div class="hero-visual">
+                    <div class="hero-card">
+                        <div class="hero-card-label">Total Balance</div>
+                        <div class="hero-card-value">₱ 128,450.00</div>
+                        <div class="hero-card-stats">
+                            <span class="badge-income">↑ Income ₱45,000</span>
+                            <span class="badge-expense">↓ Expense ₱18,200</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-			
-		</div>
-    </div>		
-	
-	<div id="account-sidebar" class="account-drawer">
-        <div class="drawer-header">
-            <h3>Account Details</h3>
-            <button class="close-drawer" onclick="toggleAccountSidebar()">&times;</button>
-        </div>
-        <div class="drawer-content">
-            <div class="profile-section">
-                <div class="large-pfp"></div>
-                <p class="user-status">Guest User</p>
-            </div>
-            <div class="account-info">
-                <p>Please log in to access your budget data and AI insights.</p>
-            </div>
-        </div>
-		<div class="drawer-footer">
-			<button class="btn btn-primary" onclick="openLoginModal()">LOG IN</button>
-		</div>
-	</div>
-	<div id="drawer-overlay" class="drawer-overlay"></div>
+            <!-- Features Section -->
+            <section class="features-section">
+                <h2>Everything you need to manage money</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Real-time Dashboard</h3>
+                        <p>Monitor balances, income, and expenses at a glance with live-updating charts.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💼</div>
+                        <h3>Multi-wallet Support</h3>
+                        <p>Manage cash, bank accounts, e-wallets, and credit cards all in one place.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h3>Savings Goals</h3>
+                        <p>Set and track savings targets with visual progress bars and deadline tracking.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🤖</div>
+                        <h3>Kwarta AI</h3>
+                        <p>Get intelligent financial insights and answers powered by AI, tailored to your data.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="drawer-overlay" class="drawer-overlay"></div>
 	
 	<div id="login-modal" class="modal-overlay">
         <div class="modal-card">

@@ -44,17 +44,6 @@
 			</div>
 
 			<nav class="header-right">
-
-				<div class="reports-dropdown-container">
-					<button class="dropdown-button">Reports ▾</button>
-					<div class="dropdown-content">
-						<a href="#">Daily</a>
-						<a href="#">Weekly</a>
-						<a href="#">Monthly</a>
-						<a href="#">Annually</a>
-					</div>
-				</div>
-
 				<div class="account-pfp-placeholder" id="header-pfp" onclick="toggleAccountSidebar()">
 					<span id="header-initials">--</span>
 				</div>
@@ -79,8 +68,8 @@
 						</nav>
 					</div>
 					<div class="sidebar-section bottom-section">
-						<a href="#" class="nav-item" onclick="showView('settings', this)"><span
-								class="nav-icon"><i data-lucide="settings"></i></span>Settings</a>
+						<a href="#" class="nav-item" onclick="showView('settings', this)"><span class="nav-icon"><i
+									data-lucide="settings"></i></span>Settings</a>
 					</div>
 				</aside>
 
@@ -93,11 +82,20 @@
 										<button class="range-dropbtn">ALL TIME <span
 												class="arrow-icon">▾</span></button>
 										<div class="range-dropdown-content">
-											<a href="#" onclick="event.preventDefault(); return updateRange('TODAY')">TODAY</a>
-											<a href="#" onclick="event.preventDefault(); return updateRange('THIS WEEK')">THIS WEEK</a>
-											<a href="#" onclick="event.preventDefault(); return updateRange('THIS MONTH')">THIS MONTH</a>
-											<a href="#" onclick="event.preventDefault(); return updateRange('THIS YEAR')">THIS YEAR</a>
-											<a href="#" onclick="event.preventDefault(); return updateRange('ALL TIME')">ALL TIME</a>
+											<a href="#"
+												onclick="event.preventDefault(); return updateRange('TODAY')">TODAY</a>
+											<a href="#"
+												onclick="event.preventDefault(); return updateRange('THIS WEEK')">THIS
+												WEEK</a>
+											<a href="#"
+												onclick="event.preventDefault(); return updateRange('THIS MONTH')">THIS
+												MONTH</a>
+											<a href="#"
+												onclick="event.preventDefault(); return updateRange('THIS YEAR')">THIS
+												YEAR</a>
+											<a href="#"
+												onclick="event.preventDefault(); return updateRange('ALL TIME')">ALL
+												TIME</a>
 										</div>
 									</div>
 
@@ -105,7 +103,9 @@
 										<button class="range-dropbtn" id="dashboard-wallet-dropbtn">ALL WALLETS <span
 												class="arrow-icon">▾</span></button>
 										<div class="range-dropdown-content" id="dashboard-wallet-dropdown-content">
-											<a href="#" onclick="event.preventDefault(); return updateWalletFilter(null, 'ALL WALLETS')">ALL WALLETS</a>
+											<a href="#"
+												onclick="event.preventDefault(); return updateWalletFilter(null, 'ALL WALLETS')">ALL
+												WALLETS</a>
 										</div>
 									</div>
 								</div>
@@ -221,13 +221,21 @@
 								<div class="cash-flow-chart-header">
 									<h3>Cash Flow Trend</h3>
 									<div class="range-dropdown">
-										<button class="range-dropbtn" id="cash-flow-dropbtn">MONTHLY <span class="arrow-icon">▾</span></button>
+										<button class="range-dropbtn" id="cash-flow-dropbtn">MONTHLY <span
+												class="arrow-icon">▾</span></button>
 										<div class="range-dropdown-content">
-											<a href="#" onclick="event.preventDefault(); return updateCashFlowRange('weekly', 'Weekly')">WEEKLY</a>
-											<a href="#" onclick="event.preventDefault(); return updateCashFlowRange('monthly', 'Monthly')">MONTHLY</a>
-											<a href="#" onclick="event.preventDefault(); return updateCashFlowRange('last6months', 'Last 6 Months')">LAST 6 MONTHS</a>
-											<a href="#" onclick="event.preventDefault(); return updateCashFlowRange('yearly', 'Yearly')">YEARLY</a>
-											<a href="#" onclick="event.preventDefault(); return updateCashFlowRange('all', 'All Time')">ALL TIME</a>
+											<a href="#"
+												onclick="event.preventDefault(); return updateCashFlowRange('weekly', 'Weekly')">WEEKLY</a>
+											<a href="#"
+												onclick="event.preventDefault(); return updateCashFlowRange('monthly', 'Monthly')">MONTHLY</a>
+											<a href="#"
+												onclick="event.preventDefault(); return updateCashFlowRange('last6months', 'Last 6 Months')">LAST
+												6 MONTHS</a>
+											<a href="#"
+												onclick="event.preventDefault(); return updateCashFlowRange('yearly', 'Yearly')">YEARLY</a>
+											<a href="#"
+												onclick="event.preventDefault(); return updateCashFlowRange('all', 'All Time')">ALL
+												TIME</a>
 										</div>
 									</div>
 								</div>
@@ -249,22 +257,27 @@
 								<div class="view-header" style="margin-bottom: 20px;">
 									<div class="transaction-filters">
 										<div class="tx-search-box">
-											<input type="text" id="tx-search" class="tx-filter-input" placeholder="Search transactions..." oninput="applyTransactionFilters()">
+											<input type="text" id="tx-search" class="tx-filter-input"
+												placeholder="Search transactions..."
+												oninput="applyTransactionFilters()">
 											<i data-lucide="search" class="tx-search-icon"></i>
 										</div>
-										
-										<select id="tx-filter-type" class="tx-filter-select" onchange="applyTransactionFilters()">
+
+										<select id="tx-filter-type" class="tx-filter-select"
+											onchange="applyTransactionFilters()">
 											<option value="all">All Types</option>
 											<option value="income">Income</option>
 											<option value="expense">Expense</option>
 											<option value="transfer">Transfer</option>
 										</select>
 
-										<select id="tx-filter-wallet" class="tx-filter-select" onchange="applyTransactionFilters()">
+										<select id="tx-filter-wallet" class="tx-filter-select"
+											onchange="applyTransactionFilters()">
 											<option value="all">All Wallets</option>
 										</select>
 
-										<select id="tx-filter-date" class="tx-filter-select" onchange="applyTransactionFilters()">
+										<select id="tx-filter-date" class="tx-filter-select"
+											onchange="applyTransactionFilters()">
 											<option value="all">All Time</option>
 											<option value="today">Today</option>
 											<option value="yesterday">Yesterday</option>
@@ -468,7 +481,8 @@
 							<div class="settings-container">
 								<div class="settings-page-header">
 									<h2 class="settings-title">Preferences</h2>
-									<p class="settings-subtitle">Personalize how Bacaro Budget Manager looks and behaves.</p>
+									<p class="settings-subtitle">Personalize how Bacaro Budget Manager looks and
+										behaves.</p>
 								</div>
 
 								<!-- APPEARANCE SECTION -->
@@ -481,7 +495,8 @@
 											</div>
 											<div class="settings-info">
 												<span class="settings-row-title">Dark Mode</span>
-												<span class="settings-row-desc">Switch between standard and low-light interface themes.</span>
+												<span class="settings-row-desc">Switch between standard and low-light
+													interface themes.</span>
 											</div>
 											<div class="settings-action">
 												<label class="toggle-switch">
@@ -497,10 +512,12 @@
 											</div>
 											<div class="settings-info">
 												<span class="settings-row-title">Contrast Adjustment</span>
-												<span class="settings-row-desc">Toggle between normal and high contrast modes.</span>
+												<span class="settings-row-desc">Toggle between normal and high contrast
+													modes.</span>
 											</div>
 											<div class="settings-action">
-												<button type="button" id="settings-contrast-toggle" class="btn-contrast-toggle">Normal Contrast</button>
+												<button type="button" id="settings-contrast-toggle"
+													class="btn-contrast-toggle">Normal Contrast</button>
 											</div>
 										</div>
 										<div class="settings-separator"></div>
@@ -510,7 +527,8 @@
 											</div>
 											<div class="settings-info">
 												<span class="settings-row-title">Language</span>
-												<span class="settings-row-desc">Select your preferred display language.</span>
+												<span class="settings-row-desc">Select your preferred display
+													language.</span>
 											</div>
 											<div class="settings-action">
 												<div class="settings-select-wrapper">
@@ -528,7 +546,8 @@
 											</div>
 											<div class="settings-info">
 												<span class="settings-row-title">Currency Display</span>
-												<span class="settings-row-desc">Show or hide the Pesos symbol (₱) in amounts.</span>
+												<span class="settings-row-desc">Show or hide the Pesos symbol (₱) in
+													amounts.</span>
 											</div>
 											<div class="settings-action">
 												<label class="toggle-switch">
@@ -550,10 +569,12 @@
 											</div>
 											<div class="settings-info">
 												<span class="settings-row-title">Export Data</span>
-												<span class="settings-row-desc">Download a CSV file containing all your transaction records.</span>
+												<span class="settings-row-desc">Download a CSV file containing all your
+													transaction records.</span>
 											</div>
 											<div class="settings-action">
-												<button type="button" class="btn-settings-action" onclick="handleExportData()">Download CSV</button>
+												<button type="button" class="btn-settings-action"
+													onclick="handleExportData()">Download CSV</button>
 											</div>
 										</div>
 									</div>
@@ -569,10 +590,12 @@
 											</div>
 											<div class="settings-info">
 												<span class="settings-row-title">Privacy Policy</span>
-												<span class="settings-row-desc">Read how we handle and protect your budget data.</span>
+												<span class="settings-row-desc">Read how we handle and protect your
+													budget data.</span>
 											</div>
 											<div class="settings-action">
-												<a href="privacy.html" target="_blank" class="btn-settings-action" style="text-decoration: none;">View Policy</a>
+												<a href="privacy.html" target="_blank" class="btn-settings-action"
+													style="text-decoration: none;">View Policy</a>
 											</div>
 										</div>
 										<div class="settings-separator"></div>
@@ -582,10 +605,12 @@
 											</div>
 											<div class="settings-info">
 												<span class="settings-row-title">Terms of Use</span>
-												<span class="settings-row-desc">Review the rules and guidelines for using Bacaro.</span>
+												<span class="settings-row-desc">Review the rules and guidelines for
+													using Bacaro.</span>
 											</div>
 											<div class="settings-action">
-												<a href="terms.html" target="_blank" class="btn-settings-action" style="text-decoration: none;">View Terms</a>
+												<a href="terms.html" target="_blank" class="btn-settings-action"
+													style="text-decoration: none;">View Terms</a>
 											</div>
 										</div>
 									</div>
@@ -601,10 +626,12 @@
 											</div>
 											<div class="settings-info">
 												<span class="settings-row-title title-danger">Delete Account</span>
-												<span class="settings-row-desc">Permanently remove your account and all associated budget data.</span>
+												<span class="settings-row-desc">Permanently remove your account and all
+													associated budget data.</span>
 											</div>
 											<div class="settings-action">
-												<button type="button" class="btn-ghost-danger" onclick="handleDeleteAccount()">Delete Account</button>
+												<button type="button" class="btn-ghost-danger"
+													onclick="handleDeleteAccount()">Delete Account</button>
 											</div>
 										</div>
 									</div>
@@ -629,7 +656,7 @@
 				<h3>Account Details</h3>
 				<button class="close-drawer" onclick="toggleAccountSidebar()" title="Close">&times;</button>
 			</div>
-	
+
 			<div class="drawer-content">
 				<div class="profile-section">
 					<div class="large-pfp-container">
@@ -637,10 +664,12 @@
 						<div class="pfp-overlay" onclick="triggerAvatarUpload()">
 							<i data-lucide="camera"></i>
 						</div>
-						<input type="file" id="avatar-upload-input" hidden accept="image/*" onchange="handleAvatarUpload(event)">
+						<input type="file" id="avatar-upload-input" hidden accept="image/*"
+							onchange="handleAvatarUpload(event)">
 					</div>
 					<h3 id="profile-username" style="margin-bottom: 5px;">--</h3>
-				<div id="financial-badge-container" style="margin-bottom: 25px; display: flex; justify-content: center;"></div>
+					<div id="financial-badge-container"
+						style="margin-bottom: 25px; display: flex; justify-content: center;"></div>
 					<div class="edit-mode-only" style="display: none;">
 						<div class="input-group">
 							<input type="text" id="edit-nickname" class="floating-input" placeholder=" ">
@@ -649,7 +678,7 @@
 						</div>
 					</div>
 				</div>
-	
+
 				<div class="account-info">
 					<div class="info-item">
 						<span class="info-label">Email Address</span>
@@ -672,7 +701,8 @@
 					</div>
 					<div class="edit-mode-only" style="display: none; text-align: left;">
 						<div class="input-group">
-							<textarea id="edit-bio" class="floating-input" placeholder=" " style="min-height: 80px;"></textarea>
+							<textarea id="edit-bio" class="floating-input" placeholder=" "
+								style="min-height: 80px;"></textarea>
 							<label class="floating-label">Bio/Goal</label>
 						</div>
 					</div>
@@ -693,9 +723,10 @@
 						<!-- DiceBear avatars will be rendered here -->
 					</div>
 				</div>
-	
+
 				<div class="drawer-nav view-mode-only">
-					<a href="#" class="drawer-nav-item" id="edit-profile-btn" onclick="toggleEditMode(true); return false;">
+					<a href="#" class="drawer-nav-item" id="edit-profile-btn"
+						onclick="toggleEditMode(true); return false;">
 						<i data-lucide="user"></i> Edit Profile
 					</a>
 				</div>
@@ -705,7 +736,7 @@
 					<button class="btn-ghost" onclick="toggleEditMode(false)">Cancel</button>
 				</div>
 			</div>
-	
+
 			<div class="drawer-footer">
 				<button class="btn-logout" onclick="handleLogout()">
 					<i data-lucide="log-out"></i> LOG OUT
@@ -729,12 +760,13 @@
 								<input type="password" class="floating-input" id="login-password" placeholder=" "
 									required>
 								<label class="floating-label">Password</label>
-							<span class="password-toggle">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#598539" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-								  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-								  <circle cx="12" cy="12" r="3"></circle>
-								</svg>
-							</span>
+								<span class="password-toggle">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#598539"
+										stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+										<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+										<circle cx="12" cy="12" r="3"></circle>
+									</svg>
+								</span>
 							</div>
 						</div>
 						<div id="login-message" class="message"></div>
@@ -772,25 +804,27 @@
 								<input type="password" class="floating-input" id="signup-password" placeholder=" "
 									required>
 								<label class="floating-label">Password</label>
-							<span class="password-toggle">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#598539" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-								  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-								  <circle cx="12" cy="12" r="3"></circle>
-								</svg>
-							</span>
+								<span class="password-toggle">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#598539"
+										stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+										<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+										<circle cx="12" cy="12" r="3"></circle>
+									</svg>
+								</span>
+							</div>
 						</div>
-					</div>
-					<div class="input-group">
-						<div class="password-input-wrapper">
-							<input type="password" class="floating-input" id="signup-confirm" placeholder=" "
-								required>
-							<label class="floating-label">Confirm Password</label>
-							<span class="password-toggle">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#598539" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-								  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-								  <circle cx="12" cy="12" r="3"></circle>
-								</svg>
-							</span>
+						<div class="input-group">
+							<div class="password-input-wrapper">
+								<input type="password" class="floating-input" id="signup-confirm" placeholder=" "
+									required>
+								<label class="floating-label">Confirm Password</label>
+								<span class="password-toggle">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#598539"
+										stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+										<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+										<circle cx="12" cy="12" r="3"></circle>
+									</svg>
+								</span>
 							</div>
 						</div>
 						<div class="input-group">
@@ -814,7 +848,8 @@
 			<div class="modal-card">
 				<button class="modal-close" onclick="closeAllModals()">&times;</button>
 				<div class="modal-form-container">
-					<h2 class="header"><i data-lucide="shield-alert" style="vertical-align: middle; margin-right: 8px;"></i> Reset Password</h2>
+					<h2 class="header"><i data-lucide="shield-alert"
+							style="vertical-align: middle; margin-right: 8px;"></i> Reset Password</h2>
 					<p style="text-align: center; color: var(--text-light); margin-bottom: 20px;">Enter your EMAIL or
 						PHONE to receive a reset link.</p>
 					<form>

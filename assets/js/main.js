@@ -290,6 +290,11 @@
 				element.classList.add('active');
 			}
 
+			// 3b. Re-populate wallet filter when entering transactions tab
+			if (viewId === 'transactions' && window.wallets && window.wallets.length > 0) {
+				renderWalletDropdowns();
+			}
+
             // 4. Update Tab Title
             const titles = {
                 'dashboard': 'Dashboard',

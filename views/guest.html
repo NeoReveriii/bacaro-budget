@@ -169,6 +169,14 @@
                     </div>
                     
                     <div id="signup-message" class="message"></div>
+
+                    <div class="terms-row">
+                        <input type="checkbox" id="signup-terms">
+                        <label for="signup-terms">
+                            I agree to the <a href="javascript:void(0)" onclick="openTermsModal()">Terms and Conditions</a>
+                        </label>
+                    </div>
+
                     <button type="submit" class="btn btn-primary">Create Account</button>
                     
                     <div class="secondary-action-container">
@@ -198,7 +206,56 @@
         </div>
     </div>
 
+    <!-- Terms & Conditions Modal -->
+    <div id="terms-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="terms-modal-header">
+                <h2>Terms and Conditions</h2>
+                <button class="modal-close" onclick="closeTermsModal()" style="position:static;opacity:0.6;font-size:1.6rem;padding:0 4px;">&times;</button>
+            </div>
+            <div class="terms-modal-body">
+                <p>Welcome to <strong>Bacaro Budget Manager</strong>. By creating an account and using this application, you agree to the following terms.</p>
+
+                <h3>1. Acceptance of Terms</h3>
+                <p>By registering, you confirm that you are at least 18 years old and agree to these Terms and Conditions and our Privacy Policy.</p>
+
+                <h3>2. Account Responsibility</h3>
+                <p>You are responsible for maintaining the confidentiality of your account credentials and all activity under your account.</p>
+
+                <h3>3. Data and Privacy</h3>
+                <p>We collect and store financial data you input solely to provide the service. We do not sell or share your personal data with third parties without your consent.</p>
+
+                <h3>4. Acceptable Use</h3>
+                <p>You agree not to misuse the platform, attempt unauthorized access, or use it for any unlawful purpose.</p>
+
+                <h3>5. Service Availability</h3>
+                <p>We strive for uptime but do not guarantee uninterrupted access and are not liable for any losses due to downtime.</p>
+
+                <h3>6. Modifications</h3>
+                <p>We may update these terms at any time. Continued use of the service constitutes acceptance of the updated terms.</p>
+
+                <h3>7. Termination</h3>
+                <p>We reserve the right to suspend or terminate accounts that violate these terms without prior notice.</p>
+
+                <p style="margin-top:20px;">For the full legal terms, see our <a href="/views/terms.html" target="_blank" style="color:#c8ffb0;text-decoration:underline;">Terms of Use page</a>.</p>
+            </div>
+            <div class="terms-modal-footer">
+                <button class="btn-ghost" onclick="closeTermsModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
 	<script src="/assets/js/main.js"></script>
-	<script>lucide.createIcons();</script>
+	<script>
+        lucide.createIcons();
+
+        function openTermsModal() {
+            document.getElementById('terms-modal').classList.add('active');
+        }
+
+        function closeTermsModal() {
+            document.getElementById('terms-modal').classList.remove('active');
+        }
+    </script>
 </body>
 </html>

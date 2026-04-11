@@ -2111,11 +2111,19 @@ window.handleDeleteGoal = async function(goalId, title) {
 					const password = document.getElementById('signup-password').value;
 					const confirmPassword = document.getElementById('signup-confirm').value;
 					const pnumber = document.getElementById('signup-pnumber').value.trim();
+					const termsAccepted = document.getElementById('signup-terms')?.checked;
 					const messageDiv = document.getElementById('signup-message');
 					messageDiv.innerHTML = '';
 					messageDiv.className = 'message';
 					if (!username || !email || !password) {
 						messageDiv.innerHTML = 'All fields are required';
+						messageDiv.className = 'message error';
+						return;
+					}
+
+					const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+					if (!emailRegex.test(email)) {
+						messageDiv.innerHTML = 'Please enter a valid email address';
 						messageDiv.className = 'message error';
 						return;
 					}
@@ -2128,6 +2136,12 @@ window.handleDeleteGoal = async function(goalId, title) {
 
 					if (password.length < 6) {
 						messageDiv.innerHTML = 'Password must be at least 6 characters';
+						messageDiv.className = 'message error';
+						return;
+					}
+
+					if (!termsAccepted) {
+						messageDiv.innerHTML = 'You must accept the Terms and Conditions to create an account';
 						messageDiv.className = 'message error';
 						return;
 					}

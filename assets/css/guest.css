@@ -399,8 +399,136 @@ body.guest-page .animated-background {
 }
 
 /* ===================================================================
-   Responsive
+   Modal — green glass to match landing background
    =================================================================== */
+.guest-page .modal-card {
+    background: rgba(20, 38, 22, 0.72);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.guest-page .modal-overlay {
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* ===================================================================
+   Terms Checkbox Row
+   =================================================================== */
+.terms-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 8px 0 14px;
+}
+
+.terms-row input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    accent-color: var(--primary-green);
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.terms-row label {
+    font-size: 0.83rem;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.5;
+    cursor: pointer;
+    user-select: none;
+}
+
+.terms-row label a {
+    color: #c8ffb0;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.terms-row label a:hover {
+    color: #ffffff;
+}
+
+/* ===================================================================
+   Terms & Conditions Popup Modal
+   =================================================================== */
+#terms-modal .modal-card {
+    max-width: 620px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    padding: 32px 36px;
+}
+
+.terms-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+}
+
+.terms-modal-header h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--white);
+    margin: 0;
+}
+
+.terms-modal-body {
+    overflow-y: auto;
+    flex: 1;
+    padding-right: 8px;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.88rem;
+    line-height: 1.75;
+}
+
+.terms-modal-body::-webkit-scrollbar {
+    width: 5px;
+}
+
+.terms-modal-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.terms-modal-body::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+.terms-modal-body h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #c8ffb0;
+    margin: 20px 0 6px;
+}
+
+.terms-modal-body p {
+    margin: 0 0 10px;
+}
+
+.terms-modal-footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 16px;
+}
+
+.terms-modal-footer .btn-ghost {
+    padding: 10px 28px;
+    font-size: 0.9rem;
+}
 @media (max-width: 768px) {
     .guest-main-header {
         padding: 10px 16px;

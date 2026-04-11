@@ -1,0 +1,271 @@
+/* assets/css/kwarta-ai.css */
+
+/* The main view container inside #main-content-area */
+#view-ai {
+    height: 100% !important;
+    width: 100% !important;
+    display: none; /* Controlled by JS showView */
+    flex-direction: column;
+    overflow: hidden !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #fff;
+}
+
+#view-ai[style*="display: block"] {
+    display: flex !important;
+}
+
+#kwarta-ai-interface, .ai-container, .chat-window {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.chat-header {
+    background: var(--dark-green);
+    color: white;
+    padding: 15px 25px;
+    flex-shrink: 0; /* Header never shrinks */
+    z-index: 10;
+}
+
+.chat-header h3 { font-size: 1.2em; margin: 0; }
+.chat-header p { font-size: 0.8em; margin: 2px 0 0; opacity: 0.7; }
+
+#btn-clear-chat:hover {
+    background: rgba(255,255,255,0.2) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+#btn-clear-chat i {
+    stroke-width: 2px;
+}
+
+.chat-messages {
+    flex: 1; /* Takes all available middle space */
+    overflow-y: auto; /* This part scrolls */
+    padding: 25px;
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Sticky Input Area - Glued via Flexbox */
+.chat-input-area {
+    background: white;
+    border-top: 1px solid #eee;
+    padding: 20px 30px;
+    padding-bottom: calc(20px + env(safe-area-inset-bottom));
+    flex-shrink: 0; /* Input area never scrolls away */
+    z-index: 10;
+}
+
+.prompt-chips {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+    overflow-x: auto;
+    padding: 6px 2px; /* Breathing room for hover lift */
+}
+.prompt-chips::-webkit-scrollbar { display: none; }
+
+.chip {
+    background: #f1f8f1;
+    border: 1px solid rgba(89, 133, 57, 0.15);
+    color: var(--dark-green);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.chip:hover {
+    background: var(--primary-green);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(89, 133, 57, 0.2);
+}
+
+.input-wrapper {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    align-items: center;
+}
+
+.input-wrapper input {
+    flex: 1;
+    min-width: 0; /* Critical for flex responsiveness */
+    padding: 12px 20px;
+    background: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 25px;
+    outline: none;
+    font-size: 1em;
+}
+
+.btn-send {
+    background-color: var(--dark-green);
+    color: white;
+    border: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.btn-send:hover {
+    background-color: var(--primary-green);
+    transform: scale(1.05);
+}
+
+.btn-send i {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2.5px;
+}
+
+/* Chat Bubbles */
+.msg { display: flex; width: 100%; }
+.ai-msg { justify-content: flex-start; }
+.user-msg { justify-content: flex-end; }
+.msg-bubble {
+    max-width: 85%;
+    padding: 12px 18px;
+    font-size: 0.95em;
+    line-height: 1.5;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border-radius: 20px;
+}
+.ai-msg .msg-bubble { background: #f0f2f5; color: #333; }
+.user-msg .msg-bubble { background: var(--primary-green); color: white; }
+
+/* --- AI Skeleton --- */
+.ai-bubble-skeleton {
+    max-width: 70%;
+    padding: 15px;
+    border-radius: 18px;
+    margin-bottom: 15px;
+    background-color: var(--skeleton-bg);
+    align-self: flex-start;
+}
+
+.ai-summary-skeleton-container {
+    padding: 20px;
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    margin-top: 20px;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.ai-skeleton-chart {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    background-color: var(--skeleton-bg);
+}
+
+.ai-skeleton-tip {
+    height: 12px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    background-color: var(--skeleton-bg);
+}
+
+/* --- Dark Mode Support --- */
+body.dark-mode #view-ai {
+    background: #1a1f1c; /* Deep dark background */
+}
+
+body.dark-mode .chat-messages {
+    background-color: #121614;
+}
+
+body.dark-mode .chat-input-area {
+    background: #1a1f1c;
+    border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .input-wrapper input {
+    background: #242926;
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #fff;
+}
+
+body.dark-mode .chip {
+    background: rgba(89, 133, 57, 0.15);
+    border-color: rgba(89, 133, 57, 0.3);
+    color: #a8d86e;
+}
+
+body.dark-mode .chip:hover {
+    background: var(--primary-green);
+    color: white;
+}
+
+body.dark-mode .msg-bubble {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .ai-msg .msg-bubble {
+    background: #1e2421;
+    color: #e0e0e0;
+}
+
+body.dark-mode .ai-bubble-skeleton {
+    background-color: var(--skeleton-bg);
+}
+
+/* Online Indicator Pulse */
+.online-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75em;
+    color: #888;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+.online-dot {
+    width: 8px;
+    height: 8px;
+    background: #2ecc71;
+    border-radius: 50%;
+    position: relative;
+}
+
+.online-dot::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #2ecc71;
+    border-radius: 50%;
+    animation: dotPulse 2s infinite;
+}
+
+@keyframes dotPulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    70% { transform: scale(3); opacity: 0; }
+    100% { transform: scale(1); opacity: 0; }
+}
+
+@media (max-width: 768px) {
+    .chat-messages { padding: 20px; }
+    .chat-input-area { padding: 15px 20px 25px 20px; }
+}

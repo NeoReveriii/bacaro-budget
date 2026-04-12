@@ -12,17 +12,21 @@
 		// --- Mobile: Move sidebar & overlay out of clipped containers ---
 		// On mobile, .main-app-card has overflow:hidden which clips position:fixed children.
 		// Moving these elements to .dashboard-container puts them outside the clip chain.
-		if (window.innerWidth <= 768) {
-			const dashContainer = document.querySelector('.dashboard-container');
-			const sidebar = document.getElementById('main-sidebar');
-			const overlay = document.getElementById('drawer-overlay');
-			const accountDrawer = document.getElementById('account-sidebar');
-			if (dashContainer) {
-				if (sidebar) dashContainer.appendChild(sidebar);
-				if (overlay) dashContainer.appendChild(overlay);
-				if (accountDrawer) dashContainer.appendChild(accountDrawer);
+		// Must wait for DOM to be ready since main.js loads in <head>.
+		document.addEventListener('DOMContentLoaded', function() {
+			if (window.innerWidth <= 768) {
+				const dashContainer = document.querySelector('.dashboard-container');
+				const sidebar = document.getElementById('main-sidebar');
+				const overlay = document.getElementById('drawer-overlay');
+				const accountDrawer = document.getElementById('account-sidebar');
+				if (dashContainer) {
+					// Append overlay FIRST, then sidebar on top
+					if (overlay) dashContainer.appendChild(overlay);
+					if (sidebar) dashContainer.appendChild(sidebar);
+					if (accountDrawer) dashContainer.appendChild(accountDrawer);
+				}
 			}
-		}
+		});
 						
 		function toggleAccountSidebar(forceState) {
 			const accountSidebar = document.getElementById('account-sidebar');

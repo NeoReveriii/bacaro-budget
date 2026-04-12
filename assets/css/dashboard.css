@@ -2193,20 +2193,33 @@ input[type=number] {
 
     /* Transaction List - Card Layout on Mobile */
     .transaction-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
         border-radius: 12px;
         margin: 15px;
         overflow-x: visible;
         padding: 10px;
     }
 
+    .transaction-item {
+        display: flex;
+        flex-direction: column;
+        background: var(--card-bg);
+        border-radius: 8px;
+        padding: 12px 15px;
+        border: var(--border-whisper);
+    }
+
     .transaction-row {
+        flex: 1;
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
-        padding: 12px 15px;
+        padding: 0;
         min-width: auto;
         width: 100%;
-        align-items: center;
+        align-items: flex-start;
     }
 
     /* Hide unnecessary columns on mobile */
@@ -2264,50 +2277,32 @@ input[type=number] {
         color: #999;
     }
 
-    /* Actions on first row right side */
+    /* Actions at bottom */
     .transaction-row > .rec-actions {
         flex: 0 1 auto;
         display: flex;
         gap: 6px;
         justify-content: flex-end;
+        margin-top: 8px;
     }
 
     .transaction-row.header-row {
         display: none;
     }
 
-    .wallet-history-section {
-        padding: 0 15px;
+    .transaction-details {
+        display: none;
     }
 
-    /* Transaction table mobile - same alignment as wallet */
-    @media (max-width: 768px) {
-        .transaction-row.header-row {
-            display: none;
-        }
+    .transaction-item.expanded .transaction-details {
+        display: block;
+        margin-top: 8px;
+        font-size: 0.85em;
+        color: #666;
+    }
 
-        .transaction-row > .rec-number {
-            display: none;
-        }
-
-        .transaction-row > .rec-type {
-            flex: 0 1 auto;
-        }
-
-        .transaction-row > .rec-date {
-            flex: 1 1 auto;
-        }
-
-        .transaction-row > .rec-wallet {
-            flex: 1 1 auto;
-        }
-
-        .transaction-row > .rec-actions {
-            flex: 0 1 auto;
-            display: flex;
-            gap: 6px;
-            justify-content: flex-end;
-        }
+    .wallet-history-section {
+        padding: 0 15px;
     }
 
     /* Modals - Bottom Sheet on Mobile */

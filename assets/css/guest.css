@@ -726,6 +726,45 @@ body.guest-page .animated-background {
         padding: 22px 18px;
     }
 
+    .guest-page #forgot-modal .modal-card {
+        width: min(84vw, 380px);
+        max-width: 380px;
+        padding: 18px 16px;
+    }
+
+    .guest-page #forgot-modal .modal-card .header {
+        font-size: 1.25rem;
+        margin-bottom: 12px;
+    }
+
+    .guest-page #forgot-modal .modal-form-container > p {
+        font-size: 0.82rem;
+        line-height: 1.4;
+        margin-bottom: 14px !important;
+    }
+
+    .guest-page #forgot-modal .input-group {
+        height: 42px;
+        margin-bottom: 12px;
+    }
+
+    .guest-page #forgot-modal .floating-input {
+        font-size: 0.88rem;
+        padding: 15px 12px 4px;
+    }
+
+    .guest-page #forgot-modal .floating-label {
+        top: 12px;
+        left: 12px;
+        font-size: 0.88rem;
+    }
+
+    .guest-page #forgot-modal .btn-primary {
+        height: 42px;
+        font-size: 0.8rem;
+        margin-top: 6px;
+    }
+
     .guest-page .input-group {
         height: 46px;
         margin-bottom: 14px;
@@ -815,6 +854,45 @@ body.guest-page .animated-background {
         width: min(94vw, 420px);
         max-width: 420px;
         padding: 16px 14px;
+    }
+
+    .guest-page #forgot-modal .modal-card {
+        width: min(92vw, 340px);
+        max-width: 340px;
+        padding: 14px 12px;
+    }
+
+    .guest-page #forgot-modal .modal-card .header {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+    }
+
+    .guest-page #forgot-modal .modal-form-container > p {
+        font-size: 0.76rem;
+        line-height: 1.35;
+        margin-bottom: 10px !important;
+    }
+
+    .guest-page #forgot-modal .input-group {
+        height: 38px;
+        margin-bottom: 10px;
+    }
+
+    .guest-page #forgot-modal .floating-input {
+        font-size: 0.82rem;
+        padding: 13px 10px 3px;
+    }
+
+    .guest-page #forgot-modal .floating-label {
+        top: 10px;
+        left: 10px;
+        font-size: 0.82rem;
+    }
+
+    .guest-page #forgot-modal .btn-primary {
+        height: 38px;
+        font-size: 0.74rem;
+        margin-top: 4px;
     }
 
     .guest-page .input-group {

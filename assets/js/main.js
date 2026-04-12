@@ -2119,7 +2119,7 @@ window.handleDeleteGoal = async function(goalId, title) {
 								window.location.href = '/dashboard'; // If using your vercel.json rewrite
 								// OR 
 								window.location.href = '/views/dashboard.html'; // Direct path
-							}, 1500);
+							}, 300);
 						} else {
 							messageDiv.innerHTML = data.error || 'An error occurred';
 							messageDiv.className = 'message error';

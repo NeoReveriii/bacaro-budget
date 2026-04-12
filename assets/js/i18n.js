@@ -104,7 +104,7 @@ window.applyTranslations = function() {
              // Let's assume if it's an input with data-i18n we want to translate the placeholder if data-i18n-attr="placeholder"
              // Wait, let's use data-i18n-placeholder for clarity
         } else {
-             if (dict[key]) el.innerHTML = el.innerHTML.replace(el.textContent, dict[key]);
+             if (dict[key]) el.innerHTML = dict[key];
         }
     });
 

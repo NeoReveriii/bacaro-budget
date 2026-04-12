@@ -2006,9 +2006,10 @@ input[type=number] {
         display: block;
     }
 
-    body {
-        overflow: auto !important; /* Allow scrolling on mobile */
-        background-color: rgba(255, 255, 255, 0.85) !important; /* Match content bg */
+    html, body {
+        overflow-x: hidden !important; /* CRITICAL: prevent swipe revealing drawers */
+        overflow-y: auto !important;
+        background-color: rgba(255, 255, 255, 0.85) !important;
     }
 
     /* Main Layout */
@@ -2016,13 +2017,15 @@ input[type=number] {
         position: static !important;
         z-index: auto !important;
         transform: none !important;
-        transform-style: flat !important;  /* KILL preserve-3d */
-        perspective: none !important;      /* KILL perspective */
-        will-change: auto !important;      /* KILL will-change */
+        transform-style: flat !important;
+        perspective: none !important;
+        will-change: auto !important;
+        overflow-x: hidden !important; /* Prevent swipe revealing drawers */
     }
 
     .main-app-card {
-        width: 100vw;
+        width: 100%;
+        max-width: 100vw;
         height: auto;
         min-height: 100vh;
         border-radius: 0;
@@ -2032,17 +2035,19 @@ input[type=number] {
         position: static !important;
         z-index: auto !important;
         transform: none !important;
-        transform-style: flat !important;  /* CRITICAL: this was preserve-3d */
-        perspective: none !important;       /* CRITICAL: was 1200px */
-        will-change: auto !important;       /* CRITICAL: was transform */
-        overflow: visible !important;
+        transform-style: flat !important;
+        perspective: none !important;
+        will-change: auto !important;
+        overflow: hidden !important; /* CRITICAL: prevent horizontal overflow */
     }
 
     #app-content {
-        width: 100vw;
+        width: 100%;
+        max-width: 100vw;
         border-radius: 0;
         padding: 0 !important;
-        overflow: visible !important;
+        overflow-x: hidden !important;
+        overflow-y: visible !important;
         height: auto !important;
     }
 
@@ -2078,10 +2083,11 @@ input[type=number] {
         z-index: 2000;
     }
 
-    /* Account Drawer — Full-Width Mobile Slide-In */
+    /* Account Drawer — Mobile Side Panel */
     .account-drawer {
-        width: 100vw;
-        right: -100vw; /* Fully off-screen when closed */
+        width: 85vw;
+        max-width: 340px;
+        right: -85vw; /* Fully off-screen when closed */
         z-index: 2001;
         box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
         overflow-y: auto;

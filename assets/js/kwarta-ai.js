@@ -27,27 +27,18 @@ async function loadAIComponent() {
         loadChatHistory();
         
         // --- Keyboard Handling for Mobile (Gemini-style) ---
+        // Since chat uses flexbox (not position:fixed), we resize the
+        // container to the visible viewport so the input stays above the keyboard.
         if (window.visualViewport) {
             const handleViewportResize = () => {
                 const aiView = document.getElementById('view-ai');
                 if (!aiView || aiView.style.display === 'none') return;
                 
-                const inputArea = document.querySelector('.chat-input-area');
-                const chatList = document.getElementById('chat-messages');
-                
-                // Calculate how much the keyboard is pushing up
-                const keyboardOffset = window.innerHeight - window.visualViewport.height;
-                
-                // Push the fixed input bar up above the keyboard
-                if (inputArea && keyboardOffset > 50) {
-                    // Keyboard is open
-                    inputArea.style.bottom = keyboardOffset + 'px';
-                } else if (inputArea) {
-                    // Keyboard is closed
-                    inputArea.style.bottom = '0px';
-                }
+                // Resize the AI view to match visible viewport (excludes keyboard)
+                aiView.style.height = `${window.visualViewport.height}px`;
                 
                 // Scroll to bottom when keyboard appears
+                const chatList = document.getElementById('chat-messages');
                 if (chatList) chatList.scrollTop = chatList.scrollHeight;
             };
             

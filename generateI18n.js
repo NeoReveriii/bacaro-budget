@@ -97,7 +97,18 @@ const preciseMap = {
     "No savings goals found. Add one to start tracking your progress.": "Walang nakitang mga layunin sa pag-ipon. Magdagdag ng isa upang simulan ang pagsubaybay sa iyong progreso.",
     "ADD FUNDS": "MAGPASOK NG PONDO",
     "Your Balance": "Iyong Balanse",
-    "Cash Flow Trend": "Daloy ng Pera"
+    "Cash Flow Trend": "Daloy ng Pera",
+    "Go Back": "Bumalik",
+    "Active": "Aktibo",
+    "ACTIVE": "AKTIBO",
+    "Transfers": "Mga Lipat",
+    "TRANSFERS": "MGA LIPAT",
+    "TITLE": "PAMAGAT",
+    "AMOUNT": "HALAGA",
+    "TYPE": "URI",
+    "DATE": "PETSA",
+    "No activity yet. Start by adding a transaction or transfer to see insights!": "Wala pang aktibidad. Magdagdag ng transaksyon o paglilipat para makita ang iyong ulat!",
+    "No transactions found for this wallet.": "Walang nahanap na transaksyon para sa wallet na ito."
 };
 
 for (const [k, v] of Object.entries(en)) {
@@ -136,7 +147,18 @@ const manualKeys = {
     "toast_profile_updated": { en: "Profile Updated successfully", tl: "Matagumpay na na-update ang profile" },
     "toast_transaction_deleted": { en: "Transaction deleted!", tl: "Tinanggal ang transaksyon!" },
     "Normal Contrast": { en: "Normal Contrast", tl: "Normal na Contrast" },
-    "High Contrast": { en: "High Contrast", tl: "Mataas na Contrast" }
+    "High Contrast": { en: "High Contrast", tl: "Mataas na Contrast" },
+    "ALL WALLETS": { en: "ALL WALLETS", tl: "LAHAT NG WALLET" },
+    "All Wallets": { en: "All Wallets", tl: "Lahat ng Wallet" },
+    "TITLE": { en: "TITLE", tl: "PAMAGAT" },
+    "AMOUNT": { en: "AMOUNT", tl: "HALAGA" },
+    "TYPE": { en: "TYPE", tl: "URI" },
+    "DATE": { en: "DATE", tl: "PETSA" },
+    "No activity yet. Start by adding a transaction or transfer to see insights!": { en: "No activity yet. Start by adding a transaction or transfer to see insights!", tl: "Wala pang aktibidad. Magdagdag ng transaksyon o paglilipat para makita ang iyong ulat!" },
+    "No transactions found for this wallet.": { en: "No transactions found for this wallet.", tl: "Walang nahanap na transaksyon para sa wallet na ito." },
+    "Target Date": { en: "Target Date", tl: "Target na Petsa" },
+    "Add Funds": { en: "Add Funds", tl: "Magpasok ng Pondo" },
+    "No savings goals found. Add one to start tracking your progress.": { en: "No savings goals found. Add one to start tracking your progress.", tl: "Walang nakitang mga layunin sa pag-ipon. Magdagdag ng isa upang simulan ang pagsubaybay sa iyong progreso." }
 };
 
 for (const [key, val] of Object.entries(manualKeys)) {

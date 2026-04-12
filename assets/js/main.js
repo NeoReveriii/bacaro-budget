@@ -370,15 +370,16 @@
 				else if (typeLower.includes('money') || typeLower.includes('e-')) colorClass = 'wallet-emoney';
 				else if (typeLower.includes('credit')) colorClass = 'wallet-credit';
 
+                const dict = window.getTranslation ? window.getTranslation : (k) => k;
 				const balance = formatCurrency(w.calculated_balance);
 				return `
 					<div class="card-item ${colorClass}" onclick="openWalletDetails('${escapeHtml(w.name)}', '${escapeHtml(w.type)}', '${escapeHtml(w.status)}', ${Number(w.calculated_balance)})">
 						<button class="card-delete-btn" onclick="event.stopPropagation(); handleDeleteWallet(${w.wallet_id}, '${escapeHtml(w.name)}')">×</button>
 						<div class="card-chip"></div>
-						<div class="card-status-badge">${escapeHtml(w.status)}</div>
+						<div class="card-status-badge">${escapeHtml(dict(w.status))}</div>
 						<div class="card-content">
 							<h3 class="card-name">${escapeHtml(w.name)}</h3>
-							<p class="card-type">${escapeHtml(w.type)}</p>
+							<p class="card-type">${escapeHtml(dict(w.type))}</p>
 							<p class="card-balance" style="font-weight: bold; font-size: 1.4em;">${balance}</p>
 						</div>
 					</div>
@@ -443,16 +444,18 @@
 			// Dashboard wallet filter dropdown
 			const dashWalletContent = document.getElementById('dashboard-wallet-dropdown-content');
 			if (dashWalletContent) {
+				const dict = window.getTranslation ? window.getTranslation : (k) => k;
 				const walletLinks = window.wallets.map(w =>
 					`<a href="#" onclick="event.preventDefault(); return updateWalletFilter(${w.wallet_id}, '${escapeHtml(w.name)}')">${escapeHtml(w.name)}</a>`
 				).join('');
-				dashWalletContent.innerHTML = `<a href="#" onclick="event.preventDefault(); return updateWalletFilter(null, 'ALL WALLETS')">ALL WALLETS</a>${walletLinks}`;
+				dashWalletContent.innerHTML = `<a href="#" onclick="event.preventDefault(); return updateWalletFilter(null, '${dict('ALL WALLETS')}')">${dict('ALL WALLETS')}</a>${walletLinks}`;
 			}
 
 			const filterWallet = document.getElementById('tx-filter-wallet');
 			if (filterWallet) {
+				const dict = window.getTranslation ? window.getTranslation : (k) => k;
 				const currentVal = filterWallet.value;
-				filterWallet.innerHTML = `<option value="all">All Wallets</option>${options}`;
+				filterWallet.innerHTML = `<option value="all">${dict('All Wallets')}</option>${options}`;
 				if (currentVal && currentVal !== 'all') {
 					filterWallet.value = currentVal;
 				}
@@ -520,9 +523,10 @@
 
 		// Function to "open" a wallet's details
 		function openWalletDetails(name, type, status, balance = 0) {
+            const dict = window.getTranslation ? window.getTranslation : (k) => k;
 			document.getElementById('detail-wallet-name').innerText = name;
-			document.getElementById('detail-wallet-type').innerText = type;
-			document.getElementById('detail-wallet-status').innerText = status;
+			document.getElementById('detail-wallet-type').innerText = dict(type);
+			document.getElementById('detail-wallet-status').innerText = dict(status);
 			const balanceEl = document.querySelector('.wallet-balance-card .balance-amount');
 			if (balanceEl) balanceEl.innerText = formatCurrency(balance);
 			
@@ -582,9 +586,10 @@
 			// Insights
 			const insightsContent = document.getElementById('wallet-insights-content');
 			if (insightsContent) {
+				const dict = window.getTranslation ? window.getTranslation : (k) => k;
 				let insightText = '';
 				if (walletTransactions.length === 0) {
-					insightText = "No activity yet. Start by adding a transaction or transfer to see insights!";
+					insightText = dict("No activity yet. Start by adding a transaction or transfer to see insights!");
 				} else {
 					const netChange = totalIncome - totalExpense + netTransfers;
 					const healthStatus = netChange >= 0 ? 'growing' : 'decreasing';
@@ -604,16 +609,18 @@
 			}
 
 			if (walletTransactions.length === 0) {
+				const dict = window.getTranslation ? window.getTranslation : (k) => k;
 				listEl.innerHTML = `
 					<div class="transaction-row header-row">
-						<span>#</span><span>TITLE</span><span>AMOUNT</span><span>TYPE</span><span>DATE</span><span></span> 
+						<span>#</span><span>${dict('TITLE')}</span><span>${dict('AMOUNT')}</span><span>${dict('TYPE')}</span><span>${dict('DATE')}</span><span></span> 
 					</div>
-					<div class="empty-history"><p>No transactions found for this wallet.</p></div>
+					<div class="empty-history"><p>${dict("No transactions found for this wallet.")}</p></div>
 				`;
 			} else {
+				const dict = window.getTranslation ? window.getTranslation : (k) => k;
 				listEl.innerHTML = `
 					<div class="transaction-row header-row">
-						<span>#</span><span>TITLE</span><span>AMOUNT</span><span>TYPE</span><span>DATE</span><span></span> 
+						<span>#</span><span>${dict('TITLE')}</span><span>${dict('AMOUNT')}</span><span>${dict('TYPE')}</span><span>${dict('DATE')}</span><span></span> 
 					</div>
 				` + walletTransactions.map((row, idx) => renderTransactionItem(row, idx + 1)).join('');
 				

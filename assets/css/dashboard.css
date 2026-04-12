@@ -233,7 +233,7 @@
             transform-style: preserve-3d;
             transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
             will-change: transform;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
 
         #main-sidebar {
@@ -243,7 +243,7 @@
             padding: 30px 20px;
             flex-shrink: 0; 
             color: var(--dark-green);
-            border-right: 1px solid rgba(0,0,0,0.05);
+            border-right: var(--border-whisper);
             display: flex;
             flex-direction: column;
         }
@@ -273,17 +273,17 @@
 
 		.stat-card {
 			background: var(--card-bg);
-			padding: 30px 20px;
-			border-radius: 15px;
-			box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-			border: 1px solid rgba(0,0,0,0.08);
-			transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+			padding: 28px 20px;
+			border-radius: 14px;
+			box-shadow: var(--shadow-subtle);
+			border: var(--border-whisper);
+			transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
-			align-items: center; /* Center horizontally */
-			text-align: center;   /* Center text content */
-			min-height: 160px;
+			align-items: center;
+			text-align: center;
+			min-height: 140px;
 			cursor: pointer;
 			will-change: transform, box-shadow;
 			position: relative;
@@ -291,8 +291,8 @@
 		}
 
 		.stat-card:hover {
-			transform: translateY(-8px);
-			box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+			transform: translateY(-2px);
+			box-shadow: var(--shadow-card);
 		}
 
 		.stat-icon {
@@ -323,18 +323,18 @@
 		.wallet-card:hover { border-color: var(--primary-green); }
 
 		.stat-label {
-			font-size: 0.85em;
-			font-weight: 800;
+			font-size: 0.68em;
+			font-weight: 700;
 			color: #374738;
 			text-transform: uppercase;
-			letter-spacing: 1.2px;
+			letter-spacing: 1.8px;
 			margin-bottom: 8px;
-			opacity: 0.8;
+			opacity: 0.5;
 		}
 		
 		.stat-card.wallet-card .stat-label {
 			color: white;
-			opacity: 0.7;
+			opacity: 0.55;
 		}
 
 		.stat-card h3 {
@@ -344,10 +344,12 @@
             color: #1a241b; 
         }
 		.stat-value {
-			font-size: 1.8em;
+			font-size: 1.6em;
 			font-weight: 700;
 			color: var(--dark-green);
 			line-height: 1.2;
+			font-variant-numeric: tabular-nums;
+			letter-spacing: -0.5px;
 		}
 
 		/* Wallet Card Special Styling */
@@ -365,9 +367,9 @@
 			font-weight: 600;
 		}
 
-		.income-card .stat-value { color: #27ae60; font-weight: 800; }   /* Darker Green */
-		.expense-card .stat-value { color: #c0392b; font-weight: 800; }  /* Darker Red */
-		.transfer-card .stat-value { color: #2980b9; font-weight: 800; } /* Darker Blue */
+		.income-card .stat-value { color: var(--income-color); font-weight: 800; }
+		.expense-card .stat-value { color: var(--expense-color); font-weight: 800; }
+		.transfer-card .stat-value { color: var(--transfer-color); font-weight: 800; }
 		
 		.stat-value.income { color: #27ae60; }
 		.stat-value.expense { color: #c0392b; }
@@ -513,7 +515,7 @@
 
         .nav-item:hover {
             background-color: rgba(255, 255, 255, 0.5);
-            transform: translateX(5px);
+            transform: translateX(2px);
         }
 
         .nav-item.active {
@@ -1276,10 +1278,11 @@ input[type=number] {
 		}
 
 		.transaction-list {
-			background: white;
-			border-radius: 15px;
+			background: var(--card-bg);
+			border-radius: 14px;
 			padding: 10px;
-			box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+			box-shadow: none;
+			border: var(--border-whisper);
             overflow-x: auto;
 			flex-grow: 1;
 		}
@@ -1290,7 +1293,7 @@ input[type=number] {
             min-width: 800px;
 			padding: 15px 20px;
 			align-items: center;
-			border-bottom: 1px solid rgba(0,0,0,0.05);
+			border-bottom: 0.5px solid rgba(0,0,0,0.03);
 			cursor: pointer;
 			transition: background 0.2s;
 		}
@@ -1352,23 +1355,24 @@ input[type=number] {
 		}
 
 		.transaction-row:hover { 
-			background: rgba(89, 133, 57, 0.08);
-			border-bottom-color: rgba(89, 133, 57, 0.2);
+			background: rgba(89, 133, 57, 0.03);
+			border-bottom-color: rgba(89, 133, 57, 0.06);
 		}
 
 		.header-row {
-			font-size: 0.75em;
-			font-weight: 800;
+			font-size: 0.68em;
+			font-weight: 700;
 			color: #999;
-			letter-spacing: 1px;
+			letter-spacing: 1.8px;
 			cursor: default;
-			border-bottom: 2px solid rgba(89, 133, 57, 0.15);
-			background-color: rgba(89, 133, 57, 0.05);
+			border-bottom: 0.5px solid rgba(0, 0, 0, 0.06);
+			background-color: transparent;
+			opacity: 0.65;
 		}
 
 		.rec-number { color: #999; font-weight: 600; }
 		.rec-title { font-weight: 700; color: var(--dark-green); }
-		.rec-stats { font-weight: 800; }
+		.rec-stats { font-weight: 800; font-variant-numeric: tabular-nums; }
 		.rec-stats.income { color: #2ecc71; }
 		.rec-stats.expense { color: #e56b6b; } /* Softer red/coral */
 		.rec-type { color: #888; }
@@ -1513,12 +1517,13 @@ input[type=number] {
 			display: flex;
 			gap: 15px;
 			margin-bottom: 30px;
-			padding: 20px;
-			background: var(--wallet-actions-bg, rgba(255, 255, 255, 0.4));
-			backdrop-filter: blur(10px);
-			border-radius: 15px;
-			border: 1px solid rgba(255, 255, 255, 0.5);
-			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+			padding: 16px 20px;
+			background: transparent;
+			backdrop-filter: none;
+			border-radius: 0;
+			border: none;
+			border-bottom: var(--border-subtle);
+			box-shadow: none;
 		}
 
 		.btn-wallet-action {
@@ -1619,8 +1624,8 @@ input[type=number] {
 		}
 
 		.card-item:hover {
-			transform: translateY(-8px) scale(1.02);
-			box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+			transform: translateY(-4px) scale(1.01);
+			box-shadow: 0 12px 28px rgba(0,0,0,0.25);
 		}
 
 		/* Color Coding by Type */
@@ -1633,16 +1638,30 @@ input[type=number] {
 		/* Status Badge */
 		.card-status-badge {
 			position: absolute;
-			top: 15px;
-			right: 15px; /* Moved to right for balance space */
-			font-size: 0.6em;
-			font-weight: 800;
-			padding: 4px 10px;
-			border-radius: 20px;
-			letter-spacing: 1px;
-			background: rgba(255,255,255,0.2);
-			backdrop-filter: blur(5px);
-			border: 1px solid rgba(255,255,255,0.1);
+			top: 18px;
+			right: 18px;
+			font-size: 0.55em;
+			font-weight: 600;
+			padding: 0;
+			letter-spacing: 1.2px;
+			text-transform: uppercase;
+			background: none;
+			backdrop-filter: none;
+			border: none;
+			color: rgba(255,255,255,0.5);
+			display: flex;
+			align-items: center;
+			gap: 6px;
+		}
+
+		.card-status-badge::before {
+			content: '';
+			width: 7px;
+			height: 7px;
+			border-radius: 50%;
+			background: #4ade80;
+			box-shadow: 0 0 6px rgba(74, 222, 128, 0.5);
+			display: inline-block;
 		}
 
 		/* Transfer Badge */
@@ -1677,6 +1696,7 @@ input[type=number] {
 			margin-top: 15px !important;
 			font-family: 'Inter', sans-serif;
 			letter-spacing: -0.5px;
+			font-variant-numeric: tabular-nums;
 		}
 
 		/* Decorative Chip */
@@ -1729,7 +1749,9 @@ input[type=number] {
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			margin-bottom: 30px;
+			margin-bottom: 0;
+			padding-bottom: 20px;
+			border-bottom: var(--border-subtle);
 		}
 
 		.detail-header-left {
@@ -1740,70 +1762,111 @@ input[type=number] {
 
 		.btn-back {
 			background: none;
-			border: 1px solid var(--primary-green);
-			color: var(--primary-green);
-			padding: 5px 12px;
-			border-radius: 5px;
+			border: none;
+			color: rgba(55, 71, 56, 0.45);
+			padding: 5px 0;
 			cursor: pointer;
 			font-weight: 600;
+			font-size: 0.8em;
+			letter-spacing: 0.5px;
+			transition: color 0.2s ease;
 		}
 
 		.btn-back:hover {
-			background: var(--primary-green);
-			color: white;
+			color: var(--primary-green);
 		}
 
 		.btn-delete-wallet {
 			background: none;
-			border: 1px solid #ff7675;
-			color: #ff7675;
-			padding: 5px 10px;
-			border-radius: 5px;
+			border: none;
+			color: rgba(0, 0, 0, 0.2);
+			padding: 4px;
 			cursor: pointer;
-			font-size: 1.1em;
+			font-size: 1em;
 			margin-left: 10px;
-			transition: all 0.2s;
+			transition: color 0.2s ease;
 			vertical-align: middle;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.btn-delete-wallet i {
+			width: 18px;
+			height: 18px;
 		}
 
 		.btn-delete-wallet:hover {
-			background: #ff7675;
-			color: white;
-			transform: scale(1.1);
+			color: #e74c3c;
 		}
 
 		/* Balance Card */
 		.wallet-balance-card {
-			background: white;
+			background: var(--card-bg);
 			padding: 40px;
-			border-radius: 15px;
-			margin-bottom: 30px;
-			box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+			border-radius: 14px;
+			margin-top: 25px;
+			margin-bottom: 20px;
+			box-shadow: none;
+			border: var(--border-whisper);
 			text-align: center;
 		}
 
 		.balance-label {
-			font-size: 0.9em;
+			font-size: 0.68em;
 			font-weight: 700;
 			color: #888;
 			text-transform: uppercase;
-			letter-spacing: 1px;
+			letter-spacing: 1.8px;
+			opacity: 0.6;
 		}
 
 		.balance-amount {
-			font-size: 3.5em;
-			font-weight: 800;
+			font-size: 3.2em;
+			font-weight: 700;
 			color: var(--dark-green);
+			font-variant-numeric: tabular-nums;
+			letter-spacing: -1px;
 		}
 
-		/* Status Badges */
+		/* Status Badges — Detail Header */
 		.badge-type {
-			background: #e1f5fe;
+			background: rgba(2, 136, 209, 0.08);
 			color: #0288d1;
-			padding: 6px 12px;
-			border-radius: 20px;
-			font-size: 0.8em;
-			font-weight: 700;
+			padding: 4px 10px;
+			border-radius: 6px;
+			font-size: 0.7em;
+			font-weight: 600;
+			letter-spacing: 0.5px;
+		}
+
+		.badge-status {
+			font-size: 0.68em;
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: 1.5px;
+			color: rgba(55, 71, 56, 0.45);
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+		}
+
+		.badge-status::before {
+			content: '';
+			width: 7px;
+			height: 7px;
+			border-radius: 50%;
+			display: inline-block;
+		}
+
+		.badge-status.status-active::before {
+			background: #4ade80;
+			box-shadow: 0 0 6px rgba(74, 222, 128, 0.5);
+		}
+
+		.badge-status.status-inactive::before {
+			background: #999;
+			box-shadow: none;
 		}
 
 		/* Reusing your existing transaction-list styles */
@@ -1827,25 +1890,27 @@ input[type=number] {
 		}
 
 		.wallet-stat-card {
-			background: white;
+			background: var(--card-bg);
 			padding: 12px;
 			border-radius: 10px;
-			box-shadow: 0 1px 5px rgba(0,0,0,0.02);
-			border: 1px solid rgba(0,0,0,0.04);
+			box-shadow: none;
+			border: var(--border-whisper);
 			text-align: center;
 		}
 
 		.wallet-stat-card .stat-label {
-			font-size: 0.7em;
+			font-size: 0.6em;
 			text-transform: uppercase;
-			letter-spacing: 0.5px;
+			letter-spacing: 1.5px;
 			color: #999;
 			margin-bottom: 2px;
+			opacity: 0.65;
 		}
 
 		.wallet-stat-card .stat-value {
 			font-size: 1.1em;
 			font-weight: 700;
+			font-variant-numeric: tabular-nums;
 		}
 
 		.wallet-stat-card.income .stat-value { color: var(--income-color); }
@@ -2810,29 +2875,55 @@ body.dark-mode .settings-subtitle {
     color: rgba(237, 241, 238, 0.72);
 }
 
-/* Transaction Table Dark Mode Styling */
+/* Transaction Table Dark Mode — Premium */
 body.dark-mode .transaction-row {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.04);
     color: #e0e0e0;
     transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 body.dark-mode .transaction-row:hover {
-    background-color: rgba(107, 166, 79, 0.15);
-    border-bottom-color: rgba(107, 166, 79, 0.4);
+    background-color: rgba(107, 166, 79, 0.05);
+    border-bottom-color: rgba(107, 166, 79, 0.1);
 }
 
 body.dark-mode .transaction-row.header-row {
-    background-color: rgba(107, 166, 79, 0.1);
-    border-bottom: 2px solid rgba(107, 166, 79, 0.3);
-    font-weight: 800;
-    color: #b0e0a0;
-    letter-spacing: 1px;
+    background-color: transparent;
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
+    font-weight: 700;
+    color: rgba(237, 241, 238, 0.45);
+    letter-spacing: 1.8px;
 }
 
 body.dark-mode .transaction-row.header-row:hover {
-    background-color: rgba(107, 166, 79, 0.1);
-    border-bottom-color: rgba(107, 166, 79, 0.3);
+    background-color: transparent;
+    border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+/* Dark mode premium badge overrides */
+body.dark-mode .badge-status {
+    color: rgba(237, 241, 238, 0.4);
+}
+
+body.dark-mode .badge-type {
+    background: rgba(2, 136, 209, 0.12);
+    color: #5bb8e8;
+}
+
+body.dark-mode .btn-back {
+    color: rgba(237, 241, 238, 0.4);
+}
+
+body.dark-mode .btn-back:hover {
+    color: var(--primary-green);
+}
+
+body.dark-mode .btn-delete-wallet {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+body.dark-mode .btn-delete-wallet:hover {
+    color: #e74c3c;
 }
 
 body.dark-mode .rec-number {

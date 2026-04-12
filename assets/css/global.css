@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 /* global styles */
 
@@ -9,10 +9,18 @@
     --white: #ffffff;
     --text-light: #d4d4d4;
 
-    /* Semantic Colors (Maintain color coding) */
-    --income-color: #2ecc71;
-    --expense-color: #e74c3c;
-    --transfer-color: #3498db;
+    /* Semantic Colors — slightly desaturated for premium feel */
+    --income-color: #34c76a;
+    --expense-color: #d94f4f;
+    --transfer-color: #4a9fd8;
+    
+    /* Premium Border System — "1% border" rule */
+    --border-whisper: 0.5px solid rgba(0, 0, 0, 0.04);
+    --border-subtle: 0.5px solid rgba(0, 0, 0, 0.06);
+    --border-soft: 1px solid rgba(0, 0, 0, 0.06);
+    --shadow-whisper: 0 1px 4px rgba(0, 0, 0, 0.02);
+    --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.03);
+    --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.04);
     
     /* Card/Skeleton Base */
     --card-bg: #ffffff;
@@ -37,9 +45,17 @@
 body.dark-mode {
     --card-bg: #1e1e1e;
     --skeleton-bg: #2a2a2a;
-    --skeleton-shimmer: rgba(255, 255, 255, 0.08); /* More visible shimmer in dark mode */
+    --skeleton-shimmer: rgba(255, 255, 255, 0.08);
     --main-content-bg: rgba(18, 22, 20, 0.92);
     --chart-skeleton-bg: #1e1e1e;
+    
+    /* Dark Mode Premium Borders */
+    --border-whisper: 0.5px solid rgba(255, 255, 255, 0.04);
+    --border-subtle: 0.5px solid rgba(255, 255, 255, 0.06);
+    --border-soft: 1px solid rgba(255, 255, 255, 0.06);
+    --shadow-whisper: 0 1px 4px rgba(0, 0, 0, 0.1);
+    --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.15);
+    --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.2);
     
     /* Dark Mode Drawer Adjustments */
     --drawer-bg: #121614;

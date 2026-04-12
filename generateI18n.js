@@ -108,7 +108,9 @@ const preciseMap = {
     "TYPE": "URI",
     "DATE": "PETSA",
     "No activity yet. Start by adding a transaction or transfer to see insights!": "Wala pang aktibidad. Magdagdag ng transaksyon o paglilipat para makita ang iyong ulat!",
-    "No transactions found for this wallet.": "Walang nahanap na transaksyon para sa wallet na ito."
+    "No transactions found for this wallet.": "Walang nahanap na transaksyon para sa wallet na ito.",
+    "btn_add_wallet": "Magdagdag ng Bagong Wallet",
+    "btn_transfer_funds": "Lipat Funds"
 };
 
 for (const [k, v] of Object.entries(en)) {
@@ -131,10 +133,9 @@ for (const [k, v] of Object.entries(en)) {
         }
     }
 
-    // Special case for the "ALL ... WALLET" multi-line issue
-    if (trans.toUpperCase().includes('ALL') && trans.toUpperCase().includes('WALLET')) {
-        trans = "Lahat ng Wallet";
-    }
+    // The broad "ALL ... WALLET" trap was removed here as it caused incorrect translations
+    // like "Add New Wallet" becoming "Lahat ng Wallet".
+
 
     tl[k] = trans;
 }

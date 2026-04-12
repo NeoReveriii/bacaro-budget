@@ -2288,23 +2288,21 @@ input[type=number] {
 }
 
 .custom-select-trigger.settings-trigger {
-    background-color: rgba(55, 71, 56, 0.05);
-    border: 1px solid rgba(55, 71, 56, 0.15);
+    background-color: rgba(255, 255, 255, 0.5); /* Match dashboard filter pattern */
+    border: 1px solid rgba(0, 0, 0, 0.15);
     color: var(--dark-green);
-    padding: 8px 34px 8px 14px;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 0.95em;
+    padding: 10px 32px 10px 15px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9em;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: space-between;
     transition: all 0.2s ease;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23374738' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='3 5 6 8 9 5'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 12px center;
-    background-size: 14px;
-    box-shadow: none;
     min-height: 38px;
     width: 100% !important;
     box-sizing: border-box !important;
@@ -2690,10 +2688,10 @@ body.dark-mode .btn-settings-action:hover {
 
 /* Dark Mode Settings Dropdown */
 body.dark-mode .custom-select-trigger.settings-trigger {
-    background-color: rgba(255, 255, 255, 0.06);
+    background-color: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.15);
     color: #edf1ee;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23edf1ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23edf1ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='3 5 6 8 9 5'/%3E%3C/svg%3E");
 }
 
 body.dark-mode .custom-select-trigger.settings-trigger:hover {

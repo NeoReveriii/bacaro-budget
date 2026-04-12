@@ -8,9 +8,9 @@ const preciseMap = {
     "Dashboard": "Pangkalahatan",
     "Transactions": "Mga Transaksyon",
     "Wallets": "Mga Wallet",
-    "Goals": "Mga Naipong Pera",
+    "Goals": "Layunin",
     "Kwarta AI": "Kwarta AI",
-    "Settings": "Mga Tagpuan",
+    "Settings": "Mga Setting",
     "Income": "Kita",
     "Expense": "Gastos",
     "Transfer": "Lipat",
@@ -39,13 +39,16 @@ const preciseMap = {
     "Confirm Action": "Kumpirmahin ang Aksyon",
     "Are you sure you want to proceed?": "Sigurado ka bang gusto mong magpatuloy?",
     "Confirm": "Kumpirmahin",
+    "Recent Transactions": "Mga Nakaraang Transaksyon",
+    "Delete Transaction": "Tanggalin ang Transaksyon",
+    "Are you sure you want to delete this transaction?": "Sigurado ka bang gusto mong tanggalin ang transaksyong ito?",
     "Add Savings Goal": "Idagdag ang Layunin ng Naipon",
     "Target Amount": "Target na Halaga",
     "Target Date": "Target na Petsa",
     "SAVE GOAL": "I-SAVE ANG LAYUNIN",
-    "Add Funds to Goal": "Magdagdag ng Pondo sa Layunin",
+    "Add Funds to Goal": "Magpasok ng Pondo",
     "Amount to Add": "Halagang Idadagdag",
-    "ADD FUNDS": "MAGDAGDAG NG PONDO",
+    "ADD FUNDS": "MAGPASOK NG PONDO",
     "Add Wallet": "Idagdag ang Wallet",
     "Wallet Name": "Pangalan ng Wallet",
     "Initial Balance": "Unang Balanse",
@@ -54,6 +57,15 @@ const preciseMap = {
     "From Wallet": "Mula sa Wallet",
     "To Wallet": "Papunta sa Wallet",
     "TRANSFER": "LIPAT",
+    "Currency Display": "Pagpapakita ng Pera",
+    "Select your preferred display language.": "Pumili ng iyong nais na wika para sa display.",
+    "Switch between standard and low-light interface themes.": "Lumipat sa pagitan ng karaniwan at madilim na tema ng interface.",
+    "Show or hide the Pesos symbol (₱) in amounts.": "Ipakita o itago ang simbolo ng Piso (₱) sa mga halaga.",
+    "Download a CSV file containing all your transaction records.": "Mag-download ng CSV file na naglalaman ng lahat ng iyong mga rekord ng transaksyon.",
+    "Read how we handle and protect your budget data.": "Basahin kung paano namin pinangangalagaan at pinoprotektahan ang iyong datos sa badyet.",
+    "Review the rules and guidelines for using Bacaro.": "Suriin ang mga patakaran at gabay sa paggamit ng Bacaro.",
+    "Permanently remove your account and all associated budget data.": "Permanenteng tanggalin ang iyong account at lahat ng nauugnay na datos ng badyet.",
+    "New Transaction": "Bagong Transaksyon",
     "Preferences": "Mga Kagustuhan",
     "APPEARANCE": "ANYO",
     "DATA MANAGEMENT": "PAMAMAHALA NG DATOS",
@@ -73,16 +85,16 @@ const preciseMap = {
     "Cancel": "Kanselahin",
     "LOG OUT": "MAG-LOG OUT",
     "Send Reset Link": "Ipadala ang Link sa Pag-reset",
-    "ALL TIME": "LAHAT NG ORAS",
-    "TODAY": "NGAYON",
+    "ALL TIME": "KABUUAN",
+    "TODAY": "NGAYONG ARAW",
     "MONTHLY": "BUWANAN",
     "WEEKLY": "LINGGUHAN",
     "YEARLY": "TAUNAN",
     "Search transactions...": "Maghanap ng mga transaksyon...",
     "All Types": "Lahat ng Uri",
     "All Wallets": "Lahat ng Wallet",
-    "All Time": "Lahat ng Oras",
-    "Today": "Ngayon",
+    "All Time": "Kabuuan",
+    "Today": "Ngayong Araw",
     "Yesterday": "Kahapon",
     "This Week": "Ngayong Linggo",
     "This Month": "Ngayong Buwan",
@@ -100,9 +112,12 @@ const preciseMap = {
 
 for (const [k, v] of Object.entries(en)) {
     let trans = v;
+    const normV = v.replace(/\s+/g, ' ').trim();
     
     // Exact match 
-    if (preciseMap[v.trim()]) {
+    if (preciseMap[normV]) {
+        trans = preciseMap[normV];
+    } else if (preciseMap[v.trim()]) {
         trans = preciseMap[v.trim()];
     } else {
         // Loose replace for multi strings
@@ -114,6 +129,11 @@ for (const [k, v] of Object.entries(en)) {
             // uppercase variant
             const regexU = new RegExp(`\\b${eng.toUpperCase()}\\b`, 'g');
             trans = trans.replace(regexU, tag.toUpperCase());
+            
+            // special ALL MGA WALLET edge case handling
+            if (trans.includes('ALL MGA WALLET')) {
+                trans = trans.replace('ALL MGA WALLET', 'LAHAT NG WALLET');
+            }
         }
     }
     

@@ -1270,8 +1270,9 @@
 		}
 
 		function showConfirm(title, message, onConfirm, onCancel) {
-			document.getElementById('confirm-title').textContent = title;
-			document.getElementById('confirm-message').textContent = message;
+			const dict = window.getTranslation ? window.getTranslation : (k) => k;
+			document.getElementById('confirm-title').textContent = dict(title);
+			document.getElementById('confirm-message').textContent = dict(message);
 			const modal = document.getElementById('confirm-modal');
 			if (modal) modal.classList.add('active');
 			

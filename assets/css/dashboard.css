@@ -1385,6 +1385,18 @@ input[type=number] {
 		.rec-date { color: #999; font-size: 0.9em; }
 		.rec-wallet { font-size: 0.85em; font-weight: 600; color: #666; }
 
+        @media (min-width: 769px) {
+            .transaction-row > span:nth-child(3),
+            .transaction-row > div:nth-child(3) {
+                padding-right: 14px;
+            }
+
+            .transaction-row > span:nth-child(4),
+            .transaction-row > div:nth-child(4) {
+                padding-left: 14px;
+            }
+        }
+
 		/* Badges */
 		.badge {
 			padding: 4px 10px;

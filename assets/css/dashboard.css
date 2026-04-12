@@ -4161,6 +4161,78 @@ body.dark-mode .custom-select-wrapper:has(.tx-filter-trigger) .custom-option.sel
         width: 60px;
         align-self: flex-end;
     }
+
+    /* Wallet and Goal Grid Mobile Responsiveness */
+    .wallet-grid {
+        grid-template-columns: 1fr !important; /* Single column on mobile */
+        gap: 15px !important; /* Reduced gap for mobile */
+        margin-top: 10px;
+    }
+
+    .wallet-actions-bar {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+        padding: 16px !important;
+        margin-bottom: 20px !important;
+    }
+
+    .btn-wallet-action {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 12px 16px !important;
+    }
+
+    .btn-wallet-action .icon {
+        margin-right: 8px !important;
+    }
+
+    /* Wallet Details Mobile Responsiveness */
+    .wallet-detail-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 15px !important;
+        padding: 20px !important;
+    }
+
+    .detail-header-left {
+        width: 100% !important;
+    }
+
+    .detail-header-left h2 {
+        font-size: 1.5em !important;
+        margin-top: 10px !important;
+    }
+
+    .detail-header-right {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+
+    .wallet-balance-card {
+        margin: 0 20px 20px 20px !important;
+        padding: 20px !important;
+    }
+
+    .balance-amount {
+        font-size: 2em !important;
+    }
+
+    .wallet-stats-grid {
+        grid-template-columns: 1fr !important; /* Single column on mobile */
+        gap: 10px !important;
+        margin: 0 20px 20px 20px !important;
+    }
+
+    .wallet-stat-card {
+        padding: 15px !important;
+    }
+
+    .wallet-stat-card .stat-value {
+        font-size: 1.2em !important;
+    }
 }
 
 body.dark-mode ::-webkit-scrollbar-track {

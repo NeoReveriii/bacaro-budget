@@ -2195,11 +2195,11 @@ input[type=number] {
     .transaction-list {
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 14px;
         border-radius: 12px;
-        margin: 15px;
+        margin: 16px;
         overflow-x: visible;
-        padding: 10px;
+        padding: 12px;
     }
 
     .transaction-item {
@@ -2207,7 +2207,7 @@ input[type=number] {
         flex-direction: column;
         background: var(--card-bg);
         border-radius: 8px;
-        padding: 12px 15px;
+        padding: 14px 18px;
         border: var(--border-whisper);
     }
 
@@ -2215,11 +2215,11 @@ input[type=number] {
         display: flex;
         flex-wrap: wrap;
         align-items: flex-start;
-        gap: 8px;
+        gap: 10px;
         padding: 0;
         min-width: auto;
         width: 100%;
-        margin-bottom: 4px;
+        margin-bottom: 6px;
     }
 
     /* Hide unnecessary columns on mobile */
@@ -2231,8 +2231,8 @@ input[type=number] {
     .transaction-row > .rec-title {
         width: 100%;
         font-weight: 700;
-        font-size: 1.05em;
-        margin-bottom: 8px;
+        font-size: 1.12em;
+        margin-bottom: 10px;
     }
 
     /* Amount - label and value aligned */
@@ -2247,7 +2247,7 @@ input[type=number] {
     .transaction-row > .rec-stats::before {
         content: "Amount:";
         font-weight: 500;
-        font-size: 0.85em;
+        font-size: 0.9em;
         color: #999;
         margin-right: 0;
         align-self: center;
@@ -2263,7 +2263,7 @@ input[type=number] {
     .transaction-row > .rec-type::before {
         content: "Type:";
         font-weight: 500;
-        font-size: 0.85em;
+        font-size: 0.9em;
         color: #999;
         margin-right: 0;
         align-self: center;
@@ -2273,14 +2273,14 @@ input[type=number] {
     .transaction-row > .rec-date {
         display: flex;
         justify-content: space-between;
-        font-size: 0.85em;
+        font-size: 0.9em;
         width: 100%;
     }
 
     .transaction-row > .rec-date::before {
         content: "Date:";
         font-weight: 500;
-        font-size: 0.85em;
+        font-size: 0.9em;
         color: #999;
         margin-right: 0;
     }
@@ -2289,14 +2289,14 @@ input[type=number] {
     .transaction-row > .rec-wallet {
         display: flex;
         justify-content: space-between;
-        font-size: 0.85em;
+        font-size: 0.9em;
         width: 100%;
     }
 
     .transaction-row > .rec-wallet::before {
         content: "Wallet:";
         font-weight: 500;
-        font-size: 0.85em;
+        font-size: 0.9em;
         color: #999;
         margin-right: 0;
     }
@@ -2305,10 +2305,15 @@ input[type=number] {
     .transaction-row > .rec-actions {
         width: 100%;
         display: flex;
-        gap: 6px;
+        gap: 8px;
         justify-content: flex-end;
-        margin-top: 8px;
+        margin-top: 10px;
         flex-shrink: 0;
+    }
+
+    .transaction-row .icon-btn {
+        width: 34px;
+        height: 34px;
     }
 
     .transaction-row.header-row {

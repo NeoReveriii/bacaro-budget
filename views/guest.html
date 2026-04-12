@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bacaro Budget Manager</title>
@@ -33,9 +31,8 @@
             <section class="hero-section">
                 <div class="hero-content">
                     <div class="hero-badge"><i data-lucide="coins"></i> <span data-i18n="guest_hero_badge">Smart Personal Finance</span></div>
-                    <h1 class="hero-title">
-                        Take Control of Your<br>
-                        <span class="hero-highlight">Financial Future</span>
+                    <h1 class="hero-title"><span data-i18n="str_7dc6ee51">Take Control of Your</span><br>
+                        <span class="hero-highlight" data-i18n="str_8bd979a8">Financial Future</span>
                     </h1>
                     <p class="hero-subtitle">
                         <span data-i18n="guest_hero_sub">Track income, expenses, and savings goals with Bacaro Budget Manager — your all-in-one AI-powered finance companion.</span>
@@ -48,10 +45,10 @@
                 <div class="hero-visual">
                     <div class="hero-card">
                         <div class="hero-card-label"><span data-i18n="guest_total_balance">Total Balance</span></div>
-                        <div class="hero-card-value">₱ 128,450.00</div>
+                        <div class="hero-card-value" data-i18n="str_88a9d742">₱ 128,450.00</div>
                         <div class="hero-card-stats">
-                            <span class="badge-income">↑ Income ₱45,000</span>
-                            <span class="badge-expense">↓ Expense ₱18,200</span>
+                            <span class="badge-income" data-i18n="str_24e276fc">↑ Income ₱45,000</span>
+                            <span class="badge-expense" data-i18n="str_93dcf3d4">↓ Expense ₱18,200</span>
                         </div>
                     </div>
                 </div>
@@ -90,17 +87,17 @@
 	
 	<div id="login-modal" class="modal-overlay">
         <div class="modal-card">
-			<button class="modal-close" onclick="closeAllModals()">&times;</button>
+			<button class="modal-close" onclick="closeAllModals()">×</button>
             <div class="modal-form-container">
                 <h2 class="header" data-i18n="login_welcome">Welcome Back!</h2>
                 <form class="login-form" id="login-form">
                     <div class="input-group">
-                        <input type="email" class="floating-input" id="login-email" placeholder=" " required>
+                        <input type="email" class="floating-input" id="login-email" placeholder=" " required="">
                         <label class="floating-label" data-i18n="label_email">Email Address</label>
                     </div>
                     <div class="input-group">
                         <div class="password-input-wrapper">
-                            <input type="password" class="floating-input" id="login-password" placeholder=" " required>
+                            <input type="password" class="floating-input" id="login-password" placeholder=" " required="">
                             <label class="floating-label" data-i18n="label_pass">Password</label>
                             <span class="password-toggle">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#598539" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -127,22 +124,22 @@
 	
 	<div id="signup-modal" class="modal-overlay">
         <div class="modal-card">
-            <button class="modal-close" onclick="closeAllModals()">&times;</button>
+            <button class="modal-close" onclick="closeAllModals()">×</button>
             <div class="modal-form-container">
                 <h2 class="header" data-i18n="signup_title">Sign Up</h2>
                 <form class="signup-form" id="signup-form">
                     <div class="input-group">
-                        <input type="text" class="floating-input" id="signup-username" placeholder=" " required>
+                        <input type="text" class="floating-input" id="signup-username" placeholder=" " required="">
                         <label class="floating-label" data-i18n="label_user">Username</label>
                     </div>
                     <div class="input-group">
-                        <input type="email" class="floating-input" id="signup-email" placeholder=" " required>
-                        <label class="floating-label">Email Address</label>
+                        <input type="email" class="floating-input" id="signup-email" placeholder=" " required="">
+                        <label class="floating-label" data-i18n="str_643a860f">Email Address</label>
                     </div>
                     <div class="input-group">
                         <div class="password-input-wrapper">
-                            <input type="password" class="floating-input" id="signup-password" placeholder=" " required>
-                            <label class="floating-label">Password</label>
+                            <input type="password" class="floating-input" id="signup-password" placeholder=" " required="">
+                            <label class="floating-label" data-i18n="str_dc647eb6">Password</label>
                             <span class="password-toggle">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#598539" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -153,7 +150,7 @@
                     </div>
 					<div class="input-group">
                         <div class="password-input-wrapper">
-                            <input type="password" class="floating-input" id="signup-confirm" placeholder=" " required>
+                            <input type="password" class="floating-input" id="signup-confirm" placeholder=" " required="">
                             <label class="floating-label" data-i18n="label_conf_pass">Confirm Password</label>
                             <span class="password-toggle">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#598539" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -172,8 +169,7 @@
 
                     <div class="terms-row">
                         <input type="checkbox" id="signup-terms">
-                        <label for="signup-terms">
-                            I agree to the <a href="javascript:void(0)" onclick="openTermsModal()"><span data-i18n="signup_terms">Terms and Conditions</span></a>
+                        <label for="signup-terms"><span data-i18n="str_3abbd962">I agree to the</span><a href="javascript:void(0)" onclick="openTermsModal()"><span data-i18n="signup_terms">Terms and Conditions</span></a>
                         </label>
                     </div>
 
@@ -189,14 +185,14 @@
 
     <div id="forgot-modal" class="modal-overlay">
         <div class="modal-card">
-            <button class="modal-close" onclick="closeAllModals()">&times;</button>
+            <button class="modal-close" onclick="closeAllModals()">×</button>
             <div class="modal-form-container">
                 <h2 class="header" data-i18n="forgot_title">Forgot Password</h2>
                 <p style="text-align: center; color: var(--text-light); margin-bottom: 20px;"><span data-i18n="forgot_desc">Enter your email to receive a password reset link.</span></p>
                 <form id="forgot-form">
                     <div class="input-group">
-                        <input type="email" class="floating-input" id="forgot-email" placeholder=" " required>
-                        <label class="floating-label">Email Address</label>
+                        <input type="email" class="floating-input" id="forgot-email" placeholder=" " required="">
+                        <label class="floating-label" data-i18n="str_643a860f">Email Address</label>
                     </div>
                     <div id="forgot-message" class="message"></div>
                     <button type="submit" class="btn btn-primary" data-i18n="btn_send_reset">Send Reset Link</button>
@@ -210,37 +206,37 @@
     <div id="terms-modal" class="modal-overlay">
         <div class="modal-card">
             <div class="terms-modal-header">
-                <h2>Terms and Conditions</h2>
-                <button class="modal-close" onclick="closeTermsModal()" style="position:static;opacity:0.6;font-size:1.6rem;padding:0 4px;">&times;</button>
+                <h2 data-i18n="str_97abaa92">Terms and Conditions</h2>
+                <button class="modal-close" onclick="closeTermsModal()" style="position:static;opacity:0.6;font-size:1.6rem;padding:0 4px;">×</button>
             </div>
             <div class="terms-modal-body">
-                <p>Welcome to <strong>Bacaro Budget Manager</strong>. By creating an account and using this application, you agree to the following terms.</p>
+                <p><span data-i18n="str_9819fce8">Welcome to</span><strong data-i18n="str_7c8fc5cb">Bacaro Budget Manager</strong><span data-i18n="str_fbd680e5">. By creating an account and using this application, you agree to the following terms.</span></p>
 
-                <h3>1. Acceptance of Terms</h3>
-                <p>By registering, you confirm that you are at least 18 years old and agree to these Terms and Conditions and our Privacy Policy.</p>
+                <h3 data-i18n="str_a1c269ae">1. Acceptance of Terms</h3>
+                <p data-i18n="str_b8eeccc8">By registering, you confirm that you are at least 18 years old and agree to these Terms and Conditions and our Privacy Policy.</p>
 
-                <h3>2. Account Responsibility</h3>
-                <p>You are responsible for maintaining the confidentiality of your account credentials and all activity under your account.</p>
+                <h3 data-i18n="str_7904c5ac">2. Account Responsibility</h3>
+                <p data-i18n="str_66dd425d">You are responsible for maintaining the confidentiality of your account credentials and all activity under your account.</p>
 
-                <h3>3. Data and Privacy</h3>
-                <p>We collect and store financial data you input solely to provide the service. We do not sell or share your personal data with third parties without your consent.</p>
+                <h3 data-i18n="str_3e3a3cc5">3. Data and Privacy</h3>
+                <p data-i18n="str_65844f63">We collect and store financial data you input solely to provide the service. We do not sell or share your personal data with third parties without your consent.</p>
 
-                <h3>4. Acceptable Use</h3>
-                <p>You agree not to misuse the platform, attempt unauthorized access, or use it for any unlawful purpose.</p>
+                <h3 data-i18n="str_d62d1ee0">4. Acceptable Use</h3>
+                <p data-i18n="str_8b6ee8bf">You agree not to misuse the platform, attempt unauthorized access, or use it for any unlawful purpose.</p>
 
-                <h3>5. Service Availability</h3>
-                <p>We strive for uptime but do not guarantee uninterrupted access and are not liable for any losses due to downtime.</p>
+                <h3 data-i18n="str_a5bfa9a8">5. Service Availability</h3>
+                <p data-i18n="str_337e7deb">We strive for uptime but do not guarantee uninterrupted access and are not liable for any losses due to downtime.</p>
 
-                <h3>6. Modifications</h3>
-                <p>We may update these terms at any time. Continued use of the service constitutes acceptance of the updated terms.</p>
+                <h3 data-i18n="str_a4ee1612">6. Modifications</h3>
+                <p data-i18n="str_55c93fb9">We may update these terms at any time. Continued use of the service constitutes acceptance of the updated terms.</p>
 
-                <h3>7. Termination</h3>
-                <p>We reserve the right to suspend or terminate accounts that violate these terms without prior notice.</p>
+                <h3 data-i18n="str_e2ee5dd7">7. Termination</h3>
+                <p data-i18n="str_0e5ab37c">We reserve the right to suspend or terminate accounts that violate these terms without prior notice.</p>
 
-                <p style="margin-top:20px;">For the full legal terms, see our <a href="/views/terms.html" target="_blank" style="color:#c8ffb0;text-decoration:underline;">Terms of Use page</a>.</p>
+                <p style="margin-top:20px;"><span data-i18n="str_78d660ee">For the full legal terms, see our</span><a href="/views/terms.html" target="_blank" style="color:#c8ffb0;text-decoration:underline;" data-i18n="str_e75fb0cd">Terms of Use page</a>.</p>
             </div>
             <div class="terms-modal-footer">
-                <button class="btn-ghost" onclick="closeTermsModal()">Close</button>
+                <button class="btn-ghost" onclick="closeTermsModal()" data-i18n="str_d3d2e617">Close</button>
             </div>
         </div>
     </div>
@@ -258,5 +254,5 @@
             document.getElementById('terms-modal').classList.remove('active');
         }
     </script>
-</body>
-</html>
+
+</body></html>

@@ -1,7 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
+<!DOCTYPE html><html lang="en"><head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>User Dashboard | Bacaro Budget Manager</title>
@@ -12,7 +9,7 @@
 	<link rel="stylesheet" href="/assets/css/dashboard.css?v=4">
 	<script src="/assets/js/i18n.js"></script>
 	<script src="/assets/js/main.js?v=4"></script>
-	<script src="/assets/js/kwarta-ai.js?v=4" defer></script>
+	<script src="/assets/js/kwarta-ai.js?v=4" defer=""></script>
 
 	<!-- Premium AI Libraries -->
 	<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -41,7 +38,7 @@
 					<i data-lucide="menu"></i>
 				</button>
 				<div class="header-logo-container"> <img src="/assets/images/bb_logo_db.png" alt="App Logo"> </div>
-				<div class="header-title">Bacaro Budget Manager</div>
+				<div class="header-title" data-i18n="str_7c8fc5cb">Bacaro Budget Manager</div>
 			</div>
 
 			<nav class="header-right">
@@ -55,22 +52,21 @@
 			<div class="main-app-card">
 				<aside id="main-sidebar">
 					<div class="sidebar-section quick-add-section">
-						<button class="btn-quick-add" onclick="handleNewTransactionClick()">
+						<button class="btn-quick-add" onclick="handleNewTransactionClick()" data-i18n="str_16daaa07">
 							NEW TRANSACTION
 						</button>
 					</div>
 					<div class="sidebar-section">
 						<nav class="sidebar-nav">
-							<a href="#" class="nav-item active" onclick="showView('dashboard', this)">Dashboard</a>
-							<a href="#" class="nav-item" onclick="showView('transactions', this)">Transactions</a>
-							<a href="#" class="nav-item" onclick="showView('wallets', this)">Wallets</a>
-							<a href="#" class="nav-item" onclick="showView('goals', this)">Goals</a>
-							<a href="#" class="nav-item" onclick="showView('ai', this)">Kwarta AI</a>
+							<a href="#" class="nav-item active" onclick="showView('dashboard', this)" data-i18n="str_2938c7f7">Dashboard</a>
+							<a href="#" class="nav-item" onclick="showView('transactions', this)" data-i18n="str_31112aca">Transactions</a>
+							<a href="#" class="nav-item" onclick="showView('wallets', this)" data-i18n="str_85464ed9">Wallets</a>
+							<a href="#" class="nav-item" onclick="showView('goals', this)" data-i18n="str_d93302ea">Goals</a>
+							<a href="#" class="nav-item" onclick="showView('ai', this)" data-i18n="str_2ed63b98">Kwarta AI</a>
 						</nav>
 					</div>
 					<div class="sidebar-section bottom-section">
-						<a href="#" class="nav-item" onclick="showView('settings', this)"><span class="nav-icon"><i
-									data-lucide="settings"></i></span>Settings</a>
+						<a href="#" class="nav-item" onclick="showView('settings', this)"><span class="nav-icon"><i data-lucide="settings"></i></span><span data-i18n="str_f4f70727">Settings</span></a>
 					</div>
 				</aside>
 
@@ -80,32 +76,24 @@
 							<div class="dashboard-overview">
 								<div class="dashboard-filter-container">
 									<div class="range-dropdown">
-										<button class="range-dropbtn">ALL TIME <span
-												class="arrow-icon">▾</span></button>
+										<button class="range-dropbtn"><span data-i18n="str_7ee7707b">ALL TIME</span><span class="arrow-icon">▾</span></button>
 										<div class="range-dropdown-content">
-											<a href="#"
-												onclick="event.preventDefault(); return updateRange('TODAY')">TODAY</a>
-											<a href="#"
-												onclick="event.preventDefault(); return updateRange('THIS WEEK')">THIS
+											<a href="#" onclick="event.preventDefault(); return updateRange('TODAY')" data-i18n="str_03219b11">TODAY</a>
+											<a href="#" onclick="event.preventDefault(); return updateRange('THIS WEEK')" data-i18n="str_55c28048">THIS
 												WEEK</a>
-											<a href="#"
-												onclick="event.preventDefault(); return updateRange('THIS MONTH')">THIS
+											<a href="#" onclick="event.preventDefault(); return updateRange('THIS MONTH')" data-i18n="str_0a258a21">THIS
 												MONTH</a>
-											<a href="#"
-												onclick="event.preventDefault(); return updateRange('THIS YEAR')">THIS
+											<a href="#" onclick="event.preventDefault(); return updateRange('THIS YEAR')" data-i18n="str_fe5e10b7">THIS
 												YEAR</a>
-											<a href="#"
-												onclick="event.preventDefault(); return updateRange('ALL TIME')">ALL
+											<a href="#" onclick="event.preventDefault(); return updateRange('ALL TIME')" data-i18n="str_e0cc15c5">ALL
 												TIME</a>
 										</div>
 									</div>
 
 									<div class="range-dropdown" style="margin-left: 10px;">
-										<button class="range-dropbtn" id="dashboard-wallet-dropbtn">ALL WALLETS <span
-												class="arrow-icon">▾</span></button>
+										<button class="range-dropbtn" id="dashboard-wallet-dropbtn"><span data-i18n="str_8d1df2f4">ALL WALLETS</span><span class="arrow-icon">▾</span></button>
 										<div class="range-dropdown-content" id="dashboard-wallet-dropdown-content">
-											<a href="#"
-												onclick="event.preventDefault(); return updateWalletFilter(null, 'ALL WALLETS')">ALL
+											<a href="#" onclick="event.preventDefault(); return updateWalletFilter(null, 'ALL WALLETS')" data-i18n="str_6cdf3326">ALL
 												WALLETS</a>
 										</div>
 									</div>
@@ -116,26 +104,21 @@
 							<div class="stat-grid">
 								<div class="stat-card wallet-card">
 									<span class="stat-icon">
-										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-											viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-											stroke-linecap="round" stroke-linejoin="round">
-											<path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
-											<path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
-											<path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+											<path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
+											<path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
+											<path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path>
 										</svg>
 									</span>
-									<div class="stat-label">Your Balance</div>
+									<div class="stat-label" data-i18n="str_f5e368a5">Your Balance</div>
 									<div class="stat-value">
-										<div class="skeleton skeleton-text"
-											style="height: 40px; background: rgba(255,255,255,0.1);"></div>
+										<div class="skeleton skeleton-text" style="height: 40px; background: rgba(255,255,255,0.1);"></div>
 									</div>
-									<div class="stat-meta">Active Wallet</div>
+									<div class="stat-meta" data-i18n="str_107cb4c5">Active Wallet</div>
 								</div>
 								<div class="stat-card income-card">
 									<span class="stat-icon">
-										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-											viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-											stroke-linecap="round" stroke-linejoin="round">
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 											<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
 											<polyline points="17 6 23 6 23 12"></polyline>
 										</svg>
@@ -147,9 +130,7 @@
 								</div>
 								<div class="stat-card expense-card">
 									<span class="stat-icon">
-										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-											viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-											stroke-linecap="round" stroke-linejoin="round">
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 											<polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline>
 											<polyline points="17 18 23 18 23 12"></polyline>
 										</svg>
@@ -161,9 +142,7 @@
 								</div>
 								<div class="stat-card transfer-card">
 									<span class="stat-icon">
-										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-											viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-											stroke-linecap="round" stroke-linejoin="round">
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 											<path d="m17 2 4 4-4 4"></path>
 											<path d="M3 11v-1a4 4 0 0 1 4-4h14"></path>
 											<path d="m7 22-4-4 4-4"></path>
@@ -177,10 +156,9 @@
 								</div>
 							</div>
 
-							<div class="dashboard-details-grid"
-								style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 25px;">
+							<div class="dashboard-details-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 25px;">
 								<div id="income-summary-container">
-									<h3 style="margin-bottom: 15px; font-family: 'Times New Roman', serif;">Income
+									<h3 style="margin-bottom: 15px; font-family: 'Times New Roman', serif;" data-i18n="str_a7e3673d">Income
 										Summary</h3>
 									<div class="income-summary-skeleton">
 										<div class="summary-skeleton-row">
@@ -205,13 +183,12 @@
 									</div>
 								</div>
 								<div id="chart-summary-container">
-									<h3 style="margin-bottom: 15px; font-family: 'Times New Roman', serif;">Expense
+									<h3 style="margin-bottom: 15px; font-family: 'Times New Roman', serif;" data-i18n="str_7c2d9944">Expense
 										Breakdown</h3>
 									<div class="chart-skeleton-container">
 										<div class="doughnut-skeleton skeleton"></div>
 									</div>
-									<div id="dashboard-chart-wrapper" class="loading-transition"
-										style="display: none; height: 250px; position: relative;">
+									<div id="dashboard-chart-wrapper" class="loading-transition" style="display: none; height: 250px; position: relative;">
 										<canvas id="dashboard-doughnut-chart"></canvas>
 									</div>
 								</div>
@@ -222,35 +199,27 @@
 								<div class="cash-flow-chart-header">
 									<h3 data-i18n="dash_cash_flow">Cash Flow Trend</h3>
 									<div class="range-dropdown">
-										<button class="range-dropbtn" id="cash-flow-dropbtn">MONTHLY <span
-												class="arrow-icon">▾</span></button>
+										<button class="range-dropbtn" id="cash-flow-dropbtn"><span data-i18n="str_c107927c">MONTHLY</span><span class="arrow-icon">▾</span></button>
 										<div class="range-dropdown-content">
-											<a href="#"
-												onclick="event.preventDefault(); return updateCashFlowRange('weekly', 'Weekly')">WEEKLY</a>
-											<a href="#"
-												onclick="event.preventDefault(); return updateCashFlowRange('monthly', 'Monthly')">MONTHLY</a>
-											<a href="#"
-												onclick="event.preventDefault(); return updateCashFlowRange('last6months', 'Last 6 Months')">LAST
+											<a href="#" onclick="event.preventDefault(); return updateCashFlowRange('weekly', 'Weekly')" data-i18n="str_35f20feb">WEEKLY</a>
+											<a href="#" onclick="event.preventDefault(); return updateCashFlowRange('monthly', 'Monthly')" data-i18n="str_c107927c">MONTHLY</a>
+											<a href="#" onclick="event.preventDefault(); return updateCashFlowRange('last6months', 'Last 6 Months')" data-i18n="str_5c573fda">LAST
 												6 MONTHS</a>
-											<a href="#"
-												onclick="event.preventDefault(); return updateCashFlowRange('yearly', 'Yearly')">YEARLY</a>
-											<a href="#"
-												onclick="event.preventDefault(); return updateCashFlowRange('all', 'All Time')">ALL
+											<a href="#" onclick="event.preventDefault(); return updateCashFlowRange('yearly', 'Yearly')" data-i18n="str_e50d62d1">YEARLY</a>
+											<a href="#" onclick="event.preventDefault(); return updateCashFlowRange('all', 'All Time')" data-i18n="str_e0cc15c5">ALL
 												TIME</a>
 										</div>
 									</div>
 								</div>
-								<div class="trend-chart-skeleton-container"
-									style="height: 300px; border-radius: 12px; background: rgba(255,255,255,0.05);">
+								<div class="trend-chart-skeleton-container" style="height: 300px; border-radius: 12px; background: rgba(255,255,255,0.05);">
 									<div class="skeleton" style="width: 100%; height: 100%; border-radius: 12px;"></div>
 								</div>
-								<div id="cash-flow-chart-wrapper" class="loading-transition"
-									style="display: none; height: 300px; position: relative;">
+								<div id="cash-flow-chart-wrapper" class="loading-transition" style="display: none; height: 300px; position: relative;">
 									<canvas id="cash-flow-line-chart"></canvas>
 								</div>
 							</div>
-					</div>
-					</main>
+					</main></div>
+					
 
 					<div id="view-transactions" class="main-view" style="display: none;">
 						<main id="main-transactions">
@@ -258,27 +227,22 @@
 								<div class="view-header" style="margin-bottom: 20px;">
 									<div class="transaction-filters">
 										<div class="tx-search-box">
-											<input type="text" id="tx-search" class="tx-filter-input"
-												data-i18n-placeholder="search_tx" placeholder="Search transactions..."
-												oninput="applyTransactionFilters()">
+											<input type="text" id="tx-search" class="tx-filter-input" data-i18n-placeholder="str_9eefbee7" placeholder="Search transactions..." oninput="applyTransactionFilters()">
 											<i data-lucide="search" class="tx-search-icon"></i>
 										</div>
 
-										<select id="tx-filter-type" class="tx-filter-select"
-											onchange="applyTransactionFilters()">
+										<select id="tx-filter-type" class="tx-filter-select" onchange="applyTransactionFilters()">
 											<option value="all" data-i18n="opt_all_types">All Types</option>
 											<option value="income" data-i18n="opt_income">Income</option>
 											<option value="expense" data-i18n="opt_expense">Expense</option>
 											<option value="transfer" data-i18n="opt_transfer">Transfer</option>
 										</select>
 
-										<select id="tx-filter-wallet" class="tx-filter-select"
-											onchange="applyTransactionFilters()">
+										<select id="tx-filter-wallet" class="tx-filter-select" onchange="applyTransactionFilters()">
 											<option value="all" data-i18n="opt_all_wallets">All Wallets</option>
 										</select>
 
-										<select id="tx-filter-date" class="tx-filter-select"
-											onchange="applyTransactionFilters()">
+										<select id="tx-filter-date" class="tx-filter-select" onchange="applyTransactionFilters()">
 											<option value="all" data-i18n="opt_all_time">All Time</option>
 											<option value="today" data-i18n="opt_today">Today</option>
 											<option value="yesterday" data-i18n="opt_yesterday">Yesterday</option>
@@ -293,11 +257,11 @@
 								<div class="transaction-list">
 									<div class="transaction-row header-row">
 										<span>#</span>
-										<span>TITLE</span>
-										<span>AMOUNT</span>
-										<span>TYPE</span>
-										<span>DATE</span>
-										<span>WALLET</span>
+										<span data-i18n="str_6f9dccd8">TITLE</span>
+										<span data-i18n="str_d01105a4">AMOUNT</span>
+										<span data-i18n="str_94849514">TYPE</span>
+										<span data-i18n="str_633a6c7a">DATE</span>
+										<span data-i18n="str_5dfbfc49">WALLET</span>
 										<span></span>
 									</div>
 									<div id="transaction-skeleton-list">
@@ -355,30 +319,26 @@
 								<div class="wallet-skeleton skeleton">
 									<div class="skeleton-chip"></div>
 									<div class="skeleton-content">
-										<div class="skeleton skeleton-text medium"
-											style="height: 25px; margin-bottom: 10px;"></div>
+										<div class="skeleton skeleton-text medium" style="height: 25px; margin-bottom: 10px;"></div>
 										<div class="skeleton skeleton-text short"></div>
 									</div>
 								</div>
 								<div class="wallet-skeleton skeleton">
 									<div class="skeleton-chip"></div>
 									<div class="skeleton-content">
-										<div class="skeleton skeleton-text medium"
-											style="height: 25px; margin-bottom: 10px;"></div>
+										<div class="skeleton skeleton-text medium" style="height: 25px; margin-bottom: 10px;"></div>
 										<div class="skeleton skeleton-text short"></div>
 									</div>
 								</div>
 								<div class="wallet-skeleton skeleton">
 									<div class="skeleton-chip"></div>
 									<div class="skeleton-content">
-										<div class="skeleton skeleton-text medium"
-											style="height: 25px; margin-bottom: 10px;"></div>
+										<div class="skeleton skeleton-text medium" style="height: 25px; margin-bottom: 10px;"></div>
 										<div class="skeleton skeleton-text short"></div>
 									</div>
 								</div>
 							</div>
-							<div class="wallet-grid loading-transition" id="wallet-grid-container"
-								style="display: none;">
+							<div class="wallet-grid loading-transition" id="wallet-grid-container" style="display: none;">
 								<!-- Wallets will be rendered here dynamically -->
 							</div>
 						</main>
@@ -388,42 +348,40 @@
 						<main id="main-wallet-details">
 							<div class="wallet-detail-header">
 								<div class="detail-header-left">
-									<button class="btn-back"
-										onclick="showView('wallets', document.querySelector('[onclick*=\'wallets\']'))">Go
+									<button class="btn-back" onclick="showView('wallets', document.querySelector('[onclick*=\'wallets\']'))" data-i18n="str_b9f5e07f">Go
 										Back</button>
-									<h2 id="detail-wallet-name">BDO Savings</h2>
+									<h2 id="detail-wallet-name" data-i18n="str_f3644a18">BDO Savings</h2>
 								</div>
 								<div class="detail-header-right">
-									<span id="detail-wallet-type" class="badge-type">Bank Account</span>
-									<span id="detail-wallet-status" class="badge-status status-active">ACTIVE</span>
-									<button id="btn-delete-wallet-detail" class="btn-delete-wallet"
-										title="Delete Wallet"><i data-lucide="trash-2"></i></button>
+									<span id="detail-wallet-type" class="badge-type" data-i18n="str_d98a13bb">Bank Account</span>
+									<span id="detail-wallet-status" class="badge-status status-active" data-i18n="str_18ff74f4">ACTIVE</span>
+									<button id="btn-delete-wallet-detail" class="btn-delete-wallet" title="Delete Wallet"><i data-lucide="trash-2"></i></button>
 								</div>
 							</div>
 
 							<div class="wallet-balance-card">
 								<div class="balance-label" data-i18n="wallet_total_balance">Total Balance</div>
-								<div class="balance-amount">0.00</div>
+								<div class="balance-amount" data-i18n="str_f7ddd489">0.00</div>
 							</div>
 
 							<div class="wallet-stats-grid">
 								<div class="wallet-stat-card income">
-									<div class="stat-label">Income</div>
-									<div class="stat-value" id="wallet-total-income">0.00</div>
+									<div class="stat-label" data-i18n="str_1f08d08f">Income</div>
+									<div class="stat-value" id="wallet-total-income" data-i18n="str_f7ddd489">0.00</div>
 								</div>
 								<div class="wallet-stat-card expense">
-									<div class="stat-label">Expense</div>
-									<div class="stat-value" id="wallet-total-expense">0.00</div>
+									<div class="stat-label" data-i18n="str_7bf48cb9">Expense</div>
+									<div class="stat-value" id="wallet-total-expense" data-i18n="str_f7ddd489">0.00</div>
 								</div>
 								<div class="wallet-stat-card transfer">
-									<div class="stat-label">Transfers</div>
-									<div class="stat-value" id="wallet-total-transfers">0.00</div>
+									<div class="stat-label" data-i18n="str_8a7cc34b">Transfers</div>
+									<div class="stat-value" id="wallet-total-transfers" data-i18n="str_f7ddd489">0.00</div>
 								</div>
 							</div>
 
 							<div class="wallet-insights-section">
 								<div id="wallet-insights-content" class="insights-content">
-									<p>Loading insights...</p>
+									<p data-i18n="str_98000b22">Loading insights...</p>
 								</div>
 							</div>
 
@@ -432,10 +390,10 @@
 								<div class="transaction-list">
 									<div class="transaction-row header-row">
 										<span>#</span>
-										<span>TITLE</span>
-										<span>AMOUNT</span>
-										<span>TYPE</span>
-										<span>DATE</span>
+										<span data-i18n="str_6f9dccd8">TITLE</span>
+										<span data-i18n="str_d01105a4">AMOUNT</span>
+										<span data-i18n="str_94849514">TYPE</span>
+										<span data-i18n="str_633a6c7a">DATE</span>
 										<span></span>
 									</div>
 
@@ -464,14 +422,12 @@
 								<div class="wallet-skeleton skeleton">
 									<div class="skeleton-chip"></div>
 									<div class="skeleton-content">
-										<div class="skeleton skeleton-text medium"
-											style="height: 25px; margin-bottom: 10px;"></div>
+										<div class="skeleton skeleton-text medium" style="height: 25px; margin-bottom: 10px;"></div>
 										<div class="skeleton skeleton-text short"></div>
 									</div>
 								</div>
 							</div>
-							<div class="wallet-grid loading-transition goal-grid-container" id="goal-grid-container"
-								style="display: none;">
+							<div class="wallet-grid loading-transition goal-grid-container" id="goal-grid-container" style="display: none;">
 								<!-- Goals will be rendered here dynamically -->
 							</div>
 						</main>
@@ -482,7 +438,7 @@
 							<div class="settings-container">
 								<div class="settings-page-header">
 									<h2 class="settings-title" data-i18n="settings_preferences">Preferences</h2>
-									<p class="settings-subtitle">Personalize how Bacaro Budget Manager looks and
+									<p class="settings-subtitle" data-i18n="str_edde603d">Personalize how Bacaro Budget Manager looks and
 										behaves.</p>
 								</div>
 
@@ -496,7 +452,7 @@
 											</div>
 											<div class="settings-info">
 												<span class="settings-row-title" data-i18n="settings_darkmode">Dark Mode</span>
-												<span class="settings-row-desc">Switch between standard and low-light
+												<span class="settings-row-desc" data-i18n="str_3bdbeea8">Switch between standard and low-light
 													interface themes.</span>
 											</div>
 											<div class="settings-action">
@@ -513,12 +469,11 @@
 											</div>
 											<div class="settings-info">
 												<span class="settings-row-title" data-i18n="settings_contrast">Contrast Adjustment</span>
-												<span class="settings-row-desc">Toggle between normal and high contrast
+												<span class="settings-row-desc" data-i18n="str_7b31f341">Toggle between normal and high contrast
 													modes.</span>
 											</div>
 											<div class="settings-action">
-												<button type="button" id="settings-contrast-toggle"
-													class="btn-contrast-toggle">Normal Contrast</button>
+												<button type="button" id="settings-contrast-toggle" class="btn-contrast-toggle" data-i18n="str_75f9875f">Normal Contrast</button>
 											</div>
 										</div>
 										<div class="settings-separator"></div>
@@ -528,14 +483,14 @@
 											</div>
 											<div class="settings-info">
 												<span class="settings-row-title" data-i18n="settings_lang">Language</span>
-												<span class="settings-row-desc">Select your preferred display
+												<span class="settings-row-desc" data-i18n="str_d4bd7d54">Select your preferred display
 													language.</span>
 											</div>
 											<div class="settings-action">
 												<div class="settings-select-wrapper">
 													<select id="settings-language" class="settings-select">
-														<option value="en" selected>English</option>
-														<option value="tl">Tagalog</option>
+														<option value="en" selected="" data-i18n="str_78463a38">English</option>
+														<option value="tl" data-i18n="str_fee97312">Tagalog</option>
 													</select>
 												</div>
 											</div>
@@ -547,12 +502,12 @@
 											</div>
 											<div class="settings-info">
 												<span class="settings-row-title" data-i18n="settings_currency">Currency Display</span>
-												<span class="settings-row-desc">Show or hide the Pesos symbol (₱) in
+												<span class="settings-row-desc" data-i18n="str_11c9bdf1">Show or hide the Pesos symbol (₱) in
 													amounts.</span>
 											</div>
 											<div class="settings-action">
 												<label class="toggle-switch">
-													<input type="checkbox" id="settings-currency-toggle" checked>
+													<input type="checkbox" id="settings-currency-toggle" checked="">
 													<span class="toggle-slider"></span>
 												</label>
 											</div>
@@ -570,12 +525,11 @@
 											</div>
 											<div class="settings-info">
 												<span class="settings-row-title" data-i18n="settings_export">Export Data</span>
-												<span class="settings-row-desc">Download a CSV file containing all your
+												<span class="settings-row-desc" data-i18n="str_e45f8980">Download a CSV file containing all your
 													transaction records.</span>
 											</div>
 											<div class="settings-action">
-												<button type="button" class="btn-settings-action"
-													onclick="handleExportData()">Download CSV</button>
+												<button type="button" class="btn-settings-action" onclick="handleExportData()" data-i18n="str_54df9536">Download CSV</button>
 											</div>
 										</div>
 									</div>
@@ -591,12 +545,11 @@
 											</div>
 											<div class="settings-info">
 												<span class="settings-row-title" data-i18n="settings_privacy">Privacy Policy</span>
-												<span class="settings-row-desc">Read how we handle and protect your
+												<span class="settings-row-desc" data-i18n="str_3b0c96cd">Read how we handle and protect your
 													budget data.</span>
 											</div>
 											<div class="settings-action">
-												<a href="privacy.html" target="_blank" class="btn-settings-action"
-													style="text-decoration: none;">View Policy</a>
+												<a href="privacy.html" target="_blank" class="btn-settings-action" style="text-decoration: none;" data-i18n="str_e93bfe6d">View Policy</a>
 											</div>
 										</div>
 										<div class="settings-separator"></div>
@@ -606,12 +559,11 @@
 											</div>
 											<div class="settings-info">
 												<span class="settings-row-title" data-i18n="settings_terms">Terms of Use</span>
-												<span class="settings-row-desc">Review the rules and guidelines for
+												<span class="settings-row-desc" data-i18n="str_e658c1fd">Review the rules and guidelines for
 													using Bacaro.</span>
 											</div>
 											<div class="settings-action">
-												<a href="terms.html" target="_blank" class="btn-settings-action"
-													style="text-decoration: none;">View Terms</a>
+												<a href="terms.html" target="_blank" class="btn-settings-action" style="text-decoration: none;" data-i18n="str_0c94a35d">View Terms</a>
 											</div>
 										</div>
 									</div>
@@ -627,12 +579,11 @@
 											</div>
 											<div class="settings-info">
 												<span class="settings-row-title title-danger" data-i18n="settings_del_acc">Delete Account</span>
-												<span class="settings-row-desc">Permanently remove your account and all
+												<span class="settings-row-desc" data-i18n="str_a67ba60e">Permanently remove your account and all
 													associated budget data.</span>
 											</div>
 											<div class="settings-action">
-												<button type="button" class="btn-ghost-danger"
-													onclick="handleDeleteAccount()">Delete Account</button>
+												<button type="button" class="btn-ghost-danger" onclick="handleDeleteAccount()" data-i18n="str_bee04ef1">Delete Account</button>
 											</div>
 										</div>
 									</div>
@@ -655,7 +606,7 @@
 		<div id="account-sidebar" class="account-drawer">
 			<div class="drawer-header">
 				<h3 data-i18n="sidebar_acc_details">Account Details</h3>
-				<button class="close-drawer" onclick="toggleAccountSidebar()" title="Close">&times;</button>
+				<button class="close-drawer" onclick="toggleAccountSidebar()" title="Close">×</button>
 			</div>
 
 			<div class="drawer-content">
@@ -665,16 +616,14 @@
 						<div class="pfp-overlay" onclick="triggerAvatarUpload()">
 							<i data-lucide="camera"></i>
 						</div>
-						<input type="file" id="avatar-upload-input" hidden accept="image/*"
-							onchange="handleAvatarUpload(event)">
+						<input type="file" id="avatar-upload-input" hidden="" accept="image/*" onchange="handleAvatarUpload(event)">
 					</div>
 					<h3 id="profile-username" style="margin-bottom: 5px;">--</h3>
-					<div id="financial-badge-container"
-						style="margin-bottom: 25px; display: flex; justify-content: center;"></div>
+					<div id="financial-badge-container" style="margin-bottom: 25px; display: flex; justify-content: center;"></div>
 					<div class="edit-mode-only" style="display: none;">
 						<div class="input-group">
 							<input type="text" id="edit-nickname" class="floating-input" placeholder=" ">
-							<label class="floating-label">Nickname</label>
+							<label class="floating-label" data-i18n="str_1771b828">Nickname</label>
 							<span class="error-msg" id="nickname-error"></span>
 						</div>
 					</div>
@@ -692,19 +641,18 @@
 					<div class="edit-mode-only" style="display: none; text-align: left; margin-bottom: 15px;">
 						<div class="input-group">
 							<input type="tel" id="edit-phone" class="floating-input" placeholder=" ">
-							<label class="floating-label">Phone Number</label>
+							<label class="floating-label" data-i18n="str_1e4dbc7e">Phone Number</label>
 							<span class="error-msg" id="phone-error"></span>
 						</div>
 					</div>
 					<div class="info-item view-mode-only">
 						<span class="info-label" data-i18n="sidebar_bio">Bio / Goal</span>
-						<span class="info-value" id="profile-bio">Not provided</span>
+						<span class="info-value" id="profile-bio" data-i18n="str_34fac42b">Not provided</span>
 					</div>
 					<div class="edit-mode-only" style="display: none; text-align: left;">
 						<div class="input-group">
-							<textarea id="edit-bio" class="floating-input" placeholder=" "
-								style="min-height: 80px;"></textarea>
-							<label class="floating-label">Bio/Goal</label>
+							<textarea id="edit-bio" class="floating-input" placeholder=" " style="min-height: 80px;"></textarea>
+							<label class="floating-label" data-i18n="str_2b8bf250">Bio/Goal</label>
 						</div>
 					</div>
 					<div class="info-item">
@@ -715,7 +663,7 @@
 
 				<div class="edit-mode-only" style="display: none;">
 					<div class="avatar-grid-header">
-						<span>Choose an Avatar</span>
+						<span data-i18n="str_7752502a">Choose an Avatar</span>
 						<button class="btn-randomize" onclick="randomizeAvatarGrid()">
 							<i data-lucide="refresh-cw"></i>
 						</button>
@@ -726,44 +674,40 @@
 				</div>
 
 				<div class="drawer-nav view-mode-only">
-					<a href="#" class="drawer-nav-item" id="edit-profile-btn"
-						onclick="toggleEditMode(true); return false;">
+					<a href="#" class="drawer-nav-item" id="edit-profile-btn" onclick="toggleEditMode(true); return false;">
 						<i data-lucide="user"></i> <span data-i18n="sidebar_edit_profile">Edit Profile</span>
 					</a>
 				</div>
 
 				<div class="edit-mode-only drawer-actions" style="display: none;">
-					<button class="btn btn-primary" onclick="saveProfileChanges()">Save Changes</button>
-					<button class="btn-ghost" onclick="toggleEditMode(false)">Cancel</button>
+					<button class="btn btn-primary" onclick="saveProfileChanges()" data-i18n="str_f5d6040e">Save Changes</button>
+					<button class="btn-ghost" onclick="toggleEditMode(false)" data-i18n="str_ea478870">Cancel</button>
 				</div>
 			</div>
 
 			<div class="drawer-footer">
 				<button class="btn-logout" onclick="handleLogout()">
-					<i data-lucide="log-out"></i> LOG OUT
-				</button>
+					<i data-lucide="log-out"></i><span data-i18n="str_3570b61b">LOG OUT</span></button>
 			</div>
 		</div>
 		<div id="drawer-overlay" class="drawer-overlay"></div>
 
 		<div id="login-modal" class="modal-overlay">
 			<div class="modal-card">
-				<button class="modal-close" onclick="closeAllModals()">&times;</button>
+				<button class="modal-close" onclick="closeAllModals()">×</button>
 				<div class="modal-form-container">
-					<h2 class="header">Welcome Back!</h2>
+					<h2 class="header" data-i18n="str_98477a38">Welcome Back!</h2>
 					<form class="login-form" id="login-form">
 						<div class="input-group">
-							<input type="email" class="floating-input" id="login-email" placeholder=" " required>
-							<label class="floating-label">Email Address</label>
+							<input type="email" class="floating-input" id="login-email" placeholder=" " required="">
+							<label class="floating-label" data-i18n="str_643a860f">Email Address</label>
 						</div>
 						<div class="input-group">
 							<div class="password-input-wrapper">
-								<input type="password" class="floating-input" id="login-password" placeholder=" "
-									required>
-								<label class="floating-label">Password</label>
+								<input type="password" class="floating-input" id="login-password" placeholder=" " required="">
+								<label class="floating-label" data-i18n="str_dc647eb6">Password</label>
 								<span class="password-toggle">
-									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#598539"
-										stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#598539" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 										<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
 										<circle cx="12" cy="12" r="3"></circle>
 									</svg>
@@ -771,15 +715,14 @@
 							</div>
 						</div>
 						<div id="login-message" class="message"></div>
-						<button type="submit" class="btn btn-primary">LOG IN</button>
+						<button type="submit" class="btn btn-primary" data-i18n="str_7a91d006">LOG IN</button>
 
 						<div class="forgot-password">
-							<a href="javascript:void(0)" onclick="openForgotModal()">Forgot Password?</a>
+							<a href="javascript:void(0)" onclick="openForgotModal()" data-i18n="str_38c8c1f4">Forgot Password?</a>
 						</div>
 
 						<div class="secondary-action-container">
-							<a href="javascript:void(0)" onclick="openSignupModal()"
-								class="btn-secondary-outline">Create New Account</a>
+							<a href="javascript:void(0)" onclick="openSignupModal()" class="btn-secondary-outline" data-i18n="str_e6503050">Create New Account</a>
 						</div>
 					</form>
 				</div>
@@ -788,26 +731,24 @@
 
 		<div id="signup-modal" class="modal-overlay">
 			<div class="modal-card">
-				<button class="modal-close" onclick="closeAllModals()">&times;</button>
+				<button class="modal-close" onclick="closeAllModals()">×</button>
 				<div class="modal-form-container">
-					<h2 class="header">Sign Up</h2>
+					<h2 class="header" data-i18n="str_d67850bd">Sign Up</h2>
 					<form class="signup-form" id="signup-form">
 						<div class="input-group">
-							<input type="text" class="floating-input" id="signup-username" placeholder=" " required>
-							<label class="floating-label">Username</label>
+							<input type="text" class="floating-input" id="signup-username" placeholder=" " required="">
+							<label class="floating-label" data-i18n="str_f6039d44">Username</label>
 						</div>
 						<div class="input-group">
-							<input type="email" class="floating-input" id="signup-email" placeholder=" " required>
-							<label class="floating-label">Email Address</label>
+							<input type="email" class="floating-input" id="signup-email" placeholder=" " required="">
+							<label class="floating-label" data-i18n="str_643a860f">Email Address</label>
 						</div>
 						<div class="input-group">
 							<div class="password-input-wrapper">
-								<input type="password" class="floating-input" id="signup-password" placeholder=" "
-									required>
-								<label class="floating-label">Password</label>
+								<input type="password" class="floating-input" id="signup-password" placeholder=" " required="">
+								<label class="floating-label" data-i18n="str_dc647eb6">Password</label>
 								<span class="password-toggle">
-									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#598539"
-										stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#598539" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 										<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
 										<circle cx="12" cy="12" r="3"></circle>
 									</svg>
@@ -816,12 +757,10 @@
 						</div>
 						<div class="input-group">
 							<div class="password-input-wrapper">
-								<input type="password" class="floating-input" id="signup-confirm" placeholder=" "
-									required>
-								<label class="floating-label">Confirm Password</label>
+								<input type="password" class="floating-input" id="signup-confirm" placeholder=" " required="">
+								<label class="floating-label" data-i18n="str_887f7db1">Confirm Password</label>
 								<span class="password-toggle">
-									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#598539"
-										stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#598539" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 										<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
 										<circle cx="12" cy="12" r="3"></circle>
 									</svg>
@@ -830,14 +769,14 @@
 						</div>
 						<div class="input-group">
 							<input type="tel" class="floating-input" id="signup-pnumber" placeholder=" ">
-							<label class="floating-label">Phone Number (Optional)</label>
+							<label class="floating-label" data-i18n="str_af31882c">Phone Number (Optional)</label>
 						</div>
 
 						<div id="signup-message" class="message"></div>
-						<button type="submit" class="btn btn-primary">Create Account</button>
+						<button type="submit" class="btn btn-primary" data-i18n="str_739405e7">Create Account</button>
 
 						<div class="secondary-action-container">
-							<a href="javascript:void(0)" onclick="openLoginModal()" class="btn-secondary-outline">Use
+							<a href="javascript:void(0)" onclick="openLoginModal()" class="btn-secondary-outline" data-i18n="str_b86cdac2">Use
 								Registered Account</a>
 						</div>
 					</form>
@@ -847,17 +786,16 @@
 
 		<div id="forgot-modal" class="modal-overlay">
 			<div class="modal-card">
-				<button class="modal-close" onclick="closeAllModals()">&times;</button>
+				<button class="modal-close" onclick="closeAllModals()">×</button>
 				<div class="modal-form-container">
-					<h2 class="header"><i data-lucide="shield-alert"
-							style="vertical-align: middle; margin-right: 8px;"></i> Reset Password</h2>
-					<p style="text-align: center; color: var(--text-light); margin-bottom: 20px;">Enter your EMAIL or
+					<h2 class="header"><i data-lucide="shield-alert" style="vertical-align: middle; margin-right: 8px;"></i><span data-i18n="str_6072e83b">Reset Password</span></h2>
+					<p style="text-align: center; color: var(--text-light); margin-bottom: 20px;" data-i18n="str_55b15cef">Enter your EMAIL or
 						PHONE to receive a reset link.</p>
 					<form>
-						<div class="input-group"><input type="email" class="floating-input" placeholder=" " required>
+						<div class="input-group"><input type="email" class="floating-input" placeholder=" " required="">
 						</div>
-						<button type="submit" class="btn btn-primary">Send Reset Link</button>
-						<div class="login-link"><a href="javascript:void(0)" onclick="openLoginModal()">Back to Log
+						<button type="submit" class="btn btn-primary" data-i18n="str_87f3742b">Send Reset Link</button>
+						<div class="login-link"><a href="javascript:void(0)" onclick="openLoginModal()" data-i18n="str_53f1b5c0">Back to Log
 								In</a></div>
 					</form>
 				</div>
@@ -867,51 +805,50 @@
 
 		<div id="transaction-modal" class="modal-overlay">
 			<div class="modal-card transaction-modal-card">
-				<button class="modal-close" onclick="closeTransactionModal()">&times;</button>
+				<button class="modal-close" onclick="closeTransactionModal()">×</button>
 				<div class="modal-form-container">
-					<h2 class="header login-header">New Transaction</h2>
+					<h2 class="header login-header" data-i18n="str_a99fe580">New Transaction</h2>
 					<form class="login-form" id="transaction-form">
 						<input type="hidden" id="trans-id">
 						<div class="input-group">
-							<input type="text" class="floating-input" id="trans-description" placeholder=" " required>
-							<label class="floating-label">Description</label>
+							<input type="text" class="floating-input" id="trans-description" placeholder=" " required="">
+							<label class="floating-label" data-i18n="str_b5a7adde">Description</label>
 						</div>
 
 						<div class="input-group">
-							<select class="floating-input" id="trans-type" required>
-								<option value="" selected disabled hidden></option>
-								<option value="Income">Income</option>
-								<option value="Expense">Expense</option>
-								<option value="Transfer">Transfer</option>
+							<select class="floating-input" id="trans-type" required="">
+								<option value="" selected="" disabled="" hidden=""></option>
+								<option value="Income" data-i18n="str_1f08d08f">Income</option>
+								<option value="Expense" data-i18n="str_7bf48cb9">Expense</option>
+								<option value="Transfer" data-i18n="str_6950810f">Transfer</option>
 							</select>
-							<label class="floating-label">Type</label>
+							<label class="floating-label" data-i18n="str_a1fa2777">Type</label>
 						</div>
 
 						<div class="input-group">
-							<select class="floating-input" id="trans-wallet-type" required>
-								<option value="" selected disabled hidden></option>
-								<option value="Cash">Cash</option>
-								<option value="Bank Account">Bank Account</option>
-								<option value="E-Money">E-Money</option>
-								<option value="Credit Card">Credit Card</option>
-								<option value="Other">Other</option>
+							<select class="floating-input" id="trans-wallet-type" required="">
+								<option value="" selected="" disabled="" hidden=""></option>
+								<option value="Cash" data-i18n="str_069b30db">Cash</option>
+								<option value="Bank Account" data-i18n="str_d98a13bb">Bank Account</option>
+								<option value="E-Money" data-i18n="str_f5049220">E-Money</option>
+								<option value="Credit Card" data-i18n="str_73a61696">Credit Card</option>
+								<option value="Other" data-i18n="str_6311ae17">Other</option>
 							</select>
-							<label class="floating-label">Wallet Type</label>
+							<label class="floating-label" data-i18n="str_cb5fc492">Wallet Type</label>
 						</div>
 
 						<div class="input-group" id="trans-wallet-other-group" style="display:none;">
 							<input type="text" class="floating-input" id="trans-wallet-other" placeholder=" ">
-							<label class="floating-label">Wallet (Other)</label>
+							<label class="floating-label" data-i18n="str_3da690d3">Wallet (Other)</label>
 						</div>
 
 						<div class="input-group">
-							<input type="number" class="floating-input" id="trans-amount" placeholder=" "
-								inputmode="decimal" step="1" min="0" required>
-							<label class="floating-label">Amount</label>
+							<input type="number" class="floating-input" id="trans-amount" placeholder=" " inputmode="decimal" step="1" min="0" required="">
+							<label class="floating-label" data-i18n="str_b2f40690">Amount</label>
 						</div>
 
 						<div id="transaction-message" class="message"></div>
-						<button type="submit" class="btn btn-primary">SAVE TRANSACTION</button>
+						<button type="submit" class="btn btn-primary" data-i18n="str_931feb5e">SAVE TRANSACTION</button>
 					</form>
 				</div>
 			</div>
@@ -919,13 +856,13 @@
 
 		<div id="confirm-modal" class="modal-overlay">
 			<div class="modal-card confirm-modal-card">
-				<button class="modal-close">&times;</button>
+				<button class="modal-close">×</button>
 				<div class="confirm-modal-content">
-					<h2 id="confirm-title">Confirm Action</h2>
-					<p id="confirm-message">Are you sure you want to proceed?</p>
+					<h2 id="confirm-title" data-i18n="str_edb74bd6">Confirm Action</h2>
+					<p id="confirm-message" data-i18n="str_09b19f03">Are you sure you want to proceed?</p>
 					<div class="confirm-modal-actions">
-						<button id="btn-confirm-cancel" class="btn-ghost">Cancel</button>
-						<button id="btn-confirm-ok" class="btn-danger-confirm">Confirm</button>
+						<button id="btn-confirm-cancel" class="btn-ghost" data-i18n="str_ea478870">Cancel</button>
+						<button id="btn-confirm-ok" class="btn-danger-confirm" data-i18n="str_70d9be9b">Confirm</button>
 					</div>
 				</div>
 			</div>
@@ -933,26 +870,25 @@
 
 		<div id="add-goal-modal" class="modal-overlay">
 			<div class="modal-card transaction-modal-card">
-				<button class="modal-close" onclick="closeAllModals()">&times;</button>
+				<button class="modal-close" onclick="closeAllModals()">×</button>
 				<div class="modal-form-container">
-					<h2 class="header login-header">Add Savings Goal</h2>
+					<h2 class="header login-header" data-i18n="str_82178684">Add Savings Goal</h2>
 					<form class="login-form" id="add-goal-form">
 						<div class="input-group">
-							<input type="text" class="floating-input" id="goal-title" placeholder=" " required>
-							<label class="floating-label">Goal Title (e.g., Emergency Fund)</label>
+							<input type="text" class="floating-input" id="goal-title" placeholder=" " required="">
+							<label class="floating-label" data-i18n="str_2f9a7dfb">Goal Title (e.g., Emergency Fund)</label>
 						</div>
 						<div class="input-group">
-							<input type="number" class="floating-input" id="goal-target-amount" placeholder=" "
-								inputmode="decimal" step="0.01" min="0.01" required>
-							<label class="floating-label">Target Amount</label>
+							<input type="number" class="floating-input" id="goal-target-amount" placeholder=" " inputmode="decimal" step="0.01" min="0.01" required="">
+							<label class="floating-label" data-i18n="str_492f264f">Target Amount</label>
 						</div>
 						<div class="input-group">
-							<input type="text" class="floating-input" id="goal-deadline" placeholder=" " required>
-							<label class="floating-label">Target Date</label>
+							<input type="text" class="floating-input" id="goal-deadline" placeholder=" " required="">
+							<label class="floating-label" data-i18n="str_0e2bbb5b">Target Date</label>
 							<i data-lucide="calendar" class="input-icon"></i>
 						</div>
 						<div id="add-goal-message" class="message"></div>
-						<button type="submit" class="btn btn-primary">SAVE GOAL</button>
+						<button type="submit" class="btn btn-primary" data-i18n="str_cd103e89">SAVE GOAL</button>
 					</form>
 				</div>
 			</div>
@@ -960,18 +896,17 @@
 
 		<div id="add-funds-modal" class="modal-overlay">
 			<div class="modal-card transaction-modal-card">
-				<button class="modal-close" onclick="closeAllModals()">&times;</button>
+				<button class="modal-close" onclick="closeAllModals()">×</button>
 				<div class="modal-form-container">
-					<h2 class="header login-header">Add Funds to Goal</h2>
+					<h2 class="header login-header" data-i18n="str_32710700">Add Funds to Goal</h2>
 					<form class="login-form" id="add-funds-form">
 						<input type="hidden" id="fund-goal-id">
 						<div class="input-group">
-							<input type="number" class="floating-input" id="fund-amount" placeholder=" "
-								inputmode="decimal" step="0.01" min="0.01" required>
-							<label class="floating-label">Amount to Add</label>
+							<input type="number" class="floating-input" id="fund-amount" placeholder=" " inputmode="decimal" step="0.01" min="0.01" required="">
+							<label class="floating-label" data-i18n="str_1a9ee655">Amount to Add</label>
 						</div>
 						<div id="add-funds-message" class="message"></div>
-						<button type="submit" class="btn btn-primary">ADD FUNDS</button>
+						<button type="submit" class="btn btn-primary" data-i18n="str_ff9bea94">ADD FUNDS</button>
 					</form>
 				</div>
 			</div>
@@ -979,31 +914,30 @@
 
 		<div id="add-wallet-modal" class="modal-overlay">
 			<div class="modal-card transaction-modal-card">
-				<button class="modal-close" onclick="closeAllModals()">&times;</button>
+				<button class="modal-close" onclick="closeAllModals()">×</button>
 				<div class="modal-form-container">
-					<h2 class="header login-header">Add Wallet</h2>
+					<h2 class="header login-header" data-i18n="str_1133ef9b">Add Wallet</h2>
 					<form class="login-form" id="add-wallet-form">
 						<div class="input-group">
-							<input type="text" class="floating-input" id="wallet-name" placeholder=" " required>
-							<label class="floating-label">Wallet Name</label>
+							<input type="text" class="floating-input" id="wallet-name" placeholder=" " required="">
+							<label class="floating-label" data-i18n="str_c463361a">Wallet Name</label>
 						</div>
 						<div class="input-group">
-							<select class="floating-input" id="wallet-type" required>
-								<option value="" selected disabled hidden></option>
-								<option value="Cash">Cash</option>
-								<option value="Bank Account">Bank Account</option>
-								<option value="E-Money">E-Money</option>
-								<option value="Credit Card">Credit Card</option>
+							<select class="floating-input" id="wallet-type" required="">
+								<option value="" selected="" disabled="" hidden=""></option>
+								<option value="Cash" data-i18n="str_069b30db">Cash</option>
+								<option value="Bank Account" data-i18n="str_d98a13bb">Bank Account</option>
+								<option value="E-Money" data-i18n="str_f5049220">E-Money</option>
+								<option value="Credit Card" data-i18n="str_73a61696">Credit Card</option>
 							</select>
-							<label class="floating-label">Type</label>
+							<label class="floating-label" data-i18n="str_a1fa2777">Type</label>
 						</div>
 						<div class="input-group">
-							<input type="number" class="floating-input" id="wallet-initial-balance" placeholder=" "
-								inputmode="decimal" step="0.01" min="0" required>
-							<label class="floating-label">Initial Balance</label>
+							<input type="number" class="floating-input" id="wallet-initial-balance" placeholder=" " inputmode="decimal" step="0.01" min="0" required="">
+							<label class="floating-label" data-i18n="str_8adc6f21">Initial Balance</label>
 						</div>
 						<div id="add-wallet-message" class="message"></div>
-						<button type="submit" class="btn btn-primary">SAVE WALLET</button>
+						<button type="submit" class="btn btn-primary" data-i18n="str_ef4ad347">SAVE WALLET</button>
 					</form>
 				</div>
 			</div>
@@ -1011,34 +945,33 @@
 
 		<div id="transfer-modal" class="modal-overlay">
 			<div class="modal-card transaction-modal-card">
-				<button class="modal-close" onclick="closeAllModals()">&times;</button>
+				<button class="modal-close" onclick="closeAllModals()">×</button>
 				<div class="modal-form-container">
-					<h2 class="header login-header">Transfer Funds</h2>
+					<h2 class="header login-header" data-i18n="str_6652b4e8">Transfer Funds</h2>
 					<form class="login-form" id="transfer-form">
 						<div class="input-group">
-							<select class="floating-input" id="transfer-from" required>
+							<select class="floating-input" id="transfer-from" required="">
 								<!-- Populated via JS -->
 							</select>
-							<label class="floating-label">From Wallet</label>
+							<label class="floating-label" data-i18n="str_c9bb97e4">From Wallet</label>
 						</div>
 						<div class="input-group">
-							<select class="floating-input" id="transfer-to" required>
+							<select class="floating-input" id="transfer-to" required="">
 								<!-- Populated via JS -->
 							</select>
-							<label class="floating-label">To Wallet</label>
+							<label class="floating-label" data-i18n="str_91b902f4">To Wallet</label>
 						</div>
 						<div class="input-group">
-							<input type="number" class="floating-input" id="transfer-amount" placeholder=" "
-								inputmode="decimal" step="0.01" min="0" required>
-							<label class="floating-label">Amount</label>
+							<input type="number" class="floating-input" id="transfer-amount" placeholder=" " inputmode="decimal" step="0.01" min="0" required="">
+							<label class="floating-label" data-i18n="str_b2f40690">Amount</label>
 						</div>
 						<div id="transfer-message" class="message"></div>
-						<button type="submit" class="btn btn-primary">TRANSFER</button>
+						<button type="submit" class="btn btn-primary" data-i18n="str_eb5ddb3b">TRANSFER</button>
 					</form>
 				</div>
 			</div>
 		</div>
 
-</body>
 
-</html>
+
+</div></body></html>

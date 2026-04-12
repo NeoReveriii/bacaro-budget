@@ -1290,6 +1290,7 @@ input[type=number] {
 		.transaction-row {
 			display: grid;
 			grid-template-columns: 0.5fr 2.5fr 1.5fr 1fr 1.2fr 1.2fr 1.2fr;
+            column-gap: 14px;
             min-width: 800px;
 			padding: 15px 20px;
 			align-items: center;
@@ -2226,7 +2227,7 @@ input[type=number] {
         text-align: right;
         display: flex;
         align-items: center;
-        justify-content: flex-end;
+        justify-content: flex-start;
         gap: 6px;
     }
 
@@ -2235,7 +2236,9 @@ input[type=number] {
         font-weight: 500;
         font-size: 0.85em;
         color: #999;
-        margin-right: 4px;
+        display: inline-block;
+        min-width: 80px;
+        margin-right: 12px;
     }
 
     /* Type badge - first row */
@@ -4130,9 +4133,6 @@ body.dark-mode .custom-select-wrapper:has(.tx-filter-trigger) .custom-option.sel
         font-weight: bold;
         font-size: 1.1em;
         margin-bottom: 4px;
-        text-align: right !important;
-        align-self: flex-end;
-        width: auto !important;
     }
 
     .transaction-row > span:nth-child(3).income,

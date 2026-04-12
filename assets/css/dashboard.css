@@ -1918,11 +1918,11 @@ input[type=number] {
 		.wallet-stat-card.transfer .stat-value { color: var(--transfer-color); }
 
 		.wallet-insights-section {
-			margin: 0 40px 20px 40px;
-			padding: 10px 18px;
+			margin: 0 40px 15px 40px;
+			padding: 8px 16px;
 			background: rgba(89, 133, 57, 0.03);
-			border-radius: 10px;
-			border-left: 3px solid var(--primary-green);
+			border-radius: 8px;
+			border-right: 3px solid var(--primary-green);
 		}
 
 		.insights-content {
@@ -2078,8 +2078,19 @@ input[type=number] {
         z-index: 2000;
     }
 
+    /* Account Drawer — Full-Width Mobile Slide-In */
     .account-drawer {
-        z-index: 2001; /* Ensure right drawer stays on top of overlay too */
+        width: 100vw;
+        right: -100vw; /* Fully off-screen when closed */
+        z-index: 2001;
+        box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .account-drawer.open {
+        right: 0;
     }
 
     .header-nav-link, .reports-dropdown-container {
@@ -2673,7 +2684,7 @@ body.dark-mode .wallet-stat-card .stat-label {
 
 body.dark-mode .wallet-insights-section {
     background: rgba(88, 214, 141, 0.03);
-    border-left-color: var(--income-color);
+    border-right-color: var(--income-color);
 }
 
 body.dark-mode .wallet-insights-section h3 {

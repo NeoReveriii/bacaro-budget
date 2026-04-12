@@ -26,19 +26,33 @@ async function loadAIComponent() {
         initAIListeners();
         loadChatHistory();
         
-        // --- Keyboard Handling for Mobile ---
+        // --- Keyboard Handling for Mobile (Gemini-style) ---
         if (window.visualViewport) {
-            window.visualViewport.addEventListener('resize', () => {
+            const handleViewportResize = () => {
                 const aiView = document.getElementById('view-ai');
                 if (!aiView || aiView.style.display === 'none') return;
                 
-                // Adjust height to match the visible area (viewport minus keyboard)
-                aiView.style.height = `${window.visualViewport.height}px`;
+                const inputArea = document.querySelector('.chat-input-area');
+                const chatList = document.getElementById('chat-messages');
+                
+                // Calculate how much the keyboard is pushing up
+                const keyboardOffset = window.innerHeight - window.visualViewport.height;
+                
+                // Push the fixed input bar up above the keyboard
+                if (inputArea && keyboardOffset > 50) {
+                    // Keyboard is open
+                    inputArea.style.bottom = keyboardOffset + 'px';
+                } else if (inputArea) {
+                    // Keyboard is closed
+                    inputArea.style.bottom = '0px';
+                }
                 
                 // Scroll to bottom when keyboard appears
-                const chatList = document.getElementById('chat-messages');
                 if (chatList) chatList.scrollTop = chatList.scrollHeight;
-            });
+            };
+            
+            window.visualViewport.addEventListener('resize', handleViewportResize);
+            window.visualViewport.addEventListener('scroll', handleViewportResize);
         }
 
         // Custom auto-scroll listener

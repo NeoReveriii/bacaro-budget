@@ -320,6 +320,102 @@ body.dark-mode .ai-bubble-skeleton {
 }
 
 @media (max-width: 768px) {
-    .chat-messages { padding: 20px; }
-    .chat-input-area { padding: 15px 20px 25px 20px; }
+    /* --- Gemini-Style Mobile Chat Layout --- */
+
+    /* The AI view fills the entire available space */
+    #view-ai {
+        position: relative;
+        height: 100% !important;
+    }
+
+    #view-ai[style*="display: block"] {
+        display: flex !important;
+        flex-direction: column;
+        height: 100% !important;
+    }
+
+    #kwarta-ai-interface, .ai-container, .chat-window {
+        height: 100%;
+        position: relative;
+    }
+
+    /* Messages scroll independently, with bottom padding to clear fixed input */
+    .chat-messages {
+        padding: 15px;
+        padding-bottom: 140px; /* Clear the fixed input bar + chips */
+        flex: 1;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .chat-header {
+        padding: 12px 20px;
+    }
+
+    .chat-header h3 { font-size: 1.05em; }
+
+    /* --- Floating Pill Input — Fixed to Bottom --- */
+    .chat-input-area {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 100;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-top: none;
+        padding: 10px 16px;
+        padding-bottom: calc(12px + env(safe-area-inset-bottom));
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+        transition: bottom 0.15s ease;
+    }
+
+    body.dark-mode .chat-input-area {
+        background: rgba(26, 31, 28, 0.95);
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Floating pill wrapper */
+    .input-wrapper {
+        gap: 10px;
+    }
+
+    .input-wrapper input {
+        padding: 12px 18px;
+        border-radius: 24px;
+        font-size: 0.95em;
+        background: #f4f4f4;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    body.dark-mode .input-wrapper input {
+        background: #242926;
+        border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .btn-send {
+        width: 40px;
+        height: 40px;
+    }
+
+    /* Prompt chips scroll horizontally */
+    .prompt-chips {
+        margin-bottom: 8px;
+        gap: 8px;
+        padding: 2px;
+    }
+
+    .chip {
+        padding: 5px 14px;
+        font-size: 0.75em;
+    }
+
+    /* Chat bubbles */
+    .msg-bubble {
+        max-width: 90%;
+        font-size: 0.9em;
+        padding: 10px 16px;
+    }
 }

@@ -4462,8 +4462,12 @@ body.dark-mode .custom-select-wrapper:has(.tx-filter-trigger) .custom-option.sel
     }
 
     .bottom-section {
-        margin-top: auto;
-        padding-top: 8px;
+        margin-top: 8px;
+        padding-top: 0;
+    }
+
+    #main-sidebar .sidebar-section {
+        margin-bottom: 14px;
     }
 
     #main-transactions,
@@ -4653,6 +4657,15 @@ body.dark-mode .custom-select-wrapper:has(.tx-filter-trigger) .custom-option.sel
     .btn-ghost,
     .btn-logout {
         font-size: 0.76em;
+    }
+
+    .bottom-section {
+        margin-top: 6px;
+        padding-top: 0;
+    }
+
+    #main-sidebar .sidebar-section {
+        margin-bottom: 10px;
     }
 }
 

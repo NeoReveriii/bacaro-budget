@@ -2360,6 +2360,9 @@ input[type=number] {
 
 .settings-action {
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 .settings-separator {
@@ -2666,7 +2669,7 @@ body.dark-mode {
         padding: 15px 18px;
         gap: 15px;
         flex-wrap: wrap;
-        align-items: flex-start;
+        align-items: center;
     }
 
     .settings-icon {
@@ -2705,6 +2708,9 @@ body.dark-mode {
         width: 100%;
         margin-top: 10px;
         text-align: left;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
     }
 
     .settings-select-wrapper {

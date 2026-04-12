@@ -329,9 +329,9 @@ body.dark-mode .ai-bubble-skeleton {
         overflow: hidden !important;
     }
 
-    #view-ai[style*="display: block"] {
-        display: flex !important;
-        flex-direction: column;
+    /* When JS shows this view (display: flex), ensure flex column layout */
+    #view-ai[style*="display: flex"] {
+        flex-direction: column !important;
         height: 100% !important;
     }
 

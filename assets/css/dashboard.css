@@ -2059,7 +2059,7 @@ input[type=number] {
         border-radius: 0;
         padding: 0 !important;
         height: auto !important;
-        min-height: 0 !important; /* Allow flex shrinking */
+        min-height: 0 !important;
     }
 
     .main-app-card {
@@ -2070,11 +2070,11 @@ input[type=number] {
         width: 100% !important;
         max-width: 100vw;
         height: auto !important;
-        min-height: 0 !important; /* Allow flex shrinking */
+        min-height: 0 !important;
         border-radius: 0;
         margin: 0;
         box-shadow: none;
-        position: relative !important;
+        position: static !important;
         z-index: auto !important;
         transform: none !important;
         transform-style: flat !important;
@@ -2097,12 +2097,15 @@ input[type=number] {
         min-height: 0; /* No forced minimum — content dictates height */
     }
 
-    /* Kwarta AI: takes full height of content area, manages its own scrolling */
+    /* Kwarta AI: takes full height, manages its own scrolling */
+    /* NOTE: Do NOT use display:flex!important here — it overrides JS display:none */
     #view-ai {
         height: 100% !important;
         max-height: 100% !important;
         overflow: hidden !important;
-        display: flex !important;
+    }
+
+    #view-ai[style*="display: flex"] {
         flex-direction: column !important;
     }
 

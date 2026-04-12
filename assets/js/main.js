@@ -8,6 +8,21 @@
 						mainAppCard.style.boxShadow = '0 10px 30px rgba(0,0,0,0.2)';
 				});
 		}
+
+		// --- Mobile: Move sidebar & overlay out of clipped containers ---
+		// On mobile, .main-app-card has overflow:hidden which clips position:fixed children.
+		// Moving these elements to .dashboard-container puts them outside the clip chain.
+		if (window.innerWidth <= 768) {
+			const dashContainer = document.querySelector('.dashboard-container');
+			const sidebar = document.getElementById('main-sidebar');
+			const overlay = document.getElementById('drawer-overlay');
+			const accountDrawer = document.getElementById('account-sidebar');
+			if (dashContainer) {
+				if (sidebar) dashContainer.appendChild(sidebar);
+				if (overlay) dashContainer.appendChild(overlay);
+				if (accountDrawer) dashContainer.appendChild(accountDrawer);
+			}
+		}
 						
 		function toggleAccountSidebar(forceState) {
 			const accountSidebar = document.getElementById('account-sidebar');

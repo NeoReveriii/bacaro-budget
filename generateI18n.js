@@ -10,7 +10,7 @@ const preciseMap = {
     "Wallets": "Mga Wallet",
     "Goals": "Layunin",
     "Kwarta AI": "Kwarta AI",
-    "Settings": "Mga Setting",
+    "Settings": "Mga Settings",
     "Income": "Kita",
     "Expense": "Gastos",
     "Transfer": "Lipat",
@@ -28,38 +28,14 @@ const preciseMap = {
     "Forgot Password?": "Nakalimutan ang Password?",
     "Amount": "Halaga",
     "Language": "Wika",
-    "Dark Mode": "Madilim na Mode",
-    "Description": "Paglalarawan",
-    "Type": "Uri",
-    "Cash": "Pera",
-    "Bank Account": "Akaunt sa Bangko",
-    "Other": "Iba pa",
-    "Wallet Type": "Uri ng Wallet",
-    "SAVE TRANSACTION": "I-SAVE ANG TRANSAKSYON",
-    "Confirm Action": "Kumpirmahin ang Aksyon",
-    "Are you sure you want to proceed?": "Sigurado ka bang gusto mong magpatuloy?",
-    "Confirm": "Kumpirmahin",
-    "Recent Transactions": "Mga Nakaraang Transaksyon",
-    "Delete Transaction": "Tanggalin ang Transaksyon",
-    "Are you sure you want to delete this transaction?": "Sigurado ka bang gusto mong tanggalin ang transaksyong ito?",
-    "Add Savings Goal": "Idagdag ang Layunin ng Naipon",
-    "Target Amount": "Target na Halaga",
-    "Target Date": "Target na Petsa",
-    "SAVE GOAL": "I-SAVE ANG LAYUNIN",
-    "Add Funds to Goal": "Magpasok ng Pondo",
-    "Amount to Add": "Halagang Idadagdag",
-    "ADD FUNDS": "MAGPASOK NG PONDO",
-    "Add Wallet": "Idagdag ang Wallet",
-    "Wallet Name": "Pangalan ng Wallet",
-    "Initial Balance": "Unang Balanse",
-    "SAVE WALLET": "I-SAVE ANG WALLET",
-    "Transfer Funds": "Maglipat ng Pondo",
-    "From Wallet": "Mula sa Wallet",
-    "To Wallet": "Papunta sa Wallet",
-    "TRANSFER": "LIPAT",
-    "Currency Display": "Pagpapakita ng Pera",
+    "Dark Mode": "Dark Mode",
+    "Switch between standard and low-light interface themes.": "Magpalit sa pagitan ng standard at low-light na interface themes",
+    "Contrast Adjustment": "Pag-aayos ng Contrast",
+    "Toggle between normal and high contrast modes.": "Magpalit sa pagitan ng normal at high contrast na modes.",
+    "Normal Contrast": "Normal na Contrast",
+    "High Contrast": "Mataas na Contrast",
+    "Currency Display": "Pagpapakita ng Currency",
     "Select your preferred display language.": "Pumili ng iyong nais na wika para sa display.",
-    "Switch between standard and low-light interface themes.": "Lumipat sa pagitan ng karaniwan at madilim na tema ng interface.",
     "Show or hide the Pesos symbol (₱) in amounts.": "Ipakita o itago ang simbolo ng Piso (₱) sa mga halaga.",
     "Download a CSV file containing all your transaction records.": "Mag-download ng CSV file na naglalaman ng lahat ng iyong mga rekord ng transaksyon.",
     "Read how we handle and protect your budget data.": "Basahin kung paano namin pinangangalagaan at pinoprotektahan ang iyong datos sa badyet.",
@@ -100,20 +76,28 @@ const preciseMap = {
     "This Month": "Ngayong Buwan",
     "Last 6 Months": "Nakaraang 6 na Buwan",
     "This Year": "Ngayong Taon",
-    "TITLE": "TITULO",
+    "TITLE": "Pamagat",
     "AMOUNT": "HALAGA",
     "TYPE": "URI",
     "DATE": "PETSA",
     "WALLET": "WALLET",
     "Add New Wallet": "Magdagdag ng Bagong Wallet",
     "Add New Goal": "Magdagdag ng Bagong Layunin",
-    "Smart Personal Finance": "Matalinong Pansariling Pananalapi"
+    "Goal Title (e.g., Emergency Fund)": "Pamagat ng Layunin (hal. Emergency Fund)",
+    "Smart Personal Finance": "Matalinong Pansariling Pananalapi",
+    "Confirm Action": "Kumpirmahin ang Aksyon",
+    "Are you sure you want to proceed?": "Sigurado ka bang gusto mong magpatuloy?",
+    "Confirm": "Kumpirmahin",
+    "Add Savings Goal": "Magdagdag ng Savings Goal",
+    "Recent Transactions": "Mga Nakaraang Transaksyon",
+    "Add Funds to Goal": "Magpasok ng Pondo",
+    "ADD FUNDS": "MAGPASOK NG PONDO"
 };
 
 for (const [k, v] of Object.entries(en)) {
     let trans = v;
     const normV = v.replace(/\s+/g, ' ').trim();
-    
+
     // Exact match 
     if (preciseMap[normV]) {
         trans = preciseMap[normV];
@@ -122,22 +106,36 @@ for (const [k, v] of Object.entries(en)) {
     } else {
         // Loose replace for multi strings
         for (const [eng, tag] of Object.entries(preciseMap)) {
-            if(eng.length < 4) continue; // skip short
-            const regex = new RegExp(`\\b${eng}\\b`, 'g');
-            trans = trans.replace(regex, tag);
-            
-            // uppercase variant
-            const regexU = new RegExp(`\\b${eng.toUpperCase()}\\b`, 'g');
-            trans = trans.replace(regexU, tag.toUpperCase());
-            
-            // special ALL MGA WALLET edge case handling
-            if (trans.includes('ALL MGA WALLET')) {
-                trans = trans.replace('ALL MGA WALLET', 'LAHAT NG WALLET');
-            }
+            if (eng.length < 4) continue; // skip short
+            const regex = new RegExp(`\\b${eng}\\b`, 'gi');
+            trans = trans.replace(regex, (matched) => {
+                return matched === matched.toUpperCase() ? tag.toUpperCase() : tag;
+            });
         }
     }
-    
+
+    // Special case for the "ALL ... WALLET" multi-line issue
+    if (trans.toUpperCase().includes('ALL') && trans.toUpperCase().includes('WALLET')) {
+        trans = "Lahat ng Wallet";
+    }
+
     tl[k] = trans;
+}
+
+// Add manual keys for JS-based lookups
+const manualKeys = {
+    "toast_saved": { en: "Saved", tl: "Na-save" },
+    "toast_success": { en: "Success", tl: "Tagumpay" },
+    "toast_error": { en: "Error", tl: "Mali" },
+    "toast_profile_updated": { en: "Profile Updated successfully", tl: "Matagumpay na na-update ang profile" },
+    "toast_transaction_deleted": { en: "Transaction deleted!", tl: "Tinanggal ang transaksyon!" },
+    "Normal Contrast": { en: "Normal Contrast", tl: "Normal na Contrast" },
+    "High Contrast": { en: "High Contrast", tl: "Mataas na Contrast" }
+};
+
+for (const [key, val] of Object.entries(manualKeys)) {
+    en[key] = val.en;
+    tl[key] = val.tl;
 }
 
 const output = `window.bbmTranslations = {

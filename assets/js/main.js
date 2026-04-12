@@ -996,7 +996,8 @@
 
 			darkModeToggle.checked = darkModeEnabled;
 			const isHighContrast = contrastLevel > 100;
-			contrastToggle.textContent = isHighContrast ? 'High Contrast' : 'Normal Contrast';
+			const dict = window.getTranslation ? window.getTranslation : (k) => k;
+			contrastToggle.textContent = dict(isHighContrast ? 'High Contrast' : 'Normal Contrast');
 			contrastToggle.dataset.highContrast = isHighContrast ? 'true' : 'false';
 
 			darkModeToggle.addEventListener('change', () => {
@@ -1012,7 +1013,8 @@
 				
 				localStorage.setItem('bbm_contrast_level', String(newContrastLevel));
 				localStorage.setItem('bbm_high_contrast', newIsHighContrast ? 'true' : 'false');
-				contrastToggle.textContent = newIsHighContrast ? 'High Contrast' : 'Normal Contrast';
+				const dict = window.getTranslation ? window.getTranslation : (k) => k;
+				contrastToggle.textContent = dict(newIsHighContrast ? 'High Contrast' : 'Normal Contrast');
 				contrastToggle.dataset.highContrast = newIsHighContrast ? 'true' : 'false';
 				applyThemeSettings();
 				showSavedToast();

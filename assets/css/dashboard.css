@@ -2533,7 +2533,9 @@ input[type=number] {
 
 .toggle-switch {
     position: relative;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 52px;
     height: 28px;
 }

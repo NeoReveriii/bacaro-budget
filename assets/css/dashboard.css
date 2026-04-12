@@ -2038,7 +2038,8 @@ input[type=number] {
         transform-style: flat !important;
         perspective: none !important;
         will-change: auto !important;
-        overflow: hidden !important; /* CRITICAL: prevent horizontal overflow */
+        overflow-x: hidden !important; /* Prevent horizontal swipe */
+        overflow-y: visible !important; /* Allow vertical scrolling */
     }
 
     #app-content {
@@ -2052,9 +2053,17 @@ input[type=number] {
     }
 
     #main-content-area {
-        min-height: calc(100vh - 70px) !important; /* fill at minimum */
+        min-height: calc(100vh - 70px) !important;
+        overflow-x: hidden !important;
         overflow-y: auto !important;
-        -webkit-overflow-scrolling: touch; /* smooth iOS scroll */
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Kwarta AI needs explicit height to make flex layout work */
+    #view-ai {
+        height: calc(100vh - 70px) !important;
+        max-height: calc(100vh - 70px) !important;
+        overflow: hidden !important;
     }
 
     /* Sidebar as Mobile Off-Canvas Drawer */

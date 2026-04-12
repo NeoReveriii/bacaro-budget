@@ -2192,8 +2192,8 @@ input[type=number] {
     }
 
     .transaction-row {
-        display: grid;
-        grid-template-columns: 1fr auto auto;
+        display: flex;
+        flex-wrap: wrap;
         gap: 8px;
         padding: 12px 15px;
         min-width: auto;
@@ -2202,37 +2202,44 @@ input[type=number] {
     }
 
     /* Hide unnecessary columns on mobile */
-    .transaction-row > .rec-number,
-    .transaction-row > .rec-stats {
+    .transaction-row > .rec-number {
         display: none;
     }
 
-    /* Title - first row full width */
+    /* Title - first row left side, full width */
     .transaction-row > .rec-title {
-        grid-column: 1 / -1;
+        flex: 1 1 100%;
         font-weight: 600;
         font-size: 1em;
         margin-bottom: 4px;
     }
 
-    /* Type badge */
+    /* Amount - first row */
+    .transaction-row > .rec-stats {
+        flex: 0 1 auto;
+        font-weight: 600;
+        text-align: right;
+    }
+
+    /* Type badge - first row */
     .transaction-row > .rec-type {
+        flex: 0 1 auto;
         display: flex;
         align-items: center;
     }
 
     /* Date - show below */
     .transaction-row > .rec-date {
+        flex: 1 1 auto;
         font-size: 0.85em;
         color: #666;
-        grid-column: 1 / 2;
     }
 
     /* Wallet info - show below */
     .transaction-row > .rec-wallet {
+        flex: 1 1 auto;
         font-size: 0.85em;
         color: #999;
-        grid-column: 2 / -1;
     }
 
     /* Actions on first row right side */
@@ -2241,8 +2248,6 @@ input[type=number] {
         display: flex;
         gap: 6px;
         justify-content: flex-end;
-        grid-column: 3 / 4;
-        grid-row: 1 / 2;
     }
 
     .transaction-row.header-row {

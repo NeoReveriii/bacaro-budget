@@ -155,9 +155,15 @@ body.guest-page .animated-background {
 }
 
 .hero-actions .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 54px;
+    box-sizing: border-box;
     padding: 13px 32px;
     font-size: 1rem;
     border-radius: 12px;
+    border-width: 1.5px;
     line-height: 1.4;
     margin: 0;
 }

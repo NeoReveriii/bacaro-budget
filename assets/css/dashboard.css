@@ -1290,7 +1290,7 @@ input[type=number] {
 		.transaction-row {
 			display: grid;
 			grid-template-columns: 0.5fr 2.5fr 1.5fr 1fr 1.2fr 1.2fr 1.2fr;
-            column-gap: 0;
+            column-gap: 16px;
             min-width: 800px;
 			padding: 15px 20px;
 			align-items: center;
@@ -1385,17 +1385,7 @@ input[type=number] {
 		.rec-date { color: #999; font-size: 0.9em; }
 		.rec-wallet { font-size: 0.85em; font-weight: 600; color: #666; }
 
-        @media (min-width: 769px) {
-            .transaction-row > span:nth-child(3),
-            .transaction-row > div:nth-child(3) {
-                padding-right: 32px;
-            }
 
-            .transaction-row > span:nth-child(4),
-            .transaction-row > div:nth-child(4) {
-                padding-left: 32px;
-            }
-        }
 
 		/* Badges */
 		.badge {
@@ -4121,7 +4111,6 @@ body.dark-mode .custom-select-wrapper:has(.tx-filter-trigger) .custom-option.sel
     .transaction-row > div {
         width: 100% !important;
         text-align: left !important;
-        padding: 0 !important;
         border: none !important;
     }
 
@@ -4145,6 +4134,7 @@ body.dark-mode .custom-select-wrapper:has(.tx-filter-trigger) .custom-option.sel
         font-weight: bold;
         font-size: 1.1em;
         margin-bottom: 4px;
+        padding: 0 !important;
         padding-right: 12px !important;
     }
 

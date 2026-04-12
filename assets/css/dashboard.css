@@ -1531,35 +1531,33 @@ input[type=number] {
 			align-items: center;
 			justify-content: center;
 			gap: 8px;
-			padding: 10px 22px;
-			border-radius: 10px;
+			padding: 12px 24px;
+			border-radius: 12px;
 			font-weight: 700;
-			font-size: 0.85em;
+			font-size: 0.9em;
 			cursor: pointer;
-			transition: all 0.2s ease;
-			border: var(--border-subtle);
+			transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+			border: none;
 			letter-spacing: 0.5px;
 			text-transform: uppercase;
 			line-height: 1;
-			background: transparent;
-			color: var(--dark-green);
 		}
 
 		.btn-wallet-action.add {
-			color: var(--primary-green);
-			border-color: rgba(89, 133, 57, 0.2);
+			background-color: var(--primary-green);
+			color: white;
+			box-shadow: none;
 		}
 
 		.btn-wallet-action.transfer {
-			color: var(--dark-green);
-			border-color: rgba(55, 71, 56, 0.2);
+			background-color: var(--dark-green);
+			color: white;
+			box-shadow: none;
 		}
 
 		.btn-wallet-action:hover {
-			transform: translateY(-1px);
-			background: rgba(89, 133, 57, 0.05);
-			border-color: var(--primary-green);
-			box-shadow: var(--shadow-subtle);
+			transform: translateY(-3px) scale(1.02);
+			box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 		}
 
 		.btn-wallet-action:active {
@@ -1920,13 +1918,11 @@ input[type=number] {
 		.wallet-stat-card.transfer .stat-value { color: var(--transfer-color); }
 
 		.wallet-insights-section {
-			margin: 0 40px 25px 40px;
-			padding: 14px 20px;
+			margin: 0 40px 20px 40px;
+			padding: 10px 18px;
 			background: rgba(89, 133, 57, 0.03);
-			border-radius: 12px;
-			border-left: 1.5px solid var(--primary-green);
-			border: var(--border-whisper);
-			border-left: 2px solid var(--primary-green);
+			border-radius: 10px;
+			border-left: 3px solid var(--primary-green);
 		}
 
 		.insights-content {

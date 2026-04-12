@@ -2135,6 +2135,15 @@ input[type=number] {
         left: 0;
     }
 
+    /* Compact sidebar sections so Settings is always visible */
+    .sidebar-section {
+        margin-bottom: 20px;
+    }
+
+    .bottom-section {
+        margin-top: 10px;
+    }
+
     .drawer-overlay {
         z-index: 2000;
     }

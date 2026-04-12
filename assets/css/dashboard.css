@@ -2280,6 +2280,36 @@ input[type=number] {
         padding: 0 15px;
     }
 
+    /* Transaction table mobile - same alignment as wallet */
+    @media (max-width: 768px) {
+        .transaction-row.header-row {
+            display: none;
+        }
+
+        .transaction-row > .rec-number {
+            display: none;
+        }
+
+        .transaction-row > .rec-type {
+            flex: 0 1 auto;
+        }
+
+        .transaction-row > .rec-date {
+            flex: 1 1 auto;
+        }
+
+        .transaction-row > .rec-wallet {
+            flex: 1 1 auto;
+        }
+
+        .transaction-row > .rec-actions {
+            flex: 0 1 auto;
+            display: flex;
+            gap: 6px;
+            justify-content: flex-end;
+        }
+    }
+
     /* Modals - Bottom Sheet on Mobile */
     .modal-card:not(.confirm-modal-card), .transaction-modal-card {
         width: 100%;

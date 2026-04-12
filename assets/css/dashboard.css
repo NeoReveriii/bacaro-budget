@@ -2327,77 +2327,7 @@ input[type=number] {
     }
 
     .wallet-history-section {
-        padding: 0 15px;
-    }
-
-    /* Wallet history mobile layout - same as transactions */
-    .wallet-history-section .transaction-list {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        border-radius: 12px;
-        margin: 15px;
-        overflow-x: visible;
-        padding: 10px;
-    }
-
-    .wallet-history-section .transaction-item {
-        display: flex;
-        flex-direction: column;
-        background: var(--card-bg);
-        border-radius: 8px;
-        padding: 12px 15px;
-        border: var(--border-whisper);
-    }
-
-    .wallet-history-section .transaction-row {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: flex-start;
         padding: 0;
-        min-width: auto;
-        width: 100%;
-        gap: 8px;
-        margin-bottom: 4px;
-    }
-
-    .wallet-history-section .transaction-row > .rec-number {
-        display: none;
-    }
-
-    .wallet-history-section .transaction-row > .rec-title {
-        width: 100%;
-        font-weight: 700;
-        font-size: 1.05em;
-        margin-bottom: 8px;
-    }
-
-    .wallet-history-section .transaction-row > .rec-stats,
-    .wallet-history-section .transaction-row > .rec-type,
-    .wallet-history-section .transaction-row > .rec-date,
-    .wallet-history-section .transaction-row > .rec-wallet {
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-    }
-
-    .wallet-history-section .transaction-row > .rec-stats::before,
-    .wallet-history-section .transaction-row > .rec-type::before,
-    .wallet-history-section .transaction-row > .rec-date::before,
-    .wallet-history-section .transaction-row > .rec-wallet::before {
-        font-weight: 500;
-        font-size: 0.85em;
-        color: #999;
-        margin-right: 0;
-        align-self: center;
-    }
-
-    .wallet-history-section .transaction-row > .rec-actions {
-        width: 100%;
-        display: flex;
-        gap: 6px;
-        justify-content: flex-end;
-        margin-top: 8px;
     }
 
     /* Modals - Bottom Sheet on Mobile */

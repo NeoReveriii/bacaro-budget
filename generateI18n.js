@@ -95,7 +95,9 @@ const preciseMap = {
     "Add Funds": "Magpasok ng Pondo",
     "Target Date": "Target na Petsa",
     "No savings goals found. Add one to start tracking your progress.": "Walang nakitang mga layunin sa pag-ipon. Magdagdag ng isa upang simulan ang pagsubaybay sa iyong progreso.",
-    "ADD FUNDS": "MAGPASOK NG PONDO"
+    "ADD FUNDS": "MAGPASOK NG PONDO",
+    "Your Balance": "Iyong Balanse",
+    "Cash Flow Trend": "Daloy ng Pera"
 };
 
 for (const [k, v] of Object.entries(en)) {

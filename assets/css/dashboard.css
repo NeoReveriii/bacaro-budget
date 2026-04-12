@@ -2347,22 +2347,28 @@ input[type=number] {
 }
 
 .settings-select-wrapper .custom-option {
-    padding: 10px 15px;
-    font-size: 0.9em;
-    font-weight: 500;
+    border-bottom: none !important;
+    border-left: none !important;
+    padding: 10px 15px !important;
+    font-size: 0.85em; /* Closer to filter size */
+    font-weight: 700;
     color: var(--dark-green);
+    background: transparent;
     cursor: pointer;
-    transition: background 0.2s ease;
 }
 
 .settings-select-wrapper .custom-option:hover {
-    background: rgba(89, 133, 57, 0.1);
-    color: var(--primary-green);
+    background-color: var(--new-light-blob) !important;
+    color: var(--primary-green) !important;
+    border-left: none !important;
+    padding-left: 15px !important;
 }
 
 .settings-select-wrapper .custom-option.selected {
-    background: var(--primary-green);
-    color: white;
+    background-color: rgba(89, 133, 57, 0.1) !important;
+    color: var(--primary-green) !important;
+    border-left: none !important;
+    padding-left: 15px !important;
 }
 
 .contrast-option {
@@ -2714,12 +2720,17 @@ body.dark-mode .settings-select-wrapper .custom-select-options {
 }
 
 body.dark-mode .settings-select-wrapper .custom-option {
-    color: #edf1ee;
+    color: #edf1ee !important;
 }
 
 body.dark-mode .settings-select-wrapper .custom-option:hover {
-    background: rgba(168, 216, 110, 0.15);
-    color: #a8d86e;
+    background-color: rgba(107, 166, 79, 0.2) !important;
+    color: #b0e0a0 !important;
+}
+
+body.dark-mode .settings-select-wrapper .custom-option.selected {
+    background-color: rgba(107, 166, 79, 0.3) !important;
+    color: #a8d86e !important;
 }
 
 body.dark-mode .progress-bar-container {

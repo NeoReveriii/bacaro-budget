@@ -4008,7 +4008,7 @@ body.dark-mode .custom-select-wrapper:has(.tx-filter-trigger) .custom-option.sel
         flex-direction: column !important;
         align-items: flex-start !important;
         min-width: unset !important;
-        padding: 15px 50px 15px 15px !important; /* Added right padding for buttons */
+        padding: 15px !important; /* Removed extra right padding */
         gap: 8px !important;
         border-bottom: 1px solid rgba(0,0,0,0.08) !important;
     }
@@ -4099,12 +4099,10 @@ body.dark-mode .custom-select-wrapper:has(.tx-filter-trigger) .custom-option.sel
 
     .transaction-row > span:last-child,
     .transaction-row > div:last-child {
-        position: absolute;
-        top: 12px;
-        right: 12px;
-        width: auto !important;
-        opacity: 0.7;
-        z-index: 10; /* Ensure buttons are above other content */
+        position: static; /* Remove absolute positioning */
+        align-self: flex-end; /* Align to the right */
+        margin-top: 8px; /* Add some space from the content above */
+        opacity: 1; /* Always visible on mobile */
     }
 
     .transaction-row:hover > span:last-child,
@@ -4115,21 +4113,26 @@ body.dark-mode .custom-select-wrapper:has(.tx-filter-trigger) .custom-option.sel
     /* Mobile action buttons styling */
     .transaction-row .rec-actions {
         display: flex;
-        gap: 4px; /* Reduced gap for mobile */
+        gap: 6px; /* Comfortable spacing */
         align-items: center;
-        flex-direction: row; /* Ensure horizontal layout */
+        justify-content: flex-end; /* Align buttons to the right */
+        width: 100%; /* Full width to push to right */
+        margin-top: 4px;
     }
 
     .transaction-row .icon-btn {
-        width: 24px; /* Smaller buttons for mobile */
-        height: 24px;
-        border-radius: 3px;
-        min-width: 24px; /* Prevent shrinking */
+        width: 32px; /* Standard touch target size */
+        height: 32px;
+        border-radius: 6px;
+        flex-shrink: 0; /* Prevent shrinking */
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .transaction-row .icon-btn i {
-        width: 12px; /* Smaller icons */
-        height: 12px;
+        width: 16px; /* Standard icon size */
+        height: 16px;
     }
 
     .transaction-row .expand-arrow {

@@ -1780,7 +1780,8 @@ function renderGoals() {
     if (!container) return;
 
     if (!window.goals || window.goals.length === 0) {
-        container.innerHTML = '<p style="grid-column: 1 / -1; color: #666; text-align: center;">No savings goals found. Add one to start tracking your progress.</p>';
+        const dict = window.getTranslation ? window.getTranslation : (k) => k;
+        container.innerHTML = `<p style="grid-column: 1 / -1; color: #666; text-align: center;">${dict("No savings goals found. Add one to start tracking your progress.")}</p>`;
         return;
     }
 
@@ -1793,7 +1794,8 @@ function renderGoals() {
         let deadlineStr = '';
         if (g.deadline) {
             const d = new Date(g.deadline);
-            deadlineStr = `Target Date: ${d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}`;
+            const dict = window.getTranslation ? window.getTranslation : (k) => k;
+            deadlineStr = `${dict("Target Date")}: ${d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}`;
         }
 
         return `
@@ -1812,7 +1814,7 @@ function renderGoals() {
                 </div>
 
                 <div class="goal-actions">
-                    <button class="btn-add-funds" onclick="openAddFundsModal(${g.goal_id})">Add Funds</button>
+                    <button class="btn-add-funds" onclick="openAddFundsModal(${g.goal_id})">${window.getTranslation ? window.getTranslation('Add Funds') : 'Add Funds'}</button>
                 </div>
             </div>
         `;
@@ -2553,9 +2555,11 @@ function initializeCustomSelects() {
 		else trigger.className = 'custom-select-trigger floating-input';
 		
 		const textSpan = document.createElement('span');
+		const dict = window.getTranslation ? window.getTranslation : (k) => k;
+		
 		if (select.value) {
 			const opt = select.options[select.selectedIndex];
-			textSpan.innerText = opt ? opt.text : '';
+			textSpan.innerText = opt ? dict(opt.text.trim()) : '';
 			wrapper.classList.add('has-value');
 			if (!isSettings && !isTx) {
 				const group = select.closest('.input-group');
@@ -2575,12 +2579,13 @@ function initializeCustomSelects() {
 			const optionDiv = document.createElement('div');
 			optionDiv.className = 'custom-option';
 			if (opt.selected) optionDiv.classList.add('selected');
-			optionDiv.innerText = opt.text;
+			const dict = window.getTranslation ? window.getTranslation : (k) => k;
+			optionDiv.innerText = dict(opt.text.trim());
 			
 			optionDiv.addEventListener('click', (e) => {
 				e.stopPropagation();
 				select.value = opt.value;
-				textSpan.innerText = opt.text;
+				textSpan.innerText = dict(opt.text.trim());
 				wrapper.classList.add('has-value');
 				if (!isSettings && !isTx) {
 					const group = select.closest('.input-group');

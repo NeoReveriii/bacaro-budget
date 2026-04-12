@@ -2288,7 +2288,7 @@ input[type=number] {
 }
 
 .custom-select-trigger.settings-trigger {
-    background-color: rgba(255, 255, 255, 0.5); /* Match dashboard filter pattern */
+    background-color: rgba(255, 255, 255, 0.5); /* Unified with tx-filter */
     border: 1px solid rgba(0, 0, 0, 0.15);
     color: var(--dark-green);
     padding: 10px 32px 10px 15px;
@@ -2305,12 +2305,14 @@ input[type=number] {
     min-height: 38px;
     width: 100% !important;
     box-sizing: border-box !important;
+    box-shadow: none;
 }
 
 .custom-select-trigger.settings-trigger:hover,
 .custom-select-wrapper.open .custom-select-trigger.settings-trigger {
     border-color: var(--primary-green) !important;
     box-shadow: 0 0 0 2px rgba(89, 133, 57, 0.2);
+    background-color: rgba(255, 255, 255, 0.7);
 }
 
 /* Ensure selected text is visible in light mode */
@@ -2688,7 +2690,7 @@ body.dark-mode .btn-settings-action:hover {
 
 /* Dark Mode Settings Dropdown */
 body.dark-mode .custom-select-trigger.settings-trigger {
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: rgba(255, 255, 255, 0.08); /* Unified with tx-filter */
     border-color: rgba(255, 255, 255, 0.15);
     color: #edf1ee;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23edf1ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='3 5 6 8 9 5'/%3E%3C/svg%3E");
@@ -2698,6 +2700,7 @@ body.dark-mode .custom-select-trigger.settings-trigger:hover,
 body.dark-mode .custom-select-wrapper.open .custom-select-trigger.settings-trigger {
     border-color: var(--primary-green) !important;
     background-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 0 2px rgba(107, 166, 79, 0.2);
 }
 
 body.dark-mode .custom-select-trigger.settings-trigger span {

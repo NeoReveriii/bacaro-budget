@@ -90,7 +90,11 @@ const preciseMap = {
     "Confirm": "Kumpirmahin",
     "Add Savings Goal": "Magdagdag ng Savings Goal",
     "Recent Transactions": "Mga Nakaraang Transaksyon",
+    "Description": "Detalye",
     "Add Funds to Goal": "Magpasok ng Pondo",
+    "Add Funds": "Magpasok ng Pondo",
+    "Target Date": "Target na Petsa",
+    "No savings goals found. Add one to start tracking your progress.": "Walang nakitang mga layunin sa pag-ipon. Magdagdag ng isa upang simulan ang pagsubaybay sa iyong progreso.",
     "ADD FUNDS": "MAGPASOK NG PONDO"
 };
 

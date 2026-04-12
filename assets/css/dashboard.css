@@ -4262,6 +4262,102 @@ body.dark-mode .custom-select-wrapper:has(.tx-filter-trigger) .custom-option.sel
         font-size: 0.72em;
     }
 
+    .account-drawer {
+        width: min(72vw, 280px);
+        right: min(-72vw, -280px);
+    }
+
+    .drawer-header {
+        padding: 14px 16px;
+    }
+
+    .drawer-header h3 {
+        font-size: 1.1em;
+    }
+
+    .drawer-content {
+        padding: 18px 14px;
+    }
+
+    .profile-section {
+        margin-bottom: 18px;
+    }
+
+    .large-pfp-container,
+    .large-pfp {
+        width: 76px;
+        height: 76px;
+    }
+
+    .large-pfp {
+        font-size: 1.7em;
+        border-width: 3px;
+    }
+
+    .pfp-overlay {
+        width: 28px;
+        height: 28px;
+    }
+
+    #profile-username {
+        font-size: 1.2em;
+        margin-bottom: 14px;
+    }
+
+    .account-info {
+        margin: 14px 0 20px;
+        gap: 14px;
+    }
+
+    .info-item {
+        gap: 4px;
+        padding-bottom: 10px;
+    }
+
+    .info-label {
+        font-size: 0.68em;
+    }
+
+    .info-value {
+        font-size: 0.92em;
+    }
+
+    .info-value#profile-bio {
+        font-size: 0.84em;
+        line-height: 1.45;
+    }
+
+    .avatar-grid {
+        gap: 10px;
+        margin-bottom: 18px;
+    }
+
+    .drawer-nav {
+        gap: 8px;
+    }
+
+    .drawer-nav-item {
+        padding: 10px 12px;
+        font-size: 0.88em;
+    }
+
+    .drawer-actions {
+        gap: 10px;
+        margin-top: 16px;
+    }
+
+    .drawer-actions .btn-primary,
+    .btn-ghost,
+    .btn-logout {
+        font-size: 0.82em;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+
+    .drawer-footer {
+        padding: 12px 16px;
+    }
+
     #main-sidebar {
         width: 240px;
     }
@@ -4392,6 +4488,55 @@ body.dark-mode .custom-select-wrapper:has(.tx-filter-trigger) .custom-option.sel
         width: 30px;
         height: 30px;
         font-size: 0.68em;
+    }
+
+    .account-drawer {
+        width: min(74vw, 250px);
+        right: min(-74vw, -250px);
+    }
+
+    .drawer-header {
+        padding: 12px 14px;
+    }
+
+    .drawer-content {
+        padding: 14px 12px;
+    }
+
+    .large-pfp-container,
+    .large-pfp {
+        width: 64px;
+        height: 64px;
+    }
+
+    .large-pfp {
+        font-size: 1.45em;
+    }
+
+    #profile-username {
+        font-size: 1.05em;
+        margin-bottom: 10px;
+    }
+
+    .account-info {
+        margin: 10px 0 16px;
+        gap: 10px;
+    }
+
+    .drawer-nav-item {
+        padding: 8px 10px;
+        font-size: 0.8em;
+    }
+
+    .drawer-actions {
+        gap: 8px;
+        margin-top: 12px;
+    }
+
+    .drawer-actions .btn-primary,
+    .btn-ghost,
+    .btn-logout {
+        font-size: 0.76em;
     }
 }
 

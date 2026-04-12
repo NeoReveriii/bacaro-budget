@@ -4222,6 +4222,123 @@ body.dark-mode .custom-select-wrapper:has(.tx-filter-trigger) .custom-option.sel
     }
 }
 
+@media (max-width: 915px) and (orientation: landscape) {
+    #main-header {
+        min-height: 56px;
+        padding: 8px 18px;
+    }
+
+    .header-title {
+        font-size: 1.1em;
+    }
+
+    #main-sidebar {
+        width: 240px;
+    }
+
+    #main-transactions,
+    #main-wallet-details,
+    #main-wallets,
+    #main-dashboard {
+        padding: 16px !important;
+    }
+
+    .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .wallet-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        padding: 12px;
+    }
+
+    .transaction-list {
+        margin: 12px;
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .transaction-item {
+        padding: 12px 14px;
+    }
+
+    .transaction-row {
+        gap: 8px;
+        margin-bottom: 4px;
+    }
+
+    .transaction-row > .rec-title {
+        font-size: 1.04em;
+        margin-bottom: 8px;
+    }
+
+    .transaction-row > .rec-stats,
+    .transaction-row > .rec-type,
+    .transaction-row > .rec-date,
+    .transaction-row > .rec-wallet {
+        font-size: 0.86em;
+    }
+
+    .transaction-row > .rec-stats::before,
+    .transaction-row > .rec-type::before,
+    .transaction-row > .rec-date::before,
+    .transaction-row > .rec-wallet::before {
+        font-size: 0.86em;
+    }
+
+    .transaction-row > .rec-actions {
+        margin-top: 8px;
+    }
+
+    .wallet-detail-header {
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 12px !important;
+        padding: 12px 16px !important;
+    }
+
+    .detail-header-left,
+    .detail-header-right {
+        width: auto !important;
+    }
+
+    .detail-header-right {
+        justify-content: flex-end !important;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .wallet-balance-card {
+        margin: 0 12px 16px 12px !important;
+        padding: 16px !important;
+    }
+
+    .balance-amount {
+        font-size: 1.8em !important;
+    }
+
+    .wallet-stats-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 10px !important;
+        margin: 0 12px 16px 12px !important;
+    }
+
+    .wallet-insights-section {
+        margin: 0 12px 16px 12px;
+    }
+
+    .modal-card:not(.confirm-modal-card),
+    .transaction-modal-card {
+        max-height: 100vh;
+        border-radius: 20px 20px 0 0;
+        padding: 28px 20px;
+    }
+}
+
 body.dark-mode ::-webkit-scrollbar-track {
     background: transparent;
 }

@@ -2183,15 +2183,70 @@ input[type=number] {
         font-size: 2.5em;
     }
 
-    /* Transaction List - Horizontal Scroll */
+    /* Transaction List - Card Layout on Mobile */
     .transaction-list {
         border-radius: 12px;
         margin: 15px;
-        overflow-x: auto;
+        overflow-x: visible;
+        padding: 10px;
     }
 
     .transaction-row {
-        min-width: 650px; 
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        gap: 8px;
+        padding: 12px 15px;
+        min-width: auto;
+        width: 100%;
+        align-items: center;
+    }
+
+    /* Hide unnecessary columns on mobile */
+    .transaction-row > .rec-number,
+    .transaction-row > .rec-stats {
+        display: none;
+    }
+
+    /* Title - first row full width */
+    .transaction-row > .rec-title {
+        grid-column: 1 / -1;
+        font-weight: 600;
+        font-size: 1em;
+        margin-bottom: 4px;
+    }
+
+    /* Type badge */
+    .transaction-row > .rec-type {
+        display: flex;
+        align-items: center;
+    }
+
+    /* Date - show below */
+    .transaction-row > .rec-date {
+        font-size: 0.85em;
+        color: #666;
+        grid-column: 1 / 2;
+    }
+
+    /* Wallet info - show below */
+    .transaction-row > .rec-wallet {
+        font-size: 0.85em;
+        color: #999;
+        grid-column: 2 / -1;
+    }
+
+    /* Actions on first row right side */
+    .transaction-row > .rec-actions {
+        flex: 0 1 auto;
+        display: flex;
+        gap: 6px;
+        justify-content: flex-end;
+        grid-column: 3 / 4;
+        grid-row: 1 / 2;
+    }
+
+    .transaction-row.header-row {
+        display: none;
     }
 
     .wallet-history-section {

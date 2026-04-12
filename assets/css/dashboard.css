@@ -1290,7 +1290,7 @@ input[type=number] {
 		.transaction-row {
 			display: grid;
 			grid-template-columns: 0.5fr 2.5fr 1.5fr 1fr 1.2fr 1.2fr 1.2fr;
-            column-gap: 2px;
+            column-gap: 0;
             min-width: 800px;
 			padding: 15px 20px;
 			align-items: center;
@@ -1388,12 +1388,12 @@ input[type=number] {
         @media (min-width: 769px) {
             .transaction-row > span:nth-child(3),
             .transaction-row > div:nth-child(3) {
-                padding-right: 24px;
+                padding-right: 32px;
             }
 
             .transaction-row > span:nth-child(4),
             .transaction-row > div:nth-child(4) {
-                padding-left: 24px;
+                padding-left: 32px;
             }
         }
 
@@ -4145,6 +4145,7 @@ body.dark-mode .custom-select-wrapper:has(.tx-filter-trigger) .custom-option.sel
         font-weight: bold;
         font-size: 1.1em;
         margin-bottom: 4px;
+        padding-right: 12px !important;
     }
 
     .transaction-row > span:nth-child(3).income,

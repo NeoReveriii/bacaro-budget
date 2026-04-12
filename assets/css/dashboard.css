@@ -2272,9 +2272,9 @@ input[type=number] {
     /* Date */
     .transaction-row > .rec-date {
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
         font-size: 0.85em;
-        flex-shrink: 0;
+        width: 100%;
     }
 
     .transaction-row > .rec-date::before {
@@ -2282,15 +2282,15 @@ input[type=number] {
         font-weight: 500;
         font-size: 0.85em;
         color: #999;
-        margin-right: 24px;
+        margin-right: 0;
     }
 
     /* Wallet info */
     .transaction-row > .rec-wallet {
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
         font-size: 0.85em;
-        flex-shrink: 0;
+        width: 100%;
     }
 
     .transaction-row > .rec-wallet::before {
@@ -2298,7 +2298,7 @@ input[type=number] {
         font-weight: 500;
         font-size: 0.85em;
         color: #999;
-        margin-right: 24px;
+        margin-right: 0;
     }
 
     /* Actions at bottom */

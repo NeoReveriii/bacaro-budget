@@ -4224,7 +4224,7 @@ body.dark-mode .custom-select-wrapper:has(.tx-filter-trigger) .custom-option.sel
 
 @media (max-width: 768px) and (orientation: portrait) {
     #main-header {
-        min-height: 58px;
+        min-height: 64px;
         padding: 8px 14px;
     }
 
@@ -4232,6 +4232,7 @@ body.dark-mode .custom-select-wrapper:has(.tx-filter-trigger) .custom-option.sel
         flex: 1 1 auto;
         gap: 10px;
         min-width: 0;
+        align-items: center;
     }
 
     .header-right {
@@ -4245,16 +4246,22 @@ body.dark-mode .custom-select-wrapper:has(.tx-filter-trigger) .custom-option.sel
     }
 
     .header-logo-container {
-        width: 38px;
-        height: 38px;
+        width: 34px;
+        height: 34px;
     }
 
     .header-title {
-        font-size: 1.08em;
-        line-height: 1.1;
-        white-space: nowrap;
+        flex: 1 1 auto;
+        min-width: 0;
+        font-size: 0.98em;
+        line-height: 1.15;
+        white-space: normal;
         overflow: hidden;
-        text-overflow: ellipsis;
+        display: -webkit-box;
+        line-clamp: 2;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        text-overflow: unset;
     }
 
     .account-pfp-placeholder {

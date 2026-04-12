@@ -529,6 +529,28 @@ body.guest-page .animated-background {
     padding: 10px 28px;
     font-size: 0.9rem;
 }
+
+.guest-page #forgot-modal .login-link,
+.guest-page #reset-modal .login-link {
+    margin-top: 18px;
+    text-align: center;
+}
+
+.guest-page #forgot-modal .login-link a,
+.guest-page #reset-modal .login-link a {
+    color: #c8ffb0;
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.guest-page #forgot-modal .login-link a:hover,
+.guest-page #reset-modal .login-link a:hover {
+    color: #ffffff;
+    opacity: 1;
+}
+
 @media (max-width: 768px) {
     .guest-main-header {
         padding: 10px 16px;
@@ -568,6 +590,11 @@ body.guest-page .animated-background {
 
     .features-section {
         padding: 40px 20px 60px;
+    }
+
+    .guest-page #forgot-modal .login-link,
+    .guest-page #reset-modal .login-link {
+        margin-top: 14px;
     }
 }
 
@@ -725,6 +752,11 @@ body.guest-page .animated-background {
     .guest-page .secondary-action-container {
         margin-top: 10px;
     }
+
+    .guest-page #forgot-modal .login-link a,
+    .guest-page #reset-modal .login-link a {
+        font-size: 0.82rem;
+    }
 }
 
 @media (max-width: 915px) and (max-height: 430px) and (orientation: landscape) {
@@ -798,6 +830,16 @@ body.guest-page .animated-background {
     }
 
     .guest-page .forgot-password {
+        font-size: 0.76rem;
+    }
+
+    .guest-page #forgot-modal .login-link,
+    .guest-page #reset-modal .login-link {
+        margin-top: 10px;
+    }
+
+    .guest-page #forgot-modal .login-link a,
+    .guest-page #reset-modal .login-link a {
         font-size: 0.76rem;
     }
 }

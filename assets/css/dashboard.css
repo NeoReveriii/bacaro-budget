@@ -2006,64 +2006,104 @@ input[type=number] {
         display: block;
     }
 
-    html, body {
-        overflow-x: hidden !important; /* CRITICAL: prevent swipe revealing drawers */
-        overflow-y: auto !important;
+    /* ============================================
+       MOBILE APP SHELL — Single Scroll Container
+       Only #main-content-area scrolls. Everything
+       else is locked to viewport.
+       ============================================ */
+
+    html {
+        height: 100% !important;
+        overflow: hidden !important; /* Body does NOT scroll */
+    }
+
+    body {
+        height: 100% !important;
+        overflow: hidden !important; /* Body does NOT scroll */
         background-color: rgba(255, 255, 255, 0.85) !important;
     }
 
-    /* Main Layout */
-    .dashboard-container, #app-content {
-        position: static !important;
-        z-index: auto !important;
+    /* Full-viewport flex column: header on top, content fills rest */
+    .dashboard-container {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100% !important;
+        height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
         transform: none !important;
         transform-style: flat !important;
         perspective: none !important;
         will-change: auto !important;
-        overflow-x: hidden !important; /* Prevent swipe revealing drawers */
     }
 
-    .main-app-card {
-        width: 100%;
-        max-width: 100vw;
-        height: auto;
-        min-height: 100vh;
-        border-radius: 0;
-        margin: 0;
-        box-shadow: none;
-        display: block !important;
-        position: static !important;
-        z-index: auto !important;
-        transform: none !important;
-        transform-style: flat !important;
-        perspective: none !important;
-        will-change: auto !important;
-        overflow-x: hidden !important; /* Prevent horizontal swipe */
-        overflow-y: visible !important; /* Allow vertical scrolling */
+    /* Header stays at top, never scrolls */
+    #main-header {
+        flex-shrink: 0 !important;
+        position: relative !important; /* NOT fixed — it's part of the flex column */
+        z-index: 100;
     }
 
+    /* App content fills remaining space below header */
     #app-content {
-        width: 100%;
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+        width: 100% !important;
         max-width: 100vw;
         border-radius: 0;
         padding: 0 !important;
-        overflow-x: hidden !important;
-        overflow-y: visible !important;
         height: auto !important;
+        min-height: 0 !important; /* Allow flex shrinking */
     }
 
+    .main-app-card {
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+        width: 100% !important;
+        max-width: 100vw;
+        height: auto !important;
+        min-height: 0 !important; /* Allow flex shrinking */
+        border-radius: 0;
+        margin: 0;
+        box-shadow: none;
+        position: relative !important;
+        z-index: auto !important;
+        transform: none !important;
+        transform-style: flat !important;
+        perspective: none !important;
+        will-change: auto !important;
+    }
+
+    /* THIS is the ONLY element that scrolls */
     #main-content-area {
-        min-height: calc(100vh - 70px) !important;
+        flex: 1 !important;
         overflow-x: hidden !important;
         overflow-y: auto !important;
         -webkit-overflow-scrolling: touch;
+        min-height: 0 !important; /* CRITICAL: allows flex child to shrink and scroll */
+        height: auto !important;
     }
 
-    /* Kwarta AI needs explicit height to make flex layout work */
+    /* Each view fills the content area naturally */
+    .main-view {
+        min-height: 0; /* No forced minimum — content dictates height */
+    }
+
+    /* Kwarta AI: takes full height of content area, manages its own scrolling */
     #view-ai {
-        height: calc(100vh - 70px) !important;
-        max-height: calc(100vh - 70px) !important;
+        height: 100% !important;
+        max-height: 100% !important;
         overflow: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
     }
 
     /* Sidebar as Mobile Off-Canvas Drawer */

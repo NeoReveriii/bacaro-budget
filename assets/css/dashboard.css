@@ -1371,8 +1371,13 @@ input[type=number] {
 		}
 
 		.rec-number { color: #999; font-weight: 600; }
-		.rec-title { font-weight: 700; color: var(--dark-green); }
-		.rec-stats { font-weight: 800; font-variant-numeric: tabular-nums; }
+        .rec-title { font-weight: 800; font-size: 1.05em; color: var(--dark-green); }
+        .transaction-row > span:nth-child(3),
+        .transaction-row > div:nth-child(3) {
+            text-align: right;
+            justify-self: end;
+        }
+        .rec-stats { font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
 		.rec-stats.income { color: #2ecc71; }
 		.rec-stats.expense { color: #e56b6b; } /* Softer red/coral */
 		.rec-type { color: #888; }
@@ -2209,8 +2214,8 @@ input[type=number] {
     /* Title - first row left side, full width */
     .transaction-row > .rec-title {
         flex: 1 1 100%;
-        font-weight: 600;
-        font-size: 1em;
+        font-weight: 700;
+        font-size: 1.05em;
         margin-bottom: 4px;
     }
 

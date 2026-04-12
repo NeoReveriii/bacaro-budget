@@ -2206,22 +2206,24 @@ input[type=number] {
         display: none;
     }
 
-    /* Title - first row left side, full width */
+    /* Title - first row left side */
     .transaction-row > .rec-title {
-        flex: 1 1 100%;
+        flex: 1 1 auto;
         font-weight: 600;
         font-size: 1em;
         margin-bottom: 4px;
     }
 
-    /* Amount - first row with label */
+    /* Amount - first row with label and spacing */
     .transaction-row > .rec-stats {
         flex: 0 1 auto;
         font-weight: 600;
         text-align: right;
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 4px;
+        min-width: 120px;
+        justify-content: flex-end;
     }
 
     .transaction-row > .rec-stats::before {
@@ -2229,7 +2231,6 @@ input[type=number] {
         font-weight: 500;
         font-size: 0.85em;
         color: #999;
-        margin-right: 4px;
     }
 
     /* Type badge - first row */
@@ -2237,6 +2238,7 @@ input[type=number] {
         flex: 0 1 auto;
         display: flex;
         align-items: center;
+        margin-left: 8px;
     }
 
     /* Date - show below */

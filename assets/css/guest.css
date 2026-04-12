@@ -158,7 +158,6 @@ body.guest-page .animated-background {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 54px;
     box-sizing: border-box;
     padding: 13px 32px;
     font-size: 1rem;

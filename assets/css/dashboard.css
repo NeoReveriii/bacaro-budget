@@ -2213,8 +2213,8 @@ input[type=number] {
 
     .transaction-row {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        flex-wrap: wrap;
+        align-items: flex-start;
         gap: 8px;
         padding: 0;
         min-width: auto;
@@ -2238,10 +2238,10 @@ input[type=number] {
     /* Amount - label and value aligned */
     .transaction-row > .rec-stats {
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
         font-weight: 600;
         text-align: right;
-        flex-shrink: 0;
+        width: 100%;
     }
 
     .transaction-row > .rec-stats::before {
@@ -2249,15 +2249,15 @@ input[type=number] {
         font-weight: 500;
         font-size: 0.85em;
         color: #999;
-        margin-right: 24px;
+        margin-right: 0;
         align-self: center;
     }
 
     /* Type badge */
     .transaction-row > .rec-type {
         display: flex;
-        justify-content: flex-end;
-        flex-shrink: 0;
+        justify-content: space-between;
+        width: 100%;
     }
 
     .transaction-row > .rec-type::before {
@@ -2265,7 +2265,7 @@ input[type=number] {
         font-weight: 500;
         font-size: 0.85em;
         color: #999;
-        margin-right: 24px;
+        margin-right: 0;
         align-self: center;
     }
 
@@ -2352,8 +2352,8 @@ input[type=number] {
 
     .wallet-history-section .transaction-row {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        flex-wrap: wrap;
+        align-items: flex-start;
         padding: 0;
         min-width: auto;
         width: 100%;
@@ -2377,8 +2377,8 @@ input[type=number] {
     .wallet-history-section .transaction-row > .rec-date,
     .wallet-history-section .transaction-row > .rec-wallet {
         display: flex;
-        justify-content: flex-end;
-        flex-shrink: 0;
+        justify-content: space-between;
+        width: 100%;
     }
 
     .wallet-history-section .transaction-row > .rec-stats::before,
@@ -2388,7 +2388,7 @@ input[type=number] {
         font-weight: 500;
         font-size: 0.85em;
         color: #999;
-        margin-right: 24px;
+        margin-right: 0;
         align-self: center;
     }
 

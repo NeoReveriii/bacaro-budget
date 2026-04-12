@@ -2214,11 +2214,22 @@ input[type=number] {
         margin-bottom: 4px;
     }
 
-    /* Amount - first row */
+    /* Amount - first row with label */
     .transaction-row > .rec-stats {
         flex: 0 1 auto;
         font-weight: 600;
         text-align: right;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .transaction-row > .rec-stats::before {
+        content: "Amount:";
+        font-weight: 500;
+        font-size: 0.85em;
+        color: #999;
+        margin-right: 4px;
     }
 
     /* Type badge - first row */

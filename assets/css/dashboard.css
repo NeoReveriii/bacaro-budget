@@ -2124,7 +2124,8 @@ input[type=number] {
         transition: left 0.3s ease;
         border-radius: 0;
         box-shadow: 2px 0 15px rgba(0,0,0,0.5);
-        display: block !important;        /* Override flex so content overflows */
+        display: flex !important;
+        flex-direction: column !important;
         overflow-y: auto !important;      /* Enable scroll */
         -webkit-overflow-scrolling: touch; /* Smooth iOS scroll */
         padding-bottom: 30px;             /* Safe area at bottom */
@@ -4269,6 +4270,34 @@ body.dark-mode .custom-select-wrapper:has(.tx-filter-trigger) .custom-option.sel
         height: 36px;
         font-size: 0.76em;
     }
+
+    .account-drawer {
+        width: min(86vw, 300px);
+        right: min(-86vw, -300px);
+    }
+
+    .drawer-header {
+        padding: 12px 14px;
+    }
+
+    .drawer-header h3 {
+        font-size: 1em;
+        letter-spacing: 0.3px;
+    }
+
+    .close-drawer {
+        font-size: 2em;
+        line-height: 1;
+        padding: 0;
+    }
+
+    .drawer-content {
+        padding: 18px 14px;
+    }
+
+    .profile-section {
+        margin-bottom: 18px;
+    }
 }
 
 @media (max-width: 915px) and (orientation: landscape) {
@@ -4416,6 +4445,25 @@ body.dark-mode .custom-select-wrapper:has(.tx-filter-trigger) .custom-option.sel
 
     #main-sidebar {
         width: 240px;
+        padding: 18px 14px 22px;
+    }
+
+    .sidebar-section {
+        margin-bottom: 20px;
+    }
+
+    .sidebar-nav {
+        gap: 8px;
+    }
+
+    .nav-item {
+        padding: 10px 12px;
+        font-size: 0.9em;
+    }
+
+    .bottom-section {
+        margin-top: auto;
+        padding-top: 8px;
     }
 
     #main-transactions,

@@ -4454,24 +4454,30 @@ body.dark-mode .custom-select-wrapper:has(.tx-filter-trigger) .custom-option.sel
 
     #main-sidebar {
         width: 240px;
-        padding: 18px 14px 22px;
+        padding: 10px 14px 10px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #main-sidebar .btn-quick-add {
+        padding: 10px 15px;
     }
 
     .sidebar-section {
-        margin-bottom: 20px;
+        margin-bottom: 8px;
     }
 
     .sidebar-nav {
-        gap: 8px;
+        gap: 6px;
     }
 
     .nav-item {
-        padding: 10px 12px;
+        padding: 7px 12px;
         font-size: 0.9em;
     }
 
     .bottom-section {
-        margin-top: 8px;
+        margin-top: 4px;
         margin-bottom: 0;
         padding-top: 0;
     }
@@ -4662,13 +4668,31 @@ body.dark-mode .custom-select-wrapper:has(.tx-filter-trigger) .custom-option.sel
     }
 
     .bottom-section {
-        margin-top: 6px;
+        margin-top: 2px;
         margin-bottom: 0;
         padding-top: 0;
     }
 
+    #main-sidebar {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #main-sidebar .btn-quick-add {
+        padding: 8px 15px;
+    }
+
     #main-sidebar .sidebar-section {
-        margin-bottom: 10px;
+        margin-bottom: 6px;
+    }
+
+    #main-sidebar .sidebar-nav {
+        gap: 4px;
+    }
+
+    #main-sidebar .nav-item {
+        padding: 6px 12px;
+        font-size: 0.84em;
     }
 }
 

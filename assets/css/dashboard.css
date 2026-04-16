@@ -377,30 +377,48 @@
 		.stat-value.transfer { color: #2980b9; }
 
 		/* --- Stat Card Skeleton Shimmer --- */
+		/* Override the ::after approach (blocked by will-change:transform/overflow:hidden on stat-card) */
+		/* Use background-position animation on the element itself instead */
+		.stat-card .skeleton::after {
+			display: none;
+		}
+
 		.stat-card .skeleton {
 			width: 100%;
-		}
-
-		.stat-card .skeleton::after {
 			background: linear-gradient(
 				90deg,
-				rgba(255,255,255,0) 0%,
-				rgba(255,255,255,0.75) 50%,
-				rgba(255,255,255,0) 100%
+				#e0e0e0 0%,
+				#e0e0e0 30%,
+				#f5f5f5 50%,
+				#e0e0e0 70%,
+				#e0e0e0 100%
 			);
-		}
-
-		.wallet-card .skeleton {
-			background-color: rgba(255,255,255,0.15);
+			background-size: 300% 100%;
+			background-position: 100% 0;
+			animation: statCardShimmer 1.6s ease-in-out infinite;
 		}
 
 		.wallet-card .skeleton::after {
+			display: none;
+		}
+
+		.wallet-card .skeleton {
 			background: linear-gradient(
 				90deg,
-				rgba(255,255,255,0) 0%,
-				rgba(255,255,255,0.45) 50%,
-				rgba(255,255,255,0) 100%
+				rgba(255,255,255,0.10) 0%,
+				rgba(255,255,255,0.10) 30%,
+				rgba(255,255,255,0.35) 50%,
+				rgba(255,255,255,0.10) 70%,
+				rgba(255,255,255,0.10) 100%
 			);
+			background-size: 300% 100%;
+			background-position: 100% 0;
+			animation: statCardShimmer 1.6s ease-in-out infinite;
+		}
+
+		@keyframes statCardShimmer {
+			0%   { background-position: 100% 0; }
+			100% { background-position: -200% 0; }
 		}
 
 		.rec-stats.income { color: var(--income-color); }

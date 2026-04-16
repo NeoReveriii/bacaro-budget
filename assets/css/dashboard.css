@@ -350,6 +350,7 @@
 			line-height: 1.2;
 			font-variant-numeric: tabular-nums;
 			letter-spacing: -0.5px;
+			width: 100%;
 		}
 
 		/* Wallet Card Special Styling */

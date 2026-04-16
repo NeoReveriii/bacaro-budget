@@ -375,7 +375,30 @@
 		.stat-value.income { color: #27ae60; }
 		.stat-value.expense { color: #c0392b; }
 		.stat-value.transfer { color: #2980b9; }
-		
+
+		/* --- Stat Card Skeleton Shimmer --- */
+		.stat-card .skeleton {
+			width: 100%;
+			background: linear-gradient(90deg, #dcdcdc 25%, #ececec 50%, #dcdcdc 75%);
+			background-size: 200% 100%;
+			animation: statCardShimmer 1.5s infinite;
+		}
+
+		.stat-card .skeleton::after {
+			display: none; /* Disable ::after approach in favour of bg-position animation */
+		}
+
+		.wallet-card .skeleton {
+			background: linear-gradient(90deg, rgba(255,255,255,0.08) 25%, rgba(255,255,255,0.22) 50%, rgba(255,255,255,0.08) 75%);
+			background-size: 200% 100%;
+			animation: statCardShimmer 1.5s infinite;
+		}
+
+		@keyframes statCardShimmer {
+			0%   { background-position: 200% 0; }
+			100% { background-position: -200% 0; }
+		}
+
 		.rec-stats.income { color: var(--income-color); }
 		.rec-stats.expense { color: var(--expense-color); }
 		.rec-stats.transfer { color: var(--transfer-color); }

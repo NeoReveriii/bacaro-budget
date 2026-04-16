@@ -1520,6 +1520,9 @@
             if (skeleton) skeleton.style.display = 'block';
             listEl.style.display = 'none';
 
+			// DEBUG: artificial delay to test shimmer visibility — remove after confirming
+			await new Promise(r => setTimeout(r, 3000));
+
 			try {
 				const res = await fetch('/api/transactions', {
 					headers: {

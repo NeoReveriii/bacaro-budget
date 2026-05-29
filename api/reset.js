@@ -121,7 +121,8 @@ async function handleForgotPassword(req, res) {
       VALUES (${user.acc_id}, ${tokenHash}, ${expiresAt})
     `;
 
-    const delivery = await sendPasswordResetEmail(user.email, resetToken, user.username);
+    const requestOrigin = req.headers.origin || (req.headers.host ? `https://${req.headers.host}` : null);
+    const delivery = await sendPasswordResetEmail(user.email, resetToken, user.username, requestOrigin);
 
     return res.status(200).json({
       message: 'If an account exists, a password reset link has been sent to your email',

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bacaro Budget Manager | Institutional Grade Financial Control</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#fcf8fa",
+                        "inverse-primary": "#bec6e0",
+                        "secondary-container": "#d0e1fb",
+                        "primary-fixed-dim": "#bec6e0",
+                        "surface-variant": "#e4e2e4",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "error-container": "#ffdad6",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#7c839b",
+                        "on-tertiary-fixed": "#271901",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "tertiary": "#000000",
+                        "on-tertiary-fixed-variant": "#574425",
+                        "on-background": "#1b1b1d",
+                        "primary": "#000000",
+                        "surface-bright": "#fcf8fa",
+                        "background": "#fcf8fa",
+                        "surface-dim": "#dcd9db",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed-dim": "#dec29a",
+                        "on-secondary-fixed": "#0b1c30",
+                        "secondary": "#505f76",
+                        "on-error": "#ffffff",
+                        "primary-fixed": "#dae2fd",
+                        "surface-container-high": "#eae7e9",
+                        "on-tertiary-container": "#98805d",
+                        "on-secondary-container": "#54647a",
+                        "surface-tint": "#565e74",
+                        "outline": "#76777d",
+                        "on-surface-variant": "#45464d",
+                        "surface-container": "#f0edef",
+                        "inverse-surface": "#303032",
+                        "tertiary-container": "#271901",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#e4e2e4",
+                        "on-primary-fixed": "#131b2e",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "tertiary-fixed": "#fcdeb5",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#131b2e",
+                        "outline-variant": "#c6c6cd",
+                        "secondary-fixed": "#d3e4fe",
+                        "error": "#ba1a1a",
+                        "surface-container-low": "#f6f3f5",
+                        "inverse-on-surface": "#f3f0f2",
+                        "on-surface": "#1b1b1d",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin": "32px",
+                        "gutter": "24px",
+                        "lg": "48px",
+                        "xs": "4px",
+                        "base": "8px",
+                        "xl": "80px",
+                        "md": "24px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Manrope"],
+                        "label-md": ["Manrope"],
+                        "body-lg": ["Manrope"],
+                        "h2": ["Manrope"],
+                        "body-sm": ["Manrope"],
+                        "h1": ["Manrope"],
+                        "h3": ["Manrope"],
+                        "display": ["Manrope"],
+                        "body-md": ["Manrope"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #fcf8fa;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- TopNavBar Component -->
+<header class="bg-white/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm sticky top-0 z-50">
+<nav class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto font-manrope antialiased tracking-tight">
+<div class="text-xl font-extrabold tracking-tighter text-slate-900 dark:text-slate-50">Bacaro</div>
+<div class="hidden md:flex items-center space-x-8">
+<a class="text-slate-500 dark:text-slate-400 font-medium hover:text-slate-900 dark:hover:text-slate-50 transition-colors" href="#">Dashboard</a>
+<a class="text-slate-500 dark:text-slate-400 font-medium hover:text-slate-900 dark:hover:text-slate-50 transition-colors" href="#">Features</a>
+<a class="text-slate-500 dark:text-slate-400 font-medium hover:text-slate-900 dark:hover:text-slate-50 transition-colors" href="#">Kwarta AI</a>
+<a class="text-slate-500 dark:text-slate-400 font-medium hover:text-slate-900 dark:hover:text-slate-50 transition-colors" href="#">Pricing</a>
+</div>
+<div class="flex items-center space-x-4">
+<button class="px-4 py-2 text-slate-500 dark:text-slate-400 font-medium hover:text-slate-900 transition-all active:scale-95">Sign In</button>
+<button class="px-6 py-2 bg-primary text-on-primary font-semibold rounded-lg hover:opacity-90 transition-all active:scale-95">Open Account</button>
+</div>
+</nav>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative overflow-hidden pt-20 pb-32">
+<div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<div class="space-y-8">
+<h1 class="font-display text-display text-on-surface">
+                        Your Financial World, <br/>
+<span class="text-on-primary-container">Perfectly Organized.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-secondary max-w-lg">
+                        Bacaro gives you the precision of institutional-grade budget management, simplified for your everyday life.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4 pt-4">
+<button class="px-8 py-4 bg-primary text-on-primary font-label-md text-label-md rounded shadow-sm hover:bg-on-surface-variant transition-all">
+                            Start for Free
+                        </button>
+<button class="px-8 py-4 border border-outline text-on-surface font-label-md text-label-md rounded hover:bg-surface-container transition-all">
+                            Sign In
+                        </button>
+</div>
+</div>
+<div class="relative">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-xl overflow-hidden p-2">
+<div class="bg-surface-container-low rounded-lg p-6">
+<div class="flex justify-between items-center mb-8">
+<div class="flex gap-2">
+<div class="w-3 h-3 rounded-full bg-error"></div>
+<div class="w-3 h-3 rounded-full bg-secondary-container"></div>
+<div class="w-3 h-3 rounded-full bg-on-tertiary-container"></div>
+</div>
+<div class="font-label-sm text-label-sm text-secondary">March 2024 Report</div>
+</div>
+<img alt="Financial Dashboard UI" class="w-full rounded border border-outline-variant" data-alt="Close-up of a high-fidelity financial dashboard interface with clean line charts, minimal typography, and a white and navy color scheme" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJ7HicjBGJpFfO9b4al2ZQ_dZYMMHW7GgYqULvzDeBKXnh2VBIx5bhIX9kQQ7C2BN70BFvXW2-qJOVfT0iaXczr4nvv0I-cGOUQ9rx79W3YW3QjMJ6laqmeqm3P6l-0EMXlcw8EkGHRNYqzhcW4JaXeae8hVzEUjs9rOZkI9HROTrEWy-_72T0GJfDC93cne33H7pRctKxyNebxk0XfAFFbripxzonLqIHZtDFD7wiFU52RmJ4InPGQ5YitvLtQFt1Hb-bxILV0Io"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Value Proposition -->
+<section class="py-24 bg-surface-container-low">
+<div class="max-w-7xl mx-auto px-6 text-center mb-16">
+<h2 class="font-h1 text-h1 text-on-surface mb-4">Built for Modern Finance</h2>
+<p class="font-body-md text-body-md text-secondary max-w-2xl mx-auto">Precision tools designed for individuals who demand transparency and control over their capital.</p>
+</div>
+<div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Feature 1 -->
+<div class="p-8 bg-surface-container-lowest border border-outline-variant rounded-lg hover:border-primary transition-colors">
+<div class="w-12 h-12 bg-primary-fixed rounded flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary-container" data-icon="dashboard">dashboard</span>
+</div>
+<h3 class="font-h3 text-h3 mb-3">Real-time Dashboard</h3>
+<p class="font-body-sm text-body-sm text-secondary">Consolidate all transaction streams into a single, high-fidelity command center.</p>
+</div>
+<!-- Feature 2 -->
+<div class="p-8 bg-surface-container-lowest border border-outline-variant rounded-lg hover:border-primary transition-colors">
+<div class="w-12 h-12 bg-primary-fixed rounded flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary-container" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<h3 class="font-h3 text-h3 mb-3">Multi-wallet Support</h3>
+<p class="font-body-sm text-body-sm text-secondary">Manage disparate accounts and assets across multiple institutions with unified tracking.</p>
+</div>
+<!-- Feature 3 -->
+<div class="p-8 bg-surface-container-lowest border border-outline-variant rounded-lg hover:border-primary transition-colors">
+<div class="w-12 h-12 bg-primary-fixed rounded flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary-container" data-icon="target">target</span>
+</div>
+<h3 class="font-h3 text-h3 mb-3">Savings Goals</h3>
+<p class="font-body-sm text-body-sm text-secondary">Set rigorous financial targets with automated tracking and intelligent allocation logic.</p>
+</div>
+<!-- Feature 4 -->
+<div class="p-8 bg-surface-container-lowest border border-outline-variant rounded-lg hover:border-primary transition-colors">
+<div class="w-12 h-12 bg-primary-fixed rounded flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary-container" data-icon="psychology">psychology</span>
+</div>
+<h3 class="font-h3 text-h3 mb-3">Kwarta AI</h3>
+<p class="font-body-sm text-body-sm text-secondary">Leverage machine learning to identify spending patterns and optimization opportunities.</p>
+</div>
+</div>
+</section>
+<!-- AI Feature Section -->
+<section class="py-32">
+<div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div class="order-2 lg:order-1">
+<div class="bg-primary-container rounded-xl p-8 shadow-2xl relative overflow-hidden border border-on-primary-fixed-variant">
+<div class="absolute top-0 right-0 w-64 h-64 bg-surface-tint opacity-10 rounded-full -mr-32 -mt-32"></div>
+<div class="flex items-center gap-3 mb-8">
+<div class="w-10 h-10 bg-on-primary rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="auto_awesome" data-weight="fill" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div>
+<div class="font-label-md text-label-md text-on-primary">Kwarta AI Insight</div>
+<div class="font-label-sm text-label-sm text-on-primary-container">Strategic Recommendation</div>
+</div>
+</div>
+<div class="space-y-6">
+<div class="bg-on-primary-fixed-variant/50 p-6 rounded-lg border border-on-primary-fixed-variant">
+<p class="font-body-md text-body-md text-on-primary leading-relaxed">
+                                    "You've saved <span class="text-secondary-fixed font-bold">15% more</span> this month on dining. Would you like to move this <span class="text-secondary-fixed">$420.00 surplus</span> to your <span class="underline">Vacation Goal</span>?"
+                                </p>
+</div>
+<div class="flex gap-3">
+<button class="px-6 py-3 bg-secondary-fixed text-on-secondary-fixed font-label-md text-label-md rounded hover:bg-secondary-fixed-dim transition-all">Execute Transfer</button>
+<button class="px-6 py-3 border border-on-primary-fixed-variant text-on-primary font-label-md text-label-md rounded hover:bg-on-primary-fixed-variant transition-all">Dismiss</button>
+</div>
+</div>
+<div class="mt-12 pt-8 border-t border-on-primary-fixed-variant flex justify-between items-end">
+<div class="space-y-1">
+<div class="font-label-sm text-label-sm text-on-primary-container uppercase tracking-widest">Efficiency Rating</div>
+<div class="font-h2 text-h2 text-on-primary">98.4%</div>
+</div>
+<div class="w-32 h-12 flex items-end gap-1">
+<div class="flex-1 bg-on-primary-fixed-variant h-4 rounded-t-sm"></div>
+<div class="flex-1 bg-on-primary-fixed-variant h-8 rounded-t-sm"></div>
+<div class="flex-1 bg-secondary-fixed h-12 rounded-t-sm"></div>
+<div class="flex-1 bg-on-primary-fixed-variant h-6 rounded-t-sm"></div>
+<div class="flex-1 bg-on-primary-fixed-variant h-10 rounded-t-sm"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="order-1 lg:order-2 space-y-6">
+<div class="inline-flex items-center px-4 py-1.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm">
+                        POWERED BY KWARTA
+                    </div>
+<h2 class="font-display text-h1 text-on-surface">Intelligence That Works for Your Net Worth.</h2>
+<p class="font-body-lg text-body-lg text-secondary">
+                        Don't just track where your money went. Kwarta AI analyzes your history to suggest precise, actionable movements that accelerate your financial freedom.
+                    </p>
+<ul class="space-y-4 pt-4">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="check_circle">check_circle</span>
+<span class="font-body-md text-body-md text-on-surface">Automated Surplus Detection</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="check_circle">check_circle</span>
+<span class="font-body-md text-body-md text-on-surface">Predictive Expense Modeling</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="check_circle">check_circle</span>
+<span class="font-body-md text-body-md text-on-surface">Algorithmic Debt Reduction Insights</span>
+</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Institutional Trust Section -->
+<section class="py-24 bg-tertiary-container text-on-tertiary">
+<div class="max-w-7xl mx-auto px-6 text-center">
+<div class="font-label-sm text-label-sm text-tertiary-fixed mb-8 uppercase tracking-widest">Institutional Standards</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-12 opacity-50">
+<div class="flex items-center justify-center gap-2 font-bold text-lg"><span class="material-symbols-outlined" data-icon="security">security</span> AES-256</div>
+<div class="flex items-center justify-center gap-2 font-bold text-lg"><span class="material-symbols-outlined" data-icon="verified_user">verified_user</span> SOC2 Type II</div>
+<div class="flex items-center justify-center gap-2 font-bold text-lg"><span class="material-symbols-outlined" data-icon="sync_alt">sync_alt</span> READ-ONLY</div>
+<div class="flex items-center justify-center gap-2 font-bold text-lg"><span class="material-symbols-outlined" data-icon="policy">policy</span> GDPR COMPLIANT</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Component -->
+<footer class="bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 py-12">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-6 max-w-7xl mx-auto">
+<div class="space-y-4">
+<div class="text-lg font-bold text-slate-900 dark:text-slate-50">Bacaro</div>
+<p class="font-manrope text-sm text-slate-500 max-w-xs">Institutional grade financial control for individuals who value precision and transparency.</p>
+</div>
+<div>
+<h4 class="font-semibold text-slate-900 dark:text-slate-50 mb-4">Product</h4>
+<ul class="space-y-2 font-manrope text-sm">
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 transition-all hover:underline" href="#">Features</a></li>
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 transition-all hover:underline" href="#">Pricing</a></li>
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 transition-all hover:underline" href="#">Kwarta AI</a></li>
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 transition-all hover:underline" href="#">Security</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-semibold text-slate-900 dark:text-slate-50 mb-4">Company</h4>
+<ul class="space-y-2 font-manrope text-sm">
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 transition-all hover:underline" href="#">About Us</a></li>
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 transition-all hover:underline" href="#">Privacy Policy</a></li>
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 transition-all hover:underline" href="#">Terms of Service</a></li>
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 transition-all hover:underline" href="#">Contact Support</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-semibold text-slate-900 dark:text-slate-50 mb-4">Stay Updated</h4>
+<div class="flex gap-2">
+<input class="bg-white border border-slate-200 rounded px-3 py-2 text-sm w-full focus:outline-none focus:border-slate-400" placeholder="Email address" type="email"/>
+<button class="bg-slate-900 text-white px-4 py-2 text-sm font-semibold rounded hover:bg-slate-800 transition-all">Join</button>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-slate-200 text-center md:text-left">
+<p class="font-manrope text-sm text-slate-500">© 2024 Bacaro Budget Manager. Institutional Grade Financial Control.</p>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,690 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password | Bacaro Budget Manager</title>
+    <link rel="icon" type="image/png" href="/assets/images/bb_favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="/assets/js/i18n.js"></script>
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a2e1c 0%, #2f4533 40%, #598539 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', Arial, sans-serif;
+        }
+
+        /* ── Animated Blob Background ── */
+        .animated-background {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            overflow: hidden;
+            filter: blur(60px);
+            mix-blend-mode: soft-light;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+        }
+
+        .blob:nth-child(1) {
+            background: rgba(89, 133, 57, 0.5);
+            width: 500px; height: 500px;
+            top: -150px; left: -200px;
+            animation: blob-drift-1 8s ease-in-out infinite;
+        }
+
+        .blob:nth-child(2) {
+            background: rgba(55, 71, 56, 0.6);
+            width: 400px; height: 400px;
+            bottom: -100px; right: -150px;
+            animation: blob-drift-2 10s ease-in-out infinite;
+        }
+
+        .blob:nth-child(3) {
+            background: rgba(168, 216, 110, 0.3);
+            width: 300px; height: 300px;
+            top: 50%; left: 60%;
+            animation: blob-drift-3 7s ease-in-out infinite;
+        }
+
+        @keyframes blob-drift-1 {
+            0%   { transform: translate(0, 0) scale(1); }
+            50%  { transform: translate(250px, 200px) scale(1.2); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        @keyframes blob-drift-2 {
+            0%   { transform: translate(0, 0) scale(1); }
+            50%  { transform: translate(-200px, -250px) scale(1.15); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        @keyframes blob-drift-3 {
+            0%   { transform: translate(0, 0); }
+            50%  { transform: translate(-150px, 100px); }
+            100% { transform: translate(0, 0); }
+        }
+
+        /* ── Main Container ── */
+        .reset-modal-container {
+            width: 100%;
+            max-width: 460px;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .reset-modal-card {
+            background: rgba(55, 71, 56, 0.85);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 24px;
+            box-shadow:
+                0 25px 60px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+            padding: 48px 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: cardFadeIn 0.6s ease-out;
+        }
+
+        @keyframes cardFadeIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ── Logo ── */
+        .reset-logo {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .reset-logo img {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ── Header ── */
+        .reset-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .reset-header h2 {
+            color: #fff;
+            font-size: 26px;
+            font-weight: 800;
+            margin: 0 0 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .reset-header p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* ── Input System (matching global.css floating labels) ── */
+        .reset-form .input-group {
+            position: relative;
+            margin-bottom: 20px;
+            width: 100%;
+            height: 54px;
+        }
+
+        .reset-form .floating-input {
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            padding: 20px 16px 6px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 1em;
+            font-family: 'Inter', system-ui, sans-serif;
+            outline: none;
+            transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .reset-form .floating-input::placeholder {
+            color: transparent;
+        }
+
+        .reset-form .floating-input:focus {
+            border-color: var(--primary-green, #598539);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(89, 133, 57, 0.15);
+        }
+
+        .reset-form .floating-label {
+            position: absolute;
+            top: 17px;
+            left: 16px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1em;
+            font-family: 'Inter', system-ui, sans-serif;
+            pointer-events: none;
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s ease;
+            transform-origin: left top;
+            z-index: 1;
+        }
+
+        .reset-form .floating-input:focus ~ .floating-label,
+        .reset-form .floating-input:not(:placeholder-shown) ~ .floating-label {
+            transform: translateY(-10px) scale(0.75);
+            color: var(--primary-green, #598539);
+            opacity: 1;
+        }
+
+        /* ── Password Toggle ── */
+        .password-input-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .password-input-wrapper .floating-input {
+            padding-right: 50px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 32px;
+            width: 32px;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.2s ease;
+            opacity: 0.7;
+        }
+
+        .password-toggle:hover {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.25);
+            opacity: 1;
+        }
+
+        .password-toggle.password-visible {
+            color: var(--primary-green, #598539);
+            background: rgba(89, 133, 57, 0.2);
+            border-color: var(--primary-green, #598539);
+            opacity: 1;
+        }
+
+        /* ── Password Strength ── */
+        .password-strength {
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 12px;
+            margin: -8px 0 16px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            display: none;
+            font-weight: 600;
+            text-align: center;
+            letter-spacing: 0.3px;
+        }
+
+        .strength-weak {
+            background: rgba(231, 76, 60, 0.15);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.25);
+        }
+
+        .strength-medium {
+            background: rgba(241, 196, 15, 0.15);
+            color: #f1c40f;
+            border: 1px solid rgba(241, 196, 15, 0.25);
+        }
+
+        .strength-strong {
+            background: rgba(46, 204, 113, 0.15);
+            color: #2ecc71;
+            border: 1px solid rgba(46, 204, 113, 0.25);
+        }
+
+        /* ── Button ── */
+        .reset-btn {
+            width: 100%;
+            height: 54px;
+            padding: 0 16px;
+            background: var(--primary-green, #598539);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: 'Inter', system-ui, sans-serif;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(89, 133, 57, 0.2);
+        }
+
+        .reset-btn:hover {
+            background: #6a9e45;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(89, 133, 57, 0.4);
+        }
+
+        .reset-btn:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.4);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .loading-spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ── Messages ── */
+        .message {
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            text-align: center;
+            font-weight: 500;
+            line-height: 1.5;
+            animation: msgFadeIn 0.3s ease-out;
+        }
+
+        @keyframes msgFadeIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.success {
+            background: rgba(46, 204, 113, 0.12);
+            color: #2ecc71;
+            border: 1px solid rgba(46, 204, 113, 0.2);
+        }
+
+        .message.error {
+            background: rgba(231, 76, 60, 0.12);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.2);
+        }
+
+        .message.info {
+            background: rgba(52, 152, 219, 0.12);
+            color: #3498db;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+        }
+
+        /* ── Footer ── */
+        .reset-footer {
+            text-align: center;
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .reset-footer a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 13px;
+            transition: color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .reset-footer a:hover {
+            color: #fff;
+        }
+
+        /* ── Decorative Lock Icon ── */
+        .lock-icon-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .lock-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(89, 133, 57, 0.3), rgba(89, 133, 57, 0.1));
+            border: 2px solid rgba(89, 133, 57, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: lockPulse 3s ease-in-out infinite;
+        }
+
+        .lock-icon svg {
+            width: 28px;
+            height: 28px;
+            color: var(--primary-green, #598539);
+            opacity: 0.9;
+        }
+
+        @keyframes lockPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(89, 133, 57, 0.2); }
+            50%      { box-shadow: 0 0 0 12px rgba(89, 133, 57, 0); }
+        }
+
+        /* ── Mobile Responsive ── */
+        @media (max-width: 768px) {
+            .reset-modal-card {
+                padding: 36px 24px;
+                margin: 10px;
+                border-radius: 20px;
+            }
+
+            .reset-header h2 {
+                font-size: 22px;
+            }
+
+            .lock-icon {
+                width: 56px;
+                height: 56px;
+            }
+        }
+
+        @media (max-width: 915px) and (orientation: landscape) {
+            body {
+                align-items: flex-start;
+                padding: 8px 0;
+            }
+
+            .reset-modal-container {
+                max-width: 380px;
+                padding: 8px;
+            }
+
+            .reset-modal-card {
+                padding: 20px 18px;
+                border-radius: 16px;
+                max-height: calc(100vh - 16px);
+                overflow-y: auto;
+            }
+
+            .reset-header { margin-bottom: 16px; }
+            .reset-header h2 { font-size: 18px; }
+            .reset-header p { font-size: 12px; }
+
+            .reset-form .input-group { margin-bottom: 12px; height: 48px; }
+            .reset-form .floating-input { font-size: 13px; padding: 16px 14px 4px; }
+            .reset-form .floating-label { top: 14px; left: 14px; font-size: 13px; }
+            .password-strength { font-size: 11px; margin: -4px 0 10px; padding: 6px 10px; }
+
+            .reset-btn { height: 46px; font-size: 13px; margin-top: 4px; }
+
+            .lock-icon { width: 44px; height: 44px; }
+            .lock-icon svg { width: 20px; height: 20px; }
+            .lock-icon-container { margin-bottom: 12px; }
+
+            .reset-footer { margin-top: 14px; padding-top: 12px; }
+            .reset-footer a { font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-background">
+        <div class="blob"></div>
+        <div class="blob"></div>
+        <div class="blob"></div>
+    </div>
+
+    <div class="reset-modal-container">
+        <div class="reset-modal-card">
+            <!-- Logo -->
+            <div class="reset-logo">
+                <img src="/assets/images/bb_favicon.png" alt="Bacaro">
+            </div>
+
+            <!-- Lock Icon -->
+            <div class="lock-icon-container">
+                <div class="lock-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Header -->
+            <div class="reset-header">
+                <h2 data-i18n="str_6072e83b">Reset Password</h2>
+                <p id="headerSubtitle" data-i18n="str_bbddd6ba">Enter your new password</p>
+            </div>
+
+            <div id="message" class="message" style="display: none;"></div>
+
+            <!-- Form -->
+            <form id="resetForm" class="reset-form" style="display: none;">
+                <div class="input-group">
+                    <div class="password-input-wrapper">
+                        <input type="password" id="password" class="floating-input" placeholder=" " required>
+                        <span class="password-toggle" onclick="toggleResetPassword(this, 'password')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                                <line x1="1" y1="1" x2="23" y2="23"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <label class="floating-label" data-i18n="str_ae3bb2a1">New Password</label>
+                </div>
+
+                <div id="strengthIndicator" class="password-strength"></div>
+
+                <div class="input-group">
+                    <div class="password-input-wrapper">
+                        <input type="password" id="confirmPassword" class="floating-input" placeholder=" " required>
+                        <span class="password-toggle" onclick="toggleResetPassword(this, 'confirmPassword')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                                <line x1="1" y1="1" x2="23" y2="23"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <label class="floating-label" data-i18n="str_887f7db1">Confirm Password</label>
+                </div>
+
+                <button type="submit" class="reset-btn" id="submitBtn" data-i18n="str_6072e83b">
+                    Reset Password
+                </button>
+            </form>
+
+            <div class="reset-footer">
+                <a href="/" data-i18n="str_0ae5268d">← Back to Login</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ── Password Toggle ──
+        function toggleResetPassword(toggleEl, inputId) {
+            const input = document.getElementById(inputId);
+            const isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+
+            const openEye = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+            const closedEye = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+
+            toggleEl.innerHTML = isPassword ? openEye : closedEye;
+            toggleEl.classList.toggle('password-visible', isPassword);
+        }
+
+        // ── DOM Elements ──
+        const resetForm = document.getElementById('resetForm');
+        const messageDiv = document.getElementById('message');
+        const submitBtn = document.getElementById('submitBtn');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const strengthIndicator = document.getElementById('strengthIndicator');
+        const headerSubtitle = document.getElementById('headerSubtitle');
+
+        // ── Token Verification ──
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
+        if (!token) {
+            showMessage('Invalid reset link. Please request a new one.', 'error');
+        } else {
+            verifyToken(token);
+        }
+
+        async function verifyToken(token) {
+            try {
+                const response = await fetch(`/api/reset?action=verify&token=${token}`);
+                const data = await response.json();
+
+                if (data.valid) {
+                    resetForm.style.display = 'block';
+                    headerSubtitle.textContent = `Welcome back, ${data.username}!`;
+                } else {
+                    showMessage('This password reset link has expired. Please request a new one.', 'error');
+                }
+            } catch (error) {
+                console.error('Error verifying token:', error);
+                showMessage('An error occurred. Please try again.', 'error');
+            }
+        }
+
+        // ── Password Strength Indicator ──
+        passwordInput.addEventListener('input', () => {
+            const password = passwordInput.value;
+            if (!password) {
+                strengthIndicator.style.display = 'none';
+                return;
+            }
+
+            let strength = 'weak';
+            let label = 'Weak — add uppercase, numbers';
+
+            if (password.length >= 6 && /[a-z]/.test(password) && /[A-Z]/.test(password) && /[0-9]/.test(password)) {
+                strength = 'strong';
+                label = 'Strong password ✓';
+            } else if (password.length >= 6) {
+                strength = 'medium';
+                label = 'Medium — try adding special characters';
+            }
+
+            strengthIndicator.className = `password-strength strength-${strength}`;
+            strengthIndicator.textContent = label;
+            strengthIndicator.style.display = 'block';
+        });
+
+        // ── Form Submit ──
+        resetForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+
+            if (!password || !confirmPassword) {
+                showMessage('Please fill in all fields', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showMessage('Password must be at least 6 characters', 'error');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showMessage('Passwords do not match', 'error');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="loading-spinner"></span> Resetting...';
+
+            try {
+                const response = await fetch('/api/reset?action=reset', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token, newPassword: password, confirmPassword })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showMessage(data.message || 'Password reset successful! Redirecting...', 'success');
+                    submitBtn.innerHTML = '✓ Done';
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 2000);
+                } else {
+                    showMessage(data.error || 'An error occurred', 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Reset Password';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('Failed to reset password. Please try again.', 'error');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Reset Password';
+            }
+        });
+
+        function showMessage(text, type) {
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+        }
+
+        // Apply translations on load
+        if (window.applyTranslations) window.applyTranslations();
+    </script>
+
+</body></html>

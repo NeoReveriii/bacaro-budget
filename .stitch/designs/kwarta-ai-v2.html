@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kwarta AI | Institutional Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#0b1c30",
+                        "inverse-surface": "#283044",
+                        "secondary-container": "#c3ecd7",
+                        "on-tertiary-fixed-variant": "#38485d",
+                        "surface-container-low": "#f2f3ff",
+                        "surface-variant": "#dae2fd",
+                        "primary-fixed": "#b0f0d6",
+                        "secondary-fixed-dim": "#a8cfbc",
+                        "on-error-container": "#93000a",
+                        "secondary": "#416656",
+                        "on-secondary-fixed": "#002115",
+                        "on-tertiary-container": "#a2b2cb",
+                        "primary-fixed-dim": "#95d3ba",
+                        "primary-container": "#064e3b",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#35455a",
+                        "on-secondary-container": "#476c5b",
+                        "on-primary-container": "#80bea6",
+                        "outline-variant": "#bfc9c3",
+                        "surface-bright": "#faf8ff",
+                        "inverse-primary": "#95d3ba",
+                        "surface-container": "#eaedff",
+                        "on-primary": "#ffffff",
+                        "surface": "#faf8ff",
+                        "tertiary": "#1f2f43",
+                        "tertiary-fixed": "#d3e4fe",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#0b513d",
+                        "on-primary-fixed": "#002117",
+                        "on-secondary-fixed-variant": "#294e3f",
+                        "on-background": "#131b2e",
+                        "tertiary-fixed-dim": "#b7c8e1",
+                        "secondary-fixed": "#c3ecd7",
+                        "outline": "#707974",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "inverse-on-surface": "#eef0ff",
+                        "surface-container-high": "#e2e7ff",
+                        "on-surface": "#131b2e",
+                        "on-surface-variant": "#404944",
+                        "surface-dim": "#d2d9f4",
+                        "surface-container-highest": "#dae2fd",
+                        "primary": "#003527",
+                        "surface-tint": "#2b6954",
+                        "on-secondary": "#ffffff",
+                        "background": "#faf8ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin": "32px",
+                        "sm": "8px",
+                        "gutter": "24px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "xl": "40px",
+                        "max_width": "1280px",
+                        "unit": "4px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Manrope"],
+                        "h3": ["Manrope"],
+                        "body-lg": ["Manrope"],
+                        "h2": ["Manrope"],
+                        "display": ["Manrope"],
+                        "h1": ["Manrope"],
+                        "body-md": ["Manrope"],
+                        "numeric-data": ["Manrope"],
+                        "body-sm": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "h3": ["20px", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                        "h2": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                        "numeric-data": ["16px", {"lineHeight": "1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #faf8ff;
+            color: #131b2e;
+            overflow-x: hidden;
+        }
+        .chat-scrollbar::-webkit-scrollbar { width: 4px; }
+        .chat-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .chat-scrollbar::-webkit-scrollbar-thumb { background: #bfc9c3; border-radius: 10px; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-screen w-64 border-r border-slate-200 bg-white flex flex-col h-full py-6 px-4 z-50">
+<div class="mb-10 px-4">
+<span class="text-xl font-black text-emerald-900 tracking-tight">Bacaro</span>
+<p class="font-manrope text-xs font-medium tracking-tight text-slate-500 uppercase mt-1">Budget Manager</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-emerald-50 transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-manrope text-sm font-medium tracking-tight">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-emerald-50 transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-manrope text-sm font-medium tracking-tight">Transactions</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-emerald-50 transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-manrope text-sm font-medium tracking-tight">Budgets</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-emerald-900 font-bold border-r-4 border-emerald-900 bg-emerald-50 transition-colors group" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="font-manrope text-sm font-medium tracking-tight">Kwarta AI</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-emerald-50 transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-manrope text-sm font-medium tracking-tight">Settings</span>
+</a>
+</nav>
+<div class="mt-auto px-4">
+<button class="w-full py-3 bg-primary-container text-on-primary-container rounded-lg font-bold text-sm transition-transform active:scale-95 duration-150">
+                Upgrade Plan
+            </button>
+</div>
+</aside>
+<!-- Top App Bar -->
+<header class="sticky top-0 z-40 w-full bg-slate-50/80 backdrop-blur-md border-b border-slate-200 flex justify-between items-center h-16 px-8 ml-64">
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-sm w-80 focus:outline-none focus:ring-2 focus:ring-primary/20" placeholder="Search insights..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined text-slate-500 hover:text-emerald-700 cursor-pointer">notifications</span>
+<span class="material-symbols-outlined text-slate-500 hover:text-emerald-700 cursor-pointer">help_outline</span>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-slate-200">
+<img alt="User account" data-alt="Close up studio portrait of a confident male executive in a charcoal grey tailored suit. He is set against a clean, off-white background with professional studio lighting that emphasizes clarity and trustworthiness. The overall aesthetic is bright, high-tier, and modern, reflecting a premium corporate environment with a sophisticated and neutral color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2LPukkuZF-TmEO9ab24FrcqIkPi4ek52Q4RZ-LHioSoEYh8WUl2f6QEELptUVKKp7k0Q15ia921oz9WCpb8tKeZV5q6FJ0H2pjTgOmXPdDrwsVfIq-AkcasuEXgshShOK0UBrwRkfZgZguRPoDGtclFx-JwvcVHtwhehhonVmHcHDOsoQ2r1PmSnyTj4bhlWjtkT86eegUDsJl7pIohnQvrwHL9OtjrcqlDOqi3VBVfuqxabejtzyWYN-V7rAdzMfrRAiSW2hNiU"/>
+</div>
+</div>
+</header>
+<!-- Main Content Layout -->
+<main class="ml-64 p-8 flex gap-gutter max-w-[1440px] mx-auto h-[calc(100vh-64px)] overflow-hidden">
+<!-- Left: AI Chat Interface -->
+<section class="flex-1 flex flex-col bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+<!-- Chat Header -->
+<div class="p-6 border-b border-slate-100 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-emerald-900 flex items-center justify-center">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+</div>
+<div>
+<h2 class="font-h2 text-h2 text-primary leading-none">Kwarta Assistant</h2>
+<span class="text-[10px] uppercase tracking-widest font-bold text-emerald-600">Institutional Intelligence</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="p-2 hover:bg-slate-50 rounded-lg transition-colors text-slate-400">
+<span class="material-symbols-outlined">history</span>
+</button>
+<button class="p-2 hover:bg-slate-50 rounded-lg transition-colors text-slate-400">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Chat History Area -->
+<div class="flex-1 overflow-y-auto p-6 space-y-6 chat-scrollbar">
+<!-- AI Message -->
+<div class="flex gap-4 max-w-[85%]">
+<div class="flex-shrink-0 w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+</div>
+<div class="space-y-2">
+<div class="bg-secondary-container/30 p-4 rounded-xl rounded-tl-none border border-secondary-container/50">
+<p class="font-body-md text-on-surface">Good morning, Mr. Sterling. Your portfolio has seen a 2.4% appreciation overnight following the European market opening. Would you like a detailed analysis of your fixed-income allocations or a summary of the latest AI-driven liquidity projections?</p>
+</div>
+<span class="text-[10px] text-slate-400 font-medium px-1">KWARTA AI • 09:12 AM</span>
+</div>
+</div>
+<!-- User Message -->
+<div class="flex gap-4 max-w-[85%] ml-auto flex-row-reverse">
+<div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-sm">person</span>
+</div>
+<div class="space-y-2 text-right">
+<div class="bg-white p-4 rounded-xl rounded-tr-none border border-slate-200 shadow-sm">
+<p class="font-body-md text-on-surface">Analyze liquidity projections for the next 30 days based on the upcoming corporate bond maturities.</p>
+</div>
+<span class="text-[10px] text-slate-400 font-medium px-1">YOU • 09:14 AM</span>
+</div>
+</div>
+<!-- AI Analysis Response -->
+<div class="flex gap-4 max-w-[90%]">
+<div class="flex-shrink-0 w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+</div>
+<div class="space-y-4 w-full">
+<div class="bg-secondary-container/30 p-5 rounded-xl rounded-tl-none border border-secondary-container/50">
+<p class="font-body-md font-semibold text-primary mb-3">30-Day Liquidity Outlook</p>
+<div class="grid grid-cols-2 gap-4 mb-4">
+<div class="bg-white p-3 rounded-lg border border-slate-100">
+<span class="text-[11px] text-slate-500 uppercase font-bold block mb-1">Expected Inflow</span>
+<span class="font-numeric-data text-h3 text-emerald-700">$1.24M</span>
+</div>
+<div class="bg-white p-3 rounded-lg border border-slate-100">
+<span class="text-[11px] text-slate-500 uppercase font-bold block mb-1">Risk Variance</span>
+<span class="font-numeric-data text-h3 text-secondary">Low (σ 0.12)</span>
+</div>
+</div>
+<p class="font-body-sm text-slate-600 leading-relaxed">
+                                Analysis indicates a strong surplus. Upon maturity of the <span class="font-bold text-primary">Goldman Sachs Group (GS.PR.D)</span> bonds on the 14th, your cash position will increase by 14%. I recommend reallocating 40% of this into ESG-aligned short-term treasuries to maintain current yield spreads.
+                            </p>
+</div>
+<div class="flex flex-wrap gap-2">
+<button class="px-3 py-1.5 bg-white border border-emerald-200 rounded-full text-xs font-bold text-emerald-800 hover:bg-emerald-50 transition-colors">Execute Reallocation</button>
+<button class="px-3 py-1.5 bg-white border border-slate-200 rounded-full text-xs font-bold text-slate-600 hover:bg-slate-50 transition-colors">Compare ESG Options</button>
+<button class="px-3 py-1.5 bg-white border border-slate-200 rounded-full text-xs font-bold text-slate-600 hover:bg-slate-50 transition-colors">Detailed PDF Report</button>
+</div>
+<span class="text-[10px] text-slate-400 font-medium px-1">KWARTA AI • 09:15 AM</span>
+</div>
+</div>
+</div>
+<!-- Input Area -->
+<div class="p-6 border-t border-slate-100 bg-slate-50/50">
+<div class="relative bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden focus-within:ring-2 focus-within:ring-primary/10 focus-within:border-primary transition-all">
+<textarea class="w-full p-4 pr-32 bg-transparent border-none focus:ring-0 resize-none font-body-md h-24" placeholder="Type your financial inquiry here..." spellcheck="false"></textarea>
+<div class="absolute right-4 bottom-4 flex items-center gap-3">
+<button class="p-2 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">attach_file</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">mic</span>
+</button>
+<button class="bg-primary text-white p-2 rounded-lg hover:bg-primary-container transition-all active:scale-90">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+<div class="mt-3 flex justify-center gap-6">
+<span class="text-[10px] text-slate-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">verified_user</span> Institutional encryption active
+                    </span>
+<span class="text-[10px] text-slate-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">auto_graph</span> Real-time data sync
+                    </span>
+</div>
+</div>
+</section>
+<!-- Right: Institutional Insights Panel -->
+<aside class="w-[380px] flex flex-col gap-6 overflow-y-auto chat-scrollbar pr-1">
+<h3 class="font-h3 text-h3 text-primary flex items-center gap-2">
+<span class="material-symbols-outlined">insights</span>
+                Institutional Insights
+            </h3>
+<!-- Portfolio Health Card -->
+<div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:border-emerald-200 transition-colors">
+<div class="h-1 bg-emerald-800"></div>
+<div class="p-5">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-caps text-slate-500 uppercase">Portfolio Health</span>
+<span class="bg-secondary-container text-primary font-bold text-[10px] px-2 py-0.5 rounded-full">OPTIMAL</span>
+</div>
+<div class="flex items-end gap-2 mb-6">
+<span class="font-display text-4xl text-primary">98.4</span>
+<span class="font-body-md text-emerald-600 font-bold pb-1 flex items-center">
+<span class="material-symbols-outlined text-sm">arrow_upward</span> 1.2%
+                        </span>
+</div>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-[11px] font-bold text-slate-600 mb-1.5 uppercase">
+<span>Diversification Index</span>
+<span>88%</span>
+</div>
+<div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-emerald-800 w-[88%] rounded-full"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-[11px] font-bold text-slate-600 mb-1.5 uppercase">
+<span>Risk Compliance</span>
+<span>99%</span>
+</div>
+<div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-emerald-600 w-[99%] rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Market Sentiment Card -->
+<div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+<span class="font-label-caps text-slate-500 uppercase block mb-4">Market Sentiment (AI Cluster)</span>
+<div class="flex items-center justify-between mb-6">
+<div class="flex flex-col">
+<span class="text-2xl font-h2 text-primary">Bullish Neutral</span>
+<span class="text-xs text-slate-400">Confidence: 84%</span>
+</div>
+<div class="w-12 h-12 flex items-center justify-center rounded-full bg-emerald-50 text-emerald-800">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div class="p-3 bg-slate-50 rounded-lg border border-slate-100">
+<span class="text-[10px] text-slate-400 uppercase font-bold block">VIX Trend</span>
+<span class="font-numeric-data text-slate-800">14.2 (-2.1%)</span>
+</div>
+<div class="p-3 bg-slate-50 rounded-lg border border-slate-100">
+<span class="text-[10px] text-slate-400 uppercase font-bold block">Yield Curve</span>
+<span class="font-numeric-data text-slate-800">Steepening</span>
+</div>
+</div>
+</div>
+<!-- Quick Actions Grid -->
+<div class="grid grid-cols-2 gap-3">
+<button class="p-4 bg-white border border-slate-200 rounded-xl hover:border-primary hover:bg-emerald-50 transition-all flex flex-col items-center gap-2 group text-center">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">account_balance</span>
+<span class="text-xs font-bold text-slate-700">Bank Transfer</span>
+</button>
+<button class="p-4 bg-white border border-slate-200 rounded-xl hover:border-primary hover:bg-emerald-50 transition-all flex flex-col items-center gap-2 group text-center">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">monitoring</span>
+<span class="text-xs font-bold text-slate-700">Trade View</span>
+</button>
+<button class="p-4 bg-white border border-slate-200 rounded-xl hover:border-primary hover:bg-emerald-50 transition-all flex flex-col items-center gap-2 group text-center">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">security</span>
+<span class="text-xs font-bold text-slate-700">Risk Vault</span>
+</button>
+<button class="p-4 bg-white border border-slate-200 rounded-xl hover:border-primary hover:bg-emerald-50 transition-all flex flex-col items-center gap-2 group text-center">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">description</span>
+<span class="text-xs font-bold text-slate-700">Tax Reports</span>
+</button>
+</div>
+<!-- Premium Banner -->
+<div class="mt-auto relative rounded-xl overflow-hidden p-6 bg-primary-container text-on-primary-container group">
+<div class="absolute -right-10 -bottom-10 w-40 h-40 bg-emerald-700/20 rounded-full blur-3xl group-hover:scale-125 transition-transform duration-700"></div>
+<h4 class="font-h3 text-lg mb-2 relative z-10">Strategy Builder</h4>
+<p class="text-xs opacity-80 mb-4 relative z-10">Access high-frequency trading signals and institutional-only desk reports.</p>
+<button class="bg-secondary-fixed text-primary px-4 py-2 rounded-lg text-[11px] font-black uppercase tracking-wider relative z-10 shadow-lg active:scale-95 transition-transform">
+                    Unlock Access
+                </button>
+</div>
+</aside>
+</main>
+<script>
+        // Micro-interaction for simulated typing or simple chat behavior
+        document.querySelector('textarea').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                const text = this.value.trim();
+                if (text) {
+                    // Reset textarea
+                    this.value = '';
+                    // Here you would normally append the user message to the DOM
+                }
+            }
+        });
+    </script>
+</body></html>

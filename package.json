@@ -1,4 +1,11 @@
 {
+  "name": "bacaro-manager",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "npm install --prefix frontend && npm run build --prefix frontend"
+  },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
     "bcrypt": "^5.1.1",

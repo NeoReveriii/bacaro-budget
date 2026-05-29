@@ -1,0 +1,40 @@
+{
+  "name": "projects/5004376411867209368",
+  "projectId": "5004376411867209368",
+  "title": "Professional Aesthetic Redesign",
+  "visibility": "PRIVATE",
+  "createTime": "2026-04-29T00:23:53.210411Z",
+  "updateTime": "2026-04-29T10:39:44.635894Z",
+  "projectType": "TEXT_TO_UI_PRO",
+  "origin": "STITCH",
+  "deviceType": "DESKTOP",
+  "designTheme": {
+    "colorMode": "LIGHT",
+    "font": "MANROPE",
+    "roundness": "ROUND_FOUR",
+    "customColor": "#0F172A"
+  },
+  "screens": {
+    "landing-green": {
+      "id": "c64371b20b9e4173b2215537272bb1cd",
+      "sourceScreen": "projects/5004376411867209368/screens/c64371b20b9e4173b2215537272bb1cd",
+      "width": 1280,
+      "height": 2999
+    },
+    "landing-professional": {
+      "id": "d1d896b014cf40c89518c3f37d15e69a",
+      "sourceScreen": "projects/5004376411867209368/screens/d1d896b014cf40c89518c3f37d15e69a",
+      "width": 1280,
+      "height": 1024
+    },
+    "landing-professional-v2": {
+      "id": "f116c348de434034a8563be3345ca500",
+      "sourceScreen": "projects/5004376411867209368/screens/f116c348de434034a8563be3345ca500",
+      "width": 2560,
+      "height": 5744
+    }
+  },
+  "metadata": {
+    "userRole": "OWNER"
+  }
+}

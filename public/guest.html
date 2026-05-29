@@ -1,0 +1,264 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bacaro Budget Manager</title>
+    <link rel="icon" type="image/png" href="/assets/images/bb_favicon.png">
+    <link rel="stylesheet" href="/assets/css/global.css">
+    <link rel="stylesheet" href="/assets/css/guest.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="guest-page">
+
+    <div class="animated-background">
+        <div class="blob"></div><div class="blob"></div><div class="blob"></div><div class="blob"></div><div class="blob"></div>
+    </div>
+
+    <div class="guest-container" id="guest-page">
+        <header id="main-header" class="guest-main-header">
+            <div class="header-left">
+                <div class="header-logo-container">
+                    <img src="/assets/images/bb_logo_db.png" alt="App Logo">
+                </div>
+                <div class="header-title" data-i18n="guest_header_title">Bacaro Budget Manager</div>
+            </div>
+            <nav class="header-right">
+                <button class="header-signin-btn" onclick="openLoginModal()" data-i18n="guest_header_signin">Sign In</button>
+            </nav>
+        </header>
+
+        <main class="guest-main">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-content">
+                    <div class="hero-badge"><i data-lucide="coins"></i> <span data-i18n="guest_hero_badge">Smart Personal Finance</span></div>
+                    <h1 class="hero-title"><span data-i18n="str_7dc6ee51">Take Control of Your</span><br>
+                        <span class="hero-highlight" data-i18n="str_8bd979a8">Financial Future</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        <span data-i18n="guest_hero_sub">Track income, expenses, and savings goals with Bacaro Budget Manager — your all-in-one AI-powered finance companion.</span>
+                    </p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary btn-lg" onclick="openSignupModal()" data-i18n="guest_btn_start">Start For Free</button>
+                        <button class="btn-ghost btn-lg" onclick="openLoginModal()" data-i18n="guest_btn_signin">Sign In →</button>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-card">
+                        <div class="hero-card-label"><span data-i18n="guest_total_balance">Total Balance</span></div>
+                        <div class="hero-card-value" data-i18n="str_88a9d742">₱ 128,450.00</div>
+                        <div class="hero-card-stats">
+                            <span class="badge-income" data-i18n="str_24e276fc">↑ Income ₱45,000</span>
+                            <span class="badge-expense" data-i18n="str_93dcf3d4">↓ Expense ₱18,200</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="features-section">
+                <h2><span data-i18n="guest_features_title">Everything you need to manage money</span></h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i data-lucide="layout-dashboard"></i></div>
+                        <h3><span data-i18n="guest_feat_1_title">Real-time Dashboard</span></h3>
+                        <p data-i18n="guest_feat_1_desc">Monitor balances, income, and expenses at a glance with live-updating charts.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i data-lucide="wallet"></i></div>
+                        <h3><span data-i18n="guest_feat_2_title">Multi-wallet Support</span></h3>
+                        <p data-i18n="guest_feat_2_desc">Manage cash, bank accounts, e-wallets, and credit cards all in one place.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i data-lucide="target"></i></div>
+                        <h3><span data-i18n="guest_feat_3_title">Savings Goals</span></h3>
+                        <p data-i18n="guest_feat_3_desc">Set and track savings targets with visual progress bars and deadline tracking.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i data-lucide="bot"></i></div>
+                        <h3><span data-i18n="guest_feat_4_title">Kwarta AI</span></h3>
+                        <p data-i18n="guest_feat_4_desc">Get intelligent financial insights and answers powered by AI, tailored to your data.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="drawer-overlay" class="drawer-overlay"></div>
+	
+	<div id="login-modal" class="modal-overlay">
+        <div class="modal-card">
+			<button class="modal-close" onclick="closeAllModals()">×</button>
+            <div class="modal-form-container">
+                <h2 class="header" data-i18n="login_welcome">Welcome Back!</h2>
+                <form class="login-form" id="login-form">
+                    <div class="input-group">
+                        <input type="email" class="floating-input" id="login-email" placeholder=" " required="">
+                        <label class="floating-label" data-i18n="label_email">Email Address</label>
+                    </div>
+                    <div class="input-group">
+                        <div class="password-input-wrapper">
+                            <input type="password" class="floating-input" id="login-password" placeholder=" " required="">
+                            <label class="floating-label" data-i18n="label_pass">Password</label>
+                            <span class="password-toggle">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#598539" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                  <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="login-message" class="message"></div>
+                    <button type="submit" class="btn btn-primary" data-i18n="btn_login">LOG IN</button>
+                    
+                    <div class="forgot-password">
+                        <a href="javascript:void(0)" onclick="openForgotModal()"><span data-i18n="login_forgot">Forgot Password?</span></a>
+                    </div>
+
+                    <div class="secondary-action-container">
+                        <a href="javascript:void(0)" onclick="openSignupModal()" class="btn-secondary-outline"><span data-i18n="login_create_acc">Create New Account</span></a>
+                    </div>
+                </form>
+            </div>
+        </div>
+	</div>
+	
+	<div id="signup-modal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeAllModals()">×</button>
+            <div class="modal-form-container">
+                <h2 class="header" data-i18n="signup_title">Sign Up</h2>
+                <form class="signup-form" id="signup-form">
+                    <div class="input-group">
+                        <input type="text" class="floating-input" id="signup-username" placeholder=" " required="">
+                        <label class="floating-label" data-i18n="label_user">Username</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" class="floating-input" id="signup-email" placeholder=" " required="">
+                        <label class="floating-label" data-i18n="str_643a860f">Email Address</label>
+                    </div>
+                    <div class="input-group">
+                        <div class="password-input-wrapper">
+                            <input type="password" class="floating-input" id="signup-password" placeholder=" " required="">
+                            <label class="floating-label" data-i18n="str_dc647eb6">Password</label>
+                            <span class="password-toggle">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#598539" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                  <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+					<div class="input-group">
+                        <div class="password-input-wrapper">
+                            <input type="password" class="floating-input" id="signup-confirm" placeholder=" " required="">
+                            <label class="floating-label" data-i18n="label_conf_pass">Confirm Password</label>
+                            <span class="password-toggle">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#598539" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                  <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+					<div class="input-group">
+                        <input type="tel" class="floating-input" id="signup-pnumber" placeholder=" ">
+                        <label class="floating-label" data-i18n="label_phone">Phone Number (Optional)</label>
+                    </div>
+                    
+                    <div id="signup-message" class="message"></div>
+
+                    <div class="terms-row">
+                        <input type="checkbox" id="signup-terms">
+                        <label for="signup-terms"><span data-i18n="str_3abbd962">I agree to the</span> <a href="javascript:void(0)" onclick="openTermsModal()"><span data-i18n="signup_terms">Terms and Conditions</span></a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" data-i18n="btn_create_acc">Create Account</button>
+                    
+                    <div class="secondary-action-container">
+                        <a href="javascript:void(0)" onclick="openLoginModal()" class="btn-secondary-outline"><span data-i18n="signup_use_reg">Use Registered Account</span></a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="forgot-modal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeAllModals()">×</button>
+            <div class="modal-form-container">
+                <h2 class="header" data-i18n="forgot_title">Forgot Password</h2>
+                <p style="text-align: center; color: var(--text-light); margin-bottom: 20px;"><span data-i18n="forgot_desc">Enter your email to receive a password reset link.</span></p>
+                <form id="forgot-form">
+                    <div class="input-group">
+                        <input type="email" class="floating-input" id="forgot-email" placeholder=" " required="">
+                        <label class="floating-label" data-i18n="str_643a860f">Email Address</label>
+                    </div>
+                    <div id="forgot-message" class="message"></div>
+                    <button type="submit" class="btn btn-primary" data-i18n="btn_send_reset">Send Reset Link</button>
+                    <div class="login-link"><a href="javascript:void(0)" onclick="openLoginModal()"><span data-i18n="btn_back_login">Back to Log In</span></a></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms & Conditions Modal -->
+    <div id="terms-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="terms-modal-header">
+                <h2 data-i18n="str_97abaa92">Terms and Conditions</h2>
+                <button class="modal-close" onclick="closeTermsModal()" style="position:static;opacity:0.6;font-size:1.6rem;padding:0 4px;">×</button>
+            </div>
+            <div class="terms-modal-body">
+                <p><span data-i18n="str_9819fce8">Welcome to</span> <strong data-i18n="str_7c8fc5cb">Bacaro Budget Manager</strong><span data-i18n="str_fbd680e5">. By creating an account and using this application, you agree to the following terms.</span></p>
+
+                <h3 data-i18n="str_a1c269ae">1. Acceptance of Terms</h3>
+                <p data-i18n="str_b8eeccc8">By registering, you confirm that you are at least 18 years old and agree to these Terms and Conditions and our Privacy Policy.</p>
+
+                <h3 data-i18n="str_7904c5ac">2. Account Responsibility</h3>
+                <p data-i18n="str_66dd425d">You are responsible for maintaining the confidentiality of your account credentials and all activity under your account.</p>
+
+                <h3 data-i18n="str_3e3a3cc5">3. Data and Privacy</h3>
+                <p data-i18n="str_65844f63">We collect and store financial data you input solely to provide the service. We do not sell or share your personal data with third parties without your consent.</p>
+
+                <h3 data-i18n="str_d62d1ee0">4. Acceptable Use</h3>
+                <p data-i18n="str_8b6ee8bf">You agree not to misuse the platform, attempt unauthorized access, or use it for any unlawful purpose.</p>
+
+                <h3 data-i18n="str_a5bfa9a8">5. Service Availability</h3>
+                <p data-i18n="str_337e7deb">We strive for uptime but do not guarantee uninterrupted access and are not liable for any losses due to downtime.</p>
+
+                <h3 data-i18n="str_a4ee1612">6. Modifications</h3>
+                <p data-i18n="str_55c93fb9">We may update these terms at any time. Continued use of the service constitutes acceptance of the updated terms.</p>
+
+                <h3 data-i18n="str_e2ee5dd7">7. Termination</h3>
+                <p data-i18n="str_0e5ab37c">We reserve the right to suspend or terminate accounts that violate these terms without prior notice.</p>
+
+                <h3 data-i18n="str_contact_us">8. Contact Us</h3>
+                <p data-i18n="str_contact_desc">If you have any questions, please contact us at:</p>
+                <ul>
+                    <li><strong style="color:white;opacity:0.9;" data-i18n="str_6a1e265f">Email:</strong><span data-i18n="str_c0bc0292">support@bacaro.app</span></li>
+                </ul>
+
+                <p style="margin-top:20px;"><span data-i18n="str_78d660ee">For the full legal terms, see our</span> <a href="/terms.html" target="_blank" style="color:#c8ffb0;text-decoration:underline;" data-i18n="str_e75fb0cd">Terms of Use page</a>.</p>
+            </div>
+            <div class="terms-modal-footer">
+                <button class="btn-ghost" onclick="closeTermsModal()" data-i18n="str_d3d2e617">Close</button>
+            </div>
+        </div>
+    </div>
+
+	<script src="/assets/js/i18n.js"></script>
+	<script src="/assets/js/main.js"></script>
+	<script>
+        lucide.createIcons();
+
+        function openTermsModal() {
+            document.getElementById('terms-modal').classList.add('active');
+        }
+
+        function closeTermsModal() {
+            document.getElementById('terms-modal').classList.remove('active');
+        }
+    </script>
+
+</body></html>

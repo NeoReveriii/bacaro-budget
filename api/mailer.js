@@ -46,10 +46,17 @@ function getFrontendUrl() {
   return null;
 }
 
-export async function sendPasswordResetEmail(email, resetToken, username) {
-  const frontendUrl = getFrontendUrl();
+export async function sendPasswordResetEmail(email, resetToken, username, requestOrigin = null) {
+  let frontendUrl = getFrontendUrl();
+  
+  // If moving from another Vercel project, env variables might have old URLs.
+  // We prioritize the origin from the actual HTTP request to be 100% accurate to the domain the user is visiting.
+  if (requestOrigin) {
+    frontendUrl = requestOrigin.replace(/\/$/, '');
+  }
+
   if (!frontendUrl) {
-    throw new Error('FRONTEND_URL or VERCEL_URL must be configured');
+    throw new Error('FRONTEND_URL, VERCEL_URL or requestOrigin must be provided');
   }
 
   const senderUser = pickEnv('SMTP_USER', 'GMAIL_USER', 'EMAIL_USER');

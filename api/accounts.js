@@ -164,14 +164,39 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Account ID required' });
       }
 
+      // Verify the account exists first
+      const accountCheck = await sql`SELECT acc_id FROM accounts WHERE acc_id = ${id}`;
+      if (accountCheck.length === 0) {
+        return res.status(404).json({ error: 'Account not found' });
+      }
+
+      // Cascade-delete all child records in dependency order.
+      // Each step is wrapped in try-catch since tables may not exist yet.
+      const tryDel = async (q) => { try { await q; } catch {} };
+
+      // 1. goal_contributions (references goals)
+      await tryDel(sql`
+        DELETE FROM goal_contributions
+        WHERE goal_id IN (SELECT goal_id FROM goals WHERE account_id = ${id})
+      `);
+
+      // 2. goals (references accounts)
+      await tryDel(sql`DELETE FROM goals WHERE account_id = ${id}`);
+
+      // 3. transactions (references accounts & wallets)
+      await tryDel(sql`DELETE FROM transactions WHERE account_id = ${id}`);
+
+      // 4. wallets (references accounts)
+      await tryDel(sql`DELETE FROM wallets WHERE account_id = ${id}`);
+
+      // 5. password_resets (references accounts)
+      await tryDel(sql`DELETE FROM password_resets WHERE account_id = ${id}`);
+
+      // 6. Finally delete the account itself
       const deleted = await sql`
         DELETE FROM accounts WHERE acc_id = ${id}
         RETURNING acc_id
       `;
-
-      if (deleted.length === 0) {
-        return res.status(404).json({ error: 'Account not found' });
-      }
 
       res.status(200).json({
         success: true,

@@ -1,12 +1,20 @@
 {
+  "version": 2,
+  "cleanUrls": true,
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/", "destination": "/views/guest.html" },
-    { "source": "/dashboard", "destination": "/views/dashboard.html" },
-    { "source": "/dashboard.html", "destination": "/views/dashboard.html" },
-    { "source": "/guest", "destination": "/views/guest.html" },
-    { "source": "/guest.html", "destination": "/views/guest.html" },
-    { "source": "/reset-password", "destination": "/views/reset-password.html" },
-    { "source": "/reset-password.html", "destination": "/views/reset-password.html" }
+    { "source": "/assets/(.*)", "destination": "/frontend/dist/assets/$1" },
+    { "source": "/(.*)", "destination": "/frontend/dist/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "s-maxage=0, stale-while-revalidate=0"
+        }
+      ]
+    }
   ]
 }

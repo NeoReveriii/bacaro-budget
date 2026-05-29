@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bacaro - Transactions</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-secondary-fixed": "#002115",
+                "on-secondary": "#ffffff",
+                "secondary-container": "#c3ecd7",
+                "on-tertiary-container": "#a2b2cb",
+                "secondary": "#416656",
+                "on-error-container": "#93000a",
+                "error-container": "#ffdad6",
+                "on-secondary-fixed-variant": "#294e3f",
+                "inverse-on-surface": "#eef0ff",
+                "surface-container-highest": "#dae2fd",
+                "surface-variant": "#dae2fd",
+                "on-tertiary-fixed": "#0b1c30",
+                "surface-dim": "#d2d9f4",
+                "surface": "#faf8ff",
+                "on-surface": "#131b2e",
+                "outline": "#707974",
+                "on-tertiary": "#ffffff",
+                "on-primary-container": "#80bea6",
+                "primary-container": "#064e3b",
+                "surface-bright": "#faf8ff",
+                "on-background": "#131b2e",
+                "error": "#ba1a1a",
+                "inverse-primary": "#95d3ba",
+                "on-error": "#ffffff",
+                "primary-fixed-dim": "#95d3ba",
+                "surface-container-lowest": "#ffffff",
+                "secondary-fixed": "#c3ecd7",
+                "surface-container-low": "#f2f3ff",
+                "secondary-fixed-dim": "#a8cfbc",
+                "on-surface-variant": "#404944",
+                "surface-container": "#eaedff",
+                "primary-fixed": "#b0f0d6",
+                "primary": "#003527",
+                "on-secondary-container": "#476c5b",
+                "tertiary-fixed-dim": "#b7c8e1",
+                "surface-tint": "#2b6954",
+                "background": "#faf8ff",
+                "tertiary": "#1f2f43",
+                "on-primary": "#ffffff",
+                "surface-container-high": "#e2e7ff",
+                "tertiary-container": "#35455a",
+                "outline-variant": "#bfc9c3",
+                "inverse-surface": "#283044",
+                "on-primary-fixed-variant": "#0b513d",
+                "on-primary-fixed": "#002117",
+                "tertiary-fixed": "#d3e4fe",
+                "on-tertiary-fixed-variant": "#38485d"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            "spacing": {
+                "lg": "24px",
+                "md": "16px",
+                "max_width": "1280px",
+                "xl": "40px",
+                "sm": "8px",
+                "xs": "4px",
+                "unit": "4px",
+                "margin": "32px",
+                "gutter": "24px"
+            },
+            "fontFamily": {
+                "body-md": ["Manrope"],
+                "body-lg": ["Manrope"],
+                "label-caps": ["Manrope"],
+                "h1": ["Manrope"],
+                "h2": ["Manrope"],
+                "h3": ["Manrope"],
+                "display": ["Manrope"],
+                "numeric-data": ["Manrope"],
+                "body-sm": ["Manrope"]
+            },
+            "fontSize": {
+                "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                "h2": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                "h3": ["20px", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600"}],
+                "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                "numeric-data": ["16px", {"lineHeight": "1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                "body-sm": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Manrope', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- SIDEBAR -->
+<aside class="h-screen w-64 border-r fixed left-0 top-0 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 flex flex-col py-6 px-4 z-50">
+<!-- Logo Cluster -->
+<div class="flex items-center gap-3 px-2 mb-10">
+<div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+</div>
+<div>
+<h1 class="text-xl font-bold text-emerald-900 dark:text-emerald-500 tracking-tight">Bacaro</h1>
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Budget Manager</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-manrope text-sm font-medium">Dashboard</span>
+</a>
+<!-- ACTIVE TAB: Transactions -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-emerald-50 dark:bg-emerald-900/30 text-emerald-900 dark:text-emerald-400 font-semibold border-r-4 border-emerald-900 transition-colors active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-manrope text-sm font-semibold">Transactions</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-manrope text-sm font-medium">Wallets</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">ads_click</span>
+<span class="font-manrope text-sm font-medium">Goals</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-manrope text-sm font-medium">Kwarta AI</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-manrope text-sm font-medium">Settings</span>
+</a>
+</nav>
+<!-- CTA & Profile -->
+<div class="mt-auto px-2 space-y-6">
+<button class="w-full bg-primary-container text-white py-3 rounded-xl font-bold text-sm transition-transform active:scale-95 shadow-sm">
+                Upgrade Plan
+            </button>
+<div class="flex items-center gap-3 pt-6 border-t border-slate-100">
+<img alt="Arthur Punzalan" class="w-10 h-10 rounded-full object-cover" data-alt="A professional headshot of a Filipino man in his 30s wearing a clean white oxford shirt. The background is a soft, blurred modern office environment with natural sunlight and plants. The overall lighting is warm and bright, conveying a sense of competence and reliability in a financial setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBR7PjAVWVd8imcKshUPvoibOYBM5hgqlaRg-Hg7epdINC8t6udnr8BeC_K_3uxgj4i2icdKPxoG0Wagu1DaIS08qwApqIok7G8WW4jZOhFNVbTWqhk8p24OH1NY1Ik4sg5Qb_I-naE8iqgCaZobkWraH9QuFVmWJTtnHKpGxGQ1_pqCcXzwzr4vYHQXx3b3zgchASodnrOk-tivasIoQ4v1L9W9VgzK41DC3Ffaf9pYJjEWRAFX8OeZ9wNPgbz1BbTXrY16r_IrSg"/>
+<div class="overflow-hidden">
+<p class="font-bold text-sm text-slate-900 truncate">Arthur Punzalan</p>
+<p class="text-xs text-slate-500 truncate">Premium Member</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- MAIN CONTENT AREA -->
+<main class="ml-64 p-10 min-h-screen">
+<!-- HEADER -->
+<header class="flex justify-between items-center mb-10">
+<div>
+<h2 class="font-h1 text-h1 text-primary">Transactions</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Manage and monitor your financial activity across all accounts.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 border border-outline-variant text-primary px-6 py-2.5 rounded-xl font-bold text-body-sm hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-lg">download</span>
+                    Export
+                </button>
+<button class="flex items-center gap-2 bg-primary text-white px-6 py-2.5 rounded-xl font-bold text-body-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-lg">add</span>
+                    Add Transaction
+                </button>
+</div>
+</header>
+<!-- FILTERS -->
+<section class="grid grid-cols-12 gap-4 mb-6">
+<div class="col-span-3 relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full pl-12 pr-4 py-3 bg-white border border-outline-variant rounded-xl text-body-sm focus:ring-2 focus:ring-primary-container/20 focus:border-primary outline-none transition-all" placeholder="Search transactions..." type="text"/>
+</div>
+<div class="col-span-2">
+<select class="w-full px-4 py-3 bg-white border border-outline-variant rounded-xl text-body-sm text-on-surface font-medium focus:ring-2 focus:ring-primary-container/20 focus:border-primary outline-none transition-all">
+<option>This Month</option>
+<option>Last 7 Days</option>
+<option>Last 3 Months</option>
+<option>Custom Range</option>
+</select>
+</div>
+<div class="col-span-2">
+<select class="w-full px-4 py-3 bg-white border border-outline-variant rounded-xl text-body-sm text-on-surface font-medium focus:ring-2 focus:ring-primary-container/20 focus:border-primary outline-none transition-all">
+<option>All Types</option>
+<option>Expense</option>
+<option>Income</option>
+<option>Transfer</option>
+</select>
+</div>
+<div class="col-span-2">
+<select class="w-full px-4 py-3 bg-white border border-outline-variant rounded-xl text-body-sm text-on-surface font-medium focus:ring-2 focus:ring-primary-container/20 focus:border-primary outline-none transition-all">
+<option>All Wallets</option>
+<option>GCash</option>
+<option>BDO Savings</option>
+<option>Maya</option>
+<option>BPI Credit</option>
+</select>
+</div>
+<div class="col-span-2">
+<select class="w-full px-4 py-3 bg-white border border-outline-variant rounded-xl text-body-sm text-on-surface font-medium focus:ring-2 focus:ring-primary-container/20 focus:border-primary outline-none transition-all">
+<option>All Categories</option>
+<option>Food &amp; Dining</option>
+<option>Transport</option>
+<option>Income</option>
+<option>Utilities</option>
+</select>
+</div>
+<div class="col-span-1">
+<button class="w-full h-full flex items-center justify-center border border-outline-variant rounded-xl text-slate-500 hover:bg-white hover:text-primary transition-colors">
+<span class="material-symbols-outlined">tune</span>
+</button>
+</div>
+</section>
+<!-- DATA TABLE CARD -->
+<section class="bg-white rounded-xl border border-outline-variant overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full border-collapse">
+<thead class="bg-slate-50 border-b border-outline-variant">
+<tr>
+<th class="px-6 py-4 text-left font-label-caps text-label-caps text-slate-500 uppercase tracking-widest">Date</th>
+<th class="px-6 py-4 text-left font-label-caps text-label-caps text-slate-500 uppercase tracking-widest">Description</th>
+<th class="px-6 py-4 text-left font-label-caps text-label-caps text-slate-500 uppercase tracking-widest">Category</th>
+<th class="px-6 py-4 text-left font-label-caps text-label-caps text-slate-500 uppercase tracking-widest">Wallet</th>
+<th class="px-6 py-4 text-left font-label-caps text-label-caps text-slate-500 uppercase tracking-widest">Status</th>
+<th class="px-6 py-4 text-right font-label-caps text-label-caps text-slate-500 uppercase tracking-widest">Amount</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- ROW 1: Jollibee -->
+<tr class="hover:bg-slate-50/50 transition-colors group">
+<td class="px-6 py-5">
+<p class="text-body-sm font-bold text-slate-700">Oct 24, 2023</p>
+<p class="text-[11px] font-medium text-slate-400 mt-0.5">08:15 AM</p>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-lg">restaurant</span>
+</div>
+<span class="font-bold text-on-surface">Jollibee</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-[12px] font-bold">Food</span>
+</td>
+<td class="px-6 py-5 text-body-sm text-slate-600">GCash</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[12px] font-bold">Cleared</span>
+</td>
+<td class="px-6 py-5 text-right font-bold text-error">-₱345.00</td>
+</tr>
+<!-- ROW 2: Salary -->
+<tr class="bg-secondary-container/5 hover:bg-slate-50/50 transition-colors group">
+<td class="px-6 py-5">
+<p class="text-body-sm font-bold text-slate-700">Oct 23, 2023</p>
+<p class="text-[11px] font-medium text-slate-400 mt-0.5">10:42 AM</p>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700">
+<span class="material-symbols-outlined text-lg">payments</span>
+</div>
+<span class="font-bold text-on-surface">Salary</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-[12px] font-bold">Income</span>
+</td>
+<td class="px-6 py-5 text-body-sm text-slate-600">BDO Savings</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[12px] font-bold">Cleared</span>
+</td>
+<td class="px-6 py-5 text-right font-bold text-emerald-600">+₱45,200.00</td>
+</tr>
+<!-- ROW 3: Grab -->
+<tr class="hover:bg-slate-50/50 transition-colors group">
+<td class="px-6 py-5">
+<p class="text-body-sm font-bold text-slate-700">Oct 22, 2023</p>
+<p class="text-[11px] font-medium text-slate-400 mt-0.5">01:30 PM</p>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600">
+<span class="material-symbols-outlined text-lg">directions_car</span>
+</div>
+<span class="font-bold text-on-surface">Grab</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-[12px] font-bold">Transport</span>
+</td>
+<td class="px-6 py-5 text-body-sm text-slate-600">Maya</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[12px] font-bold">Cleared</span>
+</td>
+<td class="px-6 py-5 text-right font-bold text-error">-₱180.00</td>
+</tr>
+<!-- ROW 4: Meralco -->
+<tr class="bg-secondary-container/5 hover:bg-slate-50/50 transition-colors group">
+<td class="px-6 py-5">
+<p class="text-body-sm font-bold text-slate-700">Oct 21, 2023</p>
+<p class="text-[11px] font-medium text-slate-400 mt-0.5">04:55 PM</p>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-700">
+<span class="material-symbols-outlined text-lg">bolt</span>
+</div>
+<span class="font-bold text-on-surface">Meralco</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-[12px] font-bold">Bills</span>
+</td>
+<td class="px-6 py-5 text-body-sm text-slate-600">BPI Credit</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-[12px] font-bold">Pending</span>
+</td>
+<td class="px-6 py-5 text-right font-bold text-error">-₱4,200.00</td>
+</tr>
+<!-- ROW 5: Netflix -->
+<tr class="hover:bg-slate-50/50 transition-colors group">
+<td class="px-6 py-5">
+<p class="text-body-sm font-bold text-slate-700">Oct 20, 2023</p>
+<p class="text-[11px] font-medium text-slate-400 mt-0.5">07:20 PM</p>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600">
+<span class="material-symbols-outlined text-lg">subscriptions</span>
+</div>
+<span class="font-bold text-on-surface">Netflix</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-[12px] font-bold">Subscription</span>
+</td>
+<td class="px-6 py-5 text-body-sm text-slate-600">GCash</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[12px] font-bold">Cleared</span>
+</td>
+<td class="px-6 py-5 text-right font-bold text-error">-₱549.00</td>
+</tr>
+<!-- ROW 6: SM Store -->
+<tr class="bg-secondary-container/5 hover:bg-slate-50/50 transition-colors group">
+<td class="px-6 py-5">
+<p class="text-body-sm font-bold text-slate-700">Oct 19, 2023</p>
+<p class="text-[11px] font-medium text-slate-400 mt-0.5">11:10 AM</p>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-700">
+<span class="material-symbols-outlined text-lg">shopping_bag</span>
+</div>
+<span class="font-bold text-on-surface">SM Store</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-[12px] font-bold">Shopping</span>
+</td>
+<td class="px-6 py-5 text-body-sm text-slate-600">Maya</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[12px] font-bold">Cleared</span>
+</td>
+<td class="px-6 py-5 text-right font-bold text-error">-₱3,500.00</td>
+</tr>
+<!-- ROW 7: Globe Telecom -->
+<tr class="hover:bg-slate-50/50 transition-colors group">
+<td class="px-6 py-5">
+<p class="text-body-sm font-bold text-slate-700">Oct 18, 2023</p>
+<p class="text-[11px] font-medium text-slate-400 mt-0.5">09:05 AM</p>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700">
+<span class="material-symbols-outlined text-lg">wifi</span>
+</div>
+<span class="font-bold text-on-surface">Globe Telecom</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-[12px] font-bold">Utilities</span>
+</td>
+<td class="px-6 py-5 text-body-sm text-slate-600">BPI Credit</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[12px] font-bold">Cleared</span>
+</td>
+<td class="px-6 py-5 text-right font-bold text-error">-₱1,299.00</td>
+</tr>
+<!-- ROW 8: Starbucks -->
+<tr class="bg-secondary-container/5 hover:bg-slate-50/50 transition-colors group">
+<td class="px-6 py-5">
+<p class="text-body-sm font-bold text-slate-700">Oct 17, 2023</p>
+<p class="text-[11px] font-medium text-slate-400 mt-0.5">03:45 PM</p>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-800">
+<span class="material-symbols-outlined text-lg">coffee</span>
+</div>
+<span class="font-bold text-on-surface">Starbucks</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-[12px] font-bold">Food</span>
+</td>
+<td class="px-6 py-5 text-body-sm text-slate-600">GCash</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[12px] font-bold">Cleared</span>
+</td>
+<td class="px-6 py-5 text-right font-bold text-error">-₱210.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- PAGINATION -->
+<div class="px-6 py-6 border-t border-outline-variant flex items-center justify-between">
+<p class="text-body-sm text-slate-500 font-medium">
+                    Showing <span class="text-on-surface font-bold">1-8</span> of <span class="text-on-surface font-bold">245</span> transactions
+                </p>
+<div class="flex items-center gap-2">
+<button class="px-4 py-2 border border-outline-variant rounded-lg text-body-sm font-bold text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                        Previous
+                    </button>
+<div class="flex gap-1">
+<button class="w-9 h-9 flex items-center justify-center rounded-lg bg-primary text-white font-bold text-sm">1</button>
+<button class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-slate-100 font-bold text-sm text-slate-600">2</button>
+<button class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-slate-100 font-bold text-sm text-slate-600">3</button>
+<span class="w-9 h-9 flex items-center justify-center text-slate-400">...</span>
+<button class="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-slate-100 font-bold text-sm text-slate-600">31</button>
+</div>
+<button class="px-4 py-2 border border-outline-variant rounded-lg text-body-sm font-bold text-slate-600 hover:bg-slate-50">
+                        Next
+                    </button>
+</div>
+</div>
+</section>
+<!-- FOOTER SUMMARY -->
+<footer class="mt-8 grid grid-cols-3 gap-6">
+<div class="p-6 bg-emerald-50 rounded-xl border border-emerald-100 flex items-center justify-between">
+<div>
+<p class="text-xs font-bold text-emerald-800 uppercase tracking-widest mb-1">Monthly Income</p>
+<p class="text-h3 text-emerald-900 font-bold">₱124,500.00</p>
+</div>
+<div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center text-emerald-600 shadow-sm">
+<span class="material-symbols-outlined">trending_up</span>
+</div>
+</div>
+<div class="p-6 bg-rose-50 rounded-xl border border-rose-100 flex items-center justify-between">
+<div>
+<p class="text-xs font-bold text-rose-800 uppercase tracking-widest mb-1">Monthly Expense</p>
+<p class="text-h3 text-rose-900 font-bold">₱68,240.00</p>
+</div>
+<div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center text-rose-600 shadow-sm">
+<span class="material-symbols-outlined">trending_down</span>
+</div>
+</div>
+<div class="p-6 bg-slate-900 rounded-xl flex items-center justify-between">
+<div>
+<p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Net Balance</p>
+<p class="text-h3 text-white font-bold">₱56,260.00</p>
+</div>
+<div class="w-12 h-12 bg-slate-800 rounded-lg flex items-center justify-center text-emerald-400">
+<span class="material-symbols-outlined">account_balance</span>
+</div>
+</div>
+</footer>
+</main>
+</body></html>

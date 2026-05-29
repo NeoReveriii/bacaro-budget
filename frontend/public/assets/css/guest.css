@@ -1,0 +1,942 @@
+/* ===================================================================
+   Guest / Landing Page Specific Styles
+   =================================================================== */
+
+/* Body override — landing page scrolls, not a centered flex layout */
+body.guest-page {
+    display: block;
+    overflow-y: auto;
+    align-items: unset;
+    justify-content: unset;
+    scroll-behavior: smooth;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Fix animated background to always cover the viewport */
+body.guest-page .animated-background {
+    position: fixed;
+}
+
+/* Guest Container */
+.guest-container {
+    min-height: 100vh;
+    position: relative;
+    color: var(--white);
+}
+
+/* ===================================================================
+   Header — restored original dark-green header
+   =================================================================== */
+.guest-main-header {
+    background-color: var(--dark-green);
+    min-height: 70px;
+    color: var(--white);
+    padding: 10px 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 100;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-logo-container {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.header-logo-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+.header-title {
+    font-family: 'Times New Roman', serif;
+    font-size: 1.8em;
+    color: white;
+    font-weight: bold;
+    text-rendering: optimizeLegibility;
+    letter-spacing: 0.01em;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-signin-btn {
+    background: transparent;
+    color: var(--white);
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    padding: 7px 20px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    letter-spacing: 0.5px;
+}
+
+.header-signin-btn:hover {
+    background: var(--primary-green);
+    border-color: var(--primary-green);
+    box-shadow: 0 0 15px rgba(89, 133, 57, 0.4);
+    transform: translateY(-1px);
+}
+
+/* ===================================================================
+   Button variants for the landing page
+   =================================================================== */
+
+/* .btn modifier — makes btn-primary auto-width inside the hero actions only.
+   Modals stay full-width since they are outside .hero-actions. */
+.hero-actions .btn {
+    width: auto !important;
+    height: auto !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 32px;
+    font-size: 1rem;
+    border-radius: 12px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    border: 1.5px solid transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin: 0;
+    line-height: 1.4;
+}
+
+.hero-actions .btn.btn-primary {
+    background-color: var(--primary-green);
+    color: var(--white);
+    box-shadow: 0 4px 15px rgba(89, 133, 57, 0.3);
+}
+
+.hero-actions .btn.btn-primary:hover {
+    background-color: #6a9e45;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 25px rgba(89, 133, 57, 0.45);
+}
+
+/* Ghost Button */
+.btn-ghost {
+    padding: 10px 24px;
+    border-radius: 10px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s ease;
+}
+
+.btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.hero-actions .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 13px 32px;
+    font-size: 1rem;
+    border-radius: 12px;
+    border-width: 1.5px;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* ===================================================================
+   Guest Main & Hero Section
+   =================================================================== */
+.guest-main {
+    position: relative;
+    z-index: 10;
+}
+
+.hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 60px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hero-content {
+    flex: 1;
+    max-width: 600px;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 16px;
+    border-radius: 30px;
+    background: rgba(20, 30, 22, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #c8ffb0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.hero-badge svg {
+    width: 15px;
+    height: 15px;
+    stroke: #c8ffb0;
+    flex-shrink: 0;
+}
+
+.hero-title {
+    font-size: 3.2rem;
+    font-weight: 800;
+    line-height: 1.15;
+    margin: 0 0 20px;
+    font-family: 'Inter', sans-serif;
+    color: var(--white);
+}
+
+.hero-highlight {
+    color: #ffffff;
+    text-shadow: 0 0 40px rgba(89, 133, 57, 0.6), 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.hero-subtitle {
+    font-size: 1.15rem;
+    opacity: 0.75;
+    line-height: 1.7;
+    margin-bottom: 32px;
+    color: var(--white);
+}
+
+.hero-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
+
+/* ===================================================================
+   Hero Visual Card
+   =================================================================== */
+.hero-visual {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.hero-card {
+    background: rgba(20, 30, 22, 0.45);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 24px;
+    padding: 32px;
+    min-width: 280px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.hero-card-label {
+    font-size: 0.8rem;
+    opacity: 0.85;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    color: var(--white);
+}
+
+.hero-card-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #7fd962;
+    text-shadow: 0 0 20px rgba(89, 133, 57, 0.4);
+}
+
+.hero-card-stats {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.badge-income {
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(46, 204, 113, 0.25);
+    border: 1px solid rgba(46, 204, 113, 0.5);
+    color: #9fffcc;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.badge-expense {
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(231, 76, 60, 0.25);
+    border: 1px solid rgba(231, 76, 60, 0.5);
+    color: #ffb3ab;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* ===================================================================
+   Features Section
+   =================================================================== */
+.features-section {
+    padding: 60px 40px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.features-section h2 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 40px;
+    color: var(--white);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+}
+
+.feature-card {
+    background: rgba(20, 30, 22, 0.45);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 20px;
+    padding: 28px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.feature-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    margin: 0 auto 16px;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+}
+
+.feature-icon svg {
+    width: 26px;
+    height: 26px;
+    stroke: #c8ffb0;
+}
+
+.feature-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: var(--white);
+}
+
+.feature-card p {
+    font-size: 0.88rem;
+    opacity: 0.7;
+    line-height: 1.6;
+    color: var(--white);
+    margin: 0;
+}
+
+/* ===================================================================
+   Modal Close Button (dashboard.css not loaded on guest page)
+   =================================================================== */
+.modal-close {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    background: none;
+    border: none;
+    color: var(--white);
+    font-size: 2rem;
+    cursor: pointer;
+    opacity: 0.55;
+    z-index: 10;
+    line-height: 1;
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+.modal-close:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* ===================================================================
+   Modal — green glass to match landing background
+   =================================================================== */
+.guest-page .modal-card {
+    background: rgba(20, 38, 22, 0.72);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.guest-page .modal-overlay {
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* ===================================================================
+   Terms Checkbox Row
+   =================================================================== */
+.terms-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 8px 0 14px;
+}
+
+.terms-row input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    accent-color: var(--primary-green);
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.terms-row label {
+    font-size: 0.83rem;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.5;
+    cursor: pointer;
+    user-select: none;
+}
+
+.terms-row label a {
+    color: #c8ffb0;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.terms-row label a:hover {
+    color: #ffffff;
+}
+
+/* ===================================================================
+   Terms & Conditions Popup Modal
+   =================================================================== */
+#terms-modal .modal-card {
+    max-width: 620px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    padding: 32px 36px;
+}
+
+.terms-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+}
+
+.terms-modal-header h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--white);
+    margin: 0;
+}
+
+.terms-modal-body {
+    overflow-y: auto;
+    flex: 1;
+    padding-right: 8px;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.88rem;
+    line-height: 1.75;
+}
+
+.terms-modal-body::-webkit-scrollbar {
+    width: 5px;
+}
+
+.terms-modal-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.terms-modal-body::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+.terms-modal-body h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #c8ffb0;
+    margin: 20px 0 6px;
+}
+
+.terms-modal-body p {
+    margin: 0 0 10px;
+}
+
+.terms-modal-footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 16px;
+}
+
+.terms-modal-footer .btn-ghost {
+    padding: 10px 28px;
+    font-size: 0.9rem;
+}
+
+.guest-page #forgot-modal .login-link,
+.guest-page #reset-modal .login-link {
+    margin-top: 18px;
+    text-align: center;
+}
+
+.guest-page #forgot-modal .login-link a,
+.guest-page #reset-modal .login-link a {
+    color: #c8ffb0;
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.guest-page #forgot-modal .login-link a:hover,
+.guest-page #reset-modal .login-link a:hover {
+    color: #ffffff;
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .guest-main-header {
+        padding: 10px 16px;
+    }
+
+    .header-title {
+        font-size: 1.2em;
+    }
+
+    .hero-section {
+        flex-direction: column;
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .hero-content {
+        max-width: 100%;
+    }
+
+    .hero-title {
+        font-size: 2.2rem;
+    }
+
+    .hero-actions {
+        justify-content: center;
+    }
+
+    .hero-visual {
+        width: 100%;
+    }
+
+    .hero-card {
+        width: 100%;
+        box-sizing: border-box;
+        min-width: unset;
+    }
+
+    .features-section {
+        padding: 40px 20px 60px;
+    }
+
+    .guest-page #forgot-modal .login-link,
+    .guest-page #reset-modal .login-link {
+        margin-top: 14px;
+    }
+}
+
+@media (max-width: 915px) and (orientation: landscape) {
+    .guest-main-header {
+        min-height: 56px;
+        padding: 8px 14px;
+    }
+
+    .header-left {
+        flex: 1 1 auto;
+        gap: 10px;
+        min-width: 0;
+    }
+
+    .header-right {
+        flex-shrink: 0;
+        gap: 8px;
+    }
+
+    .header-logo-container {
+        width: 32px;
+        height: 32px;
+    }
+
+    .header-title {
+        font-size: 0.9rem;
+        line-height: 1.1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .header-signin-btn {
+        padding: 5px 10px;
+        font-size: 0.72rem;
+        line-height: 1.1;
+        border-radius: 14px;
+        letter-spacing: 0.2px;
+        white-space: nowrap;
+    }
+
+    .hero-section {
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+        padding: 24px 16px 32px;
+        text-align: left;
+    }
+
+    .hero-content,
+    .hero-visual {
+        flex: 1 1 0;
+        min-width: 0;
+    }
+
+    .hero-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .hero-title {
+        font-size: 1.8rem;
+        margin-bottom: 12px;
+    }
+
+    .hero-subtitle {
+        font-size: 0.98rem;
+        line-height: 1.5;
+        margin-bottom: 20px;
+    }
+
+    .hero-actions {
+        justify-content: center;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .hero-actions .btn,
+    .hero-actions .btn-ghost {
+        padding: 9px 16px;
+        font-size: 0.88rem;
+        line-height: 1.4;
+        white-space: nowrap;
+    }
+
+    .hero-card {
+        padding: 22px;
+    }
+
+    .hero-card-value {
+        font-size: 1.7rem;
+    }
+
+    .features-section {
+        padding: 28px 16px 42px;
+    }
+
+    .guest-page .modal-overlay {
+        align-items: flex-start;
+        overflow-y: auto;
+        padding: 14px;
+    }
+
+    .guest-page .modal-card {
+        width: min(92vw, 520px);
+        max-width: 520px;
+        padding: 24px 20px;
+        border-radius: 18px;
+        margin: auto;
+    }
+
+    .guest-page .modal-card .header {
+        font-size: 1.5rem;
+        margin-bottom: 18px;
+    }
+
+    .guest-page #forgot-modal .modal-card,
+    .guest-page #reset-modal .modal-card {
+        width: min(90vw, 460px);
+        max-width: 460px;
+        padding: 22px 18px;
+    }
+
+    .guest-page #forgot-modal .modal-card {
+        width: min(84vw, 380px);
+        max-width: 380px;
+        padding: 18px 16px;
+    }
+
+    .guest-page #forgot-modal .modal-card .header {
+        font-size: 1.25rem;
+        margin-bottom: 12px;
+    }
+
+    .guest-page #forgot-modal .modal-form-container > p {
+        font-size: 0.82rem;
+        line-height: 1.4;
+        margin-bottom: 14px !important;
+    }
+
+    .guest-page #forgot-modal .input-group {
+        height: 42px;
+        margin-bottom: 12px;
+    }
+
+    .guest-page #forgot-modal .floating-input {
+        font-size: 0.88rem;
+        padding: 15px 12px 4px;
+    }
+
+    .guest-page #forgot-modal .floating-label {
+        top: 12px;
+        left: 12px;
+        font-size: 0.88rem;
+    }
+
+    .guest-page #forgot-modal .btn-primary {
+        height: 42px;
+        font-size: 0.8rem;
+        margin-top: 6px;
+    }
+
+    .guest-page .input-group {
+        height: 46px;
+        margin-bottom: 14px;
+    }
+
+    .guest-page .floating-input {
+        padding: 17px 14px 5px;
+        font-size: 0.92rem;
+    }
+
+    .guest-page .password-input-wrapper .floating-input {
+        padding-right: 44px;
+    }
+
+    .guest-page .floating-label {
+        top: 14px;
+        left: 14px;
+        font-size: 0.92rem;
+    }
+
+    .guest-page .password-toggle {
+        width: 28px;
+        height: 28px;
+        right: 10px;
+    }
+
+    .guest-page .btn-primary,
+    .guest-page .btn-secondary-outline {
+        height: 46px;
+        margin-top: 8px;
+        font-size: 0.86rem;
+    }
+
+    .guest-page .forgot-password {
+        margin-top: 10px;
+        font-size: 0.82rem;
+    }
+
+    .guest-page .secondary-action-container {
+        margin-top: 10px;
+    }
+
+    .guest-page #forgot-modal .login-link a,
+    .guest-page #reset-modal .login-link a {
+        font-size: 0.82rem;
+    }
+}
+
+@media (max-width: 915px) and (max-height: 430px) and (orientation: landscape) {
+    .guest-main-header {
+        min-height: 50px;
+        padding: 6px 12px;
+    }
+
+    .header-logo-container {
+        width: 28px;
+        height: 28px;
+    }
+
+    .header-title {
+        font-size: 0.82rem;
+    }
+
+    .header-signin-btn {
+        padding: 4px 8px;
+        font-size: 0.68rem;
+        border-width: 1px;
+    }
+
+    .guest-page .modal-overlay {
+        padding: 10px;
+    }
+
+    .guest-page .modal-card {
+        width: min(94vw, 500px);
+        padding: 18px 16px;
+        border-radius: 16px;
+    }
+
+    .guest-page .modal-card .header {
+        font-size: 1.3rem;
+        margin-bottom: 14px;
+    }
+
+    .guest-page #forgot-modal .modal-card,
+    .guest-page #reset-modal .modal-card {
+        width: min(94vw, 420px);
+        max-width: 420px;
+        padding: 16px 14px;
+    }
+
+    .guest-page #forgot-modal .modal-card {
+        width: min(92vw, 340px);
+        max-width: 340px;
+        padding: 14px 12px;
+    }
+
+    .guest-page #forgot-modal .modal-card .header {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+    }
+
+    .guest-page #forgot-modal .modal-form-container > p {
+        font-size: 0.76rem;
+        line-height: 1.35;
+        margin-bottom: 10px !important;
+    }
+
+    .guest-page #forgot-modal .input-group {
+        height: 38px;
+        margin-bottom: 10px;
+    }
+
+    .guest-page #forgot-modal .floating-input {
+        font-size: 0.82rem;
+        padding: 13px 10px 3px;
+    }
+
+    .guest-page #forgot-modal .floating-label {
+        top: 10px;
+        left: 10px;
+        font-size: 0.82rem;
+    }
+
+    .guest-page #forgot-modal .btn-primary {
+        height: 38px;
+        font-size: 0.74rem;
+        margin-top: 4px;
+    }
+
+    .guest-page .input-group {
+        height: 42px;
+        margin-bottom: 12px;
+    }
+
+    .guest-page .floating-input {
+        font-size: 0.88rem;
+        padding: 15px 12px 4px;
+    }
+
+    .guest-page .floating-label {
+        top: 12px;
+        left: 12px;
+        font-size: 0.88rem;
+    }
+
+    .guest-page .btn-primary,
+    .guest-page .btn-secondary-outline {
+        height: 42px;
+        font-size: 0.8rem;
+    }
+
+    .guest-page .forgot-password,
+    .guest-page .secondary-action-container {
+        margin-top: 8px;
+    }
+
+    .guest-page .forgot-password {
+        font-size: 0.76rem;
+    }
+
+    .guest-page #forgot-modal .login-link,
+    .guest-page #reset-modal .login-link {
+        margin-top: 10px;
+    }
+
+    .guest-page #forgot-modal .login-link a,
+    .guest-page #reset-modal .login-link a {
+        font-size: 0.76rem;
+    }
+}

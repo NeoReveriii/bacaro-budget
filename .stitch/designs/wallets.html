@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bacaro Budget Manager - My Wallets</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary": "#ffffff",
+                      "inverse-surface": "#283044",
+                      "secondary-fixed": "#c3ecd7",
+                      "surface-variant": "#dae2fd",
+                      "surface-container-low": "#f2f3ff",
+                      "on-background": "#131b2e",
+                      "surface-container-high": "#e2e7ff",
+                      "inverse-primary": "#95d3ba",
+                      "on-secondary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "background": "#faf8ff",
+                      "on-tertiary-fixed": "#0b1c30",
+                      "on-surface": "#131b2e",
+                      "on-primary-fixed": "#002117",
+                      "error": "#ba1a1a",
+                      "surface-dim": "#d2d9f4",
+                      "surface-container-highest": "#dae2fd",
+                      "primary": "#003527",
+                      "secondary": "#416656",
+                      "on-error": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "on-secondary-container": "#476c5b",
+                      "on-surface-variant": "#404944",
+                      "surface": "#faf8ff",
+                      "tertiary-fixed": "#d3e4fe",
+                      "on-primary-container": "#80bea6",
+                      "outline-variant": "#bfc9c3",
+                      "on-secondary-fixed-variant": "#294e3f",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary-fixed": "#002115",
+                      "surface-container": "#eaedff",
+                      "tertiary-fixed-dim": "#b7c8e1",
+                      "secondary-container": "#c3ecd7",
+                      "on-tertiary-container": "#a2b2cb",
+                      "primary-fixed": "#b0f0d6",
+                      "surface-tint": "#2b6954",
+                      "tertiary-container": "#35455a",
+                      "primary-fixed-dim": "#95d3ba",
+                      "surface-bright": "#faf8ff",
+                      "primary-container": "#064e3b",
+                      "inverse-on-surface": "#eef0ff",
+                      "outline": "#707974",
+                      "on-tertiary-fixed-variant": "#38485d",
+                      "on-primary-fixed-variant": "#0b513d",
+                      "tertiary": "#1f2f43",
+                      "secondary-fixed-dim": "#a8cfbc",
+                      "on-primary": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "md": "16px",
+                      "sm": "8px",
+                      "unit": "4px",
+                      "gutter": "24px",
+                      "lg": "24px",
+                      "max_width": "1280px",
+                      "xl": "40px",
+                      "xs": "4px",
+                      "margin": "32px"
+              },
+              "fontFamily": {
+                      "body-md": ["Manrope"],
+                      "display": ["Manrope"],
+                      "numeric-data": ["Manrope"],
+                      "h1": ["Manrope"],
+                      "label-caps": ["Manrope"],
+                      "body-lg": ["Manrope"],
+                      "h3": ["Manrope"],
+                      "h2": ["Manrope"],
+                      "body-sm": ["Manrope"]
+              },
+              "fontSize": {
+                      "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                      "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "numeric-data": ["16px", {"lineHeight": "1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                      "h3": ["20px", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600"}],
+                      "h2": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "body-sm": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background font-body-md text-on-surface selection:bg-secondary-container antialiased">
+<!-- Sidebar Navigation Shell -->
+<aside class="h-screen w-64 fixed left-0 top-0 border-r border-slate-200 bg-white flex flex-col py-6 px-4 z-50">
+<div class="mb-10 px-2 flex items-center gap-3">
+<div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-white" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<div>
+<h1 class="text-lg font-bold text-emerald-900 leading-tight">Bacaro</h1>
+<p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Budget Manager</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-500 hover:bg-slate-50 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="dashboard">dashboard</span>
+<span class="font-body-sm font-semibold">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-500 hover:bg-slate-50 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="receipt_long">receipt_long</span>
+<span class="font-body-sm font-semibold">Transactions</span>
+</a>
+<!-- Active Tab: Wallets -->
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-emerald-900 font-bold border-r-2 border-emerald-900 bg-emerald-50/50 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="account_balance_wallet" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+<span class="font-body-sm">Wallets</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-500 hover:bg-slate-50 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="track_changes">track_changes</span>
+<span class="font-body-sm font-semibold">Goals</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-500 hover:bg-slate-50 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="psychology">psychology</span>
+<span class="font-body-sm font-semibold">Kwarta AI</span>
+</a>
+</nav>
+<div class="mt-auto space-y-1 pt-6 border-t border-slate-100">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-500 hover:bg-slate-50 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
+<span class="font-body-sm font-semibold">Settings</span>
+</a>
+<div class="flex items-center gap-3 px-3 py-4 mt-2">
+<img alt="Arthur P." class="w-10 h-10 rounded-full border-2 border-slate-100 shadow-sm" data-alt="A professional headshot of a friendly man with short dark hair and a neat beard wearing a minimalist charcoal polo shirt. The lighting is soft and high-key, suggesting a corporate modern aesthetic. The background is a clean, neutral gradient of light gray and sage green, maintaining a premium fintech brand look." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPF-5rC8dPGbquctjetbM0sPGk3p4mC9NjHCDO5NbE01vPxgtSN2RP3A2yxjMhfAMR49Y0qxyCsJnlmqdjNaazbl6YYnUmyU014v7d5Fku5mWirx-OgiDbH8NFUwDgWBXYZsBZH8v_jBTGzUW14GYSJpXjvE94GLtvhTd7WkKmrWGIU6sLr0VVeDl5kK-EY8WZ-ZarhoJLBX1YbOj73wwAmorg4QPbMefegJ67YMJvW1R2fid4jKwX6hI66eWswrGrQtxHdVJ_KCU"/>
+<div class="overflow-hidden">
+<p class="text-body-sm font-bold text-on-surface truncate">Arthur P.</p>
+<p class="text-[11px] text-slate-500 font-medium truncate">Premium Plan</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 min-h-screen">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-40 bg-[#FAF8FF] w-full border-b border-slate-200 px-8 py-6 flex justify-between items-center">
+<div>
+<h2 class="text-h1 font-h1 text-on-surface">My Wallets</h2>
+<p class="text-body-sm text-slate-500 mt-1">Total Balance: <span class="font-bold text-emerald-900">₱125,430.50</span></p>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 mr-2">
+<button class="p-2 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+</div>
+<button class="bg-primary text-white font-body-sm font-semibold px-6 py-3 rounded-xl flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all shadow-sm">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                    Add Wallet
+                </button>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="p-8 space-y-gutter max-w-max_width mx-auto">
+<!-- Analysis Section (Bento Style) -->
+<div class="grid grid-cols-3 gap-gutter">
+<!-- Net Worth Trend Chart Card -->
+<div class="col-span-2 bg-white border border-outline-variant rounded-xl p-6 relative overflow-hidden">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="font-h3 text-on-surface">Net Worth Trend</h3>
+<p class="text-body-sm text-slate-500">Wealth growth over the last 6 months</p>
+</div>
+<div class="flex items-center gap-2 bg-emerald-50 px-3 py-1 rounded-full text-emerald-700 text-[12px] font-bold">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span>
+                            +12.5%
+                        </div>
+</div>
+<div class="h-48 w-full flex items-end gap-2 px-2 relative">
+<!-- Mockup Line Chart using CSS Gradients/Shapes -->
+<div class="absolute inset-0 flex items-end">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 400 100">
+<path d="M0 80 Q 50 70, 100 75 T 200 40 T 300 30 T 400 10" fill="none" stroke="#003527" stroke-width="3"></path>
+<path d="M0 80 Q 50 70, 100 75 T 200 40 T 300 30 T 400 10 V 100 H 0 Z" fill="url(#grad1)"></path>
+<defs>
+<lineargradient id="grad1" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:rgba(0,53,39,0.1);stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:rgba(0,53,39,0);stop-opacity:0"></stop>
+</lineargradient>
+</defs>
+</svg>
+</div>
+<!-- Chart X-Axis Labels -->
+<div class="absolute bottom-[-24px] left-0 w-full flex justify-between text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
+<span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
+</div>
+</div>
+</div>
+<!-- Asset Distribution Chart Card -->
+<div class="col-span-1 bg-white border border-outline-variant rounded-xl p-6">
+<h3 class="font-h3 text-on-surface mb-1">Asset Distribution</h3>
+<p class="text-body-sm text-slate-500 mb-8">Portfolio allocation by asset type</p>
+<div class="relative w-40 h-40 mx-auto mb-8">
+<!-- Custom CSS Doughnut Mock -->
+<div class="w-full h-full rounded-full border-[14px] border-slate-100 flex items-center justify-center">
+<div class="text-center">
+<span class="block text-h2 font-numeric-data text-primary">₱125k</span>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Total</span>
+</div>
+</div>
+<!-- Visual segment overlays -->
+<div class="absolute inset-0 rounded-full border-[14px] border-primary border-t-transparent border-l-transparent transform rotate-45 opacity-90"></div>
+<div class="absolute inset-0 rounded-full border-[14px] border-emerald-400 border-b-transparent border-r-transparent transform -rotate-12"></div>
+</div>
+<div class="space-y-2">
+<div class="flex items-center justify-between text-[12px]">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="font-medium text-slate-600">Savings</span>
+</div>
+<span class="font-bold text-on-surface">65%</span>
+</div>
+<div class="flex items-center justify-between text-[12px]">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-emerald-400"></div>
+<span class="font-medium text-slate-600">Cash/E-Wallet</span>
+</div>
+<span class="font-bold text-on-surface">35%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Wallets Grid -->
+<div>
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-h2 text-on-surface">Connected Accounts</h3>
+<div class="flex gap-2">
+<button class="p-2 bg-white border border-slate-200 rounded-lg text-slate-500 hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+</button>
+<button class="p-2 bg-white border border-slate-200 rounded-lg text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="list">list</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-4 gap-gutter">
+<!-- GCash Wallet -->
+<div class="bg-white border border-outline-variant rounded-xl p-5 flex flex-col hover:border-emerald-200 transition-all shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 bg-[#007DFE] rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-white" data-icon="account_balance">account_balance</span>
+</div>
+<span class="material-symbols-outlined text-slate-300 cursor-pointer hover:text-primary" data-icon="more_vert">more_vert</span>
+</div>
+<h4 class="font-bold text-on-surface">GCash</h4>
+<p class="text-[12px] text-slate-500 font-medium">Last synced: 2 mins ago</p>
+<div class="mt-8 mb-6">
+<p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Current Balance</p>
+<p class="text-h2 font-numeric-data text-emerald-700">₱45,210.00</p>
+</div>
+<div class="mt-auto grid grid-cols-2 gap-2">
+<button class="py-2 border border-slate-200 rounded-lg text-body-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors">Transfer</button>
+<button class="py-2 text-body-sm font-bold text-emerald-900 hover:underline">Details</button>
+</div>
+</div>
+<!-- Maya Wallet -->
+<div class="bg-white border border-outline-variant rounded-xl p-5 flex flex-col hover:border-emerald-200 transition-all shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 bg-black rounded-full flex items-center justify-center border-2 border-emerald-400">
+<span class="material-symbols-outlined text-emerald-400" data-icon="wallet">wallet</span>
+</div>
+<span class="material-symbols-outlined text-slate-300 cursor-pointer hover:text-primary" data-icon="more_vert">more_vert</span>
+</div>
+<h4 class="font-bold text-on-surface">Maya Savings</h4>
+<p class="text-[12px] text-slate-500 font-medium">Last synced: 5 mins ago</p>
+<div class="mt-8 mb-6">
+<p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Current Balance</p>
+<p class="text-h2 font-numeric-data text-emerald-700">₱32,150.50</p>
+</div>
+<div class="mt-auto grid grid-cols-2 gap-2">
+<button class="py-2 border border-slate-200 rounded-lg text-body-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors">Transfer</button>
+<button class="py-2 text-body-sm font-bold text-emerald-900 hover:underline">Details</button>
+</div>
+</div>
+<!-- BPI Savings Wallet -->
+<div class="bg-white border border-outline-variant rounded-xl p-5 flex flex-col hover:border-emerald-200 transition-all shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 bg-[#B71C1C] rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-white" data-icon="account_balance">account_balance</span>
+</div>
+<span class="material-symbols-outlined text-slate-300 cursor-pointer hover:text-primary" data-icon="more_vert">more_vert</span>
+</div>
+<h4 class="font-bold text-on-surface">BPI Savings</h4>
+<p class="text-[12px] text-slate-500 font-medium">Last synced: 1 hour ago</p>
+<div class="mt-8 mb-6">
+<p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Current Balance</p>
+<p class="text-h2 font-numeric-data text-emerald-700">₱28,070.00</p>
+</div>
+<div class="mt-auto grid grid-cols-2 gap-2">
+<button class="py-2 border border-slate-200 rounded-lg text-body-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors">Transfer</button>
+<button class="py-2 text-body-sm font-bold text-emerald-900 hover:underline">Details</button>
+</div>
+</div>
+<!-- Security Bank Wallet -->
+<div class="bg-white border border-outline-variant rounded-xl p-5 flex flex-col hover:border-emerald-200 transition-all shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 bg-[#0D47A1] rounded-full flex items-center justify-center border-2 border-[#FFD600]">
+<span class="material-symbols-outlined text-white" data-icon="savings">savings</span>
+</div>
+<span class="material-symbols-outlined text-slate-300 cursor-pointer hover:text-primary" data-icon="more_vert">more_vert</span>
+</div>
+<h4 class="font-bold text-on-surface">Security Bank</h4>
+<p class="text-[12px] text-slate-500 font-medium">Last synced: 10 mins ago</p>
+<div class="mt-8 mb-6">
+<p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Current Balance</p>
+<p class="text-h2 font-numeric-data text-emerald-700">₱20,000.00</p>
+</div>
+<div class="mt-auto grid grid-cols-2 gap-2">
+<button class="py-2 border border-slate-200 rounded-lg text-body-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors">Transfer</button>
+<button class="py-2 text-body-sm font-bold text-emerald-900 hover:underline">Details</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Activity Section (Additional UI Flair) -->
+<div class="bg-white border border-outline-variant rounded-xl overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+<h3 class="font-bold text-on-surface text-body-md">Upcoming Recurring Payments</h3>
+<button class="text-primary font-bold text-body-sm hover:underline">View All</button>
+</div>
+<div class="divide-y divide-slate-100">
+<div class="px-6 py-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="electric_bolt">electric_bolt</span>
+</div>
+<div>
+<p class="text-body-sm font-bold text-on-surface">Meralco Bill</p>
+<p class="text-[12px] text-slate-500">Due in 3 days • Maya Savings</p>
+</div>
+</div>
+<span class="font-numeric-data font-bold text-error">-₱4,500.00</span>
+</div>
+<div class="px-6 py-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="wifi">wifi</span>
+</div>
+<div>
+<p class="text-body-sm font-bold text-on-surface">PLDT Home Fibr</p>
+<p class="text-[12px] text-slate-500">Due in 5 days • BPI Savings</p>
+</div>
+</div>
+<span class="font-numeric-data font-bold text-error">-₱1,899.00</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual FAB (Hidden on this transactional/focused screen per instructions, but kept as reference for system capability) -->
+<!-- Suppression logic applied: Navigation shell and FAB logic follows user focus. -->
+</body></html>

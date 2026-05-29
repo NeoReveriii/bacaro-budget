@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bacaro | Professional Financial Systems</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-error": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-tint": "#2b6954",
+                      "tertiary-fixed": "#d3e4fe",
+                      "on-tertiary-fixed-variant": "#38485d",
+                      "primary-fixed-dim": "#95d3ba",
+                      "secondary": "#416656",
+                      "tertiary": "#1f2f43",
+                      "on-tertiary-container": "#a2b2cb",
+                      "on-primary-fixed-variant": "#0b513d",
+                      "secondary-container": "#c3ecd7",
+                      "on-secondary-fixed": "#002115",
+                      "on-primary-fixed": "#002117",
+                      "inverse-surface": "#283044",
+                      "surface-bright": "#faf8ff",
+                      "surface": "#faf8ff",
+                      "surface-container-high": "#e2e7ff",
+                      "on-secondary-container": "#476c5b",
+                      "on-error-container": "#93000a",
+                      "surface-container-low": "#f2f3ff",
+                      "on-surface-variant": "#404944",
+                      "outline-variant": "#bfc9c3",
+                      "primary": "#003527",
+                      "surface-dim": "#d2d9f4",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-highest": "#dae2fd",
+                      "inverse-primary": "#95d3ba",
+                      "error": "#ba1a1a",
+                      "primary-fixed": "#b0f0d6",
+                      "on-secondary-fixed-variant": "#294e3f",
+                      "error-container": "#ffdad6",
+                      "on-surface": "#131b2e",
+                      "on-primary": "#ffffff",
+                      "outline": "#707974",
+                      "on-primary-container": "#80bea6",
+                      "inverse-on-surface": "#eef0ff",
+                      "secondary-fixed-dim": "#a8cfbc",
+                      "surface-container": "#eaedff",
+                      "tertiary-container": "#35455a",
+                      "background": "#faf8ff",
+                      "primary-container": "#064e3b",
+                      "surface-variant": "#dae2fd",
+                      "secondary-fixed": "#c3ecd7",
+                      "tertiary-fixed-dim": "#b7c8e1",
+                      "on-tertiary-fixed": "#0b1c30",
+                      "on-background": "#131b2e"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "lg": "24px",
+                      "sm": "8px",
+                      "gutter": "24px",
+                      "xl": "40px",
+                      "max_width": "1280px",
+                      "unit": "4px",
+                      "xs": "4px",
+                      "margin": "32px",
+                      "md": "16px"
+              },
+              "fontFamily": {
+                      "body-lg": ["Manrope"],
+                      "label-caps": ["Manrope"],
+                      "body-sm": ["Manrope"],
+                      "body-md": ["Manrope"],
+                      "h3": ["Manrope"],
+                      "numeric-data": ["Manrope"],
+                      "display": ["Manrope"],
+                      "h1": ["Manrope"],
+                      "h2": ["Manrope"]
+              },
+              "fontSize": {
+                      "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                      "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "body-sm": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                      "h3": ["20px", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600"}],
+                      "numeric-data": ["16px", {"lineHeight": "1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "h2": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #faf8ff;
+            font-family: 'Manrope', sans-serif;
+        }
+    </style>
+</head>
+<body class="text-on-surface">
+<!-- TopNavBar from Shared Components -->
+<nav class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-md border-b border-emerald-100 shadow-sm shadow-emerald-900/5">
+<div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+<div class="text-2xl font-bold tracking-tighter text-emerald-900">Bacaro</div>
+<div class="hidden md:flex items-center space-x-8 font-manrope text-sm font-semibold tracking-tight">
+<a class="text-emerald-900 border-b-2 border-emerald-900 pb-1" href="#">Dashboard</a>
+<a class="text-emerald-700/70 hover:text-emerald-900 transition-colors" href="#">Features</a>
+<a class="text-emerald-700/70 hover:text-emerald-900 transition-colors" href="#">Kwarta AI</a>
+<a class="text-emerald-700/70 hover:text-emerald-900 transition-colors" href="#">Pricing</a>
+</div>
+<div class="flex items-center space-x-4">
+<button class="px-4 py-2 text-emerald-900 font-semibold text-sm hover:bg-emerald-50/50 transition-colors rounded-lg">Sign In</button>
+<button class="px-5 py-2 bg-primary text-white font-semibold text-sm rounded-lg active:scale-95 duration-150 ease-in-out">Open Account</button>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="pt-24">
+<!-- Hero Section -->
+<section class="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<div class="space-y-8">
+<div class="inline-flex items-center px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-label-caps uppercase">
+                    Institutional Wealth Management
+                </div>
+<h1 class="font-display text-display text-primary leading-tight">
+                    The Next Evolution in <br/><span class="text-secondary">Personal Finance.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-outline max-w-lg">
+                    Experience a sophisticated, intelligence-driven platform designed for precision capital management and growth. Built for those who demand institutional-grade reliability.
+                </p>
+<div class="flex flex-wrap gap-4">
+<button class="px-8 py-4 bg-primary text-white rounded-lg font-h3 flex items-center gap-2 hover:opacity-90 transition-all">
+                        Get Started Free
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<button class="px-8 py-4 bg-secondary-container text-on-secondary-container rounded-lg font-h3 hover:bg-secondary-container/80 transition-all">
+                        View Demo
+                    </button>
+</div>
+</div>
+<!-- Hero UI Mockup -->
+<div class="relative">
+<div class="bg-white rounded-xl shadow-2xl border border-outline-variant overflow-hidden">
+<div class="bg-primary p-4 flex items-center justify-between">
+<div class="flex gap-2">
+<div class="w-3 h-3 rounded-full bg-error"></div>
+<div class="w-3 h-3 rounded-full bg-secondary-container"></div>
+<div class="w-3 h-3 rounded-full bg-on-primary-container"></div>
+</div>
+<div class="text-[10px] text-primary-fixed uppercase tracking-widest font-bold">Bacaro Terminal</div>
+</div>
+<div class="p-6 bg-surface-container-low grid grid-cols-3 gap-4">
+<div class="col-span-2 space-y-4">
+<div class="bg-white p-4 rounded-lg border border-outline-variant">
+<p class="text-label-caps text-outline mb-1">TOTAL BALANCE</p>
+<p class="text-h1 font-numeric-data text-primary">$428,950.00</p>
+<div class="mt-4 h-24 w-full bg-emerald-50 rounded relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-t from-secondary-container/30 to-transparent"></div>
+<!-- Simplified Chart Line -->
+<svg class="w-full h-full stroke-primary fill-none stroke-2" viewbox="0 0 400 100">
+<path d="M0,80 Q50,40 100,70 T200,30 T300,50 T400,10"></path>
+</svg>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white p-4 rounded-lg border border-outline-variant">
+<p class="text-label-caps text-outline">INVESTMENTS</p>
+<p class="text-h3 text-secondary font-numeric-data">+12.4%</p>
+</div>
+<div class="bg-white p-4 rounded-lg border border-outline-variant">
+<p class="text-label-caps text-outline">LIQUIDITY</p>
+<p class="text-h3 text-primary font-numeric-data">84.2%</p>
+</div>
+</div>
+</div>
+<div class="col-span-1 bg-white p-4 rounded-lg border border-outline-variant">
+<p class="text-label-caps text-outline mb-4">ASSET ALLOCATION</p>
+<div class="space-y-3">
+<div class="h-2 w-full bg-emerald-100 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[60%]"></div>
+</div>
+<div class="h-2 w-full bg-emerald-100 rounded-full overflow-hidden">
+<div class="bg-secondary h-full w-[30%]"></div>
+</div>
+<div class="h-2 w-full bg-emerald-100 rounded-full overflow-hidden">
+<div class="bg-on-primary-container h-full w-[10%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Float elements -->
+<div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-xl border border-outline-variant flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-container">verified_user</span>
+</div>
+<div>
+<p class="text-body-sm font-bold">Secure Access</p>
+<p class="text-[10px] text-outline">256-bit AES Encryption</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Features Bento Grid -->
+<section class="bg-surface-container-low py-24">
+<div class="max-w-7xl mx-auto px-6">
+<div class="text-center mb-16 space-y-4">
+<h2 class="font-h1 text-h1 text-primary">Advanced Capabilities</h2>
+<p class="font-body-md text-body-md text-outline max-w-2xl mx-auto">
+                        Precision tools engineered for complex financial landscapes. Monitor, manage, and grow your wealth with unmatched clarity.
+                    </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Feature 1: Real-time Dashboard -->
+<div class="md:col-span-2 bg-white rounded-xl border border-outline-variant p-8 relative overflow-hidden group hover:border-primary/30 transition-all">
+<div class="relative z-10">
+<span class="material-symbols-outlined text-primary text-4xl mb-4">monitoring</span>
+<h3 class="font-h2 text-h2 text-primary mb-4">Real-time Dashboard</h3>
+<p class="font-body-md text-body-md text-outline max-w-md">
+                                Live telemetry for your net worth. Every transaction, asset fluctuation, and dividend update synced across all platforms in milliseconds.
+                            </p>
+</div>
+<div class="absolute right-0 top-0 w-1/2 h-full opacity-10 group-hover:opacity-20 transition-opacity">
+<img alt="Data visualization" class="w-full h-full object-cover" data-alt="Close-up of a high-resolution data visualization screen showing complex financial charts and graphs with soft emerald lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD81NZbvE4TL3jIchDnmvxwbt4aJraFNag33dQ8MzdiC9Cj3DOtXhA6rtKOalbzkVsj9f65uzzYNnPyfNjIHTWo1xjrWOH7V8Pyim3Gairc05vpgtLixvL0kRvw53jrdDNHSKbdobgceL00cf1g3KtNuMhm3s8W3IkRC5GH_te6HorSqTgmMojhemH_BEujmKfbrva0HMC42BmxGszAyZ4JFXLW-HhuyqxrKRVqu3T49NFfXiS2-4Pc3_LT_u1fFaR8FuR1Gfd3_Kg"/>
+</div>
+</div>
+<!-- Feature 2: Multi-wallet Support -->
+<div class="bg-white rounded-xl border border-outline-variant p-8 group hover:border-primary/30 transition-all">
+<span class="material-symbols-outlined text-secondary text-4xl mb-4">account_balance_wallet</span>
+<h3 class="font-h2 text-h2 text-primary mb-4">Multi-wallet Support</h3>
+<p class="font-body-sm text-body-sm text-outline">
+                            Unify your global holdings. From traditional bank accounts to digital assets and venture capital positions.
+                        </p>
+</div>
+<!-- Feature 3: Savings Goals -->
+<div class="bg-white rounded-xl border border-outline-variant p-8 group hover:border-primary/30 transition-all">
+<span class="material-symbols-outlined text-on-primary-container text-4xl mb-4">target</span>
+<h3 class="font-h2 text-h2 text-primary mb-4">Savings Goals</h3>
+<p class="font-body-sm text-body-sm text-outline">
+                            Intelligent projection models that help you track towards milestones with algorithmic accuracy.
+                        </p>
+</div>
+<!-- Feature 4: Kwarta AI Integration -->
+<div class="md:col-span-2 bg-primary rounded-xl p-8 relative overflow-hidden text-white group">
+<div class="relative z-10 flex flex-col h-full justify-between">
+<div>
+<div class="inline-block bg-white/10 px-3 py-1 rounded-full text-label-caps mb-4">AI PRO POWERED</div>
+<h3 class="font-display text-h1 mb-4">Kwarta AI Integration</h3>
+<p class="font-body-lg text-primary-fixed max-w-lg">
+                                    Our proprietary neural network analyzes spending patterns to uncover hidden efficiencies and tax-optimization opportunities.
+                                </p>
+</div>
+<div class="mt-8">
+<button class="text-white border-b-2 border-white/50 pb-1 font-bold hover:border-white transition-all">Explore the Intelligence Layer</button>
+</div>
+</div>
+<div class="absolute right-0 bottom-0 opacity-20 transform translate-y-12 translate-x-12">
+<span class="material-symbols-outlined text-[200px]" style="font-variation-settings: 'FILL' 1;">neurology</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Kwarta AI Insight Section -->
+<section class="max-w-7xl mx-auto px-6 py-24">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+<div class="lg:col-span-5 space-y-6">
+<div class="w-12 h-12 bg-secondary-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">psychology</span>
+</div>
+<h2 class="font-display text-h1 text-primary">Kwarta AI Insight</h2>
+<p class="font-body-lg text-body-lg text-outline">
+                        Beyond simple tracking, Kwarta acts as your personal financial analyst. It identifies recurring leakage, predicts seasonal volatility, and suggests capital reallocation strategies.
+                    </p>
+<ul class="space-y-4">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary mt-1">check_circle</span>
+<div>
+<p class="font-h3 text-primary">Anomaly Detection</p>
+<p class="text-body-sm text-outline">Instant alerts for unusual merchant activity or unexpected fees.</p>
+</div>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary mt-1">check_circle</span>
+<div>
+<p class="font-h3 text-primary">Tax-Loss Harvesting</p>
+<p class="text-body-sm text-outline">Identify opportunities to offset gains with intelligent position management.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="lg:col-span-7 bg-white rounded-xl border border-outline-variant p-2 shadow-lg">
+<div class="bg-surface-container rounded-lg p-8">
+<div class="flex items-center justify-between mb-8">
+<h4 class="font-h2 text-primary">AI Insight Report</h4>
+<span class="text-label-caps text-secondary font-bold">LIVE ANALYSIS</span>
+</div>
+<div class="space-y-6">
+<div class="bg-white p-6 rounded-lg border-l-4 border-primary shadow-sm">
+<div class="flex gap-4">
+<div class="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary">lightbulb</span>
+</div>
+<div>
+<p class="text-body-sm font-bold text-primary mb-1">Optimization Found</p>
+<p class="text-body-sm text-outline">We've identified 3 redundant subscriptions costing you $840 annually. Would you like us to initiate the cancellation process?</p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white p-4 rounded-lg border border-outline-variant">
+<p class="text-label-caps text-outline mb-2">SPENDING TREND</p>
+<p class="text-h2 text-error font-numeric-data">↑ 12%</p>
+<p class="text-[10px] text-outline mt-1">Compared to last month</p>
+</div>
+<div class="bg-white p-4 rounded-lg border border-outline-variant">
+<p class="text-label-caps text-outline mb-2">CASH EFFICIENCY</p>
+<p class="text-h2 text-secondary font-numeric-data">94.8</p>
+<p class="text-[10px] text-outline mt-1">Excellent liquidity score</p>
+</div>
+</div>
+<div class="h-40 w-full relative">
+<img alt="Office dashboard" class="w-full h-full object-cover rounded-lg opacity-40 grayscale" data-alt="A clean, modern office space with multiple large screens displaying complex financial dashboards in soft emerald and slate tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOfPX1QSKaetJanC24wJe5MpPfltqDlmMQ4mQtsL8L-8Oc4xHqxSAq0m_KDUsQBkJ3KAQ9zh0e4DCSF1w8SNRzA4txGuetKrNwG9po0Sh9IyB3s92VgzBoxuE_IRyDjpxziitRxUL_Hcyz15jUDaTaer__Z__iZt4YEgfJCkBaeHitmxGLr0avbEWIZT5SNisvONEoIiGBp4yRx9_NdFqCtE-RnS6Ks3pdqih895F4vtOoR_mUXPHM6HquoJnPEMmvu6ZVy6LGSSU"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container to-transparent"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="max-w-7xl mx-auto px-6 py-24">
+<div class="bg-primary-container rounded-xl p-12 text-center space-y-8 relative overflow-hidden">
+<div class="absolute inset-0 opacity-10">
+<div class="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
+<div class="absolute bottom-0 right-0 w-64 h-64 bg-secondary rounded-full translate-x-1/2 translate-y-1/2 blur-3xl"></div>
+</div>
+<div class="relative z-10">
+<h2 class="font-display text-display text-white mb-4">Elevate Your Strategy.</h2>
+<p class="font-body-lg text-primary-fixed max-w-2xl mx-auto mb-10">
+                        Join over 50,000 high-net-worth individuals and institutions who trust Bacaro for their financial orchestration.
+                    </p>
+<div class="flex flex-col sm:flex-row justify-center gap-4">
+<button class="px-10 py-4 bg-white text-primary rounded-lg font-bold hover:bg-emerald-50 transition-all">Start Free Trial</button>
+<button class="px-10 py-4 border border-primary-fixed text-primary-fixed rounded-lg font-bold hover:bg-white/10 transition-all">Contact Sales</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer from Shared Components -->
+<footer class="w-full py-12 border-t border-emerald-200 bg-emerald-50">
+<div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+<div class="space-y-4">
+<div class="font-bold text-emerald-900">Bacaro Financial Systems</div>
+<p class="font-manrope text-xs tracking-wide text-emerald-700/60 leading-relaxed max-w-sm">
+                    Providing institutional-grade financial infrastructure for the modern era. Secure, intelligent, and private.
+                </p>
+<div class="font-manrope text-xs tracking-wide text-emerald-700/60">
+                    © 2024 Bacaro Financial Systems. All rights reserved.
+                </div>
+</div>
+<div class="flex flex-wrap justify-end gap-x-8 gap-y-4 font-manrope text-xs tracking-wide">
+<a class="text-emerald-700/60 hover:text-emerald-900 hover:underline decoration-emerald-500/30 transition-all" href="#">Institutional Disclosure</a>
+<a class="text-emerald-700/60 hover:text-emerald-900 hover:underline decoration-emerald-500/30 transition-all" href="#">Privacy Policy</a>
+<a class="text-emerald-700/60 hover:text-emerald-900 hover:underline decoration-emerald-500/30 transition-all" href="#">Terms of Service</a>
+<a class="text-emerald-700/60 hover:text-emerald-900 hover:underline decoration-emerald-500/30 transition-all" href="#">Security</a>
+<a class="text-emerald-700/60 hover:text-emerald-900 hover:underline decoration-emerald-500/30 transition-all" href="#">Help Center</a>
+</div>
+</div>
+</footer>
+</body></html>

@@ -1,6 +1,9 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import LoginModal from '../components/LoginModal';
 
 const LandingPage = () => {
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
   return (
     <div className="bg-background min-h-screen text-on-surface font-body-md animate-fade-in">
       {/* TopNavBar */}
@@ -9,16 +12,12 @@ const LandingPage = () => {
           <div className="text-2xl font-bold tracking-tighter text-emerald-900">Bacaro</div>
           
           <div className="flex items-center space-x-4">
-            <Link to="/login">
-              <button className="px-4 py-2 text-emerald-900 font-semibold text-sm hover:bg-emerald-50/50 transition-colors rounded-lg cursor-pointer">
-                Sign In
-              </button>
-            </Link>
-            <Link to="/login">
-              <button className="px-5 py-2 bg-primary text-white font-semibold text-sm rounded-lg hover:opacity-90 active:scale-95 duration-150 ease-in-out cursor-pointer">
-                Open Account
-              </button>
-            </Link>
+            <button onClick={() => setShowLoginModal(true)} className="px-4 py-2 text-emerald-900 font-semibold text-sm hover:bg-emerald-50/50 transition-colors rounded-lg cursor-pointer">
+              Sign In
+            </button>
+            <button onClick={() => setShowLoginModal(true)} className="px-5 py-2 bg-primary text-white font-semibold text-sm rounded-lg hover:opacity-90 active:scale-95 duration-150 ease-in-out cursor-pointer">
+              Open Account
+            </button>
           </div>
         </div>
       </nav>
@@ -39,12 +38,10 @@ const LandingPage = () => {
               Experience a sophisticated, intelligence-driven platform designed for precision capital management and growth. Built for those who demand institutional-grade reliability.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link to="/login">
-                <button className="px-8 py-4 bg-primary text-white rounded-lg font-bold text-[18px] flex items-center gap-2 hover:opacity-90 transition-all cursor-pointer">
-                  Get Started Free
-                  <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
-                </button>
-              </Link>
+              <button onClick={() => setShowLoginModal(true)} className="px-8 py-4 bg-primary text-white rounded-lg font-bold text-[18px] flex items-center gap-2 hover:opacity-90 transition-all cursor-pointer">
+                Get Started Free
+                <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
+              </button>
             </div>
           </div>
 
@@ -125,16 +122,12 @@ const LandingPage = () => {
                 Join over 50,000 high-net-worth individuals and institutions who trust Bacaro for their financial orchestration.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Link to="/login">
-                  <button className="px-10 py-4 bg-white text-primary rounded-lg font-bold hover:bg-emerald-50 transition-all cursor-pointer">
-                    Start Free Trial
-                  </button>
-                </Link>
-                <Link to="/login">
-                  <button className="px-10 py-4 border border-primary-fixed text-primary-fixed rounded-lg font-bold hover:bg-white/10 transition-all cursor-pointer">
-                    Create Account
-                  </button>
-                </Link>
+                <button onClick={() => setShowLoginModal(true)} className="px-10 py-4 bg-white text-primary rounded-lg font-bold hover:bg-emerald-50 transition-all cursor-pointer">
+                  Start Free Trial
+                </button>
+                <button onClick={() => setShowLoginModal(true)} className="px-10 py-4 border border-primary-fixed text-primary-fixed rounded-lg font-bold hover:bg-white/10 transition-all cursor-pointer">
+                  Create Account
+                </button>
               </div>
             </div>
           </div>
@@ -161,6 +154,11 @@ const LandingPage = () => {
           </div>
         </div>
       </footer>
+
+      {/* Login Modal Overlay */}
+      {showLoginModal && (
+        <LoginModal onClose={() => setShowLoginModal(false)} />
+      )}
     </div>
   );
 };

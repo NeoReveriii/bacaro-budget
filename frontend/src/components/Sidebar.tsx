@@ -78,18 +78,27 @@ const Sidebar = () => {
         </NavLink>
       </nav>
       
-      <div className="p-4 border-t border-slate-200 flex items-center gap-3">
+      <div className="p-4 border-t border-slate-200 flex items-center gap-2">
         <div className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm shrink-0">AP</div>
         <div className="flex-1 overflow-hidden">
           <div className="font-bold text-body-sm text-on-background truncate">Arthur P.</div>
           <div className="text-[12px] text-slate-500 truncate">Premium Plan</div>
         </div>
         <div className="flex items-center gap-1 shrink-0">
-          <button className="text-slate-400 hover:text-slate-600 p-1 rounded-md transition-colors">
-            <span className="material-symbols-outlined text-[20px]">notifications</span>
+          <button 
+            onClick={() => {
+              localStorage.removeItem('bacaro_token');
+              localStorage.removeItem('bacaro_user');
+              window.location.href = '/login';
+            }}
+            title="Sign Out"
+            className="text-slate-400 hover:text-error p-1 rounded-md transition-colors cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[20px]">logout</span>
           </button>
           <NavLink 
             to="/settings" 
+            title="Settings"
             className={({ isActive }) => 
               `text-slate-400 hover:text-slate-600 p-1 rounded-md transition-colors ${isActive ? 'text-primary' : ''}`
             }

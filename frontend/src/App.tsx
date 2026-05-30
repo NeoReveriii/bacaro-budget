@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import Settings from './pages/Settings';
@@ -6,30 +7,78 @@ import Transactions from './pages/Transactions';
 import Wallets from './pages/Wallets';
 import SavingsGoals from './pages/SavingsGoals';
 import KwartaAI from './pages/KwartaAI';
+import LoginPage from './pages/LoginPage';
 
-// Placeholder components for other routes
-const Placeholder = ({ title }: { title: string }) => (
-  <div className="flex items-center justify-center h-[60vh]">
-    <div className="text-center">
-      <h1 className="text-h1 font-h1 text-primary mb-4">{title}</h1>
-      <p className="text-slate-500">This module is under construction.</p>
-    </div>
-  </div>
-);
+// Wrapper that redirects to /login if not authenticated
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const { token, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <span className="material-symbols-outlined animate-spin text-primary text-[48px]">
+          progress_activity
+        </span>
+      </div>
+    );
+  }
+
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <>{children}</>;
+}
+
+function AppRoutes() {
+  const { token, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <span className="material-symbols-outlined animate-spin text-primary text-[48px]">
+          progress_activity
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <Routes>
+      {/* Public route */}
+      <Route
+        path="/login"
+        element={token ? <Navigate to="/" replace /> : <LoginPage />}
+      />
+
+      {/* Protected routes */}
+      <Route
+        path="/*"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/transactions" element={<Transactions />} />
+                <Route path="/wallets" element={<Wallets />} />
+                <Route path="/goals" element={<SavingsGoals />} />
+                <Route path="/kwarta-ai" element={<KwartaAI />} />
+              </Routes>
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+    </Routes>
+  );
+}
 
 function App() {
   return (
     <Router>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/transactions" element={<Transactions />} />
-          <Route path="/wallets" element={<Wallets />} />
-          <Route path="/goals" element={<SavingsGoals />} />
-          <Route path="/kwarta-ai" element={<KwartaAI />} />
-        </Routes>
-      </Layout>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
     </Router>
   );
 }

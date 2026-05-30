@@ -194,3 +194,24 @@ export async function fetchGoals(): Promise<Goal[]> {
   const res = await request<{ goals: Goal[] }>('/goals');
   return res.goals;
 }
+
+// ──────────────────────────────────────────────
+// Chat History
+// ──────────────────────────────────────────────
+
+export interface ChatMessageData {
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+  created_at: string;
+}
+
+export async function fetchChatHistory(): Promise<ChatMessageData[]> {
+  const res = await request<{ data: ChatMessageData[] }>('/chat');
+  return res.data;
+}
+
+export async function clearChatHistory(): Promise<{ success: boolean; message: string }> {
+  return request('/chat', {
+    method: 'DELETE',
+  });
+}

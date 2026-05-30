@@ -31,7 +31,7 @@ async function request<T>(
     // Token expired or invalid — clear and redirect to login
     localStorage.removeItem('bacaro_token');
     localStorage.removeItem('bacaro_user');
-    window.location.href = '/login';
+    window.location.href = '/';
     throw new Error('Unauthorized');
   }
 

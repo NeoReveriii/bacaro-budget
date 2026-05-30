@@ -89,7 +89,7 @@ const Sidebar = () => {
             onClick={() => {
               localStorage.removeItem('bacaro_token');
               localStorage.removeItem('bacaro_user');
-              window.location.href = '/login';
+              window.location.href = '/';
             }}
             title="Sign Out"
             className="text-slate-400 hover:text-error p-1 rounded-md transition-colors cursor-pointer"
